@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+<!-- Domain Object DAOs. -->
+<!--
+    <bean id="semcUserDAO" class="ar.com.mun.daos.impl.SEMCUserSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.mun.beans.SEMCUser"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+-->
+
+    
+</beans>

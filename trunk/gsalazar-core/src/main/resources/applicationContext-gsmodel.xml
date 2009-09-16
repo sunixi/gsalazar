@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+        <property name="alias" value="cm"/>
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <!--Localhost -->
+        <property name="driverUrl" value="jdbc:mysql://localhost:3306/gsalazar"/>
+        <property name="delegateProperties" value="user=root,password=root"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+
+        <!-- db4free.net -->
+        <!--<property name="driverUrl" value="jdbc:mysql://db4free.net:3306/personaltraveler"/>
+        <property name="delegateProperties" value="user=gsalazar1983,password=42416467"/>
+        <property name="user" value="gsalazar1983"/>
+        <property name="password" value="42416467"/>
+        <property name="loginTimeout" value="900000" />-->
+
+        <!--<property name="houseKeepingSleepTime" value="15000"/>--> 
+        <!-- Este parametro es el sql que usa para testear. Tener cuidado con lo que se setea -->
+        <property name="houseKeepingTestSql" value="select 1 from dual" />
+        <property name="maximumConnectionCount" value="50"/>
+        <property name="minimumConnectionCount" value="15"/>
+        <!-- Tiempo de coneccion ejecutando algo = 20 minutos -->
+        <property name="maximumActiveTime" value="1200000"/>
+        <!--<property name="maximumConnectionLifetime" value="7200000"/>--> 
+        <property name="testBeforeUse" value="true"/>
+        <property name="testAfterUse" value="false"/>
+        <property name="verbose" value="false"/>
+        <property name="prototypeCount" value="5"/>
+        <!-- Este parametro muestra el query que ejecutó una conexion en el admin del proxool -->
+        <property name="trace" value="true"/>
+        <property name="statistics" value="10s,1m,15m,1d"/>
+    </bean>
+
+    <bean id="sessionFactory" class="com.angel.architecture.spring.DDLGeneratingAnnotationSessionFactoryBean">
+        <property name="entityInterceptor" ref="changeDetectionInterceptor"/>
+
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+
+        <property name="dataSource">
+            <ref local="dataSource"/>
+        </property>
+
+        <property name="annotatedClasses">
+            <list>
+            <!-- 
+                <value>ar.com.mun.beans.Persona</value>
+				<value>ar.com.mun.beans.Municipalidad</value>
+				<value>ar.com.mun.beans.Motivo</value>
+				<value>ar.com.mun.beans.Expediente</value>
+				<value>ar.com.mun.beans.SEMCUser</value>
+				<value>com.angel.architecture.persistence.beans.Role</value>
+				<value>com.angel.architecture.persistence.beans.ConfigurationParameter</value>
+				<value>com.angel.architecture.persistence.beans.ParameterArea</value>
+				<value>com.angel.io.log.RowMessageLog</value>
+				<value>com.angel.io.log.ProcessorLog</value>
+			-->
+			</list>
+		</property>
+        <property name="mappingResources">
+            <list>
+                <!-- mapeos de arquitectura -->
+                <!--<value>com/angel/arquitectura/model/*.hbm.xml</value>-->
+            </list>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5">
+    <display-name>SEMC - Sistema de Expedientes de la Municipalidad de Chivilcoy</display-name>
+
+
+    <context-param>
+        <param-name>flex.class.path</param-name>
+        <param-value>/WEB-INF/flex/hotfixes,/WEB-INF/flex/jars</param-value>
+
+    </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:applicationContext-model.xml,
+            classpath:applicationContext-dao.xml,
+            classpath:applicationContext-flex.xml,
+            classpath:applicationContext-services.xml,
+			classpath:applicationContext-gsflex.xml,
+			classpath:applicationContext-gsdaos.xml,
+			classpath:applicationContext-gsservices.xml,
+			classpath:applicationContext-gsmodel.xml
+        </param-value>
+    </context-param>
+    <!-- Http Flex Session attribute and binding listener support -->
+    <listener>
+        <listener-class>flex.messaging.HttpFlexSession</listener-class>
+    </listener>
+    <!-- se declara el listener que levanta el contexto de spring-->
+     <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+     </listener>
+     <listener>
+         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+     </listener>
+    <filter>
+        <filter-name>lazyLoadingFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>lazyLoadingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+	<!-- Servlet para bajar exportaciones de objetos de negocio.-->
+    <servlet>
+        <servlet-name>downloadExportFileServlet</servlet-name>
+        <servlet-class>com.angel.webapp.servlets.DownloadExportFileServlet</servlet-class>
+    </servlet>
+	<!-- Servlet para bajar adjuntos de emails.-->
+    <servlet>
+        <servlet-name>downloadEmailAttachmentServlet</servlet-name>
+        <servlet-class>com.angel.webapp.servlets.DownloadEmailAttachmentServlet</servlet-class>
+    </servlet>
+    <!-- Servlet para subir adjuntos para exportacion de objetos de negocio. -->
+    <servlet>
+        <servlet-name>uploadImportFileServlet</servlet-name>
+        <servlet-class>com.angel.webapp.servlets.UploadImportFileServlet</servlet-class>
+    </servlet>
+	<!-- Servlet para subir adjuntos de emails.-->
+    <servlet>
+        <servlet-name>uploadEmailAttachmentServlet</servlet-name>
+        <servlet-class>com.angel.webapp.servlets.UploadEmailAttachmentServlet</servlet-class>
+    </servlet>
+    <!-- Initialize configuration files servlets. -->
+	<servlet>
+        <servlet-name>initializerServlet</servlet-name>
+        <servlet-class>com.angel.webapp.servlets.InitializerServlet</servlet-class>
+        <init-param>
+            <param-name>ioConfigFile</param-name>
+            <param-value>io-config.xml</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- Flex MessageBroker Servlet -->   
+    <servlet>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <!--<display-name>MessageBrokerServlet</display-name>-->
+        <servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
+        <init-param>
+            <param-name>services.configuration.file</param-name>
+            <param-value>/WEB-INF/flex/services-config.xml</param-value>
+        </init-param>
+		<init-param>
+		    <param-name>useContextClassLoader</param-name>
+		    <param-value>true</param-value>
+		</init-param> 
+        <init-param>
+            <param-name>flex.write.path</param-name>
+            <param-value>/WEB-INF/flex</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FlexForbiddenServlet</servlet-name>
+        <!--<display-name>Prevents access to *.as/*.swc/*.mxml files</display-name>-->
+        <servlet-class>flex.bootstrap.BootstrapServlet</servlet-class>
+        <init-param>
+            <param-name>servlet.class</param-name>
+            <param-value>flex.webtier.server.j2ee.ForbiddenServlet</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FlexInternalServlet</servlet-name>
+        <servlet-class>flex.bootstrap.BootstrapServlet</servlet-class>
+        <!--<init-param>
+            <param-name>servlet.class</param-name>
+            <param-value>flex.webtier.server.j2ee.filemanager.FileManagerServlet</param-value>
+        </init-param>-->
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+
+
+    <!--<servlet-mapping>
+        <servlet-name>initServlet</servlet-name>
+        <url-pattern>/initializer</url-pattern>
+    </servlet-mapping>-->
+
+
+
+    <servlet-mapping>
+        <servlet-name>MessageBrokerServlet</servlet-name>
+        <url-pattern>/messagebroker/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FlexForbiddenServlet</servlet-name>
+        <url-pattern>*.mxml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FlexForbiddenServlet</servlet-name>
+        <url-pattern>*.as</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FlexForbiddenServlet</servlet-name>
+        <url-pattern>*.swc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FlexInternalServlet</servlet-name>
+        <url-pattern>/flex-internal/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>downloadExportFileServlet</servlet-name>
+        <url-pattern>/downloadExportFile/*</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>downloadEmailAttachmentServlet</servlet-name>
+        <url-pattern>/downloadEmailAttachment/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>uploadImportFileServlet</servlet-name>
+        <url-pattern>/uploadImportFile/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>uploadEmailAttachmentServlet</servlet-name>
+        <url-pattern>/uploadEmailAttachment/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>initializerServlet</servlet-name>
+        <url-pattern>/initializer/*</url-pattern>
+    </servlet-mapping>
+
+
+    <welcome-file-list>
+        <welcome-file>main.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>

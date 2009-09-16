@@ -1,0 +1,6 @@
+Application {
+   backgroundImage: Embed(source="/styles/backgrounds.swf#bluestripe");
+   backgroundGradientColors: #000099, #000099;
+   backgroundGradientAlphas: 1, 0.38;
+   themeColor: #0000cc;
+}

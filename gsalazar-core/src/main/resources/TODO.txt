@@ -1,0 +1,22 @@
+TAREAS REALIZADAS:
+
+TAREAS A REALIZAR:
+
+
+DATOS A MOSTRAR:
+1- Curriculum Vitae.
+	a- Experiencia laboral.
+	b- Estudios.
+		i- Desarrollo.
+		ii- Universitarios.
+		iii- Seminarios / Congresos.
+		iv- Cursos.
+		v- Idiomas.
+		vi- Otros.
+	c- Envio de CV por email.
+2- Proyectos.
+3- Articulos.
+4- Ejemplos de codigo.
+3- Links Amigos.
+4- Contacto.
+		

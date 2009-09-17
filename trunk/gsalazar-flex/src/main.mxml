@@ -1,6 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
-	
+<mx:Application
+	 xmlns:mx="http://www.adobe.com/2006/mxml" 
+	 layout="vertical"
+	 xmlns:pages="ar.com.gsalazar.pages.*"
+	 creationComplete="init()"
+	 paddingTop="5" paddingBottom="5"
+	 paddingLeft="10" paddingRight="10"
+	 width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.LinkButton;
+			import ar.com.gsalazar.pages.ContactoFormulario;
+			import ar.com.gsalazar.pages.WebAmigas;
+			import ar.com.gsalazar.pages.Articulos;
+			import ar.com.gsalazar.pages.Proyectos;
+			import ar.com.gsalazar.pages.CurriculumVitae;
+			import ar.com.gsalazar.pages.Inicio;
+			import mx.collections.IList;
+			import mx.managers.BrowserManager;
+
+			private function init():void {
+				BrowserManager.getInstance().setTitle("Bienvenido a GSalazar.com.ar");
+			}
+			
+			private function clickEmail():void {
+				navigateToURL(new URLRequest("mailto:guillesalazar@google.com?subject=Consulta"));
+			}
+			private function clickFacebook():void {
+				navigateToURL(new URLRequest("http://es-la.facebook.com/guille.salazar"));
+			}
+			
+			private function inicializarPaginas():void {
+				paginas.addChild(new Inicio());
+				paginas.addChild(new CurriculumVitae());
+				paginas.addChild(new Proyectos());
+				paginas.addChild(new Articulos());
+				paginas.addChild(new WebAmigas());
+				paginas.addChild(new ContactoFormulario());
+			}
+
+			private function mouseOutPage(event:Event):void {
+				itemMenuDescripcion.visible = true;
+			}
+			
+			private function mouseOverPage(event:Event):void {
+				itemMenuDescripcion.visible = false;				
+			}
+		]]>
+	</mx:Script>
 	<mx:Style source="/styles/style.css"/>
-	<mx:Button label="Hola"/>
+	<mx:Canvas id="headerContainer" width="100%" clipContent="false" height="25%">
+		<mx:Canvas id="initContainer" fontFamily="amplitudFamily"
+			x="{headerContainer.width-initContainer.width-10}"
+			y="5">
+			<mx:Label id="lblGfs" text="gSalazar.com.ar" fontSize="35" />
+			<mx:Label y="2" x="2" text="GSalazar" alpha="0.5" styleName="gfsTitle"/>
+			<mx:Label id="lblSub" x="{lblGfs.width + 2}"
+				y="9" fontSize="20"
+				text="Sitio Web Personal de Guillermo Salazar"
+				styleName="gfsSubTitle"/>
+		</mx:Canvas>
+	</mx:Canvas>
+	<mx:ControlBar width="100%" height="2%" id="controlbar1" verticalAlign="middle" horizontalAlign="left">
+		<mx:Label fontSize="14" fontWeight="bold" text="Bienvenido a GSalazar.com.ar - "/>
+		<mx:Label fontSize="11" fontWeight="bold" text="{shortDateFormatter.format(new Date())}" fontStyle="italic" color="#0009C8" textAlign="left" />
+		<mx:LinkButton label="Comentarios" color="#FB2121" fontSize="12" textDecoration="underline"/>
+		<mx:TextInput text="Buscar" fontWeight="bold" fontStyle="italic"/>
+	</mx:ControlBar>
+	<mx:HRule width="100%"/>
+	
+	<mx:ApplicationControlBar width="100%" horizontalAlign="center" verticalAlign="middle" height="2%">
+		<mx:Spacer width="25%"/>
+		<mx:LinkBar dataProvider="paginas" height="30" fontSize="15"/>
+		<mx:Spacer width="25%"/>
+	</mx:ApplicationControlBar>
+	<mx:HRule width="100%"/>
+	<mx:Label id="itemMenuDescripcion" width="1%" fontSize="12" fontStyle="italic" visible="false"
+		text="Texto de descripcion de prueba de cada item del menu principal."/>
+	<mx:ViewStack id="paginas" width="90%" height="70%" selectedIndex="0"
+		creationComplete="inicializarPaginas()"
+		mouseOver="mouseOverPage(event);"
+		mouseOut="mouseOutPage(event);">
+	</mx:ViewStack>
+	<mx:HRule width="100%"/>
+	<mx:ControlBar width="90%" height="5%" paddingBottom="0" paddingTop="0" verticalAlign="middle" horizontalAlign="center" >
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
+		<mx:Label fontSize="10" fontWeight="bold" text="Ultima Actualizacion: {shortDateFormatter.format(new Date())} "/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
+		<mx:Label fontSize="10" fontWeight="bold" text="2009 - 2010"/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | "/>
+		<mx:Label fontSize="10" fontWeight="bold" text="Diseñado por "/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" Guillermo Daniel Salazar"	/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
+		<mx:Label fontSize="10" fontWeight="bold" text="Contactar en "/>
+		<mx:Image source="@Embed(source='images/fb_3d.png')" height="30" width="30" toolTip="Facebook" click="clickFacebook()"/>
+		<mx:Image source="@Embed(source='images/email_world.png')" height="30" width="30" toolTip="E-mail" click="clickEmail()"/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
+	</mx:ControlBar>
+	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY"/>
 </mx:Application>

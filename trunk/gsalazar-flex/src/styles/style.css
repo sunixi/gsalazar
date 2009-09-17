@@ -1,6 +1,34 @@
+@font-face {
+    src: url("/fonts/australianSunset.ttf");
+    fontFamily: australianSunsetFamily;
+    advancedAntiAliasing: true;
+}
+
+@font-face {
+    src: url("/fonts/amplitud.ttf");
+    fontFamily: amplitudFamily;
+    advancedAntiAliasing: true;
+}
+
 Application {
    backgroundImage: Embed(source="/styles/backgrounds.swf#bluestripe");
    backgroundGradientColors: #000099, #000099;
    backgroundGradientAlphas: 1, 0.38;
    themeColor: #0000cc;
+}
+
+TextInput {
+   borderStyle: solid;
+   borderColor: #0099ff;
+   borderThickness: 1;
+   cornerRadius: 6;
+   backgroundAlpha: 1;
+   color: #333333;
+   letterSpacing: 0;
+   paddingLeft: 1;
+   paddingRight: 0;
+   dropShadowEnabled: true;
+   shadowDirection: right;
+   shadowDistance: 2;
+   dropShadowColor: #333333;
 }

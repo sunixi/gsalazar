@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();" 
+	horizontalAlign="center"
+	label="Inicio"
+	verticalAlign="top">
+
+	<mx:Script>
+	<![CDATA[
+		
+		public function init():void {
+
+		}
+
+
+	]]>
+	</mx:Script>
+	
+	<mx:Label text="PAGINA DE INICIO"/>
+
+</mx:Box>

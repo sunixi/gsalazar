@@ -1,3 +1,6 @@
+TAREAS GENERICAS:
+- Hacer un separador con un caracter configurable.
+
 TAREAS REALIZADAS:
 
 TAREAS A REALIZAR:
@@ -16,7 +19,7 @@ DATOS A MOSTRAR:
 	c- Envio de CV por email.
 2- Proyectos.
 3- Articulos.
-4- Ejemplos de codigo.
+4- Código.
 3- Links Amigos.
 4- Contacto.
 		

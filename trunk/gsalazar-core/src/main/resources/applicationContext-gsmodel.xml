@@ -47,12 +47,8 @@
 
         <property name="annotatedClasses">
             <list>
+            <value>ar.com.gsalazar.beans.Contacto</value>
             <!-- 
-                <value>ar.com.mun.beans.Persona</value>
-				<value>ar.com.mun.beans.Municipalidad</value>
-				<value>ar.com.mun.beans.Motivo</value>
-				<value>ar.com.mun.beans.Expediente</value>
-				<value>ar.com.mun.beans.SEMCUser</value>
 				<value>com.angel.architecture.persistence.beans.Role</value>
 				<value>com.angel.architecture.persistence.beans.ConfigurationParameter</value>
 				<value>com.angel.architecture.persistence.beans.ParameterArea</value>

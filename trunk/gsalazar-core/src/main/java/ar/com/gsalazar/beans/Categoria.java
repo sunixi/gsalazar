@@ -6,6 +6,7 @@ package ar.com.gsalazar.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,7 +24,9 @@ public class Categoria extends PersistentObject {
 
 	private static final long serialVersionUID = -462238529934628758L;
 
+	@Column(nullable = false)
 	private String nombre;
+	@Column(nullable = false)
 	private String descripcion;
 	@OneToOne(optional = true)
 	private Categoria subCategoria;
@@ -91,11 +94,11 @@ public class Categoria extends PersistentObject {
 		this.getItems().add(itemCategoria);
 	}
 	
-	public void agregarItemCategoria(String nombre, String descripcion, Blob image){
+	public void agregarItemCategoria(String nombre, String descripcion, String fileName, Blob imagen){
 		ItemCategoria itemCategoria = new ItemCategoria();
 		itemCategoria.setDescripcion(descripcion);
 		itemCategoria.setNombre(nombre);
-		itemCategoria.setImage(image);
+		itemCategoria.setImagenItemCategoria(fileName, imagen);
 		this.agregarItemCategoria(itemCategoria);
 	}
 

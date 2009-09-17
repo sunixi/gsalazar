@@ -47,14 +47,10 @@
 
         <property name="annotatedClasses">
             <list>
-            <value>ar.com.gsalazar.beans.Contacto</value>
-            <!-- 
-				<value>com.angel.architecture.persistence.beans.Role</value>
-				<value>com.angel.architecture.persistence.beans.ConfigurationParameter</value>
-				<value>com.angel.architecture.persistence.beans.ParameterArea</value>
-				<value>com.angel.io.log.RowMessageLog</value>
-				<value>com.angel.io.log.ProcessorLog</value>
-			-->
+	            <value>ar.com.gsalazar.beans.Contacto</value>
+	            <value>ar.com.gsalazar.beans.ImagenItemCategoria</value>
+	            <value>ar.com.gsalazar.beans.ItemCategoria</value>
+	            <value>ar.com.gsalazar.beans.Categoria</value>
 			</list>
 		</property>
         <property name="mappingResources">

@@ -3,10 +3,14 @@
  */
 package ar.com.gsalazar.beans;
 
+import java.sql.Blob;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import com.angel.architecture.persistence.base.PersistentObject;
-import com.mysql.jdbc.Blob;
 
 /**
  * 
@@ -18,9 +22,12 @@ public class ItemCategoria extends PersistentObject {
 
 	private static final long serialVersionUID = -462238529934628758L;
 
+	@Column(nullable = false)
 	private String nombre;
+	@Column(nullable = false)
 	private String descripcion;
-	private Blob image;
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
+	private ImagenItemCategoria imagenItemCategoria;
 
 	/**
 	 * @return the nombre
@@ -47,15 +54,19 @@ public class ItemCategoria extends PersistentObject {
 		this.descripcion = descripcion;
 	}
 	/**
-	 * @return the image
+	 * @return the imagenItemCategoria
 	 */
-	public Blob getImage() {
-		return image;
+	public ImagenItemCategoria getImagenItemCategoria() {
+		return imagenItemCategoria;
 	}
 	/**
-	 * @param image the image to set
+	 * @param imagenItemCategoria the imagenItemCategoria to set
 	 */
-	public void setImage(Blob image) {
-		this.image = image;
+	public void setImagenItemCategoria(ImagenItemCategoria imagenItemCategoria) {
+		this.imagenItemCategoria = imagenItemCategoria;
+	}
+	
+	public void setImagenItemCategoria(String fileName, Blob imagen) {
+		this.setImagenItemCategoria(new ImagenItemCategoria(imagen, fileName));
 	}
 }

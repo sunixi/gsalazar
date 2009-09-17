@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();" 
+	label="Contacto">
+
+	<mx:Script>
+	<![CDATA[
+		import com.angel.locator.ServiceLocator;
+		import ar.com.gsalazar.beans.Contacto;
+		import mx.events.CloseEvent;
+		import mx.collections.IList;
+		import mx.controls.dataGridClasses.DataGridColumn;
+		import mx.collections.ArrayCollection;
+		import mx.events.ListEvent;
+		import mx.managers.PopUpManager;
+		import mx.controls.Alert;
+
+		[Bindable]
+		private var contacto:Contacto;
+		
+		public function init():void {
+			contacto = new Contacto();
+		}
+
+		private function crearContacto():void {
+			ServiceLocator.getService("contactoService").create(contacto);
+		}
+	]]>
+	</mx:Script>
+	<mx:Form width="100%" id="contactoFormulario" visible="true" >
+		<mx:HBox width="90%">
+			<mx:FormItem label="Nombre(s):" labelStyleName="normal">
+				<mx:TextInput text="{contacto.nombres}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Apellido(s):" labelStyleName="normal">
+				<mx:TextInput text="{contacto.apellido}"/>
+			</mx:FormItem>	
+		</mx:HBox>
+		<mx:HBox width="90%">
+			<mx:FormItem label="Empresa:" labelStyleName="normal">
+				<mx:TextInput text="{contacto.nombreCompania}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Telefono:" labelStyleName="normal">
+				<mx:TextInput text="{contacto.telefono}"/>
+			</mx:FormItem>
+		</mx:HBox>
+		<mx:FormItem label="Email:" labelStyleName="normal">
+			<mx:TextInput text="{contacto.email}"/>
+		</mx:FormItem>
+		<mx:HBox width="90%">
+			<mx:FormItem label="Direccion:" labelStyleName="normal">
+				<mx:TextInput text="{contacto.direccion}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Localidad:" labelStyleName="normal">
+				<mx:TextInput text="{contacto.localidad}"/>
+			</mx:FormItem>
+		</mx:HBox>
+		<mx:FormItem label="Asunto:" labelStyleName="normal">
+			<mx:TextInput text="{contacto.asunto}"/>
+		</mx:FormItem>
+		<mx:FormItem width="90%" label="Descripcion:" labelStyleName="normal">
+			<mx:TextArea id="descripcionTextArea" text="{contacto.descripcion}" 
+				width="50%" maxChars="200"
+				change="{descripcionLabel.text = 'Faltan ' + (descripcionTextArea.maxChars - descripcionTextArea.text.length) + ' caractere(s).'}"/>
+			<mx:Label id="descripcionLabel" text="Faltan {descripcionTextArea.maxChars} caractere(s)."/>
+		</mx:FormItem>
+		<mx:Button label="Consultar" click="crearContacto();"/>
+	</mx:Form>
+</mx:Box>

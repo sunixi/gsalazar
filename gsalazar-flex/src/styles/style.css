@@ -32,3 +32,54 @@ TextInput {
    shadowDistance: 2;
    dropShadowColor: #333333;
 }
+
+Accordion {
+   borderStyle: outset;
+   borderThickness: 2;
+   headerHeight: 27;
+   backgroundAlpha: 0.08;
+   openDuration: 555;
+   highlightAlphas: 0, 0;
+   fillAlphas: 0.63, 0.4, 0, 0.65;
+   fillColors: #000066, #000066, #000066, #000066;
+   selectedFillColors: #000033, #000066;
+   themeColor: #000066;
+   backgroundColor: #666666;
+   borderColor: #666666;
+   textRollOverColor: #666666;
+   textSelectedColor: #cccccc;
+   dropShadowEnabled: true;
+   shadowDistance: 3;
+   shadowDirection: right;
+   dropShadowColor: #cccccc;
+   headerStyleName: "myaccordionHeader";
+}
+
+.myaccordionHeader {
+   color: #000000;
+   textAlign: center;
+   fontSize: 12;
+   fontWeight: bold;
+}
+
+ToolTip {
+   backgroundAlpha: 0.86;
+   cornerRadius: 16;
+   paddingLeft: 10;
+   paddingRight: 10;
+   backgroundColor: #000066;
+   color: #cccccc;
+   textAlign: left;
+   fontWeight: normal;
+   fontStyle: italic;
+}
+
+FormItem {
+   color: #ffffff;
+   fontSize: 11;
+   fontWeight: bold;
+}
+
+TextArea {
+   color: #ffffff;
+}

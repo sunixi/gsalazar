@@ -27,7 +27,7 @@
 				navigateToURL(new URLRequest("mailto:guillesalazar@google.com?subject=Consulta"));
 			}
 			private function clickFacebook():void {
-				navigateToURL(new URLRequest("http://es-la.facebook.com/guille.salazar"));
+				navigateToURL(new URLRequest("http://www.facebook.com/guille.salazar"));
 			}
 			
 			private function inicializarPaginas():void {

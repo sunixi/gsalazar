@@ -23,7 +23,7 @@ public class ImagenItemCategoria extends PersistentObject {
 	
 	@Lob
 	@Column(nullable = false)
-	private Blob image;
+	private Blob imagen;
 	
 	@Column(nullable = false)
 	private String fileName;
@@ -32,22 +32,24 @@ public class ImagenItemCategoria extends PersistentObject {
 		super();
 	}
 	
-	public ImagenItemCategoria(Blob imagen, String fileName){
+	public ImagenItemCategoria(Blob imagen, String nombreArchivo){
 		this();
+		this.setFileName(nombreArchivo);
+		this.setImagen(imagen);
 	}
 	
 	/**
 	 * @return the image
 	 */
-	public Blob getImage() {
-		return image;
+	public Blob getImagen() {
+		return imagen;
 	}
 
 	/**
 	 * @param image the image to set
 	 */
-	public void setImage(Blob image) {
-		this.image = image;
+	public void setImagen(Blob imagen) {
+		this.imagen = imagen;
 	}
 
 	/**

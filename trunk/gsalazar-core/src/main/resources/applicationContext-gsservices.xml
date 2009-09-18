@@ -4,14 +4,11 @@
 
 <beans>
 
-<!-- Internationalization beans definition. -->	
-<!--
-   	<bean id="hotelService" parent="txProxyTemplate">
+   	<bean id="contactoService" parent="txProxyTemplate">
 		<property name="target">
-			<bean class="ar.com.personalTravellers.services.impl.HotelServiceImpl">
-                <property name="genericDAO" ref="hotelDAO"/>
+			<bean class="ar.com.gsalazar.services.impl.ContactoServiceImpl">
+                <property name="genericDAO" ref="contactoDAO"/>
 			</bean>
 		</property>
 	</bean>
--->
 </beans>

@@ -12,11 +12,11 @@ DATOS A MOSTRAR:
 	b- Estudios.
 		i- Desarrollo.
 		ii- Universitarios.
-		iii- Seminarios / Congresos.
-		iv- Cursos.
-		v- Idiomas.
-		vi- Otros.
-	c- Envio de CV por email.
+		iii- Cursos.
+		iv- Idiomas.
+		v- Otros.
+	c- Seminarios / Congresos.
+	d- Envio de CV por email.
 2- Proyectos.
 3- Articulos.
 4- Código.

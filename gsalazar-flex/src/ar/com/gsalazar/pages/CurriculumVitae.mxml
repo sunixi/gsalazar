@@ -18,22 +18,21 @@
 	]]>
 	</mx:Script>
 	<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<mx:Accordion width="25%" height="100%" headerHeight="30">
-			<mx:VBox label="Experiencia Laboral">
-				
-			</mx:VBox>
-			<mx:VBox label="Estudios">
-				
-			</mx:VBox>
-			<mx:VBox label="Seminarios y Congresos">
-				
-			</mx:VBox>
-			<mx:VBox label="Envio de CV">
-				
-			</mx:VBox>
-		</mx:Accordion>
-		<mx:VBox width="70%">
-			<mx:Label text="Contenido"/>
+		<mx:VBox width="20%" height="100%" verticalAlign="middle" horizontalAlign="center">
+		</mx:VBox>
+		<mx:VBox width="80%" height="100%" verticalAlign="middle" horizontalAlign="center">
+			<code:WindowShade label="Experiencia Laboral" width="95%" height="500">
+				<mx:Label text="Contenido"/>
+			</code:WindowShade>
+			<code:WindowShade label="Estudios" width="95%">
+				<mx:Label text="Contenido"/>
+			</code:WindowShade>
+			<code:WindowShade label="Seminarios y Congresos" width="95%">
+				<mx:Label text="Contenido"/>
+			</code:WindowShade>
+			<code:WindowShade label="Envio de CV" width="95%">
+				<mx:Label text="Contenido"/>
+			</code:WindowShade>
 		</mx:VBox>
 	</mx:HBox>
 </mx:Box>

@@ -3,8 +3,7 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:code="http://code.google.com/p/flexlib/"
 	creationComplete="init();" 
-	label="Contacto">
-
+	label="Contacto" xmlns:buttons="com.angel.components.buttons.*">
 	<mx:Script>
 	<![CDATA[
 		import com.angel.locator.ServiceLocator;
@@ -25,47 +24,97 @@
 		}
 
 		private function crearContacto():void {
-			ServiceLocator.getService("contactoService").create(contacto);
+			ServiceLocator.getServiceWithCallback("contactoService", crearContactoCalbackFcuntion, this).create(contacto);
+		}
+		
+		private function crearContactoCalbackFcuntion(_contacto:Contacto):void {
+			this.limpiarFormulario();
+			Alert.show('Se ha creado satisfactoriamente la consulta con asunto \"'+ _contacto.asunto + '\".', 'Creacion de consulta.');
+		}
+		
+		private function limpiarFormulario():void {
+			nombresContacto.text = '';
+			apellidoContacto.text = '';
+			nombreEmpresaContacto.text = '';
+			telefonoContacto.text = '';
+			emailContacto.text = '';
+			direccionContacto.text = '';
+			localidadContacto.text = '';
+			asuntoContacto.text = '';
+			descripcionContacto.text = '';
 		}
 	]]>
 	</mx:Script>
+	<mx:Binding source="nombresContacto.text"		destination="contacto.nombres"/>
+	<mx:Binding source="apellidoContacto.text"		destination="contacto.apellido"/>
+	<mx:Binding source="nombreEmpresaContacto.text"	destination="contacto.nombreCompania"/>
+	<mx:Binding source="telefonoContacto.text"		destination="contacto.telefono"/>
+	<mx:Binding source="emailContacto.text"			destination="contacto.email"/>
+	<mx:Binding source="direccionContacto.text"		destination="contacto.direccion"/>
+	<mx:Binding source="localidadContacto.text"		destination="contacto.localidad"/>
+	<mx:Binding source="asuntoContacto.text"		destination="contacto.asunto"/>
+	<mx:Binding source="descripcionContacto.text"	destination="contacto.descripcion"/>
+
 	<mx:Form width="100%" id="contactoFormulario" visible="true" >
 		<mx:HBox width="90%">
-			<mx:FormItem label="Nombre(s):" labelStyleName="normal">
-				<mx:TextInput text="{contacto.nombres}"/>
+			<mx:FormItem label="Nombre(s):" labelStyleName="normal" required="true">
+				<mx:TextInput id="nombresContacto"/>
 			</mx:FormItem>
-			<mx:FormItem label="Apellido(s):" labelStyleName="normal">
-				<mx:TextInput text="{contacto.apellido}"/>
+			<mx:FormItem label="Apellido(s):" labelStyleName="normal" required="true">
+				<mx:TextInput id="apellidoContacto"/>
 			</mx:FormItem>	
 		</mx:HBox>
 		<mx:HBox width="90%">
-			<mx:FormItem label="Empresa:" labelStyleName="normal">
-				<mx:TextInput text="{contacto.nombreCompania}"/>
+			<mx:FormItem label="Empresa:" labelStyleName="normal" required="true">
+				<mx:TextInput id="nombreEmpresaContacto"/>
 			</mx:FormItem>
-			<mx:FormItem label="Telefono:" labelStyleName="normal">
-				<mx:TextInput text="{contacto.telefono}"/>
+			<mx:FormItem label="Telefono:" labelStyleName="normal" required="true">
+				<mx:TextInput id="telefonoContacto"/>
 			</mx:FormItem>
 		</mx:HBox>
-		<mx:FormItem label="Email:" labelStyleName="normal">
-			<mx:TextInput text="{contacto.email}"/>
+		<mx:FormItem label="Email:" labelStyleName="normal" required="true">
+			<mx:TextInput id="emailContacto"/>
 		</mx:FormItem>
 		<mx:HBox width="90%">
 			<mx:FormItem label="Direccion:" labelStyleName="normal">
-				<mx:TextInput text="{contacto.direccion}"/>
+				<mx:TextInput id="direccionContacto"/>
 			</mx:FormItem>
 			<mx:FormItem label="Localidad:" labelStyleName="normal">
-				<mx:TextInput text="{contacto.localidad}"/>
+				<mx:TextInput id="localidadContacto"/>
 			</mx:FormItem>
 		</mx:HBox>
-		<mx:FormItem label="Asunto:" labelStyleName="normal">
-			<mx:TextInput text="{contacto.asunto}"/>
+		<mx:FormItem label="Asunto:" labelStyleName="normal" required="true">
+			<mx:TextInput id="asuntoContacto"/>
 		</mx:FormItem>
-		<mx:FormItem width="90%" label="Descripcion:" labelStyleName="normal">
-			<mx:TextArea id="descripcionTextArea" text="{contacto.descripcion}" 
+		<mx:FormItem width="90%" label="Descripcion:" labelStyleName="normal" required="true">
+			<mx:TextArea id="descripcionContacto" 
 				width="50%" maxChars="200"
-				change="{descripcionLabel.text = 'Faltan ' + (descripcionTextArea.maxChars - descripcionTextArea.text.length) + ' caractere(s).'}"/>
-			<mx:Label id="descripcionLabel" text="Faltan {descripcionTextArea.maxChars} caractere(s)."/>
+				change="{descripcionLabel.text = 'Faltan ' + (descripcionContacto.maxChars - descripcionContacto.text.length) + ' caracter(es).'}"/>
+			<mx:Label id="descripcionLabel" text="Faltan {descripcionContacto.maxChars} caracter(es)."/>
 		</mx:FormItem>
-		<mx:Button label="Consultar" click="crearContacto();"/>
+		<!--<mx:Button id="contactoBoton" label="Consultar" click="crearContacto();"/>-->
+		<buttons:ButtonValidator clickHandler="crearContacto()" labelButton="Consultar" errorMessage="Hay errores para validar.">
+			<buttons:validators>
+				<mx:StringValidator source="{nombresContacto}" property="text"
+					maxLength="30" 
+    				minLength="4" 
+    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+				/>
+				<mx:EmailValidator source="{emailContacto}" property="text"
+				invalidCharError="Direccion de email contiene caracteres invalidos."
+		    	invalidDomainError= "El dominio del email no esta correctamente formateado." 
+		    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
+		    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
+		    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
+		    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
+		    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
+			    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."
+				/>
+			</buttons:validators>
+		</buttons:ButtonValidator>
 	</mx:Form>
+	
+	
+	
 </mx:Box>

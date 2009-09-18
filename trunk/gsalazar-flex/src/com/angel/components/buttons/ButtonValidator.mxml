@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml"  
+	horizontalAlign="center"
+	verticalAlign="top">
+	<mx:Metadata>
+		[Event(name="clickHandler")]
+		[Event(name="clickErrorHandler")]
+	</mx:Metadata>
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.Alert;
+		import mx.events.ValidationResultEvent;
+		import mx.validators.Validator;
+		import mx.collections.ArrayCollection;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var errorMessage:String = '';
+		
+		[Bindable]
+		public var labelButton:String;
+		
+		[Bindable]
+		public var validators:Array;
+		
+		public function init():void {
+			validators = new Array();
+		}
+		
+		private function click():void {
+			var errors:Array = Validator.validateAll(validators);
+			if(errors != null && errors.length > 0){
+				var _errorMessage:String = '';
+				for each(var error:ValidationResultEvent in errors){
+					_errorMessage += '- ' + error.message + '\n';
+				}
+				Alert.show(_errorMessage, errorMessage);
+				dispatchEvent(new Event("clickErrorHandler"));
+			} else {
+				dispatchEvent(new Event("clickHandler"));
+			}
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:Button id="buttonValidator" label="{labelButton}" click="click();"/>
+
+</mx:Box>

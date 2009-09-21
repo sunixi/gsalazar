@@ -9,15 +9,50 @@
 
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.detalles.DetalleContactoWeb;
+		import mx.controls.Label;
+		import mx.controls.Image;
+		import mx.containers.HBox;
+		import ar.com.gsalazar.beans.ContactoWebDTO;
+		import mx.collections.IList;
+		import com.angel.locator.ServiceLocator;
+		
+		[Bindable]
+		private var contactosWeb:IList;
 		
 		public function init():void {
-
+			inicializarWebAmigas();
+		}
+		
+		private function inicializarWebAmigas():void {
+			ServiceLocator.getServiceWithCallback("contactoWebService", inicializarWebAmigasCallbackFunction).findAll();
+		}
+		
+		public function inicializarWebAmigasCallbackFunction(_contactosWeb:IList):void {
+			contactosWeb = _contactosWeb;
+			inicializarDetalleWebAmigas();
 		}
 
+		public function inicializarDetalleWebAmigas():void {
+			var index:Number = 0;
+			for each(var contactoWeb:ContactoWebDTO in contactosWeb){
+				var hBox:HBox = new HBox();
+				hBox.percentWidth = 100;
+				var detalleContactoWeb:DetalleContactoWeb = new DetalleContactoWeb();
+				detalleContactoWeb.percentWidth = 80;
+				detalleContactoWeb.contactoWeb = contactoWeb;
+				hBox.addChild(detalleContactoWeb);
+				webAmigasVBox.addChild(hBox);
+				index++;
+			}
+		}
 
 	]]>
 	</mx:Script>
-	
-	<mx:Label text="PAGINA DE WEB AMIGAS"/>
+	<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+		<mx:VBox id="webAmigasVBox" width="70%" height="100%" 
+			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
 
+		</mx:VBox>
+	</mx:HBox>
 </mx:Box>

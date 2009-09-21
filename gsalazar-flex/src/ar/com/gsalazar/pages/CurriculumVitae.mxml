@@ -5,34 +5,71 @@
 	creationComplete="init();" 
 	horizontalAlign="center"
 	label="Curriculum Vitae"
-	verticalAlign="top">
-
+	verticalAlign="top" xmlns:components="ar.com.gsalazar.components.*">
+	<mx:Style>
+		.labelTextColor {
+   			color: #ffffff;;
+		}
+	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import mx.controls.Label;
+		import flexlib.containers.WindowShade;
+		import ar.com.gsalazar.beans.Categoria;
+		import com.angel.locator.ServiceLocator;
+		import mx.collections.IList;
 		
-		public function init():void {
+		[Bindable]
+		private var subCategorias:IList;
 
+
+		public function init():void {
+			inicializarSubCategorias();
+		}
+
+		public function inicializarSubCategorias():void {
+			ServiceLocator.getServiceWithCallback("categoriaService", inicializarSubCategoriasCallbackFunction).buscarSubCategoriasPara('Curriculum Vitae');
+		}
+		
+		public function inicializarSubCategoriasCallbackFunction(_subCategorias:IList):void {
+			subCategorias = _subCategorias;
+			inicializarWindowsShades();
+		}
+		
+		public function inicializarWindowsShades():void {
+			var index:Number = 0;
+			for each(var subCategoria:Categoria in subCategorias){
+				var windowShade:WindowShade = new WindowShade();
+				windowShade.percentWidth = 100;
+				windowShade.label = subCategoria.nombre;
+				var descripcion:Label = new Label();
+				descripcion.styleName = "labelTextColor";
+				descripcion.text = subCategoria.descripcion;
+				if(index == 0){
+					windowShade.opened = true;
+				} else {
+					windowShade.opened = false;
+				}
+				windowShade.addChild(descripcion);
+				subCategoriasVBox.addWindowShade(windowShade);
+				index++;
+			}
 		}
 
 
 	]]>
 	</mx:Script>
 	<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<mx:VBox width="20%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		</mx:VBox>
-		<mx:VBox width="80%" height="100%" verticalAlign="middle" horizontalAlign="center">
-			<code:WindowShade label="Experiencia Laboral" width="95%" height="500">
-				<mx:Label text="Contenido"/>
-			</code:WindowShade>
-			<code:WindowShade label="Estudios" width="95%">
-				<mx:Label text="Contenido"/>
-			</code:WindowShade>
-			<code:WindowShade label="Seminarios y Congresos" width="95%">
-				<mx:Label text="Contenido"/>
-			</code:WindowShade>
-			<code:WindowShade label="Envio de CV" width="95%">
-				<mx:Label text="Contenido"/>
-			</code:WindowShade>
+		<!--<mx:VBox id="subCategoriasVBox" width="20%" height="100%" 
+			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+
+		</mx:VBox>-->
+		<components:WindowsShadeGroup id="subCategoriasVBox" width="10%" height="100%" 
+			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+			
+		</components:WindowsShadeGroup>
+		<mx:VBox width="90%" height="100%" verticalAlign="middle" horizontalAlign="center">
+
 		</mx:VBox>
 	</mx:HBox>
 </mx:Box>

@@ -39,7 +39,7 @@
 	</mx:Script>
 	<mx:HBox width="100%" height="100%">
 		<mx:VBox width="40%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
-			<mx:Image source="{contactoWeb.logo}" toolTip="{contactoWeb.descripcion}"/>	
+			<mx:Image source="{contactoWeb.logo}" toolTip="{contactoWeb.descripcion}" width="50" height="50"/>	
 		</mx:VBox>
 		<mx:VBox width="60%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
 			<mx:Label text="{contactoWeb.nombre}"/>

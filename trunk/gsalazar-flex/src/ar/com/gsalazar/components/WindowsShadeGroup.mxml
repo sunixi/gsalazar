@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();" 
+	horizontalAlign="center"
+	verticalAlign="top">
+
+	<mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		import flexlib.containers.WindowShade;
+		import mx.collections.IList;
+		
+		[Bindable]
+		private var windows:IList;
+		
+		public function init():void {
+			windows = new ArrayCollection();
+		}
+
+		public function addWindowShade(_windowShade:WindowShade):void {
+			_windowShade.addEventListener('openedChanged', changeOpenedEvent);
+			windows.addItem(_windowShade);
+			windowShadeVBox.addChild(_windowShade);
+		}
+
+		private function changeOpenedEvent(event:Object):void{
+			event.target;
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:VBox id="windowShadeVBox" width="20%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+
+	</mx:VBox>
+
+</mx:Box>

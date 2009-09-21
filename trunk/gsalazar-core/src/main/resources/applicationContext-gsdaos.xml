@@ -14,6 +14,11 @@
 		<property name="persistentClass"    value="ar.com.gsalazar.beans.ItemCategoria"/>
         <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
     </bean>
+    <bean id="contactoWebDAO" class="ar.com.gsalazar.daos.impl.ContactoWebSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.gsalazar.beans.ContactoWeb"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
     <bean id="contactoDAO" class="ar.com.gsalazar.daos.impl.ContactoSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>
 		<property name="persistentClass"    value="ar.com.gsalazar.beans.Contacto"/>

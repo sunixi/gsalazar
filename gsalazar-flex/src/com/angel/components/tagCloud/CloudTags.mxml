@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml"  
+	horizontalAlign="center"
+	creationComplete="init()"
+	verticalAlign="top">
+	<mx:Style>
+		.hotelDescriptionStyle {
+			borderStyle: solid;
+			borderColor: #FFFFFF;
+			borderThickness: 4;
+			roundedBottomCorners: true;
+			cornerRadius: 15;
+			headerHeight: 28;
+			backgroundAlpha: 1;
+			dropShadowEnabled: false;
+			shadowDirection: center;				
+		}
+		
+
+.mypanelTitle {
+   letterSpacing: 0;
+   textAlign: center;
+}
+	</mx:Style>
+	<mx:Script>
+	<![CDATA[
+		import mx.collections.SortField;
+		import mx.controls.LinkButton;
+		import mx.controls.Label;
+		import com.angel.thirds.components.hillelcoren.utils.ArrayCollectionUtils;
+		import mx.collections.Sort;
+		import mx.utils.ArrayUtil;
+		import mx.containers.HBox;
+		import mx.controls.Alert;
+		import mx.events.ValidationResultEvent;
+		import mx.validators.Validator;
+		import mx.collections.ArrayCollection;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var tags:Array;
+		[Bindable]
+		private var sortedTags:ArrayCollection;
+		[Bindable]
+		public var tagsPerRow:Number;
+		[Bindable]
+		public var maxTags:Number;
+		[Bindable]
+		public var color:String = "white";		
+		
+		public function init():void {
+			//sortTags();
+			sortedTags = new ArrayCollection(tags);
+			initCloudTag();
+		}
+		
+		private function sortTags():void {
+			sortedTags = new ArrayCollection(tags);
+			var sort:Sort = new Sort();
+			var occurrences:SortField = new SortField("occurences",false, true);
+			sort.fields = [occurrences];
+			sortedTags.sort = sort;
+			sortedTags.refresh();
+		}
+		
+		private function initCloudTag():void {
+			var tagsCount:Number = 1;
+			var hBox:HBox = this.buildHBox();
+			for each(var tagLink:TagLink in sortedTags){
+				var linkButton:LinkButton = this.buildLinkButton(tagLink);
+				if(tagsCount == tagsPerRow){
+					hBox = this.buildHBox();
+					tagsCount = 0;
+				}
+				hBox.addChild(linkButton);
+				hBoxRoot.addChild(hBox);
+				tagsCount++;
+			}
+		}
+		
+		private function buildLinkButton(tagLink:TagLink):LinkButton {
+			var label:LinkButton = new LinkButton();
+				label.label = tagLink.label;
+				label.toolTip = tagLink.description;
+				label.setStyle("fontSize", tagLink.getFontSize());
+				label.setStyle("color", color);
+			return label;
+		}
+
+		private function buildHBox():HBox {
+			var hBox:HBox = new HBox();
+			hBox.percentWidth = 100;
+			return hBox;
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:VBox id="hBoxRoot" styleName="hotelDescriptionStyle" paddingTop="5" paddingRight="5" paddingLeft="5" paddingBottom="5" width="100%" verticalAlign="middle" horizontalAlign="center">
+		
+	</mx:VBox>
+</mx:Box>

@@ -3,6 +3,8 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:code="http://code.google.com/p/flexlib/"
 	creationComplete="init();" 
+	verticalAlign="top"
+	horizontalAlign="center"
 	label="Contacto" xmlns:buttons="com.angel.components.buttons.*">
 	<mx:Script>
 	<![CDATA[
@@ -55,26 +57,29 @@
 	<mx:Binding source="asuntoContacto.text"		destination="contacto.asunto"/>
 	<mx:Binding source="descripcionContacto.text"	destination="contacto.descripcion"/>
 
-	<mx:Form width="100%" id="contactoFormulario" visible="true" >
+	<mx:Form width="95%" height="90%" id="contactoFormulario" visible="true" 
+		labelWidth="100" indicatorGap="18">
 		<mx:HBox width="90%">
-			<mx:FormItem label="Nombre(s):" labelStyleName="normal" required="true">
+			<mx:FormItem label="Nombre(s):" labelStyleName="normal">
 				<mx:TextInput id="nombresContacto"/>
 			</mx:FormItem>
-			<mx:FormItem label="Apellido(s):" labelStyleName="normal" required="true">
+			<mx:FormItem label="Apellido(s):" labelStyleName="normal" required="true" errorString="El apellido es requerido.">
 				<mx:TextInput id="apellidoContacto"/>
 			</mx:FormItem>	
 		</mx:HBox>
 		<mx:HBox width="90%">
-			<mx:FormItem label="Empresa:" labelStyleName="normal" required="true">
+			<mx:FormItem horizontalAlign="left" label="Empresa:" labelStyleName="normal" required="true" errorString="La empresa es requerida.">
 				<mx:TextInput id="nombreEmpresaContacto"/>
 			</mx:FormItem>
-			<mx:FormItem label="Telefono:" labelStyleName="normal" required="true">
+			<mx:FormItem horizontalAlign="left" label="Teléfono:" labelStyleName="normal" required="true" errorString="El teléfono es requerida.">
 				<mx:TextInput id="telefonoContacto"/>
 			</mx:FormItem>
 		</mx:HBox>
-		<mx:FormItem label="Email:" labelStyleName="normal" required="true">
-			<mx:TextInput id="emailContacto"/>
-		</mx:FormItem>
+		<mx:HBox width="90%">
+			<mx:FormItem label="Email:" labelStyleName="normal" required="true" errorString="El email es requerido.">
+				<mx:TextInput id="emailContacto"/>
+			</mx:FormItem>
+		</mx:HBox>
 		<mx:HBox width="90%">
 			<mx:FormItem label="Direccion:" labelStyleName="normal">
 				<mx:TextInput id="direccionContacto"/>
@@ -83,36 +88,80 @@
 				<mx:TextInput id="localidadContacto"/>
 			</mx:FormItem>
 		</mx:HBox>
-		<mx:FormItem label="Asunto:" labelStyleName="normal" required="true">
-			<mx:TextInput id="asuntoContacto"/>
-		</mx:FormItem>
-		<mx:FormItem width="90%" label="Descripcion:" labelStyleName="normal" required="true">
-			<mx:TextArea id="descripcionContacto" 
-				width="50%" maxChars="200"
-				change="{descripcionLabel.text = 'Faltan ' + (descripcionContacto.maxChars - descripcionContacto.text.length) + ' caracter(es).'}"/>
-			<mx:Label id="descripcionLabel" text="Faltan {descripcionContacto.maxChars} caracter(es)."/>
-		</mx:FormItem>
-		<!--<mx:Button id="contactoBoton" label="Consultar" click="crearContacto();"/>-->
-		<buttons:ButtonValidator clickHandler="crearContacto()" labelButton="Consultar" errorMessage="Hay errores para validar.">
-			<buttons:validators>
-				<mx:StringValidator source="{nombresContacto}" property="text"
-					maxLength="30" 
-    				minLength="4" 
-    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
-    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
-				/>
-				<mx:EmailValidator source="{emailContacto}" property="text"
-				invalidCharError="Direccion de email contiene caracteres invalidos."
-		    	invalidDomainError= "El dominio del email no esta correctamente formateado." 
-		    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
-		    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
-		    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
-		    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
-		    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
-			    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."
-				/>
-			</buttons:validators>
-		</buttons:ButtonValidator>
+		<mx:HBox width="90%">
+			<mx:FormItem width="75%" label="Asunto:" labelStyleName="normal" required="true" errorString="La asunto es requerido.">
+				<mx:TextInput id="asuntoContacto"/>
+			</mx:FormItem>
+		</mx:HBox>
+		<mx:HBox width="90%">
+			<mx:FormItem name="descripcion" width="80%" label="Descripcion:" labelStyleName="normal" required="true" errorString="La descripción es requerida.">
+				<mx:VBox width="100%">
+					<mx:TextArea id="descripcionContacto" 
+						width="100%" maxChars="200"
+						color="black"
+						change="{descripcionLabel.text = 'Faltan ' + (descripcionContacto.maxChars - descripcionContacto.text.length) + ' caracter(es).'}"/>
+				</mx:VBox>
+			</mx:FormItem>
+			<mx:VBox width="20%" horizontalAlign="left">
+				<mx:Label id="descripcionLabel" text="Faltan {descripcionContacto.maxChars} caracter(es)." color="white" fontWeight="bold"/>
+			</mx:VBox>
+		</mx:HBox>
+		<mx:HBox width="90%" horizontalAlign="center">
+			<buttons:ButtonValidator clickHandler="crearContacto()" labelButton="Consultar" errorMessage="Hay errores para validar.">
+				<buttons:validators>
+					<mx:StringValidator source="{nombresContacto}" property="text" 
+						maxLength="30" 
+	    				minLength="4" 
+	    				required="true"
+	    				requiredFieldError="El/los nombre(s) es/son requerido(s)." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+					<mx:StringValidator source="{apellidoContacto}" property="text" 
+						maxLength="30" 
+	    				minLength="4" 
+	    				required="true"
+	    				requiredFieldError="El apellido es requerido." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+					<mx:StringValidator source="{nombreEmpresaContacto}" property="text" 
+						maxLength="30" 
+	    				minLength="4" 
+	    				required="true"
+	    				requiredFieldError="El nombre de la empresa es requerido." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+					<mx:StringValidator source="{telefonoContacto}" property="text" 
+						maxLength="20" 
+	    				minLength="6" 
+	    				required="true"
+	    				requiredFieldError="El telefono es requerido." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+					<mx:EmailValidator source="{emailContacto}" property="text"
+					invalidCharError="Direccion de email contiene caracteres invalidos."
+			    	invalidDomainError= "El dominio del email no esta correctamente formateado." 
+			    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
+			    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
+			    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
+			    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
+			    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
+				    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."
+					/>
+					<mx:StringValidator source="{direccionContacto}" property="text" 
+						maxLength="20" 
+	    				minLength="6" 
+	    				required="true"
+	    				requiredFieldError="La direccion es requerida." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+				</buttons:validators>
+			</buttons:ButtonValidator>
+		</mx:HBox>
 	</mx:Form>
 	
 	

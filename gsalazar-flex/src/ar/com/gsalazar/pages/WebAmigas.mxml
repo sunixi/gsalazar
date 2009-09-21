@@ -25,7 +25,7 @@
 		}
 		
 		private function inicializarWebAmigas():void {
-			ServiceLocator.getServiceWithCallback("contactoWebService", inicializarWebAmigasCallbackFunction).findAll();
+			ServiceLocator.getServiceWithCallback("contactoWebService", inicializarWebAmigasCallbackFunction).buscarTodos();
 		}
 		
 		public function inicializarWebAmigasCallbackFunction(_contactosWeb:IList):void {

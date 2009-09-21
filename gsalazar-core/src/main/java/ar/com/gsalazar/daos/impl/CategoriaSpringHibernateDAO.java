@@ -22,9 +22,6 @@ import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
  */
 public class CategoriaSpringHibernateDAO extends GenericSpringHibernateDAO<Categoria, ObjectId> implements CategoriaDAO {
 
-	/**
-	 * 
-	 */
 	public CategoriaSpringHibernateDAO() {
 		super(Categoria.class, ObjectId.class);
 	}
@@ -38,6 +35,11 @@ public class CategoriaSpringHibernateDAO extends GenericSpringHibernateDAO<Categ
 	}
 
 	public Categoria buscarUnicoPorNombre(String nombre) {
-		return super.findUnique("nombre", nombre);
+		Categoria categoria = super.findUnique("nombre", nombre);
+		return categoria;
+	}
+
+	public Categoria buscarUnicoONuloPorNombre(String nombre) {
+		return super.findUniqueOrNull("nombre", nombre);
 	}
 }

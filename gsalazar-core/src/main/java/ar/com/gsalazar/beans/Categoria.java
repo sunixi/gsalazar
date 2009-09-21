@@ -6,13 +6,12 @@ package ar.com.gsalazar.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.angel.architecture.persistence.base.PersistentObject;
-import com.mysql.jdbc.Blob;
 
 /**
  * 
@@ -24,29 +23,29 @@ public class Categoria extends PersistentObject {
 
 	private static final long serialVersionUID = -462238529934628758L;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 50, unique = true)
 	private String nombre;
-	@Column(nullable = false)
+	@Column(nullable = false, length = 250)
 	private String descripcion;
-	@OneToOne(optional = true)
-	private Categoria subCategoria;
-	@OneToMany()
-	private List<ItemCategoria> items;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Categoria> subCategorias;
 
-	public Categoria(String nombre, String descripcion, Categoria subCategoria){
-		this(nombre, descripcion);
-		this.setSubCategoria(subCategoria);
+	public Categoria(String nombre, String descripcion, List<Categoria> subCategorias){
+		this();
+		this.setNombre(nombre);
+		this.setDescripcion(descripcion);
+		this.getSubCategorias().addAll(subCategorias);
 	}
 	
 	public Categoria(String nombre, String descripcion){
-		super();
+		this();
 		this.setNombre(nombre);
 		this.setDescripcion(descripcion);
-		this.setItems(new ArrayList<ItemCategoria>());
 	}
 	
 	public Categoria(){
 		super();
+		this.setSubCategorias(new ArrayList<Categoria>());
 	}
 
 	/**
@@ -73,54 +72,26 @@ public class Categoria extends PersistentObject {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	/**
-	 * @return the subCategoria
-	 */
-	public Categoria getSubCategoria() {
-		return subCategoria;
-	}
-	/**
-	 * @param subCategoria the subCategoria to set
-	 */
-	public void setSubCategoria(Categoria subCategoria) {
-		this.subCategoria = subCategoria;
+
+	public void addSubCategoria(Categoria subCategoria){
+		this.getSubCategorias().add(subCategoria);
 	}
 
-	public boolean hasSubCategoria(){
-		return this.getSubCategoria() != null;
-	}
-	
-	public void agregarItemCategoria(ItemCategoria itemCategoria){
-		this.getItems().add(itemCategoria);
-	}
-	
-	public void agregarItemCategoria(String nombre, String descripcion, String fileName, Blob imagen){
-		ItemCategoria itemCategoria = new ItemCategoria();
-		itemCategoria.setDescripcion(descripcion);
-		itemCategoria.setNombre(nombre);
-		itemCategoria.setImagenItemCategoria(fileName, imagen);
-		this.agregarItemCategoria(itemCategoria);
-	}
-
-	public void contieneItemCategoria(ItemCategoria itemCategoria){
-		this.getItems().remove(itemCategoria);
-	}
-	
-	public void eliminarItemCategoria(ItemCategoria itemCategoria){
-		this.getItems().remove(itemCategoria);
-	}
-	
-	/**
-	 * @return the items
-	 */
-	public List<ItemCategoria> getItems() {
-		return items;
+	public void removeSubCategoria(Categoria subCategoria){
+		this.getSubCategorias().remove(subCategoria);
 	}
 
 	/**
-	 * @param items the items to set
+	 * @return the subCategorias
 	 */
-	public void setItems(List<ItemCategoria> items) {
-		this.items = items;
+	public List<Categoria> getSubCategorias() {
+		return subCategorias;
+	}
+
+	/**
+	 * @param subCategorias the subCategorias to set
+	 */
+	public void setSubCategorias(List<Categoria> subCategorias) {
+		this.subCategorias = subCategorias;
 	}
 }

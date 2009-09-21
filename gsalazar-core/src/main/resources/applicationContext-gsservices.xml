@@ -4,6 +4,20 @@
 
 <beans>
 
+   	<bean id="categoriaService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.CategoriaServiceImpl">
+                <property name="genericDAO" ref="categoriaDAO"/>
+			</bean>
+		</property>
+	</bean>
+   	<bean id="contactoWebService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.ContactoWebServiceImpl">
+                <property name="genericDAO" ref="contactoWebDAO"/>
+			</bean>
+		</property>
+	</bean>
    	<bean id="contactoService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.gsalazar.services.impl.ContactoServiceImpl">

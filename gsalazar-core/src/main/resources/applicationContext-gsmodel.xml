@@ -47,6 +47,7 @@
 
         <property name="annotatedClasses">
             <list>
+            	<value>ar.com.gsalazar.beans.ContactoWeb</value>
 	            <value>ar.com.gsalazar.beans.Contacto</value>
 	            <value>ar.com.gsalazar.beans.ImagenItemCategoria</value>
 	            <value>ar.com.gsalazar.beans.ItemCategoria</value>

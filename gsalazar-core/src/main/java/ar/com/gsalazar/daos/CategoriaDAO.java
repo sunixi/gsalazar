@@ -18,6 +18,8 @@ import com.angel.dao.generic.interfaces.GenericDAO;
 public interface CategoriaDAO extends GenericDAO<Categoria, ObjectId>{
 
 	public Categoria buscarUnicoPorNombre(String nombre);
+	
+	public Categoria buscarUnicoONuloPorNombre(String nombre);
 
 	public Categoria buscarUnicoPorDescripcion(String descripcion);
 	

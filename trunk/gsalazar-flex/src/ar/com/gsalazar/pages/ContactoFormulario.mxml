@@ -147,6 +147,8 @@
 			    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
 			    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
 			    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
+			    	required="true"
+	    			requiredFieldError="El email es requerido." 
 			    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
 			    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
 				    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."

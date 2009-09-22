@@ -7,6 +7,7 @@ import ar.com.gsalazar.dataGenerators.CategoriaAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ContactoWebAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ItemCategoriaAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.SubCategoriasAnnotationDataGenerator;
+import ar.com.gsalazar.dataGenerators.TagSearchAnnotationDataGenerator;
 
 import com.angel.common.interfaces.Executable;
 import com.angel.data.generator.base.DataGeneratorRunner;
@@ -28,6 +29,7 @@ public class DataGeneratorExecutable implements Executable {
 		builder.addDataGeneratorClass(CategoriaAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(SubCategoriasAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(ContactoWebAnnotationDataGenerator.class);
+		builder.addDataGeneratorClass(TagSearchAnnotationDataGenerator.class);
 		DataGeneratorRunner runner = builder.buildDataGeneratorRunner();
 		runner.generateData();
 		runner.finalizeGenerator();

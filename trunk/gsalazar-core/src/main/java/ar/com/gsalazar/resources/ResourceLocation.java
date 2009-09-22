@@ -22,6 +22,8 @@ public class ResourceLocation {
 	public static final String SUB_CATEGORIAS_EXCEL_FILE = BASE_EXCEL_FILES + "SubCategorias.xls";
 	
 	public static final String CONTACTO_WEB_EXCEL_FILE = BASE_EXCEL_FILES + "WebAmigas.xls";
+	
+	public static final String TAGS_BUSQUEDAS_EXCEL_FILE = BASE_EXCEL_FILES + "TagsBusquedas.xls";
 
 	public final static Class<ResourceLocation> clazz = ResourceLocation.class;
 

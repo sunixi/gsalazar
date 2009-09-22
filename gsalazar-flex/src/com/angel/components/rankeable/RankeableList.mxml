@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml"  
+	horizontalAlign="center"
+	creationComplete="init()"
+	verticalAlign="top">
+	<mx:Style>
+		.hotelDescriptionStyle {
+			borderStyle: solid;
+			borderColor: #FFFFFF;
+			borderThickness: 4;
+			roundedBottomCorners: true;
+			cornerRadius: 15;
+			headerHeight: 28;
+			backgroundAlpha: 1;
+			dropShadowEnabled: false;
+			shadowDirection: center;				
+		}
+		
+
+.mypanelTitle {
+   letterSpacing: 0;
+   textAlign: center;
+}
+	</mx:Style>
+	<mx:Script>
+	<![CDATA[
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var rankeables:IList;
+		[Bindable]
+		public var maxRankeables:Number = 5;
+		[Bindable]
+		public var tittle:String;		
+		
+		public function init():void {
+			
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:VBox id="hBoxRoot" styleName="hotelDescriptionStyle" paddingTop="5" paddingRight="5" paddingLeft="5" paddingBottom="5" width="100%" verticalAlign="middle" horizontalAlign="center">
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="center">
+			<mx:Label text="{tittle}" width="100%"/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Box>

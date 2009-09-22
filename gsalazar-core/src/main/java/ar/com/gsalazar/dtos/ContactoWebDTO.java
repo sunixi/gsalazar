@@ -26,8 +26,12 @@ public class ContactoWebDTO implements Serializable{
 
 	private byte[] logo;
 
-	public ContactoWebDTO(ContactoWeb contactoWeb){
+	public ContactoWebDTO(){
 		super();
+	}
+	
+	public ContactoWebDTO(ContactoWeb contactoWeb){
+		this();
 		this.setDescripcion(contactoWeb.getDescripcion());
 		this.setLink(contactoWeb.getLink());
 		this.setNombre(contactoWeb.getNombre());

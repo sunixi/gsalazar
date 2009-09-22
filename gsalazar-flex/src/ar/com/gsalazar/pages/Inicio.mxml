@@ -5,7 +5,7 @@
 	creationComplete="init();" 
 	horizontalAlign="center"
 	label="Inicio"
-	verticalAlign="top" xmlns:tagCloud="com.angel.components.tagCloud.*" xmlns:rankeable="com.angel.components.rankeable.*">
+	verticalAlign="top" xmlns:tagCloud="com.angel.components.tagCloud.*" xmlns:rankeable="com.angel.components.rankeable.*" xmlns:clock="com.angel.components.clock.*" xmlns:beans="ar.com.gsalazar.beans.*">
 
 	<mx:Script>
 	<![CDATA[
@@ -21,21 +21,25 @@
 		<mx:VBox width="75%">
 			<mx:Label text="Contenido Inicio" width="75%"  color="blue"/>	
 		</mx:VBox>
-		<mx:VBox width="25%">
+		<mx:VBox width="25%" verticalAlign="middle" horizontalAlign="center">
 			<tagCloud:CloudTags width="5%" maxTags="15" tagsPerRow="5">
 				<tagCloud:tags>
-					<tagCloud:TagLink description="Flex 3" label="Flex 3" occurences="29" totalOccurences="73"/>
-					<tagCloud:TagLink description="Hibernate" label="Hibernate" occurences="18" totalOccurences="73"/>
-					<tagCloud:TagLink description="Spring" label="Spring" occurences="15" totalOccurences="73"/>
-					<tagCloud:TagLink description="BlazeDS" label="BlazeDS" occurences="21" totalOccurences="73"/>
-					<tagCloud:TagLink description="Action Script 3.0" label="AS3" occurences="25" totalOccurences="73"/>
-					<tagCloud:TagLink description="Maven" label="Maven" occurences="19" totalOccurences="73"/>
-					<tagCloud:TagLink description="Jasper Report" label="jReport" occurences="0" totalOccurences="73"/>
+					<tagCloud:TagSearch description="Flex 3" label="Flex 3" occurrences="29"/>
+					<tagCloud:TagSearch description="Hibernate" label="Hibernate" occurrences="18" />
+					<tagCloud:TagSearch description="Spring" label="Spring" occurrences="15" />
+					<tagCloud:TagSearch description="BlazeDS" label="BlazeDS" occurrences="21" />
+					<tagCloud:TagSearch description="Action Script 3.0" label="AS3" occurrences="25" />
+					<tagCloud:TagSearch description="Maven" label="Maven" occurrences="19" />
+					<tagCloud:TagSearch description="Jasper Report" label="jReport" occurrences="0"/>
 				</tagCloud:tags>
 			</tagCloud:CloudTags>
 			<rankeable:RankeableList width="5%" maxRankeables="5" tittle="Últimos 10 Articulos:">
-
+				<rankeable:rankeables>
+					<beans:Articulo descripcion="Configurando Flex y Java" nombre="Configuracion Flex-Java" />
+					<beans:Articulo descripcion="Iniciando en Maven" nombre="Maven para begginers" />
+				</rankeable:rankeables>
 			</rankeable:RankeableList>
+			<!--<clock:FlexClock width="70" height="70"/>-->
 		</mx:VBox>	
 	</mx:HBox>
 </mx:Box>

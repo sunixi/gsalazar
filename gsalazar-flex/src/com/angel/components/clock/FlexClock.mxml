@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:Degrafa="http://www.degrafa.com/2007"
+	creationComplete="initTime()" xmlns:degrafa="com.degrafa.*" xmlns:paint="com.degrafa.paint.*" xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+        <![CDATA[
+                        
+            private var clocktick:Timer= new Timer(1000);
+            
+            public function initTime():void {    
+                setTime(new Date());
+                clocktick.addEventListener(TimerEvent.TIMER, initDraw);
+                clocktick.start();
+            }
+            
+            private function initDraw(event:TimerEvent):void {
+                setTime(new Date());
+            }
+
+            public function setTime(currtime:Date):void {
+                var currseconds:uint = currtime.getSeconds();
+                var currminutes:uint = currtime.getMinutes();
+                var currhours:uint = currtime.getHours();
+
+                secondHand.rotation = 268 + (currseconds * 6);
+                minuteHand.rotation = 268 + (currminutes * 6);
+        
+                hourHand.rotation = 268 + (currhours * 30) + (currminutes * 0.5);
+            }
+        ]]>
+    </mx:Script>
+	
+	<degrafa:Surface x="100" y="100">
+		<degrafa:fills>
+			<paint:RadialGradientFill id="greyRadFill" cx="40" cy="20" radius="440">
+				<paint:GradientStop color="#444"/>
+				<paint:GradientStop color="#000"/>
+			</paint:RadialGradientFill>
+			<paint:SolidFill id="whiteFill" color="#FFF"/>
+		</degrafa:fills>
+		<degrafa:strokes>
+			<paint:SolidStroke id="redStroke" color="#C50" weight="10" caps="none"/>
+			<paint:SolidStroke id="greyStroke" color="#666" weight="2" caps="none"/>
+		</degrafa:strokes>
+		<!-- The Clock Face -->
+		<degrafa:GeometryGroup id="clockFace">
+			<!-- The Grey Background Rectangle -->
+			<geometry:RegularRectangle width="100" height="100" fill="{ greyRadFill }"/>
+			<!-- The White "F" Polygon -->
+			<geometry:Polygon x="74" y="90" fill="{ whiteFill }">
+				<geometry:points>
+					<degrafa:GraphicPoint x="1.716"		y=".868"/>
+					<degrafa:GraphicPoint x="91.638"	y=".868"/>
+					<degrafa:GraphicPoint x="92.329"	y="21.965"/>
+					<degrafa:GraphicPoint x="30.768"	y="21.965"/>
+					<degrafa:GraphicPoint x="30.768"	y="71.768"/>
+					<degrafa:GraphicPoint x="85.758"	y="71.768"/>
+					<degrafa:GraphicPoint x="85.758" 	y="95.632"/>
+					<degrafa:GraphicPoint x="30.768"	y="95.632"/>
+					<degrafa:GraphicPoint x="30.768"	y="164.11"/>
+					<degrafa:GraphicPoint x="1.37"		y="164.11"/>
+				</geometry:points>
+			</geometry:Polygon>
+			<!-- The White "x" Polygon -->
+			<geometry:Polygon x="178" y="140" fill="{ whiteFill }">
+				<geometry:points>
+						<degrafa:GraphicPoint x="1.107"		y=".147"/>
+						<degrafa:GraphicPoint x="32.926"	y=".147"/>
+						<degrafa:GraphicPoint x="54.022"	y="39.574"/>
+						<degrafa:GraphicPoint x="76.503"	y=".147"/>
+						<degrafa:GraphicPoint x="105.209"	y=".147"/>
+						<degrafa:GraphicPoint x="72.354"	y="54.446"/>
+						<degrafa:GraphicPoint x="108.322"	y="113.932"/>
+						<degrafa:GraphicPoint x="73.736"	y="113.932"/>
+						<degrafa:GraphicPoint x="52.256"	y="73.43"/>
+						<degrafa:GraphicPoint x="32.505"	y="113.241"/>
+						<degrafa:GraphicPoint x=".07"		y="113.241"/>
+						<degrafa:GraphicPoint x="34.31"		y="58.596"/>	
+				</geometry:points>
+			</geometry:Polygon>
+		</degrafa:GeometryGroup>
+		<!-- The Second Hand -->
+		<degrafa:GeometryGroup id="secondHand" x="180" y="180">
+			<geometry:HorizontalLine x="0" x1="160" y="0" stroke="{ greyStroke }"/>
+		</degrafa:GeometryGroup>
+		<!-- The Minute Hand -->
+		<degrafa:GeometryGroup id="minuteHand" x="180" y="180">
+			<geometry:HorizontalLine x="0" x1="150" y="0" stroke="{ redStroke }"/>
+		</degrafa:GeometryGroup>
+		<!-- The Hour Hand -->
+		<degrafa:GeometryGroup id="hourHand" x="180" y="180">
+			<geometry:HorizontalLine x="0" x1="100" y="0" stroke="{ redStroke }"/>
+		</degrafa:GeometryGroup>
+	</degrafa:Surface>
+</mx:Box>

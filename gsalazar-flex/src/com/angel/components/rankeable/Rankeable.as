@@ -3,8 +3,8 @@ package com.angel.components.rankeable
 	public interface Rankeable
 	{
 	
-		public get function label();
+		function getLabel():String;
 		
-		public get function description(); 	
+		function getDescription():String; 	
 	}
 }

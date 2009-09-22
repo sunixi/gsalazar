@@ -5,7 +5,7 @@
 	creationComplete="init()"
 	verticalAlign="top">
 	<mx:Style>
-		.hotelDescriptionStyle {
+		.tagsCloudStyle {
 			borderStyle: solid;
 			borderColor: #FFFFFF;
 			borderThickness: 4;
@@ -16,15 +16,10 @@
 			dropShadowEnabled: false;
 			shadowDirection: center;				
 		}
-		
-
-.mypanelTitle {
-   letterSpacing: 0;
-   textAlign: center;
-}
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import com.angel.locator.ServiceLocator;
 		import mx.collections.SortField;
 		import mx.controls.LinkButton;
 		import mx.controls.Label;
@@ -50,25 +45,23 @@
 		public var color:String = "white";		
 		
 		public function init():void {
-			//sortTags();
-			sortedTags = new ArrayCollection(tags);
-			initCloudTag();
+			inicializarTagSearch();
 		}
 		
-		private function sortTags():void {
-			sortedTags = new ArrayCollection(tags);
-			var sort:Sort = new Sort();
-			var occurrences:SortField = new SortField("occurences",false, true);
-			sort.fields = [occurrences];
-			sortedTags.sort = sort;
-			sortedTags.refresh();
+		private function inicializarTagSearch():void {
+			ServiceLocator.getServiceWithCallback("tagSearchService", inicializarTagSearchCallbackFunction).buscarTodos();			
 		}
 		
-		private function initCloudTag():void {
+		private function inicializarTagSearchCallbackFunction(tagSearchContainer:TagSearchContainer):void {
+			tags = tagSearchContainer.tagsSearchs.toArray();
+			initCloudTag(tagSearchContainer);
+		}
+		
+		private function initCloudTag(tagSearchContainer:TagSearchContainer):void {
 			var tagsCount:Number = 1;
 			var hBox:HBox = this.buildHBox();
-			for each(var tagLink:TagLink in sortedTags){
-				var linkButton:LinkButton = this.buildLinkButton(tagLink);
+			for each(var tagSearch:TagSearch in tags){
+				var linkButton:LinkButton = this.buildLinkButton(tagSearch, tagSearchContainer.totalOcurrencias);
 				if(tagsCount == tagsPerRow){
 					hBox = this.buildHBox();
 					tagsCount = 0;
@@ -78,12 +71,12 @@
 				tagsCount++;
 			}
 		}
-		
-		private function buildLinkButton(tagLink:TagLink):LinkButton {
+
+		private function buildLinkButton(tagSearch:TagSearch, totalOcurrencias:Number):LinkButton {
 			var label:LinkButton = new LinkButton();
-				label.label = tagLink.label;
-				label.toolTip = tagLink.description;
-				label.setStyle("fontSize", tagLink.getFontSize());
+				label.label = tagSearch.label;
+				label.toolTip = tagSearch.description;
+				label.setStyle("fontSize", tagSearch.getFontSize(totalOcurrencias));
 				label.setStyle("color", color);
 			return label;
 		}
@@ -96,7 +89,7 @@
 	]]>
 	</mx:Script>
 	
-	<mx:VBox id="hBoxRoot" styleName="hotelDescriptionStyle" paddingTop="5" paddingRight="5" paddingLeft="5" paddingBottom="5" width="100%" verticalAlign="middle" horizontalAlign="center">
+	<mx:VBox id="hBoxRoot" styleName="tagsCloudStyle" paddingTop="5" paddingRight="5" paddingLeft="5" paddingBottom="5" width="100%" verticalAlign="middle" horizontalAlign="center">
 		
 	</mx:VBox>
 </mx:Box>

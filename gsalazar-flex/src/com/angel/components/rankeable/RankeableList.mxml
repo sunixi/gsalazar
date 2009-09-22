@@ -25,24 +25,60 @@
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.beans.Articulo;
+		import mx.controls.LinkButton;
+		import mx.controls.Label;
+		import mx.containers.HBox;
+		import com.angel.components.rankeable.Rankeable;
 		import mx.collections.IList;
 		
 		[Bindable]
-		public var rankeables:IList;
+		public var rankeables:Array;
 		[Bindable]
 		public var maxRankeables:Number = 5;
 		[Bindable]
 		public var tittle:String;		
 		
 		public function init():void {
-			
+			inicializarRankeables();
+		}
+		
+		private function inicializarRankeables():void{
+			var index:Number = 1;
+			for each(var _rankeable:Object in rankeables){
+				var hBox:HBox = this.buildHBox();
+				var order:Label = new Label();
+				order.text = index + '- ';
+				order.setStyle("fontSize", 12);
+				order.setStyle("color", "white");
+				hBox.addChild(order);
+				var linkButton:LinkButton = this.buildLinkButton(_rankeable as Rankeable);
+				hBox.addChild(linkButton);
+				hBoxRoot.addChild(hBox);
+				index++;
+			}
+		}
+		
+		private function buildLinkButton(rankeable:Rankeable):LinkButton {
+			var label:LinkButton = new LinkButton();
+				label.label = rankeable.getLabel();
+				label.toolTip = rankeable.getLabel();
+				label.setStyle("fontSize", 12);
+				label.setStyle("color", "white");
+			return label;
+		}
+		
+		private function buildHBox():HBox {
+			var hBox:HBox = new HBox();
+			hBox.percentWidth = 100;
+			return hBox;
 		}
 	]]>
 	</mx:Script>
 	
 	<mx:VBox id="hBoxRoot" styleName="hotelDescriptionStyle" paddingTop="5" paddingRight="5" paddingLeft="5" paddingBottom="5" width="100%" verticalAlign="middle" horizontalAlign="center">
 		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="center">
-			<mx:Label text="{tittle}" width="100%"/>
+			<mx:Label text="{tittle}" width="100%" fontSize="13" fontStyle="italic" fontWeight="bold"/>
 		</mx:HBox>
 	</mx:VBox>
 </mx:Box>

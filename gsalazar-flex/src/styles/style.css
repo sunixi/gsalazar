@@ -83,3 +83,14 @@ FormItem {
 TextArea {
    color: #ffffff;
 }
+
+
+		Label {
+			color: #BBBBBB;
+		}
+		
+		CheckBox {
+			color: #BBBBBB;
+			textRollOverColor: #BBBBBB;
+			textSelectedColor: #BBBBBB;
+		}		

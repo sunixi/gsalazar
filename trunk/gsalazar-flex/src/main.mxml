@@ -7,7 +7,7 @@
 	 initialize="{}"
 	 paddingTop="5" paddingBottom="5"
 	 paddingLeft="10" paddingRight="10"
-	 width="100%" height="100%" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:paint="com.degrafa.paint.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:autoComplete="com.angel.thirds.components.hillelcoren.autoComplete.*" xmlns:com="com.*" xmlns:components="com.hillelcoren.components.*" xmlns:renderers="com.angel.renderers.*">
+	 width="100%" height="100%" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:paint="com.degrafa.paint.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:autoComplete="com.angel.thirds.components.hillelcoren.autoComplete.*" xmlns:com="com.*" xmlns:components="com.hillelcoren.components.*" xmlns:renderers="com.angel.renderers.*" xmlns:manager="com.flexblocks.imagecropper.manager.*">
 	 <mx:Style>
 	 	AutoComplete
 {
@@ -97,6 +97,8 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import ar.com.gsalazar.popups.ImageCropperPopup;
+			import mx.managers.PopUpManager;
 			import com.angel.components.tagCloud.strategyView.StrategyView;
 			import ar.com.gsalazar.model.ApplicationLocator;
 			import mx.collections.ArrayCollection;
@@ -200,6 +202,8 @@
 		<mx:LinkBar dataProvider="paginas" height="30" fontSize="15"/>
 		<mx:Spacer width="25%"/>
 	</mx:ApplicationControlBar>
+	<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}"/>
+	<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}"/>
 	<mx:HRule width="100%"/>
 	<mx:Label id="itemMenuDescripcion" width="1%" fontSize="12" fontStyle="italic" visible="false"
 		text="Texto de descripcion de prueba de cada item del menu principal."/>

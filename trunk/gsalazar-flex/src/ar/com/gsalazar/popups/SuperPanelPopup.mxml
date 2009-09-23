@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();" 
+	horizontalAlign="center"
+	showCloseButton="true"
+	close="{PopUpManager.removePopUp(this);}"
+	label="Super Panel Popup"
+	verticalAlign="top" xmlns:manager="com.flexblocks.imagecropper.manager.*" xmlns:local="*">
+
+	<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var articulos:IList;
+
+		public function init():void {
+
+		}
+
+
+	]]>
+	</mx:Script>
+	<local:MainView width="100%" height="100%"/>
+</mx:TitleWindow>

@@ -9,7 +9,11 @@
 
 	<mx:Script>
 	<![CDATA[
+		import mx.collections.IList;
 		
+		[Bindable]
+		public var articulos:IList;
+
 		public function init():void {
 
 		}

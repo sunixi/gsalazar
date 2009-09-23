@@ -19,6 +19,8 @@
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import com.angel.components.tagCloud.strategyView.DefaultStrategyView;
+		import com.angel.components.tagCloud.strategyView.StrategyView;
 		import com.angel.locator.ServiceLocator;
 		import mx.collections.SortField;
 		import mx.controls.LinkButton;
@@ -42,7 +44,10 @@
 		[Bindable]
 		public var maxTags:Number;
 		[Bindable]
-		public var color:String = "white";		
+		public var color:String = "white";
+		[Bindable]
+		public var strategyView:StrategyView = new DefaultStrategyView();
+		
 		
 		public function init():void {
 			inicializarTagSearch();
@@ -75,9 +80,9 @@
 		private function buildLinkButton(tagSearch:TagSearch, totalOcurrencias:Number):LinkButton {
 			var label:LinkButton = new LinkButton();
 				label.label = tagSearch.label;
-				label.toolTip = tagSearch.description;
-				label.setStyle("fontSize", tagSearch.getFontSize(totalOcurrencias));
-				label.setStyle("color", color);
+				label.toolTip = tagSearch.description + " (" + tagSearch.occurrences + "/" + totalOcurrencias + " occurencias).";
+				label.setStyle("fontSize", this.strategyView.fontSize(tagSearch, totalOcurrencias));
+				label.setStyle("color", this.strategyView.fontColor(tagSearch, totalOcurrencias));
 			return label;
 		}
 

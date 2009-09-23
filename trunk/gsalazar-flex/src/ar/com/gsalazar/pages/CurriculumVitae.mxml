@@ -20,7 +20,7 @@
 		import mx.collections.IList;
 		
 		[Bindable]
-		private var subCategorias:IList;
+		public var subCategorias:IList;
 
 
 		public function init():void {

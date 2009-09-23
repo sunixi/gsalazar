@@ -33,7 +33,7 @@
 		}
 		
 		public function irAURL():void {
-			navigateToURL(new URLRequest("http://" + contactoWeb.link));			
+			navigateToURL(new URLRequest(contactoWeb.link));			
 		}
 	]]>
 	</mx:Script>

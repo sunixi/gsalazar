@@ -9,6 +9,7 @@
 
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.model.ApplicationLocator;
 		import ar.com.gsalazar.detalles.DetalleContactoWeb;
 		import mx.controls.Label;
 		import mx.controls.Image;
@@ -18,19 +19,19 @@
 		import com.angel.locator.ServiceLocator;
 		
 		[Bindable]
-		private var contactosWeb:IList;
+		public var contactosWeb:IList;
 		
 		public function init():void {
-			inicializarWebAmigas();
+			inicializarDetalleWebAmigas();
 		}
 		
 		private function inicializarWebAmigas():void {
-			ServiceLocator.getServiceWithCallback("contactoWebService", inicializarWebAmigasCallbackFunction).buscarTodos();
+			//ServiceLocator.getServiceWithCallback("contactoWebService", inicializarWebAmigasCallbackFunction).buscarTodos();
 		}
 		
 		public function inicializarWebAmigasCallbackFunction(_contactosWeb:IList):void {
 			contactosWeb = _contactosWeb;
-			inicializarDetalleWebAmigas();
+			
 		}
 
 		public function inicializarDetalleWebAmigas():void {

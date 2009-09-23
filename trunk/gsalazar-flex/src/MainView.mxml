@@ -20,7 +20,7 @@
 				var child:SuperPanel = new SuperPanel();
 
 				child.showControls = true;
-				child.enableResize = true;
+				child.resizeEnabled = true;
 
 				child.title = pTitle + curNum;
 				child.width = pWidth;
@@ -46,12 +46,12 @@
 	
 	<ext:SuperPanel id="panel01" title="SuperPanel 01"
 		x="35.5" y="45" width="345" height="180"
-		layout="absolute" showControls="true" enableResize="true">
+		layout="absolute" showControls="true" resizeEnabled="true">
 	</ext:SuperPanel>
 	
 	<ext:SuperPanel id="panel02" title="SuperPanel 02"
 		x="361.5" y="264" width="357" height="353"
-		layout="absolute" showControls="true" enableResize="true">
+		layout="absolute" showControls="true" resizeEnabled="true">
 	</ext:SuperPanel>
 	
 	<mx:Canvas id="minimizedWindowContainer"

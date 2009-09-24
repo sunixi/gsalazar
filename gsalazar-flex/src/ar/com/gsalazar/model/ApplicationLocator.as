@@ -102,7 +102,7 @@ package ar.com.gsalazar.model {
 				var transactionalBlock:TransactionalBlock = new TransactionalBlock();
 				transactionalBlock.addEventListener("endsLoad", endLoad); 
 				transactionalBlock.register("tagSearchService", "buscarTodos").callbackFunction(inicializarTagSearchCallbackFunction);
-				//transactionalBlock.register("articuloService", "findAll").callbackFunction(inicializarArticulosCallbackFunction);
+				transactionalBlock.register("articuloService", "findAll").callbackFunction(inicializarArticulosCallbackFunction);
 				//transactionalBlock.register("proyectoService", "findAll").callbackFunction(inicializarProyectosCallbackFunction);
 				transactionalBlock.register("categoriaService", "findAll").callbackFunction(inicializarCategoriasCallbackFunction);
 				transactionalBlock.register("contactoWebService", "buscarTodos").callbackFunction(inicializarContactosWebCallbackFunction);

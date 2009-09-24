@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	
+	horizontalAlign="center"
+	verticalAlign="top">
+
+	<mx:Script>
+	<![CDATA[
+		import com.angel.events.ChangeStateWindowShadeEvent;
+		import com.angel.components.windowsShade.XWindowShade;
+		import mx.collections.ArrayCollection;
+		import mx.collections.IList;
+		
+		[Bindable]
+		private var _windows:IList = new ArrayCollection();
+		
+		[Bindable]
+		private var _indexOpened:Number = 0;
+		
+		private function init():void {
+			for each(var ws:XWindowShade in _windows){
+				if(windowShadeVBox != null && !windowShadeVBox.contains(ws)){
+					windowShadeVBox.addChild(ws);
+				}
+			}
+			this.updateWindowsShadeState();
+		}
+		
+		public  function set indexOpened(index:Number):void {
+			this._indexOpened = index;
+		}
+		public  function get indexOpened():Number {
+			return this._indexOpened;
+		}
+		
+		/**
+		 * Add a windows shade array to this group ones.
+		 * 
+		 * @param windows all windows shade to add to this windows shade group.
+		 */
+		public  function set windows(windows:Array):void {
+			if(windows != null && windows.length > 0){
+				var currentIndex:Number = 0;
+				for each(var ws:XWindowShade in windows){
+					if(currentIndex == _indexOpened){
+						ws.openWindow();
+					}
+					ws.addEventListener('changeState', changeOpenedEvent);
+					_windows.addItem(ws);
+					currentIndex++;
+				}
+				init();
+			}
+		}
+		
+		/**
+		 * Update windows shade state opening only window shade with 'indexOpened' parameter.
+		 * 
+		 */
+		private function updateWindowsShadeState():void {
+			var currentIndex:Number = 0;
+			for each(var ws:XWindowShade in _windows){
+				if(currentIndex == _indexOpened){
+					ws.openWindow();
+				} else {
+					ws.closeWindow();
+				}
+				currentIndex++;
+			}
+		}
+
+		private function addWindowShade(_windowShade:XWindowShade):void {
+			windowShadeVBox.addChild(_windowShade);
+		}
+
+		private function changeOpenedEvent(event:ChangeStateWindowShadeEvent):void{
+			var clickedXWindowShade:XWindowShade = event.target as XWindowShade;
+			//trace("Opened event value: " + event.opened);
+			for each(var xws:XWindowShade in _windows){
+				if(xws != clickedXWindowShade){
+					if(event.opened){
+						xws.closeWindow();
+					} /*else {
+						xws.openWindow();
+					}*/
+				}
+			}
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:VBox id="windowShadeVBox" creationComplete="init();"  width="20%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+
+	</mx:VBox>
+
+</mx:Box>

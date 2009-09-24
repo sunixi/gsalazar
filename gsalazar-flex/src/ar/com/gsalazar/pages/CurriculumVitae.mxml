@@ -5,7 +5,7 @@
 	creationComplete="init();" 
 	horizontalAlign="center"
 	label="Curriculum Vitae"
-	verticalAlign="top" xmlns:components="ar.com.gsalazar.components.*">
+	verticalAlign="top" xmlns:components="ar.com.gsalazar.components.*" xmlns:windowsShade="com.angel.components.windowsShade.*">
 	<mx:Style>
 		.labelTextColor {
    			color: #ffffff;;
@@ -13,6 +13,7 @@
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import com.angel.components.windowsShade.XWindowShade;
 		import mx.controls.Label;
 		import flexlib.containers.WindowShade;
 		import ar.com.gsalazar.beans.Categoria;
@@ -38,8 +39,9 @@
 		
 		public function inicializarWindowsShades():void {
 			var index:Number = 0;
+			var windowsShade:Array = new Array();
 			for each(var subCategoria:Categoria in subCategorias){
-				var windowShade:WindowShade = new WindowShade();
+				var windowShade:XWindowShade = new XWindowShade();
 				windowShade.percentWidth = 100;
 				windowShade.label = subCategoria.nombre;
 				var descripcion:Label = new Label();
@@ -51,9 +53,10 @@
 					windowShade.opened = false;
 				}
 				windowShade.addChild(descripcion);
-				subCategoriasVBox.addWindowShade(windowShade);
+				windowsShade.push(windowShade);
 				index++;
 			}
+			windowsShadeGroup.windows = windowsShade;
 		}
 
 
@@ -64,10 +67,9 @@
 			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
 
 		</mx:VBox>-->
-		<components:WindowsShadeGroup id="subCategoriasVBox" width="10%" height="100%" 
-			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
-			
-		</components:WindowsShadeGroup>
+		<windowsShade:WindowsShadeGroup id="windowsShadeGroup" indexOpened="0" width="10%" height="100%">
+
+		</windowsShade:WindowsShadeGroup>
 		<mx:VBox width="90%" height="100%" verticalAlign="middle" horizontalAlign="center">
 
 		</mx:VBox>

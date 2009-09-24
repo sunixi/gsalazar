@@ -97,6 +97,7 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import ar.com.gsalazar.popups.PanelBloqueadoPopup;
 			import ar.com.gsalazar.popups.HTMLEditorPopup;
 			import ar.com.gsalazar.popups.ImageCropperPopup;
 			import mx.managers.PopUpManager;
@@ -150,6 +151,13 @@
 			
 			private function mouseOverPage(event:Event):void {
 				itemMenuDescripcion.visible = false;				
+			}
+			
+			private function clickPanelBloqueado(event:Event = null):void {
+				var popup:PanelBloqueadoPopup = PopUpManager.createPopUp(this, PanelBloqueadoPopup, true) as PanelBloqueadoPopup;
+				popup.percentHeight = 75;
+				popup.percentWidth = 75;
+				PopUpManager.centerPopUp(popup);
 			}
 		]]>
 	</mx:Script>
@@ -206,6 +214,7 @@
 	<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}"/>
 	<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}"/>
 	<mx:Button label="HTML Editor" click="{PopUpManager.createPopUp(this, HTMLEditorPopup, true);}"/>
+	<mx:Button label="Panel Bloqueado" click="{clickPanelBloqueado();}"/>
 	<mx:HRule width="100%"/>
 	<mx:Label id="itemMenuDescripcion" width="1%" fontSize="12" fontStyle="italic" visible="false"
 		text="Texto de descripcion de prueba de cada item del menu principal."/>

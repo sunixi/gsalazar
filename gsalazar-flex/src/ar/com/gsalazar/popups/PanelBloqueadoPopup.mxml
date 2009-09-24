@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();" 
+	horizontalAlign="center"
+	backgroundColor="white"
+	width="80%"
+	height="80%"
+	label="Panel Bloqueado"
+	verticalAlign="top" xmlns:manager="com.flexblocks.imagecropper.manager.*" xmlns:local="*">
+
+	<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var articulos:IList;
+
+		public function init():void {
+
+		}
+
+
+	]]>
+	</mx:Script>
+</mx:Panel>

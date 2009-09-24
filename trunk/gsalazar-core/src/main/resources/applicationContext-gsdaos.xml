@@ -4,6 +4,16 @@
 <beans>
 
 <!-- Domain Object DAOs. -->
+    <bean id="articuloSearcherDAO" class="ar.com.gsalazar.daos.impl.ArticuloSearcherSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.gsalazar.beans.ArticuloSearcher"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="articuloDAO" class="ar.com.gsalazar.daos.impl.ArticuloSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.gsalazar.beans.Articulo"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
     <bean id="tagSearchDAO" class="ar.com.gsalazar.daos.impl.TagSearchSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>
 		<property name="persistentClass"    value="ar.com.gsalazar.beans.TagSearch"/>

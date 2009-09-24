@@ -50,6 +50,7 @@
             	<value>ar.com.gsalazar.beans.Fuente</value>
             	<value>ar.com.gsalazar.beans.TagSearch</value>
             	<value>ar.com.gsalazar.beans.Articulo</value>
+				<value>ar.com.gsalazar.beans.ArticuloSearcher</value>
             	<value>ar.com.gsalazar.beans.ContactoWeb</value>
 	            <value>ar.com.gsalazar.beans.Contacto</value>
 	            <value>ar.com.gsalazar.beans.ImagenItemCategoria</value>

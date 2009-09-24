@@ -3,6 +3,8 @@
  */
 package ar.com.gsalazar.executables;
 
+import ar.com.gsalazar.dataGenerators.ArticuloAnnotationDataGenerator;
+import ar.com.gsalazar.dataGenerators.ArticuloSearcherAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.CategoriaAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ContactoWebAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ItemCategoriaAnnotationDataGenerator;
@@ -30,6 +32,8 @@ public class DataGeneratorExecutable implements Executable {
 		builder.addDataGeneratorClass(SubCategoriasAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(ContactoWebAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(TagSearchAnnotationDataGenerator.class);
+		builder.addDataGeneratorClass(ArticuloAnnotationDataGenerator.class);
+		builder.addDataGeneratorClass(ArticuloSearcherAnnotationDataGenerator.class);
 		DataGeneratorRunner runner = builder.buildDataGeneratorRunner();
 		runner.generateData();
 		runner.finalizeGenerator();

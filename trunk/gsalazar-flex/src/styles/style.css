@@ -80,6 +80,26 @@ FormItem {
    fontWeight: bold;
 }
 
+
+Panel {
+   borderStyle: solid;
+   borderThickness: 0;
+   roundedBottomCorners: true;
+   cornerRadius: 28;
+   headerHeight: 27;
+   backgroundAlpha: 0.76;
+   backgroundColor: #cccccc;
+   shadowDistance: 0;
+   shadowDirection: left;
+   titleStyleName: "mypanelTitle";
+}
+
+.mypanelTitle {
+   textAlign: center;
+   fontSize: 12;
+   fontWeight: bold;
+}
+
 TextArea {
    color: #ffffff;
 }

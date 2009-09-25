@@ -3,9 +3,12 @@
  */
 package ar.com.gsalazar.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
 import com.angel.architecture.persistence.base.PersistentObject;
@@ -25,12 +28,12 @@ public abstract class Buscable extends PersistentObject {
 	@Column(nullable = false)
 	private String descripcion;
 	
-	/*@OneToMany(cascade = CascadeType.ALL)
-	private List<TagSearch> tagsBuscables;*/
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<TagSearch> tagsBuscables;
 	
 	public Buscable(){
 		super();
-		//this.setTagsBuscables(new ArrayList<TagSearch>());
+		this.setTagsBuscables(new ArrayList<TagSearch>());
 	}
 	
 	public Buscable(String titulo, String descripcion){
@@ -43,7 +46,7 @@ public abstract class Buscable extends PersistentObject {
 		this();
 		this.setTitulo(titulo);
 		this.setDescripcion(descripcion);
-		//this.getTagsBuscables().addAll(tagsBuscables);
+		this.getTagsBuscables().addAll(tagsBuscables);
 	}
 
 	/**
@@ -77,18 +80,18 @@ public abstract class Buscable extends PersistentObject {
 	/**
 	 * @return the tagsBuscables
 	 */
-	/*public List<TagSearch> getTagsBuscables() {
+	public List<TagSearch> getTagsBuscables() {
 		return tagsBuscables;
-	}*/
+	}
 
 	/**
 	 * @param tagsBuscables the tagsBuscables to set
 	 */
-	/*public void setTagsBuscables(List<TagSearch> tagsBuscables) {
+	public void setTagsBuscables(List<TagSearch> tagsBuscables) {
 		this.tagsBuscables = tagsBuscables;
-	}*/
+	}
 	
-	/*public void addTagBuscable(TagSearch tagSearch){
+	public void addTagBuscable(TagSearch tagSearch){
 		this.getTagsBuscables().add(tagSearch);
 	}
 	
@@ -111,5 +114,5 @@ public abstract class Buscable extends PersistentObject {
 			}
 		}
 		return false;
-	}*/
+	}
 }

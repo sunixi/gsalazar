@@ -97,6 +97,7 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import mx.core.IFlexDisplayObject;
 			import ar.com.gsalazar.popups.PanelBloqueadoPopup;
 			import ar.com.gsalazar.popups.HTMLEditorPopup;
 			import ar.com.gsalazar.popups.ImageCropperPopup;
@@ -114,6 +115,10 @@
 			import mx.collections.IList;
 			import mx.managers.BrowserManager;
 
+
+			[Bindable]
+			private var popup:IFlexDisplayObject;
+			
 			private function endsLoading(event:Event = null):void {
 				buscar.dataProvider = new ArrayCollection(ApplicationLocator.instance.tagsSearchs.toArray());
 				(paginas.getChildAt(1) as CurriculumVitae).subCategorias = ApplicationLocator.instance.buscarSubCategoriasPara('Curriculum Vitae');
@@ -158,6 +163,17 @@
 				popup.percentHeight = 75;
 				popup.percentWidth = 75;
 				PopUpManager.centerPopUp(popup);
+			}
+			
+			private function mouseOver(event:Event = null):void {
+				var _popup:PanelBloqueadoPopup = PopUpManager.createPopUp(this, PanelBloqueadoPopup, false) as PanelBloqueadoPopup;
+				_popup.x = mouseX;
+				_popup.y = mouseY;
+				popup = _popup;
+				PopUpManager.bringToFront(_popup);
+			}
+			private function mouseOut(event:Event = null):void {
+				PopUpManager.removePopUp(popup);
 			}
 		]]>
 	</mx:Script>
@@ -211,8 +227,8 @@
 		<mx:LinkBar dataProvider="paginas" height="30" fontSize="15"/>
 		<mx:Spacer width="25%"/>
 	</mx:ApplicationControlBar>
-	<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}"/>
-	<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}"/>
+	<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);"/>
+	<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}" toolTipShow="mouseOver(event);" toolTipHide="mouseOut(event);" toolTip=" "/>
 	<mx:Button label="HTML Editor" click="{PopUpManager.createPopUp(this, HTMLEditorPopup, true);}"/>
 	<mx:Button label="Panel Bloqueado" click="{clickPanelBloqueado();}"/>
 	<mx:HRule width="100%"/>

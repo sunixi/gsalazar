@@ -6,6 +6,7 @@ package ar.com.gsalazar.dataGenerators;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.ArticuloSearcher;
 import ar.com.gsalazar.resources.ResourceLocation;
 import ar.com.gsalazar.rowProcessors.ArticuloSearcherAnnotationRowProcessorCommand;
@@ -26,9 +27,9 @@ import com.angel.io.processors.runners.imports.impl.ImportFileProcessorRunner;
  *
  */
 @Generator(
-		objectClass = ArticuloSearcher.class,
+		objectClass = Articulo.class,
 		dependencies = {TagSearchAnnotationDataGenerator.class, ArticuloAnnotationDataGenerator.class},
-		daoName = "articuloSearcherDAO",
+		daoName = "articuloDAO",
 		pages = {}
 )
 public class ArticuloSearcherAnnotationDataGenerator {

@@ -4,7 +4,6 @@
 package ar.com.gsalazar.rowProcessors;
 
 import ar.com.gsalazar.beans.Articulo;
-import ar.com.gsalazar.beans.ArticuloSearcher;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ArticuloDAO;
 import ar.com.gsalazar.daos.TagSearchDAO;
@@ -50,13 +49,12 @@ public class ArticuloSearcherAnnotationRowProcessorCommand {
 		}
     }
 
-	@RowProcessor(columnsParameters = {}, object = ArticuloSearcher.class, inject = false)
-	public ArticuloSearcher processRow(ArticuloSearcher articuloSearcher, String tiulo, String tag) {
+	@RowProcessor(columnsParameters = {}, inject = false)
+	public Articulo processRow(String tiulo, String tag) {
 		Articulo articulo = this.getArticuloDAO().buscarUnicoPorTitulo(tiulo);
 		TagSearch tagSearch = this.getTagSearchDAO().buscarUnicoPorLabel(tag);
-		articuloSearcher.setArticulo(articulo);
-		articuloSearcher.setTagSearch(tagSearch);		
-        return articuloSearcher;
+		articulo.addTagBuscable(tagSearch);		
+        return articulo;
     }
 
 	/**

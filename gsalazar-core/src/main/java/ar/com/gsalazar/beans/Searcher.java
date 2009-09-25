@@ -7,9 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
 
 import com.angel.architecture.persistence.base.PersistentObject;
 
@@ -18,7 +18,7 @@ import com.angel.architecture.persistence.base.PersistentObject;
  *	@author Guillermo Daniel Salazar.
  *	@since 16/Semptiembre/2009.
  */
-@MappedSuperclass
+@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name ="discriminator")
 @DiscriminatorValue("searcher")

@@ -10,8 +10,11 @@ package ar.com.gsalazar.beans {
 	public class Articulo extends PersistentObject implements Rankeable{
 
 		public var nombre:String;
+		public var titulo:String;
+		public var contenido:String;
 		public var descripcion:String;
-		public var subCategorias:IList;
+		public var fuentes:IList;
+		public var tagsBuscables:IList;
 
 		public function getLabel():String {
 			return this.nombre;

@@ -6,22 +6,33 @@
 	horizontalAlign="center"
 	label="Articulos"
 	verticalAlign="top">
-
+	<mx:Style>
+		.articulosAdvancedDataGrid {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.itemRenderers.ArticuloItemRenderer;
+		import ar.com.gsalazar.model.ApplicationLocator;
 		import mx.collections.IList;
 		
 		[Bindable]
 		public var articulos:IList;
 
 		public function init():void {
-
+			articulos = ApplicationLocator.instance.articulos;
 		}
 
 
 	]]>
 	</mx:Script>
-	
-	<mx:Label text="Pagina de Articulos"/>
-
+	<mx:HBox width="90%" verticalAlign="middle" horizontalAlign="center">
+		<mx:Label text="Listado de Articulos" fontWeight="bold" fontSize="14"/>
+		<mx:Label text="- {articulos.length} resultados." fontWeight="bold" fontSize="14"/>
+	</mx:HBox>
+	<mx:List id="buscablesRelacionadosList" cornerRadius="23" dataProvider="{articulos}" labelField="titulo" width="60%" rowCount="4" styleName="articulosAdvancedDataGrid"
+				paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
+				alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ArticuloItemRenderer"/>
 </mx:Box>

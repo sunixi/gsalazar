@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Canvas id="initContainer" fontFamily="amplitudFamily"
+		x="{this.width-initContainer.width-10}"
+		y="5">
+		<mx:Label id="lblGfs" text="gSalazar.com.ar" fontSize="35" />
+		<mx:Label y="2" x="2" text="GSalazar" fontSize="30" alpha="0.5" styleName="gfsTitle"/>
+		<mx:Label id="lblSub" x="{lblGfs.width + 2}"
+			y="9" fontSize="20"
+			text="Sitio Web Personal de Guillermo Salazar"
+			styleName="gfsSubTitle"/>
+	</mx:Canvas>
+</mx:Canvas>

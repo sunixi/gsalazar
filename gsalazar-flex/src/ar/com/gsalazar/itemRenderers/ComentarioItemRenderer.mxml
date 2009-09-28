@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox
+	xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.asfusion.controls.*"
+	styleName="articulosAdvancedDataGrid" >
+	<mx:Style>
+		.articulosAdvancedDataGrid {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+	</mx:Style>
+	
+	<!--
+	
+	 nombre:String;
+		public var comentario:String;
+		public var rating:Number;
+		public var validado:Boolean;
+		-->
+	<mx:VBox width="95%" verticalAlign="top" horizontalAlign="left" paddingLeft="10">
+		<mx:HBox width="100%">
+			<mx:Label text="Nombre: " fontWeight="bold" fontSize="13" color="black"/>
+			<mx:Spacer width="1%"/>
+			<mx:Label text="{data.nombre}" toolTip="{data.nombre}" fontWeight="bold" fontSize="13" color="black"/>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Label text="Rating: " toolTip="{data.nombre}" fontWeight="bold" fontSize="13" color="black"/>
+			<controls:Rating itemCount="10" value="{data.rating}" liveRollOver="false"/>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Label text="Comentario:" fontWeight="bold" fontSize="13" color="black"/>
+			<mx:Spacer width="1%"/>
+			<mx:Text text="{data.validado ? data.comentario: 'El comentario falta ser validado.'}" color="black"
+				selectable="false"/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:VBox>

@@ -5,6 +5,10 @@ package com.angel.components.rankeable
 	
 		function getLabel():String;
 		
-		function getDescription():String; 	
+		function getDescription():String;
+		
+		function getContenido():String;
+		
+		function getRanking():Number;
 	}
 }

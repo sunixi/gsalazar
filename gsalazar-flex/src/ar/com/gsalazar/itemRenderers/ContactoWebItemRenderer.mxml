@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox
+	xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.asfusion.controls.*"
+	styleName="articulosAdvancedDataGrid" >
+	<mx:Style>
+		.articulosAdvancedDataGrid {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+		.irSitioStyle {
+			border-style:solid;
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			
+			public function irAURL():void {
+				navigateToURL(new URLRequest(data.link));			
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox width="95%" verticalAlign="top" horizontalAlign="left" paddingLeft="10">
+		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="left">
+			<mx:VBox width="40%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+				<mx:Image source="{data.logo}" toolTip="{data.descripcion}" width="60" height="60"/>	
+			</mx:VBox>
+			<mx:VBox width="60%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+				<mx:Label text="{data.nombre}" color="black" fontSize="13" fontWeight="bold" />
+				<mx:Text text="{data.descripcion}" color="black"/>
+				<mx:HBox width="100%">
+					<mx:Label text="{data.link}" color="black"/>
+					<mx:Label buttonMode="true" text="Ir sitio..." click="irAURL();" fontWeight="bold" fontSize="12"/>
+				</mx:HBox>
+			</mx:VBox>
+		</mx:HBox>
+	</mx:VBox>
+</mx:VBox>

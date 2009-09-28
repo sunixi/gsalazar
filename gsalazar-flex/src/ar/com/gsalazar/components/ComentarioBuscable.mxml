@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();"
+	horizontalAlign="center"
+	verticalAlign="top"
+	layout="horizontal"
+	title="Comentarios"
+	borderAlpha="1"
+	styleName="resultadoBusqueda" xmlns:controls="com.asfusion.controls.*" xmlns:buttons="com.angel.components.buttons.*">
+	<mx:Metadata>
+	    [Event(name="changeBuscableComentarios", type="ar.com.gsalazar.events.ChangeBuscableComentariosEvent")]
+	</mx:Metadata>
+	<mx:Style>
+		.comenatarioList {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+		
+		.resultadoBusqueda {
+			backgroundImage: Embed(source="/styles/backgrounds.swf#bluestripe");
+			backgroundGradientColors: #000099, #000099;
+			backgroundGradientAlphas: 1, 0.20;
+			themeColor: #0000cc;
+			background-alpha: 1;
+		}
+	</mx:Style>
+	<mx:Script>
+	<![CDATA[
+		import ar.com.gsalazar.events.ChangeBuscableComentariosEvent;
+		import com.angel.locator.ServiceLocator;
+		import mx.controls.Alert;
+		import ar.com.gsalazar.beans.Comentario;
+		import mx.controls.Spacer;
+		import mx.managers.PopUpManager;
+		import ar.com.gsalazar.beans.Buscable;
+		import ar.com.gsalazar.detalles.DetalleBuscable;
+		import flash.net.navigateToURL;
+		import ar.com.gsalazar.beans.ContactoWebDTO;
+		import mx.collections.ArrayCollection;
+		import flexlib.containers.WindowShade;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var buscable:Buscable;
+		[Bindable]
+		private var comentario:Comentario;
+
+		private function init():void {
+			this.comentario = new Comentario();
+		}
+		
+		public function crearComentario():void {
+			if(ratingRating.selectedValue > 0){
+				ServiceLocator.getServiceWithCallback("articuloService", crearComentarioCalbackFuntion, this).updateArticulo(buscable.titulo, comentario);
+			} else {
+				Alert.show('Se debe completar el valor del rating para poder agregar un comentario.','Datos requeridos.');
+			}
+		}
+		
+		private function crearComentarioCalbackFuntion(_buscable:Buscable):void {
+			this.limpiarFormulario();
+			Alert.show('El comentario al articulo \'' + _buscable.titulo + '\' se ha agregado correctamente.', 'Creacion de comentario.');
+			buscable = _buscable;
+			
+			super.dispatchEvent(new ChangeBuscableComentariosEvent("changeBuscableComentarios", _buscable));
+		}
+		
+		private function limpiarFormulario():void {
+			this.nombreTextInput.text = '';
+			this.ratingRating.selectedValue = 0;
+			this.comentarioTextArea.text = '';
+		}
+		
+		private function cerrarPantalla():void {
+			this.limpiarFormulario();
+			PopUpManager.removePopUp(this);
+		}
+		
+	]]>
+	</mx:Script>	
+	<mx:Binding source="nombreTextInput.text"		destination="comentario.nombre"/>
+	<mx:Binding source="comentarioTextArea.text"	destination="comentario.comentario"/>
+	<mx:Binding source="ratingRating.selectedValue"	destination="comentario.rating"/>
+	
+	<mx:HBox width="95%">
+		<mx:VBox width="50%" height="100%" verticalAlign="middle" horizontalAlign="left">
+			<mx:Label height="1%" text="Comentarios" />
+			<mx:List id="buscablesRelacionadosList" dataProvider="{buscable.comentarios}" labelField="titulo" width="100%" rowCount="3" styleName="comenatarioList"
+					paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="5" backgroundAlpha="0" selectionColor="#cccccc"
+					alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ComentarioItemRenderer"/>
+		</mx:VBox>
+		<mx:Form width="50%" height="98%" id="comentarioFormulario" visible="true" labelWidth="100" indicatorGap="18" styleName="comenatarioList">
+			<mx:HBox width="100%">
+				<mx:FormItem id="nombreFormItem" label="Nombre:" labelStyleName="normal">
+					<mx:TextInput id="nombreTextInput"/>
+				</mx:FormItem>
+			</mx:HBox>
+			<mx:HBox width="90%">
+				<mx:FormItem id="ratingFormItem" label="Rating:" height="2%"/>
+				<controls:Rating id="ratingRating" itemCount="10" showSelectedValue="true"/> 
+			</mx:HBox>
+			<mx:VBox width="90%">
+				<mx:FormItem name="comentarioFormItem" width="100%" label="Comentario:" labelStyleName="normal" required="true"/>
+				<mx:TextArea id="comentarioTextArea" 
+						width="100%" maxChars="190"
+						color="black"
+						change="{comentarioLabel.text = 'Faltan ' + (comentarioTextArea.maxChars - comentarioTextArea.text.length) + ' caracter(es).'}"/>
+			</mx:VBox>
+			<mx:Label id="comentarioLabel" text="Faltan {comentarioTextArea.maxChars} caracter(es)." color="white" fontWeight="bold"/>
+			<mx:HBox width="90%" horizontalAlign="center">
+				<buttons:ButtonValidator clickHandler="crearComentario()" labelButton="Enviar Comentario" errorMessage="Hay errores para validar.">
+					<buttons:validators>
+						<mx:StringValidator source="{nombreTextInput}" property="text" 
+							maxLength="30" 
+		    				minLength="4" 
+		    				required="true"
+		    				requiredFieldError="El/los nombre(s) es/son requerido(s)." 
+		    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+		    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+						/>
+						<mx:StringValidator source="{comentarioTextArea}" property="text" 
+							maxLength="200" 
+		    				minLength="5" 
+		    				required="true"
+		    				requiredFieldError="El comentario es requerido." 
+		    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+		    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+						/>
+					</buttons:validators>
+				</buttons:ButtonValidator>
+				<mx:Button label="Cerrar [x]" click="{this.cerrarPantalla();}"/>
+			</mx:HBox>
+	</mx:Form>
+	</mx:HBox>
+</mx:Panel>

@@ -23,17 +23,5 @@
   <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
   <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
 
-<!-- Data Generator 
-  <mapping class="com.angel.mocks.data.generator.domainObject.Address"/>
-  <mapping class="com.angel.mocks.data.generator.domainObject.UserType"/>
-  <mapping class="com.angel.mocks.data.generator.domainObject.Role"/>
-  <mapping class="com.angel.mocks.data.generator.domainObject.User"/>
- DAO Generic 
-  <mapping class="com.angel.mocks.dao.generic.Teacher"/>
-  <mapping class="com.angel.mocks.dao.generic.Person"/>
-  <mapping class="com.angel.mocks.dao.generic.Exam"/>
-  <mapping class="com.angel.mocks.dao.generic.Course"/>
-  <mapping class="com.angel.mocks.dao.generic.FinalExam"/>
-  <mapping class="com.angel.mocks.dao.generic.MockExam"/>
- --></session-factory>
+	</session-factory>
 </hibernate-configuration>

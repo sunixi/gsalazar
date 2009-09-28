@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import com.angel.architecture.persistence.base.PersistentObject;
 
@@ -31,9 +32,15 @@ public abstract class Buscable extends PersistentObject {
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<TagSearch> tagsBuscables;
 	
+	private long visualizado = 0;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Comentario> comentarios;
+	
 	public Buscable(){
 		super();
 		this.setTagsBuscables(new ArrayList<TagSearch>());
+		this.setComentarios(new ArrayList<Comentario>());
 	}
 	
 	public Buscable(String titulo, String descripcion){
@@ -47,6 +54,14 @@ public abstract class Buscable extends PersistentObject {
 		this.setTitulo(titulo);
 		this.setDescripcion(descripcion);
 		this.getTagsBuscables().addAll(tagsBuscables);
+	}
+	
+	public Buscable(String titulo, String descripcion, List<TagSearch> tagsBuscables, List<Comentario> comentarios){
+		this();
+		this.setTitulo(titulo);
+		this.setDescripcion(descripcion);
+		this.getTagsBuscables().addAll(tagsBuscables);
+		this.getComentarios().addAll(comentarios);
 	}
 
 	/**
@@ -114,5 +129,50 @@ public abstract class Buscable extends PersistentObject {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @return the visualizado
+	 */
+	public long getVisualizado() {
+		return visualizado;
+	}
+
+	/**
+	 * @param visualizado the visualizado to set
+	 */
+	public void setVisualizado(long visualizado) {
+		this.visualizado = visualizado;
+	}
+
+	/**
+	 * @return the comentarios
+	 */
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	/**
+	 * @param comentarios the comentarios to set
+	 */
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public void addComentario(Comentario comentario){
+		this.getComentarios().add(comentario);
+	}
+	
+	public void addComentario(String comentarioString, String nombre, int rating){
+		Comentario comentario = new Comentario();
+		comentario.setComentario(comentarioString);
+		comentario.setNombre(nombre);
+		comentario.setRating(rating);
+		this.getComentarios().add(comentario);
+	}
+	
+	public long visualizar() {
+		this.visualizado++;
+		return this.getVisualizado();
 	}
 }

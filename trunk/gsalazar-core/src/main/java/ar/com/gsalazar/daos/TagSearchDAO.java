@@ -3,6 +3,8 @@
  */
 package ar.com.gsalazar.daos;
 
+import java.util.List;
+
 import ar.com.gsalazar.beans.TagSearch;
 
 import com.angel.architecture.persistence.ids.ObjectId;
@@ -16,6 +18,8 @@ import com.angel.dao.generic.interfaces.GenericDAO;
 public interface TagSearchDAO extends GenericDAO<TagSearch, ObjectId>{
 
 	public TagSearch buscarUnicoONuloPorLabel(String label);
+	
+	public List<TagSearch> buscarTodosPorLabels(List<String> labels);
 	
 	public TagSearch buscarUnicoPorLabel(String label);
 	

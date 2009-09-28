@@ -3,6 +3,10 @@
  */
 package ar.com.gsalazar.daos.impl;
 
+import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
+
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.TagSearchDAO;
 
@@ -36,5 +40,9 @@ public class TagSearchSpringHibernateDAO extends GenericSpringHibernateDAO<TagSe
 
 	public TagSearch buscarUnicoONuloPorDescripcion(String descripcion) {
 		return super.findUniqueOrNull("descripcion", descripcion);
+	}
+
+	public List<TagSearch> buscarTodosPorLabels(List<String> labels) {
+		return (List<TagSearch>) super.findAllByCriteria(Restrictions.in("label", labels));
 	}
 }

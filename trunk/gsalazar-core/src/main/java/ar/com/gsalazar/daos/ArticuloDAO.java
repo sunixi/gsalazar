@@ -20,7 +20,7 @@ public interface ArticuloDAO extends GenericDAO<Articulo, ObjectId>{
 
 	public Articulo buscarUnicoPorTitulo(String titulo);
 
-	public List<Articulo> buscarTodosPorTags(List<TagSearch> tagsSearch);
+	public List<Articulo> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
 	
 	public List<Articulo> buscarTodosContenganContenido(String contenido);
 	

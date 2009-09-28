@@ -50,16 +50,32 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Articulo> buscarTodosPorTags(List<TagSearch> tagsSearch) {
+	public List<Articulo> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
 		
-		Query query = super.getSession().createQuery("select l from " + Articulo.class.getName() + " l " +
-" where tagsBuscables in elements (:tags)");
-		query.setParameterList("tags", tagsSearch);
-//		Map<String, Object> parameters = new HashMap<String, Object>();
-//		parameters.put("tagsBuscables", tagsSearch);
-//		String query = " tagsBuscables in elements(:tagsBuscables) ";
-//		List<Articulo> a = (List<Articulo>) super.findAllByQuery(parameters, query);
-		List<Articulo> a = query.list();
-		return a;
+		/*
+		 select p from Eg.NameList list, Eg.Person p
+where p.Name = some elements(list.Names)
+*/
+		int size = tagsSearch != null ? tagsSearch.size() : 0;
+		String q = "select l from " + Articulo.class.getName() + " l ";
+		int current = 0;
+		for(TagSearch ts: tagsSearch){
+			if(size > 1 && current == 0){
+				q += " where '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
+			} else {
+				if(size == 1){
+					q += " where '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";	
+				} else {
+					if(current > 0 && current != size){
+						q += " and '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
+					} else {
+						q += " and '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
+					}
+				}
+			}
+			current++;
+		}
+		Query query = super.getSession().createQuery(q);
+		return query.list();
 	}
 }

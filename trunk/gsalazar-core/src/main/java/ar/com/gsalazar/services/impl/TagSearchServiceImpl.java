@@ -41,5 +41,9 @@ public class TagSearchServiceImpl extends GenericServiceImpl implements TagSearc
 	
 	public TagSearchDAO getTagSearchDAO(){
 		return (TagSearchDAO) super.getGenericDAO();
+	}
+
+	public List<TagSearch> buscarTodosPorLabels(List<String> labels) {
+		return this.getTagSearchDAO().buscarTodosPorLabels(labels);
 	}	
 }

@@ -3,6 +3,11 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean id="searcherService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.SearcherServiceImpl"/>
+		</property>
+	</bean>
 	<bean id="articuloService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.gsalazar.services.impl.ArticuloServiceImpl">

@@ -5,10 +5,10 @@
 	creationComplete="init();"
 	horizontalAlign="center"
 	verticalAlign="top"
-	layout="horizontal"
-	title="Comentarios"
+	layout="vertical"
+	title="Comentarios del Articulo ({buscable.comentarios != null ? buscable.comentarios.length : 0})- {buscable.titulo} - Cerrar [X]"
 	borderAlpha="1"
-	styleName="resultadoBusqueda" xmlns:controls="com.asfusion.controls.*" xmlns:buttons="com.angel.components.buttons.*">
+	styleName="resultadoBusqueda" xmlns:controls="com.asfusion.controls.*" xmlns:buttons="com.angel.components.buttons.*" xmlns:components="ar.com.gsalazar.components.*" xmlns:windowsShade="com.angel.components.windowsShade.*">
 	<mx:Metadata>
 	    [Event(name="changeBuscableComentarios", type="ar.com.gsalazar.events.ChangeBuscableComentariosEvent")]
 	</mx:Metadata>
@@ -83,55 +83,57 @@
 	<mx:Binding source="nombreTextInput.text"		destination="comentario.nombre"/>
 	<mx:Binding source="comentarioTextArea.text"	destination="comentario.comentario"/>
 	<mx:Binding source="ratingRating.selectedValue"	destination="comentario.rating"/>
-	
-	<mx:HBox width="95%">
-		<mx:VBox width="50%" height="100%" verticalAlign="middle" horizontalAlign="left">
-			<mx:Label height="1%" text="Comentarios" />
-			<mx:List id="buscablesRelacionadosList" dataProvider="{buscable.comentarios}" labelField="titulo" width="100%" rowCount="3" styleName="comenatarioList"
-					paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="5" backgroundAlpha="0" selectionColor="#cccccc"
-					alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ComentarioItemRenderer"/>
-		</mx:VBox>
-		<mx:Form width="50%" height="98%" id="comentarioFormulario" visible="true" labelWidth="100" indicatorGap="18" styleName="comenatarioList">
-			<mx:HBox width="100%">
-				<mx:FormItem id="nombreFormItem" label="Nombre:" labelStyleName="normal">
-					<mx:TextInput id="nombreTextInput"/>
-				</mx:FormItem>
-			</mx:HBox>
-			<mx:HBox width="90%">
-				<mx:FormItem id="ratingFormItem" label="Rating:" height="2%"/>
-				<controls:Rating id="ratingRating" itemCount="10" showSelectedValue="true"/> 
-			</mx:HBox>
-			<mx:VBox width="90%">
-				<mx:FormItem name="comentarioFormItem" width="100%" label="Comentario:" labelStyleName="normal" required="true"/>
-				<mx:TextArea id="comentarioTextArea" 
-						width="100%" maxChars="190"
-						color="black"
-						change="{comentarioLabel.text = 'Faltan ' + (comentarioTextArea.maxChars - comentarioTextArea.text.length) + ' caracter(es).'}"/>
-			</mx:VBox>
-			<mx:Label id="comentarioLabel" text="Faltan {comentarioTextArea.maxChars} caracter(es)." color="white" fontWeight="bold"/>
-			<mx:HBox width="90%" horizontalAlign="center">
-				<buttons:ButtonValidator clickHandler="crearComentario()" labelButton="Enviar Comentario" errorMessage="Hay errores para validar.">
-					<buttons:validators>
-						<mx:StringValidator source="{nombreTextInput}" property="text" 
-							maxLength="30" 
-		    				minLength="4" 
-		    				required="true"
-		    				requiredFieldError="El/los nombre(s) es/son requerido(s)." 
-		    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
-		    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
-						/>
-						<mx:StringValidator source="{comentarioTextArea}" property="text" 
-							maxLength="200" 
-		    				minLength="5" 
-		    				required="true"
-		    				requiredFieldError="El comentario es requerido." 
-		    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
-		    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
-						/>
-					</buttons:validators>
-				</buttons:ButtonValidator>
-				<mx:Button label="Cerrar [x]" click="{this.cerrarPantalla();}"/>
-			</mx:HBox>
-	</mx:Form>
-	</mx:HBox>
+	<mx:VBox width="95%">
+		<windowsShade:WindowsShadeGroup width="100%" height="100%">
+			<windowsShade:windows>
+				<windowsShade:XWindowShade width="100%" opened="false" label="Nuevo Comentario">
+					<mx:Form width="100%" height="98%" id="comentarioFormulario" visible="true" labelWidth="100" indicatorGap="18" styleName="comenatarioList">
+						<mx:HBox width="100%">
+							<mx:FormItem id="nombreFormItem" label="Nombre:" labelStyleName="normal">
+								<mx:TextInput id="nombreTextInput"/>
+							</mx:FormItem>
+						</mx:HBox>
+						<mx:HBox width="90%">
+							<mx:FormItem id="ratingFormItem" label="Rating:" height="2%"/>
+							<controls:Rating id="ratingRating" itemCount="10" showSelectedValue="true"/> 
+						</mx:HBox>
+						<mx:VBox width="90%">
+							<mx:FormItem name="comentarioFormItem" width="100%" label="Comentario:" labelStyleName="normal" required="true"/>
+							<mx:TextArea id="comentarioTextArea" 
+									width="100%" maxChars="190"
+									color="black"
+									change="{comentarioLabel.text = 'Faltan ' + (comentarioTextArea.maxChars - comentarioTextArea.text.length) + ' caracter(es).'}"/>
+						</mx:VBox>
+						<mx:Label id="comentarioLabel" text="Faltan {comentarioTextArea.maxChars} caracter(es)." color="white" fontWeight="bold"/>
+						<mx:HBox width="90%" horizontalAlign="center">
+							<buttons:ButtonValidator clickHandler="crearComentario()" labelButton="Enviar Comentario" errorMessage="Hay errores para validar.">
+								<buttons:validators>
+									<mx:StringValidator source="{nombreTextInput}" property="text" 
+										maxLength="30" 
+					    				minLength="4" 
+					    				required="true"
+					    				requiredFieldError="El/los nombre(s) es/son requerido(s)." 
+					    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+					    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+									/>
+									<mx:StringValidator source="{comentarioTextArea}" property="text" 
+										maxLength="200" 
+					    				minLength="5" 
+					    				required="true"
+					    				requiredFieldError="El comentario es requerido." 
+					    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+					    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+									/>
+								</buttons:validators>
+							</buttons:ButtonValidator>
+							<mx:Button label="Cerrar [x]" click="{this.cerrarPantalla();}"/>
+						</mx:HBox>
+					</mx:Form>
+				</windowsShade:XWindowShade>
+				<windowsShade:XWindowShade width="100%" opened="false" label="Listado de Comentarios">
+					<components:ComentariosList buscable="{buscable}" width="100%"/>
+				</windowsShade:XWindowShade>
+			</windowsShade:windows>
+		</windowsShade:WindowsShadeGroup>
+	</mx:VBox>
 </mx:Panel>

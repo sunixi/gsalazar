@@ -15,7 +15,12 @@
 			
 			
 			[Bindable]
-			public var tagsSearch:IList;
+			private var _tagsSearch:IList;
+			
+			public function set tagsSearch(data:IList):void {
+				_tagsSearch = data;
+				buscar.dataProvider= new ArrayCollection(data.toArray());
+			}
 			
 			private function buscarArticulos(event:Event = null):void {
 				var tagNames:IList = new ArrayCollection();
@@ -57,7 +62,7 @@
 	<mx:HBox width="70%" verticalAlign="middle" horizontalAlign="right">
 		<mx:LinkButton label="Comentarios" color="#FB2121" fontSize="12" textDecoration="underline"/>
 		<components:AutoComplete id="buscar" labelField="label" matchType="anyPart" verticalAlign="middle" horizontalAlign="right" 
-			prompt="Ingrese tags de busqueda." width="35%" dataProvider="{new ArrayCollection(tagsSearch.toArray())}"
+			prompt="Ingrese tags de busqueda." width="35%"
 		allowNewValues="{false}" selectedItemStyleName="{ AutoComplete.STYLE_MAC_MAIL }" backspaceAction="focus" 
 		allowDuplicates="{ false}" allowMultipleSelection="{ true}"
 		allowEditingNewValues="{ false}" dropDownItemRenderer="{ dropDownItemRenderer }"/>

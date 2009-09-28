@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import ar.com.gsalazar.beans.Articulo;
-import ar.com.gsalazar.beans.ArticuloSearcher;
 import ar.com.gsalazar.resources.ResourceLocation;
 import ar.com.gsalazar.rowProcessors.ArticuloSearcherAnnotationRowProcessorCommand;
 

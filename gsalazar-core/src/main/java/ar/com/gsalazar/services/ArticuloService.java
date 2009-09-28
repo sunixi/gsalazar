@@ -4,8 +4,11 @@
 package ar.com.gsalazar.services;
 
 import java.util.Collection;
+import java.util.List;
 
 import ar.com.gsalazar.beans.Articulo;
+import ar.com.gsalazar.beans.Comentario;
+import ar.com.gsalazar.beans.TagSearch;
 
 import com.angel.architecture.services.interfaces.GenericService;
 
@@ -20,5 +23,12 @@ public interface ArticuloService extends GenericService {
 	public Articulo buscarUnicoPorTitulo(String titulo);
 	
 	public Collection<Articulo> buscarTodosContengaDescripcion(String descripcion);
+
+	public List<Articulo> buscarTodosPorTagsNames(List<String> tagsNames);
 	
+	public List<Articulo> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
+	
+	public Articulo updateArticulo(String tituloArticulo, Comentario comentario);
+
+	public Articulo updateVisualizarArticulo(String tituloArticulo);
 }

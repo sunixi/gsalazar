@@ -113,4 +113,10 @@ TextArea {
 			color: #BBBBBB;
 			textRollOverColor: #BBBBBB;
 			textSelectedColor: #BBBBBB;
-		}		
+		}
+Text {
+	color: #000000;
+	textRollOverColor: #BBBBBB;
+	textSelectedColor: #BBBBBB;
+	fontSize: 11;
+}

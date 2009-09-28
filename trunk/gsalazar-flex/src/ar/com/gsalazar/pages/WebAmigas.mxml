@@ -6,7 +6,12 @@
 	horizontalAlign="center"
 	label="Web Amigas"
 	verticalAlign="top">
-
+	<mx:Style>
+		.webAmigasList{
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+	</mx:Style>
 	<mx:Script>
 	<![CDATA[
 		import ar.com.gsalazar.model.ApplicationLocator;
@@ -22,38 +27,11 @@
 		public var contactosWeb:IList;
 		
 		public function init():void {
-			inicializarDetalleWebAmigas();
-		}
-		
-		private function inicializarWebAmigas():void {
-			//ServiceLocator.getServiceWithCallback("contactoWebService", inicializarWebAmigasCallbackFunction).buscarTodos();
-		}
-		
-		public function inicializarWebAmigasCallbackFunction(_contactosWeb:IList):void {
-			contactosWeb = _contactosWeb;
-			
-		}
 
-		public function inicializarDetalleWebAmigas():void {
-			var index:Number = 0;
-			for each(var contactoWeb:ContactoWebDTO in contactosWeb){
-				var hBox:HBox = new HBox();
-				hBox.percentWidth = 100;
-				var detalleContactoWeb:DetalleContactoWeb = new DetalleContactoWeb();
-				detalleContactoWeb.percentWidth = 80;
-				detalleContactoWeb.contactoWeb = contactoWeb;
-				hBox.addChild(detalleContactoWeb);
-				webAmigasVBox.addChild(hBox);
-				index++;
-			}
 		}
-
 	]]>
 	</mx:Script>
-	<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<mx:VBox id="webAmigasVBox" width="70%" height="100%" 
-			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
-
-		</mx:VBox>
-	</mx:HBox>
+	<mx:List id="buscablesRelacionadosList" dataProvider="{contactosWeb}" labelField="titulo" width="60%" rowCount="4" styleName="webAmigasList"
+				paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" selectionColor="#cccccc"
+				alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ContactoWebItemRenderer"/>
 </mx:Box>

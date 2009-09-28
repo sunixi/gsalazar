@@ -1,5 +1,6 @@
 package ar.com.gsalazar.model {
 
+	import ar.com.gsalazar.beans.Articulo;
 	import ar.com.gsalazar.beans.Categoria;
 	
 	import com.angel.components.tagCloud.TagSearchContainer;
@@ -139,6 +140,22 @@ package ar.com.gsalazar.model {
 	 		ApplicationLocator.instance.contactosWeb = null;
 	 		ApplicationLocator.instance.categorias = null;
 	 		ApplicationLocator.instance.tagSearchContainer = null;
+	 	}
+	 	
+	 	public function reemplazarArticulo(_articulo:Articulo):void {
+	 		var index:Number = -1;
+	 		for each(var a:Articulo in _articulos){
+	 			if(a.titulo == _articulo.titulo){
+	 				index++;
+	 				break;
+	 			}
+	 			index++;
+	 		}
+	 		if(index >= 0){
+	 			//var item:Object = _articulos.getItemAt(index + 1);
+	 			_articulos.removeItemAt(index);
+	 			_articulos.addItem(_articulo);
+	 		}
 	 	}
 	}
 }

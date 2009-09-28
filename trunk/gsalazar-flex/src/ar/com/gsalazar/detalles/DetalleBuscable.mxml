@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();"
+	horizontalAlign="center"
+	verticalAlign="top">
+	<mx:Script>
+	<![CDATA[
+		import mx.core.Application;
+		import mx.managers.PopUpManager;
+		import ar.com.gsalazar.popups.BuscablePopup;
+		import com.angel.components.tagCloud.TagSearch;
+		import ar.com.gsalazar.beans.Buscable;
+		import ar.com.gsalazar.beans.Articulo;
+		import flash.net.navigateToURL;
+		import ar.com.gsalazar.beans.ContactoWebDTO;
+		import mx.collections.ArrayCollection;
+		import flexlib.containers.WindowShade;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var buscable:Buscable;
+		[Bindable]
+		public var relacionados:IList;
+		
+		public function init():void {
+			
+		}
+		
+		private function verContenido(event:Event = null):void{			
+			var _popup:BuscablePopup = PopUpManager.createPopUp(this, BuscablePopup, true) as BuscablePopup;
+			_popup.height = Application.application.height * 0.95;
+			_popup.width = Application.application.width * 0.85;
+			_popup.buscable = buscable;
+			_popup.buscablesRelacionados = relacionados;
+			PopUpManager.centerPopUp(_popup);
+		}
+	]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="10" paddingTop="5">
+			<mx:HBox width="100%" height="3%">
+				<!--<mx:Label text="Titulo: "/>-->
+				<mx:Label text="{buscable.titulo}" toolTip="{buscable.titulo}" fontWeight="bold" fontSize="13"/>
+			</mx:HBox>
+			<mx:HRule width="100%"/>
+			<mx:HBox width="100%" height="3%">
+				<mx:Label text="Descripción: "/>
+				<mx:Text text="{buscable.descripcion}"/>
+			</mx:HBox>
+			<mx:HBox width="100%" height="3%">
+				<mx:Label text="Tags de Busqueda: "/>
+				<mx:Label text="{buscable.getTagsSearchString()}"/>
+			</mx:HBox>
+			<mx:HBox width="100%" height="3%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Ver info..." click="verContenido(event)"/>
+			</mx:HBox>
+		</mx:VBox>
+	</mx:VBox>
+</mx:Box>

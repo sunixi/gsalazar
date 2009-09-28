@@ -4,10 +4,9 @@
 	 layout="vertical"
 	 xmlns:pages="ar.com.gsalazar.pages.*"
 	 creationComplete="init()"
-	 initialize="{}"
 	 paddingTop="5" paddingBottom="5"
 	 paddingLeft="10" paddingRight="10"
-	 width="100%" height="100%" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:paint="com.degrafa.paint.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:autoComplete="com.angel.thirds.components.hillelcoren.autoComplete.*" xmlns:com="com.*" xmlns:components="com.hillelcoren.components.*" xmlns:renderers="com.angel.renderers.*" xmlns:manager="com.flexblocks.imagecropper.manager.*">
+	 width="100%" height="100%" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:paint="com.degrafa.paint.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:autoComplete="com.angel.thirds.components.hillelcoren.autoComplete.*" xmlns:com="com.*" xmlns:components="com.hillelcoren.components.*" xmlns:renderers="com.angel.renderers.*" xmlns:manager="com.flexblocks.imagecropper.manager.*" xmlns:components1="ar.com.gsalazar.components.*">
 	 <mx:Style>
 	 	AutoComplete
 {
@@ -97,6 +96,13 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import com.angel.components.tagCloud.TagSearch;
+			import com.angel.locator.ServiceLocator;
+			import com.angel.syncronization.TransactionalBlock;
+			import mx.controls.Alert;
+			import ar.com.gsalazar.beans.Articulo;
+			import ar.com.gsalazar.detalles.DetalleBuscable;
+			import ar.com.gsalazar.components.BusquedaAvanzada;
 			import mx.core.IFlexDisplayObject;
 			import ar.com.gsalazar.popups.PanelBloqueadoPopup;
 			import ar.com.gsalazar.popups.HTMLEditorPopup;
@@ -120,25 +126,18 @@
 			private var popup:IFlexDisplayObject;
 			
 			private function endsLoading(event:Event = null):void {
-				buscar.dataProvider = new ArrayCollection(ApplicationLocator.instance.tagsSearchs.toArray());
+				gsalazarHeaderToolbar.tagsSearch = ApplicationLocator.instance.tagsSearchs;
+				(paginas.getChildAt(0) as Inicio).tagSearch = ApplicationLocator.instance.tagsSearchs;
 				(paginas.getChildAt(1) as CurriculumVitae).subCategorias = ApplicationLocator.instance.buscarSubCategoriasPara('Curriculum Vitae');
 				(paginas.getChildAt(2) as Proyectos).proyectos = ApplicationLocator.instance.proyectos;
 				(paginas.getChildAt(3) as Articulos).articulos = ApplicationLocator.instance.articulos;
 				(paginas.getChildAt(4) as WebAmigas).contactosWeb = ApplicationLocator.instance.contactosWeb;
-				(paginas.getChildAt(4) as WebAmigas).inicializarDetalleWebAmigas();
 				BrowserManager.getInstance().setTitle("Bienvenido a GSalazar.com.ar");
 			}
 
 			private function init():void {
 				ApplicationLocator.instance.endLoad = endsLoading;
 				ApplicationLocator.instance.inicializar(this);
-			}
-			
-			private function clickEmail():void {
-				navigateToURL(new URLRequest("mailto:guillesalazar@google.com?subject=Consulta"));
-			}
-			private function clickFacebook():void {
-				navigateToURL(new URLRequest("http://www.facebook.com/guille.salazar"));
 			}
 			
 			private function inicializarPaginas():void {
@@ -175,51 +174,14 @@
 			private function mouseOut(event:Event = null):void {
 				PopUpManager.removePopUp(popup);
 			}
+			
+
 		]]>
 	</mx:Script>
 	<mx:Style source="/styles/style.css"/>
-	<mx:Canvas id="headerContainer" width="100%" clipContent="false" height="25%">
-		<mx:Canvas id="initContainer" fontFamily="amplitudFamily"
-			x="{headerContainer.width-initContainer.width-10}"
-			y="5">
-			<mx:Label id="lblGfs" text="gSalazar.com.ar" fontSize="35" />
-			<mx:Label y="2" x="2" text="GSalazar" fontSize="30" alpha="0.5" styleName="gfsTitle"/>
-			<mx:Label id="lblSub" x="{lblGfs.width + 2}"
-				y="9" fontSize="20"
-				text="Sitio Web Personal de Guillermo Salazar"
-				styleName="gfsSubTitle"/>
-		</mx:Canvas>
-	</mx:Canvas>
-	<mx:Component id="dropDownItemRenderer">
-		<mx:VBox width="80%" verticalGap="0">
-			<mx:Script>
-				<![CDATA[
-					import mx.utils.StringUtil;
-					import com.angel.thirds.components.hillelcoren.utils.StringUtils;
-				]]>
-			</mx:Script>
-			<mx:Label id="nameLabel" fontSize="12" text="{data.label} ({ data.occurrences})"/>
-			<mx:HBox>
-				<mx:Label id="hexLabel" fontSize="10" text="{data.description.substr(0, 30)}..."/>
-			</mx:HBox>		
-		</mx:VBox>
-	</mx:Component>
+	<components1:GSalazarHeader width="100%" clipContent="false" height="25%"/>
 	<mx:HRule width="100%"/>
-	<mx:ControlBar width="100%" height="1%" id="controlbar1" verticalAlign="middle" horizontalAlign="left" paddingBottom="0" paddingTop="0">
-		<mx:HBox width="30%" verticalAlign="middle" horizontalAlign="left">
-			<mx:Label fontSize="14" fontWeight="bold" text="Bienvenido a GSalazar.com.ar - "/>
-			<mx:Label fontSize="11" fontWeight="bold" text="{shortDateFormatter.format(new Date())}" fontStyle="italic" textAlign="left" />
-		</mx:HBox>
-		<mx:HBox width="70%" verticalAlign="middle" horizontalAlign="right">
-			<mx:LinkButton label="Comentarios" color="#FB2121" fontSize="12" textDecoration="underline"/>
-			<components:AutoComplete id="buscar" labelField="label" matchType="anyPart" verticalAlign="middle" horizontalAlign="right" 
-				prompt="Ingrese tags de busqueda." width="35%" 
-			allowNewValues="{false}" selectedItemStyleName="{ AutoComplete.STYLE_MAC_MAIL }" backspaceAction="focus" 
-			allowDuplicates="{ false}" allowMultipleSelection="{ true}"
-			allowEditingNewValues="{ false}" dropDownItemRenderer="{ dropDownItemRenderer }"/>
-			<mx:Image source="@Embed(source='images/bigSearch.png')" height="{buscar.height}" width="30" toolTip="Buscar..." />
-		</mx:HBox>
-	</mx:ControlBar>
+	<components1:GSalazarHeaderToolbar id="gsalazarHeaderToolbar" width="100%" height="1%"/>
 	<mx:HRule width="100%"/>
 	
 	<mx:ApplicationControlBar width="100%" horizontalAlign="center" verticalAlign="middle" height="2%">
@@ -227,10 +189,12 @@
 		<mx:LinkBar dataProvider="paginas" height="30" fontSize="15"/>
 		<mx:Spacer width="25%"/>
 	</mx:ApplicationControlBar>
-	<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);"/>
-	<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}" toolTipShow="mouseOver(event);" toolTipHide="mouseOut(event);" toolTip=" "/>
-	<mx:Button label="HTML Editor" click="{PopUpManager.createPopUp(this, HTMLEditorPopup, true);}"/>
-	<mx:Button label="Panel Bloqueado" click="{clickPanelBloqueado();}"/>
+	<mx:HBox width="100%" height="2%" visible="false" includeInLayout="false">
+		<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);"/>
+		<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}" toolTipShow="mouseOver(event);" toolTipHide="mouseOut(event);" toolTip=" "/>
+		<mx:Button label="HTML Editor" click="{PopUpManager.createPopUp(this, HTMLEditorPopup, true);}"/>
+		<mx:Button label="Panel Bloqueado" click="{clickPanelBloqueado();}"/>
+	</mx:HBox>
 	<mx:HRule width="100%"/>
 	<mx:Label id="itemMenuDescripcion" width="1%" fontSize="12" fontStyle="italic" visible="false"
 		text="Texto de descripcion de prueba de cada item del menu principal."/>
@@ -239,20 +203,5 @@
 		mouseOver="mouseOverPage(event);"
 		mouseOut="mouseOutPage(event);">
 	</mx:ViewStack>
-	<mx:HRule width="100%"/>
-	<mx:ControlBar width="90%" height="5%" paddingBottom="0" paddingTop="0" verticalAlign="middle" horizontalAlign="center" >
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
-		<mx:Label fontSize="10" fontWeight="bold" text="Ultima Actualizacion: {shortDateFormatter.format(new Date())} "/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
-		<mx:Label fontSize="10" fontWeight="bold" text="2009 - 2010"/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | "/>
-		<mx:Label fontSize="10" fontWeight="bold" text="Diseñado por "/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" Guillermo Daniel Salazar"	/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
-		<mx:Label fontSize="10" fontWeight="bold" text="Contactar en "/>
-		<mx:Image source="@Embed(source='images/fb_3d.png')" height="30" width="30" toolTip="Facebook" click="clickFacebook()"/>
-		<mx:Image source="@Embed(source='images/email_world.png')" height="30" width="30" toolTip="E-mail" click="clickEmail()"/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
-	</mx:ControlBar>
-	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY"/>
+	<components1:GSalazarFooter/>
 </mx:Application>

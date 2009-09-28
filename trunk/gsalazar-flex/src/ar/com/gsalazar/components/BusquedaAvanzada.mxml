@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();"
+	horizontalAlign="center"
+	verticalAlign="top"
+	title="Resultados de Busqueda"
+	showCloseButton="true"
+	borderAlpha="1"
+	close="{PopUpManager.removePopUp(this);}"
+	styleName="resultadoBusqueda">
+	<mx:Style>
+		.articulosAdvancedDataGrid {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+		
+		.resultadoBusqueda {
+			backgroundImage: Embed(source="/styles/backgrounds.swf#bluestripe");
+			backgroundGradientColors: #000099, #000099;
+			backgroundGradientAlphas: 1, 0.20;
+			themeColor: #0000cc;
+			background-alpha: 1;
+		}
+	</mx:Style>
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.Spacer;
+		import mx.managers.PopUpManager;
+		import ar.com.gsalazar.beans.Buscable;
+		import ar.com.gsalazar.detalles.DetalleBuscable;
+		import flash.net.navigateToURL;
+		import ar.com.gsalazar.beans.ContactoWebDTO;
+		import mx.collections.ArrayCollection;
+		import flexlib.containers.WindowShade;
+		import mx.collections.IList;
+		
+		[Bindable]
+		public var buscados:IList;
+		
+		public function init():void {
+
+		}
+	]]>
+	</mx:Script>
+	<mx:List id="buscablesRelacionadosList" dataProvider="{buscados}" labelField="titulo" width="60%" rowCount="4" styleName="articulosAdvancedDataGrid"
+				paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
+				alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ArticuloItemRenderer"/>
+</mx:TitleWindow>

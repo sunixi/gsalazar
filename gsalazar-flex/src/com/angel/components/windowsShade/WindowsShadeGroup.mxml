@@ -17,9 +17,15 @@
 		private var _windows:IList = new ArrayCollection();
 		
 		[Bindable]
+		public var percentWindowWidth:Number = 50;
+		
+		[Bindable]
 		private var _indexOpened:Number = 0;
 		
 		private function init():void {
+			if(windowShadeVBox != null){
+				windowShadeVBox.percentWidth = percentWindowWidth;
+			}
 			for each(var ws:XWindowShade in _windows){
 				if(windowShadeVBox != null && !windowShadeVBox.contains(ws)){
 					windowShadeVBox.addChild(ws);
@@ -47,6 +53,7 @@
 					if(currentIndex == _indexOpened){
 						ws.openWindow();
 					}
+					//ws.percentWidth = percentWidth;
 					ws.addEventListener('changeState', changeOpenedEvent);
 					_windows.addItem(ws);
 					currentIndex++;
@@ -91,7 +98,7 @@
 	]]>
 	</mx:Script>
 	
-	<mx:VBox id="windowShadeVBox" creationComplete="init();"  width="20%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+	<mx:VBox id="windowShadeVBox" creationComplete="init();"  width="50%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
 
 	</mx:VBox>
 

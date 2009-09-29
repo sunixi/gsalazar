@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>FCKEditor</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css" media="screen">
+			html, body { height:100%; }
+			body{ margin:0; padding:0; overflow:hidden; }
+		</style>
+	<script type="text/javascript" src="fckeditor.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+	<!--
+	
+		var toolbarSet = 'Default';
+	
+		if(window.frameElement)
+		{
+			var fckEditorInstance;
+			var flexApplicationName = window.frameElement.name.split('.')[0];
+			var flexApplicationInstance = parent.document[flexApplicationName];
+			var id = window.frameElement.id;
+			
+			//get the configured toolbar
+			//toolbarSet
+			toolbarSet = flexApplicationInstance[id + "GetToolbarSet"]();
+			
+			function FCKeditor_OnComplete( editorInstance )
+			{
+				fckEditorInstance = editorInstance;
+				
+				//event listeners
+				editorInstance.Events.AttachEvent('OnStatusChange', function(editorInstance){
+					flexApplicationInstance[id + "OnStatusChange"](editorInstance.Status);
+				}) ;
+			}
+			
+			document.FCKEditorSetHTML = function (args)
+			{
+				fckEditorInstance.SetHTML(args[0]);
+			}
+			
+			document.FCKEditorGetHTML = function ()
+			{
+				return fckEditorInstance.GetHTML();
+			}
+			
+			document.FCKEditorGetConfigValue = function (args)
+			{
+				return fckEditorInstance.Config[args[0]];
+			}
+			
+			document.FCKEditorSetConfigValue = function (args)
+			{
+				fckEditorInstance.Config[args[0]] = args[1];
+			}
+		}
+		else
+		{
+			//air application
+			if(this.FCKEditorToolbarSet) toolbarSet = this.FCKEditorToolbarSet;
+		}
+	
+		var oFCKeditor = new FCKeditor( 'fckeditor' ) ;
+		oFCKeditor.BasePath	= '' ;
+		oFCKeditor.ToolbarSet = toolbarSet;
+		oFCKeditor.Width = '100%';
+		oFCKeditor.Height = '100%';
+		oFCKeditor.Create() ;
+		
+	//-->
+	</script>
+</body>
+</html>

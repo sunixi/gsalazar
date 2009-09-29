@@ -23,12 +23,12 @@
 	</mx:Script>
 	<mx:VBox width="95%" verticalAlign="top" horizontalAlign="left" paddingLeft="10">
 		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="left">
-			<mx:VBox width="40%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+			<mx:VBox width="25%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
 				<mx:Image source="{data.logo}" toolTip="{data.descripcion}" width="60" height="60"/>	
 			</mx:VBox>
-			<mx:VBox width="60%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+			<mx:VBox width="75%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
 				<mx:Label text="{data.nombre}" color="black" fontSize="13" fontWeight="bold" />
-				<mx:Text text="{data.descripcion}" color="black"/>
+				<mx:Text width="100%" text="{data.descripcion}" color="black"/>
 				<mx:HBox width="100%">
 					<mx:Label text="{data.link}" color="black"/>
 					<mx:Label buttonMode="true" text="Ir sitio..." click="irAURL();" fontWeight="bold" fontSize="12"/>

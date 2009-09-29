@@ -48,7 +48,7 @@
 	-->
 	<mx:Label height="1%" text="Comentarios" width="100%"/>
 	<mx:List id="comentariosList" width="100%" height="100%" rowCount="3"
-			rowHeight="130"
+			rowHeight="120" verticalAlign="middle"
 			dataProvider="{buscable.comentarios}" labelField="titulo"  styleName="comenatarioList"  
 			backgroundAlpha="0" itemRenderer="ar.com.gsalazar.itemRenderers.ComentarioItemRenderer"/>
 </mx:Box>

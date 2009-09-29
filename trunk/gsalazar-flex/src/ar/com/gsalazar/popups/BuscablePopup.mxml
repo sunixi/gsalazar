@@ -61,6 +61,15 @@
 
 	<mx:Script>
 	<![CDATA[
+		import org.alivepdf.fonts.Style;
+		import org.alivepdf.layout.Size;
+		import org.alivepdf.layout.Orientation;
+		import org.alivepdf.layout.Unit;
+		import org.alivepdf.saving.Method;
+		import org.alivepdf.fonts.FontFamily;
+		import org.alivepdf.display.Display;
+		import org.alivepdf.layout.Layout;
+		import org.alivepdf.pdf.PDF;
 		import ar.com.gsalazar.events.ChangeBuscableComentariosEvent;
 		import ar.com.gsalazar.components.ComentarioBuscable;
 		import com.angel.components.tagCloud.TagSearch;
@@ -112,8 +121,8 @@
 
 		private function agregarComentario(event:Event = null):void{ 
 			var _popup:ComentarioBuscable = PopUpManager.createPopUp(this, ComentarioBuscable, true) as ComentarioBuscable ;
-			_popup.height = Application.application.height * 0.6;
-			_popup.width = Application.application.width * 0.85;
+			_popup.height = Application.application.height * 0.95;
+			_popup.width = Application.application.width * 0.80;
 			_popup.x = (Application.application.width / 2) - _popup.width / 2;
 			_popup.y = (Application.application.height / 2) - _popup.height / 2;
 			_popup.buscable = _buscable;
@@ -123,7 +132,56 @@
 		
 		private function changeBuscableComentarios(changeBuscableEvent:ChangeBuscableComentariosEvent):void {
 			this._buscable = changeBuscableEvent.buscable;
-			//this.rating.selectedValue = this._buscable.getRanking();
+		}
+		
+		private function exportarAPDF(event:Event = null):void {
+			var filename:String = 'test.pdf';
+			var pdf:PDF = new PDF(Orientation.LANDSCAPE, Unit.MM, Size.A4);
+			
+			var X_BEGIN:Number = 18;
+			var Y_BEGIN:Number = 17;
+			var LINE:Number = 8;
+			
+			pdf.addEventListener(Event.COMPLETE, onCompleteExportarAPDF);			
+			pdf.setDisplayMode (Display.FULL_PAGE, Layout.SINGLE_PAGE);
+			pdf.addPage();
+			pdf.setTitle(_buscable.titulo);
+			pdf.setAuthor('http://www.gsalazar.com.ar');
+			pdf.setCreator('http://www.gsalazar.com.ar');
+			pdf.setSubject('Impresion del articulo \'' +_buscable.titulo + '\'');
+			pdf.setMargins(10,15,10,15);
+			pdf.setFont( FontFamily.ARIAL, Style.BOLD , 14 );
+			pdf.addText('Articulo: ', 18, 17);
+			pdf.setFont( FontFamily.ARIAL, Style.NORMAL , 12 );
+			pdf.addText(_buscable.titulo, 40, 17);
+			
+			pdf.setFont( FontFamily.ARIAL, Style.BOLD ,14 );
+			pdf.addText('Descripción: ',18 ,25);
+			pdf.setFont( FontFamily.ARIAL,Style.NORMAL, 12 );
+			pdf.addText(_buscable.descripcion, 50, 25);
+
+			pdf.setFont( FontFamily.ARIAL, Style.BOLD ,14 );
+			pdf.addText('Contenido: ', 18, 33);
+			
+			//pdf.addImage(this, 12, 45);
+			//pdf.addText(_buscable.getContenido(), 25, 40);
+			pdf.writeText(200,_buscable.getContenido());
+
+			var pdfBA:ByteArray = new ByteArray();
+            // to save the PDF your specificy the path to the create.php script
+			// alivepdf takes care of the rest, if you are using AIR and want to save the PDF locally just use Method.LOCAL
+			// and save the returned bytes on the disk through the FileStream class
+			pdf.save( Method.REMOTE, "http://project.unthinkmedia.com/un/createPDF/create.php", filename );
+
+		}
+		
+		private function onCompleteExportarAPDF(event:Event = null):void {
+			/*var f:FileStream = new FileStream();
+			var file:File = File.applicationStorageDirectory.resolve( filename );
+			f.open( file, FileMode.WRITE);
+			var bytes:ByteArray = pdf.getPDF()
+			f.writeBytes(bytes);
+			f.close();*/ 
 		}
 	]]>
 	</mx:Script>
@@ -152,7 +210,8 @@
 
 			<mx:Text text="Formatos" width="100%" styleName="buscableLabel" />
 			<mx:HRule width="100%"/>
-			<mx:Image toolTip="PDF" source="@Embed(source='/images/pdf.png')" width="64" height="64"/>
+			<mx:Image toolTip="PDF" source="@Embed(source='/images/pdf.png')" width="64" height="64"
+				click="exportarAPDF(event);"/>
 
 			<mx:Text text="Documentos Relacionados" width="100%" styleName="buscableLabel" />
 			<mx:HRule width="100%"/>
@@ -168,7 +227,7 @@
 			</mx:HBox>
 		</mx:VBox>
 		<mx:VRule height="100%"/>
-		<mx:VBox width="80%" height="100%" verticalScrollPolicy="auto">
+		<mx:VBox id="contenidoVBox" width="80%" height="100%" verticalScrollPolicy="auto">
 			<mx:Text htmlText="{_buscable.getContenido()}" width="100%"/>
 		</mx:VBox>
 	</mx:HBox>

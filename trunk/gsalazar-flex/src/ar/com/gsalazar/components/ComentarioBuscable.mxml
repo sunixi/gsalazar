@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel
+<mx:TitleWindow
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:code="http://code.google.com/p/flexlib/"
 	creationComplete="init();"
 	horizontalAlign="center"
+	showCloseButton="true"
+	close="{PopUpManager.removePopUp(this);}"
 	verticalAlign="top"
 	layout="vertical"
-	title="Comentarios del Articulo ({buscable.comentarios != null ? buscable.comentarios.length : 0})- {buscable.titulo} - Cerrar [X]"
+	title="Comentarios del Articulo ({buscable.comentarios != null ? buscable.comentarios.length : 0})- {buscable.titulo}"
 	borderAlpha="1"
 	styleName="resultadoBusqueda" xmlns:controls="com.asfusion.controls.*" xmlns:buttons="com.angel.components.buttons.*" xmlns:components="ar.com.gsalazar.components.*" xmlns:windowsShade="com.angel.components.windowsShade.*">
 	<mx:Metadata>
@@ -84,7 +86,7 @@
 	<mx:Binding source="comentarioTextArea.text"	destination="comentario.comentario"/>
 	<mx:Binding source="ratingRating.selectedValue"	destination="comentario.rating"/>
 	<mx:VBox width="95%">
-		<windowsShade:WindowsShadeGroup width="100%" height="100%">
+		<windowsShade:WindowsShadeGroup width="100%" height="100%" percentWindowWidth="90">
 			<windowsShade:windows>
 				<windowsShade:XWindowShade width="100%" opened="false" label="Nuevo Comentario">
 					<mx:Form width="100%" height="98%" id="comentarioFormulario" visible="true" labelWidth="100" indicatorGap="18" styleName="comenatarioList">
@@ -126,7 +128,7 @@
 									/>
 								</buttons:validators>
 							</buttons:ButtonValidator>
-							<mx:Button label="Cerrar [x]" click="{this.cerrarPantalla();}"/>
+							<!--<mx:Button label="Cerrar [x]" click="{this.cerrarPantalla();}"/>-->
 						</mx:HBox>
 					</mx:Form>
 				</windowsShade:XWindowShade>
@@ -136,4 +138,4 @@
 			</windowsShade:windows>
 		</windowsShade:WindowsShadeGroup>
 	</mx:VBox>
-</mx:Panel>
+</mx:TitleWindow>

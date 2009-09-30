@@ -96,6 +96,7 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import ar.com.gsalazar.popups.CrearArticuloPopup;
 			import ar.com.gsalazar.popups.FCKHTMLEditorPopup;
 			import com.angel.components.tagCloud.TagSearch;
 			import com.angel.locator.ServiceLocator;
@@ -195,6 +196,7 @@
 		<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}" toolTipShow="mouseOver(event);" toolTipHide="mouseOut(event);" toolTip=" "/>
 		<mx:Button label="HTML Editor" click="{PopUpManager.createPopUp(this, HTMLEditorPopup, true);}"/>
 		<mx:Button label="FCK HTML Editor" click="{PopUpManager.createPopUp(this, FCKHTMLEditorPopup, true);}"/>
+		<mx:Button label="Crear Articulo" click="{PopUpManager.createPopUp(this, CrearArticuloPopup, true);}"/>
 		<mx:Button label="Panel Bloqueado" click="{clickPanelBloqueado();}"/>
 	</mx:HBox>
 	<mx:HRule width="100%"/>

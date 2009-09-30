@@ -3,8 +3,23 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean id="personaService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.PersonaServiceImpl">
+				<property name="genericDAO" ref="personaDAO"/>
+			</bean>
+		</property>
+	</bean>
+	<bean id="proyectoService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.ProyectoServiceImpl">
+				<property name="genericDAO" ref="proyectoDAO"/>
+			</bean>
+		</property>
+	</bean>
 	<bean id="searcherService" parent="txProxyTemplate">
 		<property name="target">
+		<!-- SIN DAO -->
 			<bean class="ar.com.gsalazar.services.impl.SearcherServiceImpl"/>
 		</property>
 	</bean>

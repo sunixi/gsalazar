@@ -19,7 +19,7 @@ public class TagSearch extends PersistentObject {
 
 	private static final long serialVersionUID = -462238529934628758L;
 
-	@Column(nullable = false, length = 20, unique = true)
+	@Column(nullable = false, length = 30, unique = true)
 	private String label;
 	@Column(nullable = false, length = 150, unique = true)
 	private String description;

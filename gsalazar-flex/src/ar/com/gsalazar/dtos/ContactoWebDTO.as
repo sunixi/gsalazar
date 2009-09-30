@@ -1,4 +1,4 @@
-package ar.com.gsalazar.beans {
+package ar.com.gsalazar.dtos {
 	import com.angel.beans.PersistentObject;
 	
 	import flash.utils.ByteArray;
@@ -6,7 +6,7 @@ package ar.com.gsalazar.beans {
 
 	[Bindable]
 	[RemoteClass(alias="ar.com.gsalazar.dtos.ContactoWebDTO")]
-	public class ContactoWebDTO extends PersistentObject {
+	public class ContactoWebDTO {
 
 		public var nombre:String;
 		public var descripcion:String;

@@ -33,6 +33,5 @@
 	</mx:HBox>
 	<mx:List id="buscablesRelacionadosList" cornerRadius="23" dataProvider="{proyectos}" labelField="titulo" width="60%" rowCount="4" styleName="proyectosAdvancedDataGrid"
 				paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
-				alternatingItemColors="#ffffff, #eff1f2" />
-				<!-- itemRenderer="ar.com.gsalazar.itemRenderers.ArticuloItemRenderer"-->
+				alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ProyectoItemRenderer"/>
 </mx:Box>

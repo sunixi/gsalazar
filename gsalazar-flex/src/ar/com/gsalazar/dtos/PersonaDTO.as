@@ -1,12 +1,10 @@
-package ar.com.gsalazar.beans {
-	import com.angel.beans.PersistentObject;
-	
+package ar.com.gsalazar.dtos {
 	import flash.utils.ByteArray;
 	
 
 	[Bindable]
 	[RemoteClass(alias="ar.com.gsalazar.dtos.PersonaDTO")]
-	public class PersonaDTO extends PersistentObject{
+	public class PersonaDTO extends BuscableDTO {
 
 		public var imagen:ByteArray;
 		public var nombre:String;

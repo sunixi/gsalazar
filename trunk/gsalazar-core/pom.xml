@@ -9,6 +9,11 @@
 
     <dependencies>
 		<dependency>
+			<groupId>org.htmlcleaner</groupId>
+			<artifactId>htmlcleaner</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
 			<groupId>javanettasks</groupId>
 			<artifactId>httpunit</artifactId>
 			<version>1.7</version>

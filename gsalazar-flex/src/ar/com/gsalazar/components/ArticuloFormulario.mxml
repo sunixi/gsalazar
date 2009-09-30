@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();" 
+	verticalAlign="top"
+	horizontalAlign="center"
+	label="Contacto" xmlns:buttons="com.angel.components.buttons.*" xmlns:fck="http://www.happy-banana.be/fck">
+	<mx:Script>
+	<![CDATA[
+		import ar.com.gsalazar.beans.Articulo;
+		import com.angel.locator.ServiceLocator;
+		import ar.com.gsalazar.beans.Contacto;
+		import mx.events.CloseEvent;
+		import mx.collections.IList;
+		import mx.controls.dataGridClasses.DataGridColumn;
+		import mx.collections.ArrayCollection;
+		import mx.events.ListEvent;
+		import mx.managers.PopUpManager;
+		import mx.controls.Alert;
+
+		[Bindable]
+		private var articulo:Articulo;
+		
+		public function init():void {
+			articulo = new Articulo();
+		}
+
+		private function crearArticulo():void {
+			if(contenidoFCKEditor.htmlText != null && contenidoFCKEditor.htmlText.length > 0){
+				articulo.contenido = contenidoFCKEditor.htmlText;
+				ServiceLocator.getServiceWithCallback("articuloService", crearArticuloCalbackFcuntion, this).create(articulo);
+				PopUpManager.removePopUp(this);
+			} else {
+				Alert.show('El contenido del articulo no puede ser vacio.','Faltan valores.');
+			}
+		}
+		
+		private function crearArticuloCalbackFcuntion(_articulo:Articulo):void {
+			this.limpiarFormulario();
+			Alert.show('Se ha creado satisfactoriamente el articulo con titulo \"'+ _articulo.titulo + '\".', 'Creacion de articulo.');
+		}
+		
+		private function limpiarFormulario():void {
+			tituloArticuloTextInput.text = '';
+			descripcionArticuloTextInput.text = '';
+			contenidoFCKEditor.htmlText = '';
+		}
+	]]>
+	</mx:Script>
+	<mx:Binding source="tituloArticuloTextInput.text"		destination="articulo.titulo"/>
+	<mx:Binding source="descripcionArticuloTextInput.text"	destination="articulo.descripcion"/>
+	<mx:Binding source="contenidoFCKEditor.htmlText"		destination="articulo.contenido"/>
+
+	<mx:Form width="95%" height="90%" id="articuloFormulario" visible="true" 
+		labelWidth="100" indicatorGap="18">
+		<mx:VBox width="90%">
+			<mx:FormItem label="Titulo:" labelStyleName="normal">
+				<mx:TextInput id="tituloArticuloTextInput"/>
+			</mx:FormItem>
+			<mx:FormItem label="Descripcion:" labelStyleName="normal" required="true" errorString="La descripción es requerida.">
+				<mx:TextArea id="descripcionArticuloTextInput" width="70%" color="black" maxChars="200"/>
+			</mx:FormItem>
+			<mx:FormItem label="Contenido:" labelStyleName="normal" required="true" errorString="La descripción es requerida.">
+				<fck:FCKEditor id="contenidoFCKEditor" width="800" height="500">
+					
+				</fck:FCKEditor>
+			</mx:FormItem>
+		</mx:VBox>
+		
+		<mx:HBox width="90%" horizontalAlign="center">
+			<buttons:ButtonValidator clickHandler="crearArticulo()" labelButton="Crear Articulo" errorMessage="Hay errores para validar.">
+				<buttons:validators>
+					<mx:StringValidator source="{tituloArticuloTextInput}" property="text" 
+						maxLength="30" 
+	    				minLength="4" 
+	    				required="true"
+	    				requiredFieldError="El titulo del articulo es requerido." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+					<mx:StringValidator source="{descripcionArticuloTextInput}" property="text" 
+						maxLength="30" 
+	    				minLength="4" 
+	    				required="true"
+	    				requiredFieldError="La descripcion es requerida." 
+	    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+	    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+					/>
+					<mx:StringValidator source="{contenidoFCKEditor}" property="htmlText" 
+	    				required="true"
+	    				requiredFieldError="El contenido es requerido." 
+					/>
+				</buttons:validators>
+			</buttons:ButtonValidator>
+		</mx:HBox>
+	</mx:Form>
+	
+	
+	
+</mx:Box>

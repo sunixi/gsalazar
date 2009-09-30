@@ -30,6 +30,10 @@ public class ResourceLocation {
 	public static final String ARTICULOS_TAGS_EXCEL_FILE = BASE_EXCEL_FILES + "TagsArticulos.xls";
 	
 	public static final String FUENTES_ARTICULOS_EXCEL_FILE = BASE_EXCEL_FILES + "FuentesArticulos.xls";
+	
+	public static final String PERSONAS_EXCEL_FILE = BASE_EXCEL_FILES + "Personas.xls";
+	
+	public static final String PROYECTOS_EXCEL_FILE = BASE_EXCEL_FILES + "Proyectos.xls";
 
 	public final static Class<ResourceLocation> clazz = ResourceLocation.class;
 

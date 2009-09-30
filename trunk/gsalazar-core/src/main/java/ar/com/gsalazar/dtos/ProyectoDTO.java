@@ -3,7 +3,6 @@
  */
 package ar.com.gsalazar.dtos;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import com.angel.architecture.exceptions.NonBusinessException;
  *	@author Guillermo Daniel Salazar.
  *	@since 16/Semptiembre/2009.
  */
-public class ProyectoDTO implements Serializable{
+public class ProyectoDTO extends BuscableDTO {
 	private static final long serialVersionUID = 7954520141032044952L;
 
 	private List<PersonaDTO> desarrolladores;
@@ -31,7 +30,8 @@ public class ProyectoDTO implements Serializable{
 	}
 	
 	public ProyectoDTO(Proyecto proyecto){
-		this();
+		super(proyecto);
+		this.setDesarrolladores(new ArrayList<PersonaDTO>());
 		for(Persona p: proyecto.getDesarrolladores()){
 			this.getDesarrolladores().add(new PersonaDTO(p));
 		}

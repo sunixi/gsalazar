@@ -19,7 +19,6 @@
 		import mx.controls.Label;
 		import mx.controls.Image;
 		import mx.containers.HBox;
-		import ar.com.gsalazar.beans.ContactoWebDTO;
 		import mx.collections.IList;
 		import com.angel.locator.ServiceLocator;
 		

@@ -1,4 +1,4 @@
-package ar.com.gsalazar.beans {
+package ar.com.gsalazar.dtos {
 	import flash.utils.ByteArray;
 	
 	import mx.collections.IList;
@@ -6,7 +6,7 @@ package ar.com.gsalazar.beans {
 
 	[Bindable]
 	[RemoteClass(alias="ar.com.gsalazar.dtos.ProyectoDTO")]
-	public class ProyectoDTO extends Buscable{
+	public class ProyectoDTO extends BuscableDTO {
 
 		public var imagen:ByteArray;
 		public var desarrolladores:IList;

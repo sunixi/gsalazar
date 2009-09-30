@@ -39,7 +39,6 @@
 		import ar.com.gsalazar.beans.Buscable;
 		import ar.com.gsalazar.detalles.DetalleBuscable;
 		import flash.net.navigateToURL;
-		import ar.com.gsalazar.beans.ContactoWebDTO;
 		import mx.collections.ArrayCollection;
 		import flexlib.containers.WindowShade;
 		import mx.collections.IList;

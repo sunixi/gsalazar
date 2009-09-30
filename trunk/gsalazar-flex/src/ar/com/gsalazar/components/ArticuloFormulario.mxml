@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Box 
+<mx:TitleWindow 
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:code="http://code.google.com/p/flexlib/"
 	creationComplete="init();" 
+	showCloseButton="true"
+	close="{PopUpManager.removePopUp(this);}"
 	verticalAlign="top"
 	horizontalAlign="center"
 	label="Contacto" xmlns:buttons="com.angel.components.buttons.*" xmlns:fck="http://www.happy-banana.be/fck">
@@ -98,4 +100,4 @@
 	
 	
 	
-</mx:Box>
+</mx:TitleWindow>

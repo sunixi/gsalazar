@@ -32,5 +32,5 @@
 	</mx:Script>
 	<mx:List id="buscablesRelacionadosList" dataProvider="{contactosWeb}" labelField="titulo" width="60%" rowCount="4" styleName="webAmigasList"
 		verticalAlign="middle" paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" selectionColor="#cccccc"
-				rowHeight="115" alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ContactoWebItemRenderer"/>
+		selectable="false" rowHeight="115" alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ContactoWebItemRenderer"/>
 </mx:Box>

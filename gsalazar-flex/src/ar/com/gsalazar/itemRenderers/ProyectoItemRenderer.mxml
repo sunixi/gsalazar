@@ -37,6 +37,9 @@
 				<mx:Label text="{data.titulo}" color="black" fontSize="13" fontWeight="bold" />
 				<mx:Text width="100%" text="{data.descripcion}" color="black"/>
 			</mx:VBox>
+			<mx:VBox width="75%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+				<mx:Button label="Ver Info..." click="data.buildDetallePopup(this)"/>
+			</mx:VBox>
 		</mx:HBox>
 	</mx:VBox>
 </mx:VBox>

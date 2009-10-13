@@ -71,7 +71,9 @@
 
 		</windowsShade:WindowsShadeGroup>
 		<mx:VBox width="90%" height="100%" verticalAlign="middle" horizontalAlign="center">
-
+			<components:CurriculumVitaeStates width="100%" height="100">
+				
+			</components:CurriculumVitaeStates>
 		</mx:VBox>
 	</mx:HBox>
 </mx:Box>

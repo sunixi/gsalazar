@@ -1,5 +1,7 @@
 package com.angel.components.rankeable
 {
+	import flash.display.DisplayObject;
+	
 	public interface Rankeable
 	{
 	
@@ -10,5 +12,7 @@ package com.angel.components.rankeable
 		function getContenido():String;
 		
 		function getRanking():Number;
+		
+		function buildDetallePopup(_displayObject:DisplayObject):void;
 	}
 }

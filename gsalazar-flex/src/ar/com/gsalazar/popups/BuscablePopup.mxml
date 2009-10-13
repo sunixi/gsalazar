@@ -5,9 +5,9 @@
 	showCloseButton="true"
 	backgroundImage="Embed(source='/styles/backgrounds.swf#bluestripe')"
 	close="{PopUpManager.removePopUp(this);}"
-	title="Articulo - {_buscable.titulo}"
+	creationComplete="init();"
 	styleName="panelBuscablePopup"
-	 xmlns:controls="com.asfusion.controls.*">
+	xmlns:controls="com.asfusion.controls.*" xmlns:components="ar.com.gsalazar.components.*">
 	<mx:Style>
 		.panelBuscablePopup {
 		   borderStyle: solid;
@@ -61,6 +61,8 @@
 
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.beans.Persona;
+		import ar.com.gsalazar.beans.Proyecto;
 		import org.alivepdf.fonts.Style;
 		import org.alivepdf.layout.Size;
 		import org.alivepdf.layout.Orientation;
@@ -81,154 +83,47 @@
 		import mx.collections.IList;
 		
 		[Bindable]
-		private var _buscable:Buscable;
-		[Bindable]
-		private var _buscablesRelacionados:IList;
-		[Bindable]
-		private var searchTags:String;
+		public var buscable:Buscable;
 
-		public function set buscable(buscable:Buscable):void {
-			this._buscable = buscable;
-			plainTagSearchNames();
-		}
-		
-		public function set buscablesRelacionados(relacionados:IList):void {
-			this._buscablesRelacionados = relacionados;
-		}
-		
-		private function agregarDocumentosRelacionados():void {
-			for each(var relacionado:Buscable in _buscablesRelacionados){
-				
-			}
-		}
-		
-		private function plainTagSearchNames():void {
-			if(_buscable != null){
-				var tagNames:IList = new ArrayCollection();
-				var items:Array = _buscable.tagsBuscables.toArray();
-				for each(var ts:TagSearch in items){
-					tagNames.addItem(ts.label);
-				}
-				searchTags = StringUtils.plainParametersWithList(tagNames,'\n');
-			} else {
-				searchTags = '';
-			}
-		}
-		
-		private function changeSelected(event:Event):void {
-			buscable = buscablesRelacionadosList.selectedItem as Buscable;
-		}
-
-		private function agregarComentario(event:Event = null):void{ 
-			var _popup:ComentarioBuscable = PopUpManager.createPopUp(this, ComentarioBuscable, true) as ComentarioBuscable ;
-			_popup.height = Application.application.height * 0.95;
-			_popup.width = Application.application.width * 0.80;
-			_popup.x = (Application.application.width / 2) - _popup.width / 2;
-			_popup.y = (Application.application.height / 2) - _popup.height / 2;
-			_popup.buscable = _buscable;
-			_popup.addEventListener("changeBuscableComentarios", changeBuscableComentarios);
-			PopUpManager.bringToFront(_popup);
-		}
-		
-		private function changeBuscableComentarios(changeBuscableEvent:ChangeBuscableComentariosEvent):void {
-			this._buscable = changeBuscableEvent.buscable;
-		}
-		
-		private function exportarAPDF(event:Event = null):void {
-			var filename:String = 'test.pdf';
-			var pdf:PDF = new PDF(Orientation.LANDSCAPE, Unit.MM, Size.A4);
-			
-			var X_BEGIN:Number = 18;
-			var Y_BEGIN:Number = 17;
-			var LINE:Number = 8;
-			
-			pdf.addEventListener(Event.COMPLETE, onCompleteExportarAPDF);			
-			pdf.setDisplayMode (Display.FULL_PAGE, Layout.SINGLE_PAGE);
-			pdf.addPage();
-			pdf.setTitle(_buscable.titulo);
-			pdf.setAuthor('http://www.gsalazar.com.ar');
-			pdf.setCreator('http://www.gsalazar.com.ar');
-			pdf.setSubject('Impresion del articulo \'' +_buscable.titulo + '\'');
-			pdf.setMargins(10,15,10,15);
-			pdf.setFont( FontFamily.ARIAL, Style.BOLD , 14 );
-			pdf.addText('Articulo: ', 18, 17);
-			pdf.setFont( FontFamily.ARIAL, Style.NORMAL , 12 );
-			pdf.addText(_buscable.titulo, 40, 17);
-			
-			pdf.setFont( FontFamily.ARIAL, Style.BOLD ,14 );
-			pdf.addText('Descripción: ',18 ,25);
-			pdf.setFont( FontFamily.ARIAL,Style.NORMAL, 12 );
-			pdf.addText(_buscable.descripcion, 50, 25);
-
-			pdf.setFont( FontFamily.ARIAL, Style.BOLD ,14 );
-			pdf.addText('Contenido: ', 18, 33);
-			
-			//pdf.addImage(this, 12, 45);
-			//pdf.addText(_buscable.getContenido(), 25, 40);
-			pdf.writeText(200,_buscable.getContenido());
-
-			var pdfBA:ByteArray = new ByteArray();
-            // to save the PDF your specificy the path to the create.php script
-			// alivepdf takes care of the rest, if you are using AIR and want to save the PDF locally just use Method.LOCAL
-			// and save the returned bytes on the disk through the FileStream class
-			pdf.save( Method.REMOTE, "http://project.unthinkmedia.com/un/createPDF/create.php", filename );
-
-		}
-		
-		private function onCompleteExportarAPDF(event:Event = null):void {
-			/*var f:FileStream = new FileStream();
-			var file:File = File.applicationStorageDirectory.resolve( filename );
-			f.open( file, FileMode.WRITE);
-			var bytes:ByteArray = pdf.getPDF()
-			f.writeBytes(bytes);
-			f.close();*/ 
+		private function init():void {
+			super.currentState = buscable.stateName();
+			this.title = buscable.getFullTitulo();
 		}
 	]]>
 	</mx:Script>
 	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY HH:NN"/>
-	<mx:HBox width="90%" height="90%" verticalScrollPolicy="off" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
-		<mx:VBox width="25%" height="100%">
-			<mx:Text text="Descripción" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:Text text="{_buscable.descripcion}" width="100%" styleName="buscable"/>
-
-			<mx:Text text="Creación" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:Text text="{shortDateFormatter.format(_buscable.creationDate)}" width="100%" styleName="buscable"/>
-
-			<mx:Text text="Visualizado" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:Text text="{_buscable.visualizado}" width="100%" styleName="buscable"/>
-
-			<mx:Text text="Raking" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<controls:Rating id="rating" itemCount="10" value="{_buscable.getRanking()}" toolTip="{_buscable.getRanking()}" liveRollOver="false"/>
-
-			<mx:Text text="Tags de Busqueda" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:Text text="{searchTags}" width="100%" styleName="buscable" />
-
-			<mx:Text text="Formatos" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:Image toolTip="PDF" source="@Embed(source='/images/pdf.png')" width="64" height="64"
-				click="exportarAPDF(event);"/>
-
-			<mx:Text text="Documentos Relacionados" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:List id="buscablesRelacionadosList" dataProvider="{_buscablesRelacionados}" labelField="titulo" width="100%" rowCount="5" styleName="documentosRelacionados"
-				paddingLeft="5" paddingTop="5" change="changeSelected(event);"/>
-			
-			<mx:Text text="Comentarios" width="100%" styleName="buscableLabel" />
-			<mx:HRule width="100%"/>
-			<mx:Text text="{_buscable.cantidadComentarios()} comentario(s)." width="100%" styleName="buscable" />
-			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="left">
-				<mx:Image source="@Embed(source='/images/agregar_comentario.png')" toolTip="Agregar comentario..." width="48" height="48" click="agregarComentario(event);"/>
-				<mx:Image source="@Embed(source='/images/ver_comentarios.png')" toolTip="Ver comentarios..." width="48" height="48"/>
-			</mx:HBox>
-		</mx:VBox>
-		<mx:VRule height="100%"/>
-		<mx:VBox id="contenidoVBox" width="80%" height="100%" verticalScrollPolicy="auto">
-			<mx:Text htmlText="{_buscable.getContenido()}" width="100%"/>
-		</mx:VBox>
-	</mx:HBox>
+	<mx:states>
+		<mx:State id="proyectoState" name="proyectoState">
+			<mx:AddChild>
+				<mx:HBox width="90%" height="90%" verticalScrollPolicy="off" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+					<mx:VBox width="100%" height="100%">
+						<mx:Image source="{(buscable as Proyecto).imagenArray}" width="60" height="60"/>
+						<mx:Text htmlText="{buscable.getContenido()}" width="100%"/>
+						<mx:HRule width="100%"/>
+						<mx:Label text="Desarrolladores: " width="100%" fontWeight="bold"/>
+						<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="center">
+							<mx:List id="desarrolladoresList" cornerRadius="23" dataProvider="{(buscable as Proyecto).desarrolladores}" labelField="titulo" width="55%"
+								rowCount="3" paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
+								alternatingItemColors="#ffffff, #eff1f2"
+								itemRenderer="ar.com.gsalazar.itemRenderers.PersonaItemRenderer"/>
+							<mx:Text width="45%" text="{Persona(desarrolladoresList.selectedItem).descripcion}" selectable="false"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State id="articuloState" name="articuloState">
+			<mx:AddChild>
+				<mx:HBox id="containerHBox" width="90%" height="90%" verticalScrollPolicy="off" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+					<mx:VBox width="25%" height="100%">
+						<components:DescripcionBuscable buscable="{buscable}" />
+					</mx:VBox>
+					<mx:VRule height="100%"/>
+					<mx:VBox width="80%" height="100%" verticalScrollPolicy="auto">
+						<mx:Text htmlText="{buscable.getContenido()}" width="100%"/>
+					</mx:VBox>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
 </mx:TitleWindow>

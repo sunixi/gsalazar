@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:code="http://code.google.com/p/flexlib/"
+	creationComplete="init();"
+	horizontalAlign="center"
+	verticalAlign="top"
+	styleName="resultadoBusqueda">
+	<mx:Style>
+		.comenatarioList {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+		
+		.resultadoBusqueda {
+			backgroundImage: Embed(source="/styles/backgrounds.swf#bluestripe");
+			backgroundGradientColors: #000099, #000099;
+			backgroundGradientAlphas: 1, 0.20;
+			themeColor: #0000cc;
+			background-alpha: 1;
+		}
+	</mx:Style>
+	<mx:Script>
+	<![CDATA[
+		import ar.com.gsalazar.beans.Categoria;
+		
+		[Bindable]
+		public var categoria:Categoria;
+
+		private function init():void {
+
+		}
+		
+		
+	]]>
+	</mx:Script>	
+	<mx:VBox width="95%">
+		
+	</mx:VBox>
+</mx:Box>

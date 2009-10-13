@@ -60,7 +60,7 @@
 		<mx:Label fontSize="11" fontWeight="bold" text="{shortDateFormatter.format(new Date())}" fontStyle="italic" textAlign="left" />
 	</mx:HBox>
 	<mx:HBox width="70%" verticalAlign="middle" horizontalAlign="right">
-		<mx:LinkButton label="Comentarios" color="#FB2121" fontSize="12" textDecoration="underline"/>
+		<!--<mx:LinkButton label="Comentarios" color="#FB2121" fontSize="12" textDecoration="underline"/>-->
 		<components:AutoComplete id="buscar" labelField="label" matchType="anyPart" verticalAlign="middle" horizontalAlign="right" 
 			prompt="Ingrese tags de busqueda." width="35%"
 		allowNewValues="{false}" selectedItemStyleName="{ AutoComplete.STYLE_MAC_MAIL }" backspaceAction="focus" 

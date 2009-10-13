@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox
-	xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" backgroundAlpha="0.1" styleName="articulosAdvancedDataGrid">
+	xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" backgroundAlpha="0.1" styleName="articulosAdvancedDataGrid" cornerRadius="20" alpha="1.0">
 	<mx:Style>
 		.articulosAdvancedDataGrid {
 			roundedBottomCorners: true;
@@ -8,7 +8,7 @@
 			
 		}
 	</mx:Style>
-	<mx:VBox width="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="10">
+	<mx:VBox width="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="40" styleName="articulosAdvancedDataGrid">
 		<mx:HBox width="100%" height="2%">
 			<mx:Label text="{data.titulo}" toolTip="{data.titulo}" fontWeight="bold" fontSize="13" color="black"/>
 			<mx:Spacer width="1%"/>

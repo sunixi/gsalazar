@@ -18,7 +18,7 @@ import com.angel.architecture.exceptions.NonBusinessException;
 public class PersonaDTO implements Serializable{
 	private static final long serialVersionUID = 7954520141032044952L;
 
-	private byte[] imagen;
+//	private byte[] imagen;
 
 	private String nombre;
 	
@@ -31,7 +31,8 @@ public class PersonaDTO implements Serializable{
 	}
 	
 	public PersonaDTO(Persona persona){
-		this();
+		super();
+		//persona
 		this.setApellido(persona.getApellido());
 		this.setEmail(persona.getEmail());
 		this.setNombre(persona.getNombre());
@@ -48,14 +49,15 @@ public class PersonaDTO implements Serializable{
 	 * @return the imagen
 	 */
 	public byte[] getImagen() {
-		return imagen;
+//		return imagen;
+		return null;
 	}
 
 	/**
 	 * @param imagen the imagen to set
 	 */
 	public void setImagen(byte[] imagen) {
-		this.imagen = imagen;
+//		this.imagen = imagen;
 	}
 
 	/**

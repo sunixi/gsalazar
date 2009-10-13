@@ -3,14 +3,15 @@
  */
 package ar.com.gsalazar.services.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ar.com.gsalazar.beans.Proyecto;
+import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ProyectoDAO;
-import ar.com.gsalazar.dtos.ProyectoDTO;
 import ar.com.gsalazar.services.ProyectoService;
+import ar.com.gsalazar.services.TagSearchService;
 
 import com.angel.architecture.services.impl.GenericServiceImpl;
 
@@ -20,25 +21,41 @@ import com.angel.architecture.services.impl.GenericServiceImpl;
  */
 public class ProyectoServiceImpl extends GenericServiceImpl implements ProyectoService{
 
+	@Autowired
+	private TagSearchService tagSearchService;
+
 	protected ProyectoDAO getProyectoDAO(){
 		return (ProyectoDAO) super.getGenericDAO();
 	}
 
-	public List<ProyectoDTO> buscarTodosPorCantidadDesarrolladores(int cantidad) {
-		List<Proyecto> proyectos = this.getProyectoDAO().buscarTodosPorCantidadDesarrolladores(cantidad);
-		List<ProyectoDTO> proyectosDTO = new ArrayList<ProyectoDTO>();
-		for(Proyecto p: proyectos){
-			proyectosDTO.add(new ProyectoDTO(p));
-		}
-		return proyectosDTO;
+	public List<Proyecto> buscarTodosPorCantidadDesarrolladores(int cantidad) {
+		return this.getProyectoDAO().buscarTodosPorCantidadDesarrolladores(cantidad);
 	}
 
-	public List<ProyectoDTO> buscarTodos() {
-		Collection<Proyecto> proyectos = this.getProyectoDAO().findAll();
-		List<ProyectoDTO> proyectosDTO = new ArrayList<ProyectoDTO>();
-		for(Proyecto o: proyectos){
-			proyectosDTO.add(new ProyectoDTO(o));
-		}
-		return proyectosDTO;
-	}	
+	public List<Proyecto> buscarTodos() {
+		return (List<Proyecto>) this.getProyectoDAO().findAll();
+	}
+
+	public List<Proyecto> buscarTodosPorTagsNames(List<String> tagsNames) {
+		List<TagSearch> tagsSearch = this.getTagSearchService().buscarTodosPorLabels(tagsNames); 
+		return 	this.buscarTodosPorTagsSearch(tagsSearch);
+	}
+
+	public List<Proyecto> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
+		return this.getProyectoDAO().buscarTodosPorTagsSearch(tagsSearch);
+	}
+
+	/**
+	 * @return the tagSearchService
+	 */
+	public TagSearchService getTagSearchService() {
+		return tagSearchService;
+	}
+
+	/**
+	 * @param tagSearchService the tagSearchService to set
+	 */
+	public void setTagSearchService(TagSearchService tagSearchService) {
+		this.tagSearchService = tagSearchService;
+	}
 }

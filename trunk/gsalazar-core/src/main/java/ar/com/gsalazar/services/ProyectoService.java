@@ -5,7 +5,8 @@ package ar.com.gsalazar.services;
 
 import java.util.List;
 
-import ar.com.gsalazar.dtos.ProyectoDTO;
+import ar.com.gsalazar.beans.Proyecto;
+import ar.com.gsalazar.beans.TagSearch;
 
 import com.angel.architecture.services.interfaces.GenericService;
 
@@ -15,7 +16,11 @@ import com.angel.architecture.services.interfaces.GenericService;
  */
 public interface ProyectoService extends GenericService {
 
-	public List<ProyectoDTO> buscarTodosPorCantidadDesarrolladores(int cantidad);
+	public List<Proyecto> buscarTodosPorCantidadDesarrolladores(int cantidad);
 	
-	public List<ProyectoDTO> buscarTodos();
+	public List<Proyecto> buscarTodosPorTagsNames(List<String> tagsNames);
+	
+	public List<Proyecto> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
+	
+	public List<Proyecto> buscarTodos();
 }

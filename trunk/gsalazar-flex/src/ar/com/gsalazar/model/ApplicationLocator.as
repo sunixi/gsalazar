@@ -2,7 +2,7 @@ package ar.com.gsalazar.model {
 
 	import ar.com.gsalazar.beans.Articulo;
 	import ar.com.gsalazar.beans.Categoria;
-	
+
 	import com.angel.components.tagCloud.TagSearchContainer;
 	import com.angel.syncronization.TransactionalBlock;
 	
@@ -102,11 +102,11 @@ package ar.com.gsalazar.model {
 			if(!this.estaInicializado()){
 				var transactionalBlock:TransactionalBlock = new TransactionalBlock();
 				transactionalBlock.addEventListener("endsLoad", endLoad); 
-				transactionalBlock.register("tagSearchService", "buscarTodos").callbackFunction(inicializarTagSearchCallbackFunction);
-				transactionalBlock.register("articuloService", "findAll").callbackFunction(inicializarArticulosCallbackFunction);
-				transactionalBlock.register("proyectoService", "buscarTodos").callbackFunction(inicializarProyectosCallbackFunction);
-				transactionalBlock.register("categoriaService", "findAll").callbackFunction(inicializarCategoriasCallbackFunction);
-				transactionalBlock.register("contactoWebService", "buscarTodos").callbackFunction(inicializarContactosWebCallbackFunction);
+				transactionalBlock.register("tagSearchService",		"buscarTodos").callbackFunction(inicializarTagSearchCallbackFunction);
+				transactionalBlock.register("articuloService",		"findAll").callbackFunction(inicializarArticulosCallbackFunction);
+				transactionalBlock.register("proyectoService",		"buscarTodos").callbackFunction(inicializarProyectosCallbackFunction);
+				transactionalBlock.register("categoriaService",		"findAll").callbackFunction(inicializarCategoriasCallbackFunction);
+				transactionalBlock.register("contactoWebService",	"buscarTodos").callbackFunction(inicializarContactosWebCallbackFunction);
 				transactionalBlock.execute(uiComponent);
 			}
 	   	}
@@ -132,7 +132,7 @@ package ar.com.gsalazar.model {
 		}
 
 		private  function inicializarContactosWebCallbackFunction(data:IList):void{
-			_contactosWeb = data;				
+			_contactosWeb = data;
 		}
 
 	 	public function clear():void{
@@ -152,7 +152,6 @@ package ar.com.gsalazar.model {
 	 			index++;
 	 		}
 	 		if(index >= 0){
-	 			//var item:Object = _articulos.getItemAt(index + 1);
 	 			_articulos.removeItemAt(index);
 	 			_articulos.addItem(_articulo);
 	 		}

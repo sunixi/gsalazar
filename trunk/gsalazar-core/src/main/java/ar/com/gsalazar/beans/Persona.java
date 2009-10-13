@@ -8,8 +8,9 @@ import java.sql.Blob;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
-import com.angel.architecture.persistence.base.PersistentObject;
+import com.angel.architecture.flex.annotations.serialization.FlexTransient;
 
 /**
  * 
@@ -17,13 +18,16 @@ import com.angel.architecture.persistence.base.PersistentObject;
  *	@since 16/Semptiembre/2009.
  */
 @Entity
-public class Persona extends PersistentObject {
+public class Persona extends Buscable {
 
 	private static final long serialVersionUID = -462238529934628758L;
 	
 	@Lob
 	@Column(nullable = true)
 	private Blob imagen;
+	
+	@Transient
+	private byte[] imagenArray;
 	
 	@Column(nullable = false, unique = false, length = 70)
 	private String nombre;
@@ -37,6 +41,7 @@ public class Persona extends PersistentObject {
 	/**
 	 * @return the imagen
 	 */
+	@FlexTransient
 	public Blob getImagen() {
 		return imagen;
 	}
@@ -88,5 +93,19 @@ public class Persona extends PersistentObject {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
-	}		
+	}
+
+	/**
+	 * @return the imagenArray
+	 */
+	public byte[] getImagenArray() {
+		return imagenArray;
+	}
+
+	/**
+	 * @param imagenArray the imagenArray to set
+	 */
+	public void setImagenArray(byte[] imagenArray) {
+		this.imagenArray = imagenArray;
+	}
 }

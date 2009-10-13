@@ -4,7 +4,7 @@
            xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
            version="2.5">
-    <display-name>SEMC - Sistema de Expedientes de la Municipalidad de Chivilcoy</display-name>
+    <display-name>Sitio Web Personal de Guillermo Daniel Salazar</display-name>
 
 
     <context-param>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox
+	xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.asfusion.controls.*"
+	styleName="articulosAdvancedDataGrid" >
+	<mx:Style>
+		.articulosAdvancedDataGrid {
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+		.irSitioStyle {
+			border-style:solid;
+			roundedBottomCorners: true;
+			cornerRadius: 23;
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			
+			public function irAURL():void {
+				navigateToURL(new URLRequest(data.link));			
+			}
+		]]>
+	</mx:Script>
+	<!--
+		public var imagenArray:ByteArray;
+		public var nombre:String;
+		public var apellido:String;
+		public var email:String;
+		-->
+	<mx:HBox width="100%" height="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="10" paddingTop="5">
+		<mx:VBox width="30%">
+			<mx:Image source="{data.imagenArray}" toolTip="{data.descripcion}" width="60" height="60"/>
+		</mx:VBox>
+		<mx:VBox width="70%">
+			<mx:HBox width="100%" height="100%" verticalAlign="top" paddingLeft="10" paddingTop="5">
+				<mx:Label text="Nombre: " color="black" fontSize="13" fontWeight="bold" />
+				<mx:Text text="{data.apellido}, {data.nombre}" color="black"/>
+			</mx:HBox>
+			<mx:HBox width="100%" height="100%" verticalAlign="top" paddingLeft="10" paddingTop="5">
+				<mx:Label text="Email: " color="black" fontSize="13" fontWeight="bold" />
+				<mx:Text text="{data.email}" color="black"/>
+			</mx:HBox>
+			<!--
+			<mx:HBox width="100%" height="100%" verticalAlign="top" paddingLeft="10" paddingTop="5">
+				<mx:Label text="Presentación: " color="black" fontSize="13" fontWeight="bold" />
+				<mx:Text text="{data.descripcion}" color="black"/>
+			</mx:HBox>-->
+		</mx:VBox>
+	</mx:HBox>
+</mx:VBox>

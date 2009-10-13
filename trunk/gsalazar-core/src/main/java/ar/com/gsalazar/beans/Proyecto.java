@@ -11,6 +11,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
+
+import com.angel.architecture.flex.annotations.serialization.FlexTransient;
 
 /**
  * 
@@ -23,6 +26,9 @@ public class Proyecto extends Buscable {
 	private static final long serialVersionUID = -462238529934628758L;
 	@Lob
 	private Blob imagen;
+	
+	@Transient
+	private byte[] imagenArray;
 
 	@ManyToMany
 	private List<Persona> desarrolladores;
@@ -46,6 +52,7 @@ public class Proyecto extends Buscable {
 	/**
 	 * @return the imagen
 	 */
+	@FlexTransient
 	public Blob getImagen() {
 		return imagen;
 	}
@@ -93,5 +100,19 @@ public class Proyecto extends Buscable {
 	
 	public boolean containsDesarrollador(Persona desarrollador){
 		return this.getDesarrolladores().contains(desarrollador);
+	}
+
+	/**
+	 * @return the imagenArray
+	 */
+	public byte[] getImagenArray() {
+		return imagenArray;
+	}
+
+	/**
+	 * @param imagenArray the imagenArray to set
+	 */
+	public void setImagenArray(byte[] imagenArray) {
+		this.imagenArray = imagenArray;
 	}
 }

@@ -63,6 +63,9 @@ public class PersonaAnnotationRowProcessorCommand {
 	@RowProcessor(columnsParameters = {}, object = Persona.class, inject = true)
 	public Persona processRow(Persona persona, String nombre, String apellido, String email, String imagenPerfil) {
 		InputStream inputStream;
+		String descripcion = nombre + ", " + apellido;
+		persona.setDescripcion(descripcion);
+		persona.setTitulo(descripcion);
 		try {
 			if(!"Ninguna".equalsIgnoreCase(imagenPerfil)){
 				inputStream = FileHelper.findInputStreamInClasspath(imagenPerfil);

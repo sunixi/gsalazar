@@ -11,6 +11,10 @@ import org.hibernate.criterion.Restrictions;
 import ar.com.gsalazar.beans.Proyecto;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ProyectoDAO;
+import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
+import ar.com.gsalazar.daos.queryBuilder.impl.BusquedaInfoQueryBeanFactory;
+import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
@@ -34,25 +38,16 @@ public class ProyectoSpringHibernateDAO extends GenericSpringHibernateDAO<Proyec
 	
 	@SuppressWarnings("unchecked")
 	public List<Proyecto> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
-		int size = tagsSearch != null ? tagsSearch.size() : 0;
-		String q = "select l from " + this.getPersistentClass().getName() + " l ";
-		int current = 0;
-		for(TagSearch ts: tagsSearch){
-			if(size > 1 && current == 0){
-				q += " where '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
-			} else {
-				if(size == 1){
-					q += " where '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";	
-				} else {
-					if(current > 0 && current != size){
-						q += " and '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
-					} else {
-						q += " and '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
-					}
-				}
-			}
-			current++;
-		}
+		QueryBeanFactory queryBeanFactory = new TagsSearchQueryBeanFactory();
+		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), tagsSearch);
+		Query query = super.getSession().createQuery(q);
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Proyecto> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		QueryBeanFactory queryBeanFactory = new BusquedaInfoQueryBeanFactory();
+		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), busquedaInfo);
 		Query query = super.getSession().createQuery(q);
 		return query.list();
 	}

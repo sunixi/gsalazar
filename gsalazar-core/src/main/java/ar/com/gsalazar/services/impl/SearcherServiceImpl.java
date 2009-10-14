@@ -13,6 +13,7 @@ import ar.com.gsalazar.beans.Buscable;
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.Proyecto;
 import ar.com.gsalazar.beans.TagSearch;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ArticuloService;
 import ar.com.gsalazar.services.PersonaService;
 import ar.com.gsalazar.services.ProyectoService;
@@ -52,6 +53,18 @@ public class SearcherServiceImpl extends GenericServiceImpl implements SearcherS
 		List<Articulo> articulosBuscables = this.getArticuloService().buscarTodosPorTagsSearch(tagsSearch);
 		List<Proyecto> proyectosBuscables = this.getProyectoService().buscarTodosPorTagsSearch(tagsSearch);
 		List<Persona> personasBuscables = this.getPersonaService().buscarTodosPorTagsSearch(tagsSearch);
+
+		List<Buscable> buscables = new ArrayList<Buscable>();
+		buscables.addAll(articulosBuscables);
+		buscables.addAll(proyectosBuscables);
+		buscables.addAll(personasBuscables);
+		return buscables;
+	}
+	
+	public List<Buscable> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		List<Articulo> articulosBuscables = this.getArticuloService().buscarTodosPorBusquedaInfo(busquedaInfo);
+		List<Proyecto> proyectosBuscables = this.getProyectoService().buscarTodosPorBusquedaInfo(busquedaInfo);
+		List<Persona> personasBuscables = this.getPersonaService().buscarTodosPorBusquedaInfo(busquedaInfo);
 
 		List<Buscable> buscables = new ArrayList<Buscable>();
 		buscables.addAll(articulosBuscables);

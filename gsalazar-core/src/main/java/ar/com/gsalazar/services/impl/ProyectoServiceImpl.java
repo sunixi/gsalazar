@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.com.gsalazar.beans.Proyecto;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ProyectoDAO;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ProyectoService;
 import ar.com.gsalazar.services.TagSearchService;
 
@@ -43,6 +44,10 @@ public class ProyectoServiceImpl extends GenericServiceImpl implements ProyectoS
 
 	public List<Proyecto> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
 		return this.getProyectoDAO().buscarTodosPorTagsSearch(tagsSearch);
+	}
+	
+	public List<Proyecto> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		return this.getProyectoDAO().buscarTodosPorBusquedaInfo(busquedaInfo);
 	}
 
 	/**

@@ -12,6 +12,7 @@ import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.Comentario;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ArticuloDAO;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ArticuloService;
 import ar.com.gsalazar.services.TagSearchService;
 
@@ -67,6 +68,10 @@ public class ArticuloServiceImpl extends GenericServiceImpl implements ArticuloS
 		return 	this.getArticuloDAO().buscarTodosPorTagsSearch(tagsSearch);
 	}
 
+	public List<Articulo> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		return 	this.getArticuloDAO().buscarTodosPorBusquedaInfo(busquedaInfo);
+	}
+	
 	/**
 	 * @return the tagSearchService
 	 */

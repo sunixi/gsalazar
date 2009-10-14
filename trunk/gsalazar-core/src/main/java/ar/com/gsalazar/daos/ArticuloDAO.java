@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.TagSearch;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.interfaces.GenericDAO;
@@ -26,6 +27,8 @@ public interface ArticuloDAO extends GenericDAO<Articulo, ObjectId>{
 	
 	public List<Articulo> buscarTodosContenganDescripcion(String descripcion);
 	
-	public List<Articulo> buscarTodosCantidadFuentes(Integer cantidadFuentes);	
+	public List<Articulo> buscarTodosCantidadFuentes(Integer cantidadFuentes);
+	
+	public List<Articulo> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
 
 }

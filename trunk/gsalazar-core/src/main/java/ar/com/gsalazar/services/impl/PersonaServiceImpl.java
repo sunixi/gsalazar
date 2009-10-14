@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.PersonaDAO;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.dtos.PersonaDTO;
 import ar.com.gsalazar.services.PersonaService;
 import ar.com.gsalazar.services.TagSearchService;
@@ -65,6 +66,10 @@ public class PersonaServiceImpl extends GenericServiceImpl implements PersonaSer
 
 	public List<Persona> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
 		return this.getPersonaDAO().buscarTodosPorTagsSearch(tagsSearch);
+	}
+	
+	public List<Persona> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		return this.getPersonaDAO().buscarTodosPorBusquedaInfo(busquedaInfo);
 	}
 
 	/**

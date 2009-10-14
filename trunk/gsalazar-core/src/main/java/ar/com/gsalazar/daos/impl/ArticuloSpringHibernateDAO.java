@@ -12,6 +12,10 @@ import org.hibernate.criterion.Restrictions;
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ArticuloDAO;
+import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
+import ar.com.gsalazar.daos.queryBuilder.impl.ArticulosBusquedaInfoQueryBeanFactory;
+import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
@@ -47,30 +51,16 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 
 	@SuppressWarnings("unchecked")
 	public List<Articulo> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
-		
-		/*
-		 select p from Eg.NameList list, Eg.Person p
-where p.Name = some elements(list.Names)
-*/
-		int size = tagsSearch != null ? tagsSearch.size() : 0;
-		String q = "select l from " + Articulo.class.getName() + " l ";
-		int current = 0;
-		for(TagSearch ts: tagsSearch){
-			if(size > 1 && current == 0){
-				q += " where '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
-			} else {
-				if(size == 1){
-					q += " where '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";	
-				} else {
-					if(current > 0 && current != size){
-						q += " and '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
-					} else {
-						q += " and '" + ts.getIdAsString() + "' = some elements(l.tagsBuscables)";
-					}
-				}
-			}
-			current++;
-		}
+		QueryBeanFactory queryBeanFactory = new TagsSearchQueryBeanFactory();
+		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), tagsSearch);
+		Query query = super.getSession().createQuery(q);
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Articulo> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		QueryBeanFactory queryBeanFactory = new ArticulosBusquedaInfoQueryBeanFactory();
+		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), busquedaInfo);
 		Query query = super.getSession().createQuery(q);
 		return query.list();
 	}

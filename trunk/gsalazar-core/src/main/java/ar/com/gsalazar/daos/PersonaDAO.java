@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.TagSearch;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.interfaces.GenericDAO;
@@ -26,4 +27,5 @@ public interface PersonaDAO extends GenericDAO<Persona, ObjectId>{
 	
 	public List<Persona> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
 
+	public List<Persona> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
 }

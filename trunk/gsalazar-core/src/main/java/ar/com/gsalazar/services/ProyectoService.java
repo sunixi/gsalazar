@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.com.gsalazar.beans.Proyecto;
 import ar.com.gsalazar.beans.TagSearch;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.services.interfaces.GenericService;
 
@@ -23,4 +24,6 @@ public interface ProyectoService extends GenericService {
 	public List<Proyecto> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
 	
 	public List<Proyecto> buscarTodos();
+	
+	public List<Proyecto> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
 }

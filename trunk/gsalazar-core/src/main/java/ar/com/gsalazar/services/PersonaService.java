@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.TagSearch;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.dtos.PersonaDTO;
 
 import com.angel.architecture.services.interfaces.GenericService;
@@ -28,4 +29,6 @@ public interface PersonaService extends GenericService {
 	public List<Persona> buscarTodosPorTagsNames(List<String> tagsNames);
 	
 	public List<Persona> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
+	
+	public List<Persona> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
 }

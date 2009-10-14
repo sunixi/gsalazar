@@ -9,7 +9,7 @@
 	showCloseButton="true"
 	borderAlpha="1"
 	close="{PopUpManager.removePopUp(this);}"
-	styleName="resultadoBusqueda">
+	styleName="resultadoBusqueda" xmlns:components="ar.com.gsalazar.components.*">
 	<mx:Style>
 		.articulosAdvancedDataGrid {
 			roundedBottomCorners: true;
@@ -26,6 +26,8 @@
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import mx.controls.Alert;
+		import ar.com.gsalazar.events.ResultadoBusquedaEvent;
 		import mx.controls.Spacer;
 		import mx.managers.PopUpManager;
 		import ar.com.gsalazar.beans.Buscable;
@@ -54,8 +56,17 @@
 				resultadoList.rowCount = 0;
 			}
 		}
+		
+		private function onResultadoBusqueda(event:ResultadoBusquedaEvent): void {
+			this.buscados = event.buscables;
+			Alert.show('Se han encontrado ' + this.buscados.length + ' resultados.','Busqueda Realizada.');
+		}
 	]]>
 	</mx:Script>
+	
+	<code:WindowShade opened="false" label="Filtros de Busqueda" width="90%">
+		<components:BusquedaAvanzadaFormulario width="100%" resultadoBusqueda="onResultadoBusqueda(event);"/>
+	</code:WindowShade>
 	<mx:VBox width="90%" verticalAlign="middle" horizontalAlign="left">
 		<mx:Label text="Tags Buscados ({tagBuscados.length} tags):" fontSize="13" fontWeight="bold"/>
 	</mx:VBox>

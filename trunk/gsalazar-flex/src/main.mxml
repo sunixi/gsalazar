@@ -109,7 +109,6 @@
 			import mx.controls.Alert;
 			import ar.com.gsalazar.beans.Articulo;
 			import ar.com.gsalazar.detalles.DetalleBuscable;
-			import ar.com.gsalazar.components.BusquedaAvanzada;
 			import mx.core.IFlexDisplayObject;
 			import ar.com.gsalazar.popups.PanelBloqueadoPopup;
 			import ar.com.gsalazar.popups.HTMLEditorPopup;

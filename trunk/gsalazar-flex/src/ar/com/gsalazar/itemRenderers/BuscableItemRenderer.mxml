@@ -21,6 +21,8 @@
 			<mx:HBox width="100%" horizontalAlign="left">
 				<mx:Label text="Tags: " color="black" fontSize="11" fontStyle="italic" fontWeight="bold"/>
 				<mx:Label text="{data.getTagsSearchString()}" fontSize="10" fontStyle="italic" color="black"/>
+			</mx:HBox>
+			<mx:HBox width="100%" horizontalAlign="left">
 				<mx:Label text="Visualizado: " color="black" fontSize="11" fontStyle="italic" fontWeight="bold"/>
 				<mx:Label text="{data.visualizado}" fontSize="10" fontStyle="italic" color="black"/>
 				<mx:Label text="Rating: " color="black" fontSize="11" fontStyle="italic" fontWeight="bold"/>

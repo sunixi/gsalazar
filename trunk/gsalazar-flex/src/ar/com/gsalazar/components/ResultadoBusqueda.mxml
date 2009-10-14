@@ -64,7 +64,7 @@
 	]]>
 	</mx:Script>
 	
-	<code:WindowShade opened="false" label="Filtros de Busqueda" width="90%">
+	<code:WindowShade opened="false" label="Filtros de Busqueda" width="90%" layout="horizontal">
 		<components:BusquedaAvanzadaFormulario width="100%" resultadoBusqueda="onResultadoBusqueda(event);"/>
 	</code:WindowShade>
 	<mx:VBox width="90%" verticalAlign="middle" horizontalAlign="left">

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Box 
+<mx:VBox 
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:code="http://code.google.com/p/flexlib/"
 	creationComplete="init();" 
@@ -11,6 +11,7 @@
 	 </mx:Metadata>
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.model.ApplicationLocator;
 		import ar.com.gsalazar.events.ResultadoBusquedaEvent;
 		import com.angel.components.tagCloud.TagSearch;
 		import ar.com.gsalazar.dtos.BusquedaInfo;
@@ -27,6 +28,7 @@
 		
 		public function init():void {
 			busquedaInfo = new BusquedaInfo();
+			tagSearchAutoComplete.dataProvider= new ArrayCollection(ApplicationLocator.instance.tagsSearchs.toArray());
 		}
 
 		private function hacerBusqueda():void {
@@ -79,24 +81,24 @@
 			</mx:HBox>		
 		</mx:VBox>
 	</mx:Component>
-	<mx:Form width="95%" height="90%" id="articuloFormulario" visible="true" 
+	<mx:Form width="95%" height="90%" id="articuloFormulario" visible="true"
 		labelWidth="100" indicatorGap="18">
 		<mx:VBox width="90%">
-			<mx:FormItem label="Titulo:" labelStyleName="normal" required="true" errorString="La titulo es requerida.">
+			<mx:FormItem width="90%" label="Titulo:" labelStyleName="normal">
 				<mx:TextArea id="tituloTextInput" width="70%" color="black" maxChars="200"/>
 			</mx:FormItem>
-			<mx:FormItem label="Contenido:" labelStyleName="normal">
+			<mx:FormItem width="90%" label="Contenido:" labelStyleName="normal">
 				<mx:TextInput id="contenidoTextInput"/>
 			</mx:FormItem>
-			<mx:FormItem label="Descripcion:" labelStyleName="normal" required="true" errorString="La descripción es requerida.">
+			<mx:FormItem width="90%" label="Descripcion:" labelStyleName="normal">
 				<mx:TextArea id="descripcionTextInput" width="70%" color="black" maxChars="200"/>
 			</mx:FormItem>
-			<mx:FormItem label="Rating:" labelStyleName="normal" required="true" errorString="La descripción es requerida.">
+			<mx:FormItem width="90%" label="Rating:" labelStyleName="normal">
 				<mx:NumericStepper id="ratingNumericStepper" minimum="0" maximum="10" stepSize="1"/>
 			</mx:FormItem>
-			<mx:FormItem label="Tags:" labelStyleName="normal" required="true" errorString="Los tags son requeridos.">
+			<mx:FormItem width="90%" label="Tags:" labelStyleName="normal">
 				<components:AutoComplete id="tagSearchAutoComplete" labelField="label" matchType="anyPart" verticalAlign="middle" horizontalAlign="right" 
-						width="35%" allowNewValues="{false}" selectedItemStyleName="{ AutoComplete.STYLE_MAC_MAIL }"
+						width="80%" allowNewValues="{false}" selectedItemStyleName="{ AutoComplete.STYLE_MAC_MAIL }"
 						backspaceAction="focus" allowDuplicates="{ false}" allowMultipleSelection="{ true}"
 						allowEditingNewValues="{ false}" dropDownItemRenderer="{ dropDownItemRenderer }"/>
 			</mx:FormItem>
@@ -117,4 +119,4 @@
 			</buttons:ButtonValidator>
 		</mx:HBox>
 	</mx:Form>
-</mx:Box>
+</mx:VBox>

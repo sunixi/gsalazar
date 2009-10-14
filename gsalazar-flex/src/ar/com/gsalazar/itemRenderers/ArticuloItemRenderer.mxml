@@ -16,7 +16,7 @@
 		</mx:HBox>
 		<mx:HBox width="100%" height="2%">
 			<mx:Label text="Descripción: " color="black"/>
-			<mx:Text text="{data.descripcion}" color="black"/>
+			<mx:Text text="{data.descripcion}" color="black" selectable="false"/>
 		</mx:HBox>
 		<mx:HBox width="100%" height="2%" verticalAlign="middle" horizontalAlign="right">
 			<mx:Button label="Ver info..." click="data.buildDetallePopup(this)"/>

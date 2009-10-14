@@ -31,7 +31,7 @@
 				<mx:Text width="100%" text="{data.descripcion}" color="black"/>
 				<mx:HBox width="100%">
 					<mx:Label text="{data.link}" color="black"/>
-					<mx:Label buttonMode="true" text="Ir sitio..." click="irAURL();" fontWeight="bold" fontSize="12"/>
+					<mx:Label buttonMode="true" text="Ir al sitio web..." click="irAURL();" fontWeight="bold" fontSize="12"/>
 				</mx:HBox>
 			</mx:VBox>
 		</mx:HBox>

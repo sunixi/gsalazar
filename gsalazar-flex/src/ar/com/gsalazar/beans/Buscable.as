@@ -67,6 +67,14 @@ package ar.com.gsalazar.beans {
 			return "";
 		}
 		
+		public function buscableName():String{
+			return "Buscable";
+		}
+		
+		public function resultImageName():Class{
+			return null;
+		}
+		
 		public function getFullTitulo():String {
 			return this.titulo;
 		}

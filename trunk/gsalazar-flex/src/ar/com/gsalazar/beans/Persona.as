@@ -11,5 +11,14 @@ package ar.com.gsalazar.beans {
 		public var apellido:String;
 		public var email:String;
 
+		public override function buscableName():String{
+			return "Desarrollador";
+		}
+		
+		public override function resultImageName():Class{
+			[Embed(source='images/desarrollador.png')]
+			var a:Class; 
+			return a;
+		}
 	}
 }

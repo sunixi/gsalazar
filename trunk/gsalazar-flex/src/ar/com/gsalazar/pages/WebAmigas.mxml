@@ -4,7 +4,7 @@
 	xmlns:code="http://code.google.com/p/flexlib/"
 	creationComplete="init();" 
 	horizontalAlign="center"
-	label="Web Amigas"
+	label="Web Relacionadas"
 	verticalAlign="top">
 	<mx:Style>
 		.webAmigasList{

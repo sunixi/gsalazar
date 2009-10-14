@@ -33,5 +33,15 @@ package ar.com.gsalazar.beans {
 		public override function getFullTitulo():String {
 			return "Proyecto - " + super.getFullTitulo();
 		}
+		
+		public override function buscableName():String{
+			return "Proyecto";
+		}
+		
+		public override function resultImageName():Class{
+			[Embed(source='images/proyecto.png')]
+			var a:Class; 
+			return a;
+		}
 	}
 }

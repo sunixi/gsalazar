@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:ControlBar  
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
-	verticalAlign="middle" paddingBottom="0" paddingTop="0" xmlns:components="com.hillelcoren.components.*">
+	verticalAlign="middle" paddingBottom="0" paddingTop="0" xmlns:components="com.hillelcoren.components.*"
+	creationComplete="init();">
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.controls.TextInput;
 			import ar.com.gsalazar.model.ApplicationLocator;
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
@@ -17,6 +20,11 @@
 			[Bindable]
 			private var _tagsSearch:IList;
 			
+			
+			private function init():void {
+				buscar.textInput.addEventListener(FlexEvent.ENTER, enterHandler);
+			}
+
 			public function set tagsSearch(data:IList):void {
 				_tagsSearch = data;
 				buscar.dataProvider= new ArrayCollection(data.toArray());
@@ -31,13 +39,20 @@
 				ServiceLocator.getServiceWithCallback('searcherService', buscarArticulosCallbackFunction).buscarTodosPorTagsNames(tagNames);
 			}
 			
+			private function enterHandler(event:Event):void {
+				this.buscarArticulos(event);
+			}
+			
 			private function buscarArticulosCallbackFunction(data:IList):void {
 				var _popup:BusquedaAvanzada = PopUpManager.createPopUp(this, BusquedaAvanzada, true) as BusquedaAvanzada;
-				_popup.height = Application.application.height * 0.8;
-				_popup.width = Application.application.width * 0.8;
+				_popup.height = Application.application.height * 1;
+				_popup.width = Application.application.width * 0.7;
+				_popup.x = Application.application.width / 2 - _popup.width / 2;
+				_popup.y = Application.application.height / 2 - _popup.height / 2;
+				_popup.tagBuscados = buscar.selectedItems;
 				_popup.buscados = data;
 				_popup.title = 'Resultado de busqueda - Encontrados ' + data.length +' resultados.';
-				PopUpManager.centerPopUp(_popup);				
+				PopUpManager.bringToFront(_popup);				
 			}
 		]]>
 	</mx:Script>

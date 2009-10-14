@@ -37,13 +37,37 @@
 		
 		[Bindable]
 		public var buscados:IList;
+		[Bindable]
+		public var tagBuscados:IList;
 		
 		public function init():void {
 
 		}
+		
+		private function updateRowHeigth(event:Event):void {
+			if(buscados.length > 0){
+				resultadoList.rowHeight = resultadoList.height / resultadoList.rowCount + 10;
+				resultadoVacioLabel.visible = false;
+			} else {
+				resultadoVacioLabel.visible = true;
+				resultadoList.rowHeight = 10;
+				resultadoList.rowCount = 0;
+			}
+		}
 	]]>
 	</mx:Script>
-	<mx:List id="buscablesRelacionadosList" dataProvider="{buscados}" labelField="titulo" width="60%" rowCount="4" styleName="articulosAdvancedDataGrid"
-				paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
-				alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ArticuloItemRenderer"/>
+	<mx:VBox width="90%" verticalAlign="middle" horizontalAlign="left">
+		<mx:Label text="Tags Buscados ({tagBuscados.length} tags):" fontSize="13" fontWeight="bold"/>
+	</mx:VBox>
+	<mx:TileList width="90%" rowCount="2" dataProvider="{tagBuscados}" labelField="label" backgroundAlpha="0" columnCount="5"
+		cornerRadius="10" selectable="false" color="black"/>
+	<mx:Label id="resultadoVacioLabel" text="No se han encontrado resultado para la busqueda realizada." fontSize="13" fontWeight="bold" fontStyle="italic" 
+		visible="false" includeInLayout="false"/>
+	<mx:List id="resultadoList" dataProvider="{buscados}" labelField="titulo" width="90%" rowCount="4" styleName="articulosAdvancedDataGrid"
+				paddingLeft="5" paddingTop="5" paddingBottom="5" paddingRight="5" backgroundAlpha="0" selectionColor="#cccccc"
+				selectable="false" alternatingItemColors="#ffffff, #eff1f2" creationComplete="updateRowHeigth(event)"
+				itemRenderer="ar.com.gsalazar.itemRenderers.BuscableItemRenderer"/>
+	<mx:VBox width="90%" verticalAlign="middle" horizontalAlign="right">
+		<mx:Label text="Resultados Encontrados: {buscados.length}" fontSize="11" fontStyle="italic" fontWeight="bold"/>
+	</mx:VBox>
 </mx:TitleWindow>

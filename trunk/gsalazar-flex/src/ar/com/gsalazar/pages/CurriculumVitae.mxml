@@ -13,6 +13,8 @@
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import com.angel.events.ClickXWindowShadeEvent;
+		import mx.controls.Text;
 		import com.angel.components.windowsShade.XWindowShade;
 		import mx.controls.Label;
 		import flexlib.containers.WindowShade;
@@ -44,7 +46,7 @@
 				var windowShade:XWindowShade = new XWindowShade();
 				windowShade.percentWidth = 100;
 				windowShade.label = subCategoria.nombre;
-				var descripcion:Label = new Label();
+				var descripcion:Text = new Text();
 				descripcion.styleName = "labelTextColor";
 				descripcion.text = subCategoria.descripcion;
 				if(index == 0){
@@ -59,21 +61,26 @@
 			windowsShadeGroup.windows = windowsShade;
 		}
 
-
+		private function onClickXWindowShade(event:ClickXWindowShadeEvent):void {
+			var xWindowShadeOpened:XWindowShade = event.xWindowShade;
+			for each(var subCategoria:Categoria in subCategorias){
+				if(subCategoria.nombre == xWindowShadeOpened.label) {
+					seccionCurriculumVitaeCategoria.categoria = subCategoria;
+				}
+			}
+		}
 	]]>
 	</mx:Script>
 	<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<!--<mx:VBox id="subCategoriasVBox" width="20%" height="100%" 
-			verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
-
-		</mx:VBox>-->
-		<windowsShade:WindowsShadeGroup id="windowsShadeGroup" indexOpened="0" width="10%" height="100%">
-
-		</windowsShade:WindowsShadeGroup>
-		<mx:VBox width="90%" height="100%" verticalAlign="middle" horizontalAlign="center">
-			<components:CurriculumVitaeStates width="100%" height="100">
-				
-			</components:CurriculumVitaeStates>
+		<mx:VBox width="30%" height="90%" verticalAlign="top" horizontalAlign="center">
+			<mx:Label text="Secciones del Curriculum Vitae: " fontSize="13" fontStyle="italic"/>
+			<windowsShade:WindowsShadeGroup id="windowsShadeGroup" indexOpened="0" width="30%" height="100%"
+				clickXWindowShade="onClickXWindowShade(event);">
+			</windowsShade:WindowsShadeGroup>
+		</mx:VBox>
+		<mx:VRule height="100%" width="1"/>
+		<mx:VBox width="70%" height="90%">
+			<components:CurriculumVitaeStates id="seccionCurriculumVitaeCategoria" width="100%" height="100%"/>
 		</mx:VBox>
 	</mx:HBox>
 </mx:Box>

@@ -85,13 +85,13 @@
 		labelWidth="100" indicatorGap="18">
 		<mx:VBox width="90%">
 			<mx:FormItem width="90%" label="Titulo:" labelStyleName="normal">
-				<mx:TextArea id="tituloTextInput" width="70%" color="black" maxChars="200"/>
+				<mx:TextInput id="tituloTextInput" width="70%" color="black" maxChars="200"/>
 			</mx:FormItem>
 			<mx:FormItem width="90%" label="Contenido:" labelStyleName="normal">
-				<mx:TextInput id="contenidoTextInput"/>
+				<mx:TextInput id="contenidoTextInput" width="70%" color="black" maxChars="200"/>
 			</mx:FormItem>
 			<mx:FormItem width="90%" label="Descripcion:" labelStyleName="normal">
-				<mx:TextArea id="descripcionTextInput" width="70%" color="black" maxChars="200"/>
+				<mx:TextInput id="descripcionTextInput" width="70%" color="black" maxChars="200"/>
 			</mx:FormItem>
 			<mx:FormItem width="90%" label="Rating:" labelStyleName="normal">
 				<mx:NumericStepper id="ratingNumericStepper" minimum="0" maximum="10" stepSize="1"/>

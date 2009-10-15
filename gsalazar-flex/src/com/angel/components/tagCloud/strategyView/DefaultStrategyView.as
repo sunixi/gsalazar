@@ -24,8 +24,8 @@ package com.angel.components.tagCloud.strategyView {
 			return 6;
 		}
 		
-		public function fontColor(tagSearch:TagSearch, totalOcurrences:Number):String {
-			return "white";
+		public function fontColor(tagSearch:TagSearch, totalOcurrences:Number):uint {
+			return 0xFFFFFF;
 		}
 	}
 }

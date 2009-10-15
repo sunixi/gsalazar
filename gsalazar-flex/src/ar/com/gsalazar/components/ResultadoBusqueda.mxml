@@ -26,6 +26,7 @@
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.events.BusquedaInfoRealizadaEvent;
 		import mx.controls.Alert;
 		import ar.com.gsalazar.events.ResultadoBusquedaEvent;
 		import mx.controls.Spacer;
@@ -61,11 +62,16 @@
 			this.buscados = event.buscables;
 			Alert.show('Se han encontrado ' + this.buscados.length + ' resultados.','Busqueda Realizada.');
 		}
+		
+		private function onBusquedaInfoRealizada(event:BusquedaInfoRealizadaEvent): void {
+			this.tagBuscados = event.tagsSearchs;
+		}
 	]]>
 	</mx:Script>
 	
-	<code:WindowShade opened="false" label="Filtros de Busqueda" width="90%" layout="horizontal">
-		<components:BusquedaAvanzadaFormulario width="100%" resultadoBusqueda="onResultadoBusqueda(event);"/>
+	<code:WindowShade opened="false" label="Filtros de Busqueda" width="90%" height="50%" headerTextAlign="center" layout="horizontal">
+		<components:BusquedaAvanzadaFormulario width="100%" resultadoBusqueda="onResultadoBusqueda(event);"
+			busquedaInfoRealizada="onBusquedaInfoRealizada(event);"/>
 	</code:WindowShade>
 	<mx:VBox width="90%" verticalAlign="middle" horizontalAlign="left">
 		<mx:Label text="Tags Buscados ({tagBuscados.length} tags):" fontSize="13" fontWeight="bold"/>

@@ -15,6 +15,7 @@ package ar.com.gsalazar.beans {
 
 		public var imagenArray:ByteArray;
 		public var desarrolladores:IList;
+		public var estado:String;
 		
 		public override function stateName():String{
 			return "proyectoState";

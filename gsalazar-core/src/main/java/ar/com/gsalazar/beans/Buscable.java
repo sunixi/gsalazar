@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.angel.architecture.persistence.base.PersistentObject;
 
@@ -35,6 +36,7 @@ public abstract class Buscable extends PersistentObject {
 	private long visualizado = 0;
 
 	@OneToMany(cascade = CascadeType.ALL)
+	@OrderBy(value = "creationDate desc, rating desc")
 	private List<Comentario> comentarios;
 	
 	public Buscable(){

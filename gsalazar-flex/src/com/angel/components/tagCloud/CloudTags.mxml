@@ -101,7 +101,7 @@
 	</mx:Script>
 	<mx:TileList id="cloudTagSearchList" dataProvider="{tagsSearch}"  itemClick="itemClickHandler(event);"
 		columnCount="{tagsPerRow}" backgroundAlpha="0" rowCount="{rowCount}" cornerRadius="15" 
-		verticalAlign="middle" selectable="true" wordWrap="true" rowHeight="30"
+		verticalAlign="middle" selectable="true" wordWrap="true" rowHeight="30" borderThickness="2"
 		creationComplete="onCreationCompleteCloudTagSearchList(event);" >
 		<mx:itemRenderer>
 			<mx:Component>

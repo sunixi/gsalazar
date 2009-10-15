@@ -50,6 +50,10 @@ public class ProyectoServiceImpl extends GenericServiceImpl implements ProyectoS
 		return this.getProyectoDAO().buscarTodosPorBusquedaInfo(busquedaInfo);
 	}
 
+	public List<Proyecto> buscarTodosEnDesarrollo(int cantidadMaxima) {
+		return this.getProyectoDAO().buscarTodosEnDesarrollo(cantidadMaxima);
+	}
+	
 	/**
 	 * @return the tagSearchService
 	 */

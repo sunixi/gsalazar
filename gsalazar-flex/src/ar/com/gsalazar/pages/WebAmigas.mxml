@@ -28,9 +28,14 @@
 		public function init():void {
 
 		}
+		private function updateRowHeigth(event:Event):void {
+			webRelacionadasList.rowHeight = webRelacionadasList.height / webRelacionadasList.rowCount + 40;
+		}
 	]]>
 	</mx:Script>
-	<mx:List id="buscablesRelacionadosList" dataProvider="{contactosWeb}" labelField="titulo" width="60%" rowCount="4" styleName="webAmigasList"
-		verticalAlign="middle" paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" selectionColor="#cccccc"
-		selectable="false" rowHeight="115" alternatingItemColors="#ffffff, #eff1f2" itemRenderer="ar.com.gsalazar.itemRenderers.ContactoWebItemRenderer"/>
+	<mx:List id="webRelacionadasList" dataProvider="{contactosWeb}" labelField="titulo" width="60%"
+		rowCount="3" styleName="webAmigasList" verticalAlign="middle" paddingLeft="0" paddingTop="0"
+		paddingBottom="0" paddingRight="10" backgroundAlpha="0" selectionColor="#cccccc" height="90%"
+		selectable="false" alternatingItemColors="#ffffff, #eff1f2" creationComplete="updateRowHeigth(event)"
+		itemRenderer="ar.com.gsalazar.itemRenderers.ContactoWebItemRenderer"/>
 </mx:Box>

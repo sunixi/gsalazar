@@ -31,4 +31,7 @@ public interface ArticuloDAO extends GenericDAO<Articulo, ObjectId>{
 	
 	public List<Articulo> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
 
+	public List<Articulo> buscarTodosUltimosAgregados(int cantidadAgregada);
+
+	public List<Articulo> buscarTodosUltimosComentados(int cantidadComentada);
 }

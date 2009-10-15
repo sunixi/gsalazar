@@ -3,6 +3,8 @@
  */
 package ar.com.gsalazar.daos.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -63,5 +65,38 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), busquedaInfo);
 		Query query = super.getSession().createQuery(q);
 		return query.list();
+	}
+
+	public List<Articulo> buscarTodosUltimosAgregados(int cantidadAgregada) {
+		//super.clearFilters();
+		//super.addInstacesFilter(new MaximumQuantityInstanceFilter<Articulo>(Long.valueOf(String.valueOf(cantidadAgregada)), 3, 0L));
+		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(new HashMap<String, Object>(), " where 1 = 1 order by creationDate desc");
+		List<Articulo> articulosFiltrados = new ArrayList<Articulo>();
+		int i = 0;
+		for(Articulo a: articulos){
+			if(i < cantidadAgregada){
+				articulosFiltrados.add(a);
+			} else {
+				break;
+			}
+			i++;
+		}
+		return articulosFiltrados;
+	}
+
+	public List<Articulo> buscarTodosUltimosComentados(int cantidadComentada) {
+		//"size(order.items)"
+		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(new HashMap<String, Object>(), " where 1 = 1 order by size(comentarios) desc");
+		List<Articulo> articulosFiltrados = new ArrayList<Articulo>();
+		int i = 0;
+		for(Articulo a: articulos){
+			if(i < cantidadComentada){
+				articulosFiltrados.add(a);
+			} else {
+				break;
+			}
+			i++;
+		}
+		return articulosFiltrados;
 	}
 }

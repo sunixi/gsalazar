@@ -34,4 +34,8 @@ public interface ArticuloService extends GenericService {
 	public Articulo updateVisualizarArticulo(String tituloArticulo);
 	
 	public List<Articulo> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
+	
+	public List<Articulo> buscarTodosUltimosAgregados(int cantidadAgregada);
+
+	public List<Articulo> buscarTodosUltimosComentados(int cantidadComentada);
 }

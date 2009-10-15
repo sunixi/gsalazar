@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
@@ -26,6 +29,10 @@ public class Proyecto extends Buscable {
 	private static final long serialVersionUID = -462238529934628758L;
 	@Lob
 	private Blob imagen;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Estado estado;
 	
 	@Transient
 	private byte[] imagenArray;
@@ -114,5 +121,19 @@ public class Proyecto extends Buscable {
 	 */
 	public void setImagenArray(byte[] imagenArray) {
 		this.imagenArray = imagenArray;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public Estado getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado the estado to set
+	 */
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 }

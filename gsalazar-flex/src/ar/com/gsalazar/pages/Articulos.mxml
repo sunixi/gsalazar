@@ -32,14 +32,14 @@
 
 	]]>
 	</mx:Script>
-	<mx:HBox width="90%" verticalAlign="middle" horizontalAlign="center">
+	<mx:HBox width="90%" height="1%" verticalAlign="middle" horizontalAlign="center">
 		<mx:Label text="Listado de Articulos" fontWeight="bold" fontSize="14"/>
 		<mx:Label text="- {articulos.length} resultados." fontWeight="bold" fontSize="14"/>
 	</mx:HBox>
-	<mx:List id="articulosList" dataProvider="{articulos}" labelField="titulo" width="60%" rowCount="3"
-			creationComplete="updateRowHeigth(event);"
-			styleName="articulosAdvancedDataGrid" paddingLeft="0" paddingTop="0"
-			paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
+	<mx:List id="articulosList" height="90%" dataProvider="{articulos}" labelField="titulo" width="60%"
+			creationComplete="updateRowHeigth(event);" rowCount="3"
+			styleName="articulosAdvancedDataGrid" paddingLeft="10" paddingTop="0"
+			paddingBottom="0" paddingRight="10" backgroundAlpha="0" selectionColor="#cccccc"
 			alternatingItemColors="#ffffff, #eff1f2"
 			verticalAlign="middle" selectable="false" 
 			itemRenderer="ar.com.gsalazar.itemRenderers.ArticuloItemRenderer"/>

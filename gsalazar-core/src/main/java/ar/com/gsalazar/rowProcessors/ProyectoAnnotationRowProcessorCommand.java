@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 
+import ar.com.gsalazar.beans.Estado;
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.Proyecto;
 import ar.com.gsalazar.beans.TagSearch;
@@ -40,7 +41,8 @@ import com.angel.io.exceptions.InvalidRowDataException;
 			@ColumnRow( columnName = ProyectoAnnotationRowProcessorCommand.DESCRIPCION_COLUMN, aliases = {"Descripcion del Proyecto"} ),
 			@ColumnRow( columnName = ProyectoAnnotationRowProcessorCommand.TAGS_DE_BUSQUEDA_COLUMN, aliases = {"Tags de Busqueda"} ),
 			@ColumnRow( columnName = ProyectoAnnotationRowProcessorCommand.DESARROLLADORES_COLUMN, aliases = {"Desarrolladores"} ),
-			@ColumnRow( columnName = ProyectoAnnotationRowProcessorCommand.IMAGEN_PROYECTO_COLUMN, aliases = {"Imagen"} )
+			@ColumnRow( columnName = ProyectoAnnotationRowProcessorCommand.IMAGEN_PROYECTO_COLUMN, aliases = {"Imagen"} ),
+			@ColumnRow( columnName = ProyectoAnnotationRowProcessorCommand.ESTADO_COLUMN, aliases = {"Estado del Proyecto"} )
 		}
 	)
 public class ProyectoAnnotationRowProcessorCommand {
@@ -50,6 +52,7 @@ public class ProyectoAnnotationRowProcessorCommand {
 	public static final String TAGS_DE_BUSQUEDA_COLUMN = "tags";
 	public static final String DESARROLLADORES_COLUMN = "desarrolladores";
 	public static final String IMAGEN_PROYECTO_COLUMN = "imagen";
+	public static final String ESTADO_COLUMN = "estado";
 
 	@Inject
 	private ProyectoDAO proyectoDAO;
@@ -59,8 +62,8 @@ public class ProyectoAnnotationRowProcessorCommand {
 	private TagSearchDAO tagSearchDAO;
 	
 	@RowChecker(columnsParameters = {})
-    public void checkRowData(String tiulo, String descripcion, String tags, String desarrolladores, String imagen) throws InvalidRowDataException {
-		boolean areAllNotEmpty = StringHelper.areAllNotEmpty(tiulo, descripcion, tags, desarrolladores, imagen);
+    public void checkRowData(String tiulo, String descripcion, String tags, String desarrolladores, String imagen, String estado) throws InvalidRowDataException {
+		boolean areAllNotEmpty = StringHelper.areAllNotEmpty(tiulo, descripcion, tags, desarrolladores, imagen, estado);
 		if(!areAllNotEmpty){
 			throw new InvalidRowDataException("Some row data are NULL - " +
 					"tiulo: [" + tiulo + "] - " +
@@ -73,9 +76,11 @@ public class ProyectoAnnotationRowProcessorCommand {
     }
 
 	@RowProcessor(columnsParameters = {}, object = Proyecto.class, inject = true)
-	public Proyecto processRow(Proyecto proyecto, String titulo, String descripcion, String tags, String desarrolladores, String imagen) {
+	public Proyecto processRow(Proyecto proyecto, String titulo, String descripcion, String tags, String desarrolladores, String imagen, String estado) {
 		InputStream inputStream;
 		try {
+			Estado estadoEnum = Estado.valueOf(estado);
+			proyecto.setEstado(estadoEnum);
 			if(!"Ninguna".equalsIgnoreCase(imagen)){
 				inputStream = FileHelper.findInputStreamInClasspath(imagen);
 				Blob logo = Hibernate.createBlob(inputStream);

@@ -5,9 +5,12 @@
 	
 	horizontalAlign="center"
 	verticalAlign="top">
-
+	<mx:Metadata>
+	    [Event(name="clickXWindowShade", type="com.angel.events.ClickXWindowShadeEvent")]
+	</mx:Metadata>
 	<mx:Script>
 	<![CDATA[
+		import com.angel.events.ClickXWindowShadeEvent;
 		import com.angel.events.ChangeStateWindowShadeEvent;
 		import com.angel.components.windowsShade.XWindowShade;
 		import mx.collections.ArrayCollection;
@@ -84,16 +87,14 @@
 
 		private function changeOpenedEvent(event:ChangeStateWindowShadeEvent):void{
 			var clickedXWindowShade:XWindowShade = event.target as XWindowShade;
-			//trace("Opened event value: " + event.opened);
 			for each(var xws:XWindowShade in _windows){
 				if(xws != clickedXWindowShade){
 					if(event.opened){
 						xws.closeWindow();
-					} /*else {
-						xws.openWindow();
-					}*/
+					}
 				}
 			}
+			dispatchEvent(new ClickXWindowShadeEvent("clickXWindowShade", clickedXWindowShade));
 		}
 	]]>
 	</mx:Script>

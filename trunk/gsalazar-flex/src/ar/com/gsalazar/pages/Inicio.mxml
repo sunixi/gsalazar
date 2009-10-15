@@ -9,6 +9,7 @@
 
 	<mx:Script>
 	<![CDATA[
+		import com.angel.components.tagCloud.TagSearchContainer;
 		import ar.com.gsalazar.components.ResultadoBusqueda;
 		import com.angel.components.tagCloud.TagSearch;
 		import mx.collections.ArrayCollection;
@@ -20,7 +21,7 @@
 		
 		
 		[Bindable]
-		public var tagSearch:IList;
+		public var tagSearchContainer:TagSearchContainer;
 		[Bindable]
 		private var lastTagSearch:TagSearch;
 
@@ -38,7 +39,7 @@
 		private function buscarArticulosCallbackFunction(data:IList):void {
 			var _popup:ResultadoBusqueda = PopUpManager.createPopUp(this, ResultadoBusqueda, true) as ResultadoBusqueda;
 			_popup.height = Application.application.height * 1;
-			_popup.width = Application.application.width * 0.7;
+			_popup.width = Application.application.width * 0.85;
 			_popup.x = Application.application.width / 2 - _popup.width / 2;
 			_popup.y = Application.application.height / 2 - _popup.height / 2;
 			var tagBuscados:IList = new ArrayCollection();
@@ -54,9 +55,11 @@
 		<mx:VBox width="75%">
 			<mx:Label text="Contenido Inicio" width="75%"  color="blue"/>	
 		</mx:VBox>
-		<mx:VBox width="25%" verticalAlign="middle" horizontalAlign="center" >
-			<tagCloud:CloudTags width="5%" maxTags="15" tagsPerRow="5" tags="{tagSearch.toArray()}" clickTagSearch="clickTagSearch(event);"/>
-			<rankeable:RankeableList width="5%" maxRankeables="5" tittle="Últimos 10 Articulos:">
+		<mx:VBox width="25%" height="90%" verticalAlign="middle" horizontalAlign="center" >
+			<mx:Label text="Listado de Tags mas solicitados" width="90%"/>				
+			<tagCloud:CloudTags width="90%" height="40%" maxTags="15" tagsPerRow="4" 
+				tagSearchContainer="{tagSearchContainer}" clickTagSearch="clickTagSearch(event);"/>
+			<rankeable:RankeableList width="90%" height="40%" maxRankeables="5" tittle="Últimos 10 Articulos:">
 				<rankeable:rankeables>
 					<beans:Articulo descripcion="Configurando Flex y Java" titulo="Configuracion Flex-Java" />
 					<beans:Articulo descripcion="Iniciando en Maven" titulo="Maven para begginers" />

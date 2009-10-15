@@ -23,6 +23,7 @@
 	
 	<mx:Script>
 	<![CDATA[
+		import mx.controls.TileList;
 		import ar.com.gsalazar.events.ClickTagSearchEvent;
 		import com.angel.components.tagCloud.strategyView.DefaultStrategyView;
 		import com.angel.components.tagCloud.strategyView.StrategyView;
@@ -41,11 +42,13 @@
 		import mx.collections.IList;
 		
 		[Bindable]
-		public var tags:Array;
+		private var _tagSearchContainer:TagSearchContainer;
 		[Bindable]
-		private var sortedTags:ArrayCollection;
+		private var tagsSearch:IList;
 		[Bindable]
-		public var tagsPerRow:Number;
+		public var tagsPerRow:Number = 4;
+		[Bindable]
+		public var rowCount:Number = 4;
 		[Bindable]
 		public var maxTags:Number;
 		[Bindable]
@@ -55,58 +58,59 @@
 		
 		
 		public function init():void {
-			inicializarTagSearch();
+			tagsSearch = new ArrayCollection();
 		}
 		
-		private function inicializarTagSearch():void {
-			ServiceLocator.getServiceWithCallback("tagSearchService", inicializarTagSearchCallbackFunction).buscarTodos();			
+		public function get tagSearchContainer():TagSearchContainer{
+			return _tagSearchContainer;
 		}
 		
-		private function inicializarTagSearchCallbackFunction(tagSearchContainer:TagSearchContainer):void {
-			tags = tagSearchContainer.tagsSearchs.toArray();
-			initCloudTag(tagSearchContainer);
-		}
-		
-		private function initCloudTag(tagSearchContainer:TagSearchContainer):void {
-			var tagsCount:Number = 1;
-			var hBox:HBox = this.buildHBox();
-			for each(var tagSearch:TagSearch in tags){
-				var linkButton:LinkButton = this.buildLinkButton(tagSearch, tagSearchContainer.totalOcurrencias);
-				if(tagsCount == tagsPerRow){
-					hBox = this.buildHBox();
-					tagsCount = 0;
+		public function set tagSearchContainer(tagSearchContainer:TagSearchContainer):void{
+			_tagSearchContainer = tagSearchContainer;
+			var currentSize:Number = 0;
+			for each(var ts:TagSearch in tagSearchContainer.tagsSearchs){
+				if(currentSize <= maxTags){
+					tagsSearch.addItem(ts);
 				}
-				hBox.addChild(linkButton);
-				hBoxRoot.addChild(hBox);
-				tagsCount++;
+				currentSize++;
 			}
 		}
 
-		private function buildLinkButton(tagSearch:TagSearch, totalOcurrencias:Number):LinkButton {
-			var label:LinkButton = new LinkButton();
-				label.label = tagSearch.label;
-				label.data = tagSearch;
-				label.addEventListener(MouseEvent.CLICK, clickTagSearchHandler);
-				label.toolTip = tagSearch.description + " (" + tagSearch.occurrences + "/" + totalOcurrencias + " occurencias).";
-				label.setStyle("fontSize", this.strategyView.fontSize(tagSearch, totalOcurrencias));
-				label.setStyle("color", this.strategyView.fontColor(tagSearch, totalOcurrencias));
-			return label;
-		}
-
-		private function clickTagSearchHandler(event:Event = null):void {
-			var labelClicked:LinkButton = event.target as LinkButton;
-			super.dispatchEvent(new ClickTagSearchEvent("clickTagSearch", labelClicked.data as TagSearch));
+		internal function calculateOccurences(data:Object):Number {
+			var occurences:Number = data.occurrences / tagSearchContainer.totalOcurrencias;
+			return Math.ceil(occurences);
 		}
 		
-		private function buildHBox():HBox {
-			var hBox:HBox = new HBox();
-			hBox.percentWidth = 100;
-			return hBox;
+		private function itemClickHandler(event:Event):void {
+			var tileList:TileList = event.target as TileList;
+			var tagSearch:TagSearch = TagSearch(tileList.selectedItem);
+			super.dispatchEvent(new ClickTagSearchEvent("clickTagSearch", tagSearch));
+		}
+		
+		internal function tagSearchFontSize(data:Object):Number{
+			return this.strategyView.fontSize(TagSearch(data), tagSearchContainer.totalOcurrencias);
+		}
+		internal function tagSearchColor(data:Object):uint{
+			return this.strategyView.fontColor(TagSearch(data), tagSearchContainer.totalOcurrencias);
+		}
+		
+		private function onCreationCompleteCloudTagSearchList(event:Event):void {
+			cloudTagSearchList.columnWidth = Math.ceil(cloudTagSearchList.width / tagsPerRow) + 10;
 		}
 	]]>
 	</mx:Script>
-	
-	<mx:VBox id="hBoxRoot" styleName="tagsCloudStyle" paddingTop="5" paddingRight="5" paddingLeft="5" paddingBottom="5" width="100%" verticalAlign="middle" horizontalAlign="center">
-		
-	</mx:VBox>
+	<mx:TileList id="cloudTagSearchList" dataProvider="{tagsSearch}"  itemClick="itemClickHandler(event);"
+		columnCount="{tagsPerRow}" backgroundAlpha="0" rowCount="{rowCount}" cornerRadius="15" 
+		verticalAlign="middle" selectable="true" wordWrap="true" rowHeight="30"
+		creationComplete="onCreationCompleteCloudTagSearchList(event);" >
+		<mx:itemRenderer>
+			<mx:Component>
+				<mx:Label width="{data.label.length * 21}" height="5"  text="{data.label}" data="{data}" 
+					toolTip="{data.label}: {data.description} ( {outerDocument.calculateOccurences(data)} occurencias)."
+					fontSize="{outerDocument.tagSearchFontSize(data) + 2}"
+					textAlign="center" 
+					color="{outerDocument.tagSearchColor(data)}"/>
+			</mx:Component>
+		</mx:itemRenderer>
+	</mx:TileList>
 </mx:Box>

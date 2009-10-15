@@ -7,7 +7,7 @@ package com.angel.components.tagCloud.strategyView
 	
 		function fontSize(tagSearch:TagSearch, totalOcurrences:Number):Number;
 		
-		function fontColor(tagSearch:TagSearch, totalOcurrences:Number):String;
+		function fontColor(tagSearch:TagSearch, totalOcurrences:Number):uint;
 
 	}
 }

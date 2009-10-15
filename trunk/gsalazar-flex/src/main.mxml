@@ -133,7 +133,7 @@
 			
 			private function endsLoading(event:Event = null):void {
 				gsalazarHeaderToolbar.tagsSearch = ApplicationLocator.instance.tagsSearchs;
-				(paginas.getChildAt(0) as Inicio).tagSearch = ApplicationLocator.instance.tagsSearchs;
+				(paginas.getChildAt(0) as Inicio).tagSearchContainer = ApplicationLocator.instance.tagSearchContainer;
 				(paginas.getChildAt(1) as CurriculumVitae).subCategorias = ApplicationLocator.instance.buscarSubCategoriasPara('Curriculum Vitae');
 				(paginas.getChildAt(2) as Proyectos).proyectos = ApplicationLocator.instance.proyectos;
 				(paginas.getChildAt(3) as Articulos).articulos = ApplicationLocator.instance.articulos;

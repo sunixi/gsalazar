@@ -3,11 +3,13 @@
  */
 package ar.com.gsalazar.daos.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import ar.com.gsalazar.beans.Estado;
 import ar.com.gsalazar.beans.Proyecto;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ProyectoDAO;
@@ -50,5 +52,20 @@ public class ProyectoSpringHibernateDAO extends GenericSpringHibernateDAO<Proyec
 		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), busquedaInfo);
 		Query query = super.getSession().createQuery(q);
 		return query.list();
+	}
+
+	public List<Proyecto> buscarTodosEnDesarrollo(int cantidadMaxima) {
+		List<Proyecto> proyectos  = (List<Proyecto>) super.findAll("estado", Estado.EN_DESARROLLO);
+		List<Proyecto> proyectosFiltrados = new ArrayList<Proyecto>();
+		int i = 0;
+		for(Proyecto a: proyectos){
+			if(i < cantidadMaxima){
+				proyectosFiltrados.add(a);
+			} else {
+				break;
+			}
+			i++;
+		}
+		return proyectosFiltrados;
 	}
 }

@@ -11,15 +11,15 @@
 	<mx:VBox width="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="40" styleName="articulosAdvancedDataGrid">
 		<mx:HBox width="100%" height="2%">
 			<mx:Label text="{data.titulo}" toolTip="{data.titulo}" fontWeight="bold" fontSize="13" color="black"/>
-			<mx:Spacer width="1%"/>
-			<mx:Label text="{data.getTagsSearchString()}" color="black"/>
 		</mx:HBox>
 		<mx:HBox width="100%" height="2%">
 			<mx:Label text="Descripción: " color="black"/>
-			<mx:Text text="{data.descripcion}" color="black" selectable="false"/>
+			<mx:Text text="{data.descripcion}" width="80%" color="black" selectable="false"/>
 		</mx:HBox>
 		<mx:HBox width="100%" height="2%" verticalAlign="middle" horizontalAlign="right">
-			<mx:Button label="Ver info..." click="data.buildDetallePopup(this)"/>
+			<mx:Label width="10%" text="Tags: " color="black" fontWeight="bold"/>
+			<mx:Label width="80%" text="{data.getTagsSearchString()}" color="black" fontStyle="italic"/>
+			<mx:Button width="10%" label="Ver info..." click="data.buildDetallePopup(this)"/>
 		</mx:HBox>
 	</mx:VBox>
 </mx:VBox>

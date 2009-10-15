@@ -24,4 +24,6 @@ public interface ProyectoDAO extends GenericDAO<Proyecto, ObjectId>{
 	public List<Proyecto> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch);
 	
 	public List<Proyecto> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
+	
+	public List<Proyecto> buscarTodosEnDesarrollo(int cantidadMaxima);
 }

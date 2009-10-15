@@ -120,7 +120,7 @@
 					</mx:VBox>
 					<mx:VRule height="100%"/>
 					<mx:VBox width="80%" height="100%" verticalScrollPolicy="auto">
-						<mx:Text htmlText="{buscable.getContenido()}" width="100%"/>
+						<mx:Text htmlText="{buscable.getContenido()}" width="100%" selectable="false"/>
 					</mx:VBox>
 				</mx:HBox>
 			</mx:AddChild>

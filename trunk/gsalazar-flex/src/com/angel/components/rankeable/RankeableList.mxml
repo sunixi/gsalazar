@@ -8,7 +8,7 @@
 		.hotelDescriptionStyle {
 			borderStyle: solid;
 			borderColor: #FFFFFF;
-			borderThickness: 4;
+			borderThickness: 2;
 			roundedBottomCorners: true;
 			cornerRadius: 15;
 			headerHeight: 28;

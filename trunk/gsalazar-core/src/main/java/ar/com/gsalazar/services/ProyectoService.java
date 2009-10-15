@@ -26,4 +26,7 @@ public interface ProyectoService extends GenericService {
 	public List<Proyecto> buscarTodos();
 	
 	public List<Proyecto> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo);
+	
+	public List<Proyecto> buscarTodosEnDesarrollo(int cantidadMaxima);
+
 }

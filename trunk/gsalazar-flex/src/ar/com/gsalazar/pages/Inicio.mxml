@@ -9,6 +9,7 @@
 
 	<mx:Script>
 	<![CDATA[
+		import com.angel.syncronization.TransactionalBlock;
 		import com.angel.components.tagCloud.TagSearchContainer;
 		import ar.com.gsalazar.components.ResultadoBusqueda;
 		import com.angel.components.tagCloud.TagSearch;
@@ -24,9 +25,50 @@
 		public var tagSearchContainer:TagSearchContainer;
 		[Bindable]
 		private var lastTagSearch:TagSearch;
+		[Bindable]
+		private var ultimosArticulosAgregados:IList;
+		[Bindable]
+		private var ultimosArticulosComentados:IList;
+		[Bindable]
+		private var proyectosEnDesarrollo:IList;
 
 		public function init():void {
+			/*
+			var transactionalBlock:TransactionalBlock = new TransactionalBlock();
+			transactionalBlock.register("articuloService",	"buscarTodosUltimosAgregados")
+				.callbackFunction(inicializarUltimosArticulosAgregadosCallbackFunction)
+				.arguments.push(4);
+			transactionalBlock.register("articuloService",	"buscarTodosUltimosComentados")
+				.callbackFunction(inicializarUltimosArticulosComentadosCallbackFunction)
+				.arguments.push(4);
+			transactionalBlock.execute(this);
+			*/
+			inicializarUltimosArticulosAgregados();
+			inicializarUltimosArticulosComentados();
+			inicializarProyectosEnDesarrollo();
+		}
 
+		private function inicializarUltimosArticulosAgregados():void {
+			ServiceLocator.getServiceWithCallback('articuloService', inicializarUltimosArticulosAgregadosCallbackFunction)
+				.buscarTodosUltimosAgregados(4);
+		}
+		private function inicializarUltimosArticulosComentados():void {
+			ServiceLocator.getServiceWithCallback('articuloService', inicializarUltimosArticulosComentadosCallbackFunction)
+				.buscarTodosUltimosComentados(4);
+		}
+		private function inicializarProyectosEnDesarrollo():void {
+			ServiceLocator.getServiceWithCallback('proyectoService', inicializarProyectosEnDesarrolloCallbackFunction)
+				.buscarTodosEnDesarrollo(4);
+		}
+
+		private function inicializarUltimosArticulosAgregadosCallbackFunction(data:IList):void {
+			ultimosArticulosAgregados = data;
+		}
+		private function inicializarUltimosArticulosComentadosCallbackFunction(data:IList):void {
+			ultimosArticulosComentados = data;
+		}
+		private function inicializarProyectosEnDesarrolloCallbackFunction(data:IList):void {
+			proyectosEnDesarrollo = data;
 		}
 
 		private function clickTagSearch(event:ClickTagSearchEvent):void {
@@ -52,19 +94,52 @@
 	]]>
 	</mx:Script>
 	<mx:HBox width="100%" >
-		<mx:VBox width="75%">
-			<mx:Label text="Contenido Inicio" width="75%"  color="blue"/>	
+		<mx:VBox width="25%">
+			<mx:Label text="Ultimos articulos agregados: " width="100%" textAlign="left"
+				fontWeight="bold" fontStyle="italic"/>
+			<mx:List id="ultimosArticulosAgregadosList" dataProvider="{ultimosArticulosAgregados}"  
+				backgroundAlpha="0" cornerRadius="15" selectable="false" rowCount="4"
+				itemRenderer="ar.com.gsalazar.itemRenderers.UltimosArticulosItemRenderer"
+				borderStyle="none"
+				/>
+			<mx:Label text="Articulos mas comentados: " width="100%" textAlign="left"
+				fontWeight="bold" fontStyle="italic"/>
+			<mx:List id="ultimosArticulosComentadosList" dataProvider="{ultimosArticulosComentados}"  
+				backgroundAlpha="0" cornerRadius="15" selectable="false" rowCount="4"
+				itemRenderer="ar.com.gsalazar.itemRenderers.ArticulosMasComentadosItemRenderer"
+				borderStyle="none"
+				/>
 		</mx:VBox>
+		<mx:VRule height="100%" width="1"/>
+		<mx:VBox width="50%">
+			<mx:Text textAlign="left" selectable="false">
+				<mx:htmlText>
+					<![CDATA[
+						<b>Muchas Gracias por Visitar GSalazar.com.ar</b>
+						</br>
+					]]>
+				</mx:htmlText>
+			</mx:Text>
+		</mx:VBox>
+		<mx:VRule height="100%" width="1"/>
 		<mx:VBox width="25%" height="90%" verticalAlign="middle" horizontalAlign="center" >
-			<mx:Label text="Listado de Tags mas solicitados" width="90%"/>				
+			<mx:Label text="Listado de Tags mas buscados" width="95%"/>				
 			<tagCloud:CloudTags width="90%" height="40%" maxTags="15" tagsPerRow="4" 
 				tagSearchContainer="{tagSearchContainer}" clickTagSearch="clickTagSearch(event);"/>
+			<!--
 			<rankeable:RankeableList width="90%" height="40%" maxRankeables="5" tittle="Últimos 10 Articulos:">
 				<rankeable:rankeables>
 					<beans:Articulo descripcion="Configurando Flex y Java" titulo="Configuracion Flex-Java" />
 					<beans:Articulo descripcion="Iniciando en Maven" titulo="Maven para begginers" />
 				</rankeable:rankeables>
-			</rankeable:RankeableList>
+			</rankeable:RankeableList>-->
+			<mx:Label text="Proyectos en desarrollo: " width="100%" textAlign="left"
+				fontWeight="bold" fontStyle="italic"/>
+			<mx:List id="proyectoEnDesarrolloList" dataProvider="{proyectosEnDesarrollo}"  
+				backgroundAlpha="0" cornerRadius="15" selectable="false" rowCount="4"
+				itemRenderer="ar.com.gsalazar.itemRenderers.ProyectoEnDesarrolloItemRenderer"
+				borderStyle="none"
+				/>
 			<!--<clock:FlexClock width="70" height="70"/>-->
 		</mx:VBox>	
 	</mx:HBox>

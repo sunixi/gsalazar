@@ -23,15 +23,15 @@
 	</mx:Script>
 	<mx:VBox width="95%" verticalAlign="top" horizontalAlign="left" paddingLeft="10">
 		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="left">
-			<mx:VBox width="25%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+			<mx:VBox width="10%" height="100%" verticalAlign="middle" horizontalAlign="left" paddingLeft="10" paddingTop="5">
 				<mx:Image source="{data.logo}" toolTip="{data.descripcion}" width="60" height="60"/>	
 			</mx:VBox>
-			<mx:VBox width="75%" height="100%" verticalAlign="top" horizontalAlign="center" paddingLeft="10" paddingTop="5">
+			<mx:VBox width="80%" height="100%" verticalAlign="middle" horizontalAlign="left" paddingLeft="10" paddingTop="5">
 				<mx:Label text="{data.nombre}" color="black" fontSize="13" fontWeight="bold" />
-				<mx:Text width="100%" text="{data.descripcion}" color="black"/>
-				<mx:HBox width="100%">
-					<mx:Label text="{data.link}" color="black"/>
-					<mx:Label buttonMode="true" text="Ir al sitio web..." click="irAURL();" fontWeight="bold" fontSize="12"/>
+				<mx:Text width="100%" text="{data.descripcion}" color="black" selectable="false"/>
+				<mx:HBox width="100%" verticalAlign="top">
+					<mx:Label width="70%" text="{data.link}" color="black" fontStyle="italic" fontSize="11"/>
+					<mx:Label width="30%" buttonMode="true" text="Ir al sitio web..." click="irAURL();" fontWeight="bold" fontSize="12"/>
 				</mx:HBox>
 			</mx:VBox>
 		</mx:HBox>

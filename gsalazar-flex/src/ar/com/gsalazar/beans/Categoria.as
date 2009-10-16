@@ -11,6 +11,7 @@ package ar.com.gsalazar.beans {
 		public var nombre:String;
 		public var descripcion:String;
 		public var subCategorias:IList;
+		public var items:IList;
 
 	}
 }

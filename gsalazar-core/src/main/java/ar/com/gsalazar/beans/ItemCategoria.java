@@ -4,6 +4,7 @@
 package ar.com.gsalazar.beans;
 
 import java.sql.Blob;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +27,10 @@ public class ItemCategoria extends PersistentObject {
 	private String nombre;
 	@Column(nullable = false)
 	private String descripcion;
+	@Column(nullable = true)
+	private Date comienzo;
+	@Column(nullable = true)
+	private Date fin;
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	private ImagenItemCategoria imagenItemCategoria;
 
@@ -68,5 +73,29 @@ public class ItemCategoria extends PersistentObject {
 	
 	public void setImagenItemCategoria(String fileName, Blob imagen) {
 		this.setImagenItemCategoria(new ImagenItemCategoria(imagen, fileName));
+	}
+	/**
+	 * @return the comienzo
+	 */
+	public Date getComienzo() {
+		return comienzo;
+	}
+	/**
+	 * @param comienzo the comienzo to set
+	 */
+	public void setComienzo(Date comienzo) {
+		this.comienzo = comienzo;
+	}
+	/**
+	 * @return the fin
+	 */
+	public Date getFin() {
+		return fin;
+	}
+	/**
+	 * @param fin the fin to set
+	 */
+	public void setFin(Date fin) {
+		this.fin = fin;
 	}
 }

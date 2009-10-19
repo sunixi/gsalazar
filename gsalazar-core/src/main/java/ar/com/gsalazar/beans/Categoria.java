@@ -4,6 +4,7 @@
 package ar.com.gsalazar.beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,6 +30,8 @@ public class Categoria extends PersistentObject {
 	private String descripcion;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Categoria> subCategorias;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<ItemCategoria> items;
 
 	public Categoria(String nombre, String descripcion, List<Categoria> subCategorias){
 		this();
@@ -93,5 +96,36 @@ public class Categoria extends PersistentObject {
 	 */
 	public void setSubCategorias(List<Categoria> subCategorias) {
 		this.subCategorias = subCategorias;
+	}
+
+	/**
+	 * @return the items
+	 */
+	public List<ItemCategoria> getItems() {
+		return items;
+	}
+
+	/**
+	 * @param items the items to set
+	 */
+	public void setItems(List<ItemCategoria> items) {
+		this.items = items;
+	}
+
+	public void addItemCategoria(ItemCategoria itemCategoria){
+		this.getItems().add(itemCategoria);
+	}
+	
+	public void addItemCategoria(String nombre, String descripcion, Date comienzo, Date fin){
+		ItemCategoria itemCategoria = new ItemCategoria();
+		itemCategoria.setNombre(nombre);
+		itemCategoria.setDescripcion(descripcion);
+		itemCategoria.setComienzo(comienzo);
+		itemCategoria.setFin(fin);
+		this.addItemCategoria(itemCategoria);
+	}
+	
+	public void addItemCategoria(String nombre, String descripcion){
+		this.addItemCategoria(nombre, descripcion, null, null);
 	}
 }

@@ -36,7 +36,6 @@ public class ItemCategoriaAnnotationDataGenerator {
 	@ImportFileProcessorRunnerBuilder(fileProcessorDescriptor = FileProcessorDescriptor.class, name = "Importacion Expedientes")
     public ImportFileProcessorRunner prepareImportFileProcessorRunner(FileProcessorDescriptor fileProcessorDescriptor) {
 		ImportFileAnnotationProcessorRunner a = new ImportFileAnnotationProcessorRunner(fileProcessorDescriptor, new ExcelFileProcessorCommand(), new ItemCategoriaAnnotationRowProcessorCommand());
-		//a.setProcessorLogDAO((ProcessorLogDAO) ObjectLocator.getBeanByName("processorLogDAO"));
         return a;
     }
 

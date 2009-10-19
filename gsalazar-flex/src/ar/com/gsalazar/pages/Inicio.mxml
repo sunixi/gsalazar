@@ -44,7 +44,7 @@
 			transactionalBlock.execute(this);
 			*/
 			inicializarUltimosArticulosAgregados();
-			inicializarUltimosArticulosComentados();
+			inicializarArticulosMasComentados();
 			inicializarProyectosEnDesarrollo();
 		}
 
@@ -52,9 +52,9 @@
 			ServiceLocator.getServiceWithCallback('articuloService', inicializarUltimosArticulosAgregadosCallbackFunction)
 				.buscarTodosUltimosAgregados(4);
 		}
-		private function inicializarUltimosArticulosComentados():void {
-			ServiceLocator.getServiceWithCallback('articuloService', inicializarUltimosArticulosComentadosCallbackFunction)
-				.buscarTodosUltimosComentados(4);
+		private function inicializarArticulosMasComentados():void {
+			ServiceLocator.getServiceWithCallback('articuloService', inicializarArticulosMasComentadosCallbackFunction)
+				.buscarTodosMasComentados(4);
 		}
 		private function inicializarProyectosEnDesarrollo():void {
 			ServiceLocator.getServiceWithCallback('proyectoService', inicializarProyectosEnDesarrolloCallbackFunction)
@@ -64,7 +64,7 @@
 		private function inicializarUltimosArticulosAgregadosCallbackFunction(data:IList):void {
 			ultimosArticulosAgregados = data;
 		}
-		private function inicializarUltimosArticulosComentadosCallbackFunction(data:IList):void {
+		private function inicializarArticulosMasComentadosCallbackFunction(data:IList):void {
 			ultimosArticulosComentados = data;
 		}
 		private function inicializarProyectosEnDesarrolloCallbackFunction(data:IList):void {

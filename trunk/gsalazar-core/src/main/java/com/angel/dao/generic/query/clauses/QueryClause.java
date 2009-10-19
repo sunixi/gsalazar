@@ -9,7 +9,7 @@ package com.angel.dao.generic.query.clauses;
  * @since 16/September/2009.
  *
  */
-public interface HQLClause {
+public interface QueryClause {
 
 	public String createClause();
 

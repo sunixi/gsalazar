@@ -54,6 +54,14 @@ public class SearcherServiceTestCase extends GSalazarBaseTestCase{
 		assertTrue("Articulos searchers size shouldn't be more than 0.", list.size() > 0);
 	}
 
+	@Test
+	public void testBuscarArticulosUltimosAgregados(){
+		List<Articulo> list = this.getArticuloService().buscarTodosUltimosAgregados(10);
+
+		assertNotNull("Articulos searchers shouldn't be null.", list);
+		assertTrue("Articulos searchers size shouldn't be more than 0.", list.size() > 0);
+	}
+	
 	/**
 	 * @return the articuloDAO
 	 */

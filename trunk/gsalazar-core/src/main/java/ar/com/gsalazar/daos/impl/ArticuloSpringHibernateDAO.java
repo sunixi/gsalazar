@@ -21,6 +21,11 @@ import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
+import com.angel.dao.generic.query.builder.QueryBuilder;
+import com.angel.dao.generic.query.builder.impl.HQLQueryBuilder;
+import com.angel.dao.generic.query.clauses.impl.FromClause;
+import com.angel.dao.generic.query.clauses.impl.OrderByClause;
+import com.angel.dao.generic.query.clauses.impl.SelectClause;
 
 /**
  * 
@@ -70,7 +75,7 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	public List<Articulo> buscarTodosUltimosAgregados(int cantidadAgregada) {
 		//super.clearFilters();
 		//super.addInstacesFilter(new MaximumQuantityInstanceFilter<Articulo>(Long.valueOf(String.valueOf(cantidadAgregada)), 3, 0L));
-		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(new HashMap<String, Object>(), " where 1 = 1 order by creationDate desc");
+		/*List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(new HashMap<String, Object>(), " where 1 = 1 order by creationDate desc");
 		List<Articulo> articulosFiltrados = new ArrayList<Articulo>();
 		int i = 0;
 		for(Articulo a: articulos){
@@ -81,7 +86,15 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 			}
 			i++;
 		}
-		return articulosFiltrados;
+		return articulosFiltrados;*/
+		FromClause fromClause = new FromClause();
+		fromClause.add(super.getPersistentClass(), "articulo");
+		OrderByClause orderByClause = new OrderByClause();
+		orderByClause.desc("articulo", "creationDate");
+		HQLQueryBuilder queryBuilder = new HQLQueryBuilder(fromClause);
+		queryBuilder.setOrderByClause(orderByClause);
+		List<Articulo> articulos = (List<Articulo>) super.findAllByQueryBuilder(queryBuilder);
+		return articulos;
 	}
 
 	public List<Articulo> buscarTodosUltimosComentados(int cantidadComentada) {

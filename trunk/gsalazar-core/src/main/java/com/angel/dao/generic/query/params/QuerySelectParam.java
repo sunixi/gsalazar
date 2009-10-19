@@ -1,18 +1,18 @@
 /**
  * 
  */
-package com.angel.dao.generic.query.sources;
+package com.angel.dao.generic.query.params;
 
 /**
  * @author William.
  * @since 16/September/2009.
  *
  */
-public interface QuerySourceData {
+public interface QuerySelectParam {
 
 	public String getName();
 	
 	public String getAlias();
 	
-	public String getSourceData();
+	public String getSelection();
 }

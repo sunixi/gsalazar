@@ -3,7 +3,10 @@
  */
 package com.angel.dao.generic.query.params;
 
-import com.angel.dao.generic.query.operators.QueryOperator;
+import java.util.List;
+
+import com.angel.dao.generic.query.condition.Condition;
+
 
 /**
  * @author William.
@@ -14,15 +17,13 @@ public interface QueryConditionParam {
 	
 	public String getName();
 
-	public Object getValue();
+	public List<Object> getValues();
 
-	public String getCondition();
-
-	public QueryOperator getOperator();
+	public Condition getCondition();
 
 	public boolean isOpenTag();
 
 	public boolean isCloseTag();
 	
-	public String getQueryCondition();
+	public String queryCondition();
 }

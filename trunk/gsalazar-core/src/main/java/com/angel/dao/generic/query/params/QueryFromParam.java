@@ -8,11 +8,13 @@ package com.angel.dao.generic.query.params;
  * @since 16/September/2009.
  *
  */
-public interface QuerySelectionParam {
+public interface QueryFromParam {
 
 	public String getName();
 	
 	public String getAlias();
 	
-	public String getSelection();
+	public String getFrom();
+
+	public boolean isJoin();
 }

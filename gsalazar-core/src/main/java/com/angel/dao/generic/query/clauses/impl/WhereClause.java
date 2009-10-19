@@ -7,6 +7,7 @@ import java.util.List;
 import com.angel.common.helpers.StringHelper;
 import com.angel.dao.generic.query.clauses.QueryClause;
 import com.angel.dao.generic.query.condition.Condition;
+import com.angel.dao.generic.query.params.ParamType;
 import com.angel.dao.generic.query.params.QueryConditionParam;
 import com.angel.dao.generic.query.params.impl.HQLWhereParam;
 
@@ -41,7 +42,7 @@ public class WhereClause implements QueryClause{
 				clause += qcp.queryCondition();
 			}
 		}
-		return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
+		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
 	protected boolean hasQueryConditionParams(){
@@ -76,13 +77,17 @@ public class WhereClause implements QueryClause{
 	}
 	
 	protected WhereClause addQueryWhereParam(String name, Object ...valuesParams){
+		return this.addQueryWhereParam(name, ParamType.OBJECT_PARAMETER, valuesParams);
+	}
+	
+	protected WhereClause addQueryWhereParam(String name, ParamType paramType, Object ...valuesParams){
 		List<Object> values = new ArrayList<Object>();
 		if(valuesParams != null){
 			for(Object param: valuesParams){
 				values.add(param);
 			}
 		}
-		return this.addQueryWhereParam(new HQLWhereParam(this.getCondition(), name, this.isOpenGroup(), !this.isOpenGroup(), values));
+		return this.addQueryWhereParam(new HQLWhereParam(this.getCondition(), name, this.isOpenGroup(), !this.isOpenGroup(), values, paramType));
 	}
 	
 	protected WhereClause addQueryWhereParam(QueryConditionParam queryConditionParam){
@@ -97,7 +102,7 @@ public class WhereClause implements QueryClause{
 		return this.addQueryWhereParam(alias + "." + propertyName + " = ?", value);
 	}
 	public WhereClause equals(String propertyName, String value) {
-		return this.equals(StringHelper.EMPTY_STRING, propertyName, value);
+		return this.addQueryWhereParam(propertyName + " = ?", value);
 	}
 
 	public WhereClause notEquals(String propertyName, Object value) {
@@ -109,16 +114,19 @@ public class WhereClause implements QueryClause{
 	}
 
 	public <T extends Object> WhereClause notIn(String propertyName, Collection<T> values) {
-		return this.addQueryWhereParam(propertyName + " not in ( ? )", values);
+		return this.addQueryWhereParam(propertyName + " not in ( ? )", ParamType.LIST_PARAMETER, values);
 	}
 	public <T extends Object> WhereClause notIn(String alias, String propertyName, Collection<T> values) {
-		return this.addQueryWhereParam(alias + "." + propertyName + " not in ( ? )", values);
+		return this.addQueryWhereParam(alias + "." + propertyName + " not in ( ? )", ParamType.LIST_PARAMETER, values);
+	}
+	public <T extends Object> WhereClause in(String propertyName, T[] values) {
+		return this.addQueryWhereParam(propertyName + " in ( ? )", ParamType.LIST_PARAMETER, values);
 	}
 	public <T extends Object> WhereClause in(String propertyName, Collection<T> values) {
-		return this.in(StringHelper.EMPTY_STRING, propertyName, values);
+		return this.addQueryWhereParam(propertyName + " in ( ? )", ParamType.LIST_PARAMETER, values);
 	}
 	public <T extends Object> WhereClause in(String alias, String propertyName, Collection<T> values) {
-		return this.addQueryWhereParam(alias + "." + propertyName + " in ( ? )", values);
+		return this.addQueryWhereParam(alias + "." + propertyName + " in ( ? )", ParamType.LIST_PARAMETER, values);
 	}
 	
 	public WhereClause isEmpty(String propertyName) {
@@ -298,19 +306,19 @@ public class WhereClause implements QueryClause{
 
 	public <T extends Object> WhereClause inElements(String alias, String propertyName, Collection<T> collection){
 		/** select mother from Cat as mother, Cat as kit where kit in elements(foo.kittens).*/
-		return this.addQueryWhereParam(alias + "." + propertyName + " in elements(?)", collection);
+		return this.addQueryWhereParam(alias + "." + propertyName + " in elements(?)", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> WhereClause inElements(String propertyName, Collection<T> collection){
 		/** select mother from Cat as mother, Cat as kit where kit in elements(foo.kittens).*/
-		return this.addQueryWhereParam(propertyName + " in elements(?)", collection);
+		return this.addQueryWhereParam(propertyName + " in elements(?)", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> WhereClause someElements(String alias, String propertyName, Collection<T> collection){
 		/** select p from NameList list, Person p where p.name = some elements(list.names).*/
-		return this.addQueryWhereParam(alias + "." + propertyName + " = some elements(?)", collection);
+		return this.addQueryWhereParam(alias + "." + propertyName + " = some elements(?)", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> WhereClause someElements(String propertyName, Collection<T> collection){
 		/** select p from NameList list, Person p where p.name = some elements(list.names).*/
-		return this.addQueryWhereParam(propertyName + " = some elements(?)", collection);
+		return this.addQueryWhereParam(propertyName + " = some elements(?)", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> WhereClause existElements(String alias, String propertyName){
 		/** from Cat cat where exists elements(cat.kittens).*/
@@ -367,6 +375,15 @@ public class WhereClause implements QueryClause{
 	protected void setCondition(Condition condition) {
 		this.condition = condition;
 	}
+	
+	public WhereClause someElementsValuesEQ(String alias, String propertyName, Collection<?> values) {
+		/** prod = all elements(cust.currentOrder.lineItems)*/
+		return this.addQueryWhereParam(alias + "." + propertyName + " = some elements( ? )",ParamType.LIST_PARAMETER,  values);
+	}
+	public WhereClause someElementsValuesEQ(String propertyName, Collection<?> values) {
+		/** prod = all elements(cust.currentOrder.lineItems)*/
+		return this.addQueryWhereParam(propertyName + " = some elements( ? )", ParamType.LIST_PARAMETER, values);
+	}
 
 	public WhereClause allElementsValuesEQ(String beanName, String alias, String propertyName) {
 		/** prod = all elements(cust.currentOrder.lineItems)*/
@@ -374,16 +391,16 @@ public class WhereClause implements QueryClause{
 	}
 	public WhereClause allElementsValuesEQ(String beanName, String propertyName) {
 		/** prod = all elements(cust.currentOrder.lineItems)*/
-		return this.addQueryWhereParam(" beanName = all elements(" + propertyName + ")");
+		return this.addQueryWhereParam(beanName + " = all elements(" + propertyName + ")");
 	}
 	
 	public WhereClause allElementsValuesEQ(String propertyName, Collection<?> values) {
 		/** prod = all elements(cust.currentOrder.lineItems)*/
-		return this.addQueryWhereParam(propertyName + " = all elements( ? )", values);
+		return this.addQueryWhereParam(propertyName + " = all elements( ? )", ParamType.LIST_PARAMETER, values);
 	}	
 	public WhereClause allElementsValuesEQ(String alias, String propertyName, Collection<?> values) {
 		/** prod = all elements(cust.currentOrder.lineItems)*/
-		return this.addQueryWhereParam( alias + "." + propertyName + " = all elements( ? )", values);
+		return this.addQueryWhereParam( alias + "." + propertyName + " = all elements( ? )", ParamType.LIST_PARAMETER, values);
 	}	
 
 	/**

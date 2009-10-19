@@ -10,10 +10,10 @@ import org.htmlcleaner.TagNode;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.com.gsalazar.GSalazarBaseTestCase;
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.services.ArticuloService;
 
-import com.angel.gsalazar.GSalazarBaseTestCase;
 
 /**
  * 

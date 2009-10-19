@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.angel.gsalazar;
+package ar.com.gsalazar;
 
 import org.junit.Test;
 

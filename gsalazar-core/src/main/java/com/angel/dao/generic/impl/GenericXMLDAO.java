@@ -12,6 +12,7 @@ import javax.transaction.NotSupportedException;
 
 import com.angel.dao.generic.interfaces.FindAllInstancesFilter;
 import com.angel.dao.generic.interfaces.TransactionStrategy;
+import com.angel.dao.generic.query.Query;
 import com.angel.dao.generic.query.builder.QueryBuilder;
 
 /**
@@ -98,7 +99,7 @@ public class GenericXMLDAO<T extends Object, Code extends Serializable> extends 
 	}
 
 
-	public <C> List<C> findAll(Map<String, Object> properties, String query, Class<C> objectClass,  FindAllInstancesFilter<C> ...filters) {
+	public <C> Collection<C> findAll(Map<String, Object> properties, String query, Class<C> objectClass,  FindAllInstancesFilter<C> ...filters) {
 		throw new RuntimeException(new NotSupportedException("Not supported funcionality."));
 	}
 
@@ -148,6 +149,10 @@ public class GenericXMLDAO<T extends Object, Code extends Serializable> extends 
 		throw new RuntimeException(new NotSupportedException("Not supported funcionality."));
 	}
 	public T findUniqueByQueryBuilder(QueryBuilder queryBuilder) {
+		throw new RuntimeException(new NotSupportedException("Not supported funcionality."));
+	}
+
+	public Collection<T> findAllByQuery(Query query) {
 		throw new RuntimeException(new NotSupportedException("Not supported funcionality."));
 	}
 }

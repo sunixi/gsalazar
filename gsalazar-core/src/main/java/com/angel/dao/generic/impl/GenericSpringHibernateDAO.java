@@ -27,6 +27,7 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.hql.ast.QuerySyntaxException;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.angel.dao.generic.base.InstancesActionManager;
@@ -43,6 +44,8 @@ import com.angel.dao.generic.interfaces.FindAllInstancesAction;
 import com.angel.dao.generic.interfaces.FindAllInstancesFilter;
 import com.angel.dao.generic.interfaces.GenericDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;
+import com.angel.dao.generic.query.params.ParamType;
+import com.angel.dao.generic.query.params.QueryConditionParam;
 
 /** Define a data access object pattern. It has behaviour to manipulate business objects with the repository. In this class inherit
  * all Hibernate (database repository) sub class.
@@ -616,12 +619,34 @@ public class GenericSpringHibernateDAO<T extends Object, Code extends Serializab
 		this.getCurrentSession().getTransaction().rollback();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<T> findAllByQueryBuilder(QueryBuilder queryBuilder) {
 		com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
+		return this.findAllByQuery(query);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<T> findAllByQuery(com.angel.dao.generic.query.Query query) {
 		List<T> entities = null;
 		try {
-			entities = super.getHibernateTemplate().find(query.getQuery(), query.getParams());
+			super.getHibernateTemplate().setFetchSize(query.getFetchSize());
+			super.getHibernateTemplate().setMaxResults(query.getMaxResult());
+			if(query.hasParams()){
+				Query q = super.getSession().createQuery(query.getQuery());
+				List<QueryConditionParam> conditions = query.getConditions();
+				Object[] params = query.getParams();
+				for(int i = 0; i < conditions.size(); i++){
+					QueryConditionParam qcp = conditions.get(i);
+					if(ParamType.OBJECT_PARAMETER == qcp.getParamType()){
+						q.setParameter("param_" + i, params[i]);
+					} else {
+						q.setParameterList("param_" + i, (Collection) params[i]);
+					}
+				}
+				entities = q.list();
+				//entities = super.getHibernateTemplate().find(query.getQuery(), query.getParams());
+			} else {
+				entities = super.getHibernateTemplate().find(query.getQuery());
+			}
 		} catch(Exception e){
 			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
 		}

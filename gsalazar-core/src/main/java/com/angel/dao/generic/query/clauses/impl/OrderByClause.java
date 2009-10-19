@@ -1,5 +1,6 @@
 package com.angel.dao.generic.query.clauses.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
@@ -19,6 +20,7 @@ public class OrderByClause implements QueryClause{
 	
 	public OrderByClause(){
 		super();
+		this.setOrdersBy(new ArrayList<String>());
 	}
 
 	public String createClause() {
@@ -34,7 +36,7 @@ public class OrderByClause implements QueryClause{
 				}
 			}
 		}
-		return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
+		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
 	protected boolean hasOrderByParams(){
@@ -47,19 +49,19 @@ public class OrderByClause implements QueryClause{
 	}
 	
 	public OrderByClause desc(String property) {
-		return this.addOrderByClause(" desc " + property);
+		return this.addOrderByClause(property + " desc ");
 	}
 	
 	public OrderByClause desc(String alias, String property) {
-		return this.addOrderByClause(" desc " + alias + "." + property);
+		return this.addOrderByClause(alias + "." + property + " desc ");
 	}
 
 	public OrderByClause asc(String property) {
-		return this.addOrderByClause(" asc " + property);
+		return this.addOrderByClause(property + " asc ");
 	}
 	
 	public OrderByClause asc(String alias, String property) {
-		return this.addOrderByClause(" asc " + alias + "." + property);
+		return this.addOrderByClause(alias + "." + property + " asc ");
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class SelectClause implements QueryClause{
 				current++;
 			}
 		}
-		return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
+		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
 	protected boolean hasQuerySelectParams(){

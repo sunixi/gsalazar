@@ -3,6 +3,7 @@ package com.angel.dao.generic.query.params.impl;
 import java.util.List;
 
 import com.angel.dao.generic.query.condition.Condition;
+import com.angel.dao.generic.query.params.ParamType;
 import com.angel.dao.generic.query.params.QueryConditionParam;
 
 
@@ -20,6 +21,7 @@ public class HQLWhereParam implements QueryConditionParam {
 	private List<Object> values;
 	private boolean openTag;
 	private boolean closeTag;
+	private ParamType paramType;
 	
 	public HQLWhereParam(){
 		super();
@@ -31,15 +33,29 @@ public class HQLWhereParam implements QueryConditionParam {
 		this();
 		this.setName(name);
 		this.setValues(value);
+		this.setParamType(ParamType.OBJECT_PARAMETER);
 	}
 	
-	public HQLWhereParam(Condition condition, String name, List<Object> values){
-		this(name, values);
+	public HQLWhereParam(String name, List<Object> value, ParamType paramType){
+		this();
+		this.setName(name);
+		this.setValues(value);
+		this.setParamType(paramType);
+	}
+
+	public HQLWhereParam(Condition condition, String name, List<Object> values, ParamType paramType){
+		this(name, values, paramType);
 		this.setCondition(condition);
 	}
 	
 	public HQLWhereParam(Condition condition, String name, boolean openTag, boolean closeTag, List<Object> values){
-		this(condition, name, values);
+		this(condition, name, values, ParamType.OBJECT_PARAMETER);
+		this.setOpenTag(openTag);
+		this.setCloseTag(closeTag);
+	}
+	
+	public HQLWhereParam(Condition condition, String name, boolean openTag, boolean closeTag, List<Object> values, ParamType paramType){
+		this(condition, name, values, paramType);
 		this.setOpenTag(openTag);
 		this.setCloseTag(closeTag);
 	}
@@ -102,5 +118,19 @@ public class HQLWhereParam implements QueryConditionParam {
 	 */
 	public void setCloseTag(boolean closeTag) {
 		this.closeTag = closeTag;
+	}
+
+	/**
+	 * @return the paramType
+	 */
+	public ParamType getParamType() {
+		return paramType;
+	}
+
+	/**
+	 * @param paramType the paramType to set
+	 */
+	public void setParamType(ParamType paramType) {
+		this.paramType = paramType;
 	} 
 }

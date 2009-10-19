@@ -11,12 +11,15 @@ import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.PersonaDAO;
 import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
-import ar.com.gsalazar.daos.queryBuilder.impl.BusquedaInfoQueryBeanFactory;
 import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
+import com.angel.dao.generic.query.builder.QueryBuilder;
+import com.angel.dao.generic.query.builder.impl.HQLQueryBuilder;
+import com.angel.dao.generic.query.clauses.impl.FromClause;
+import com.angel.dao.generic.query.clauses.impl.WhereClause;
 
 /**
  * 
@@ -51,11 +54,21 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 		return query.list();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Persona> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
-		QueryBeanFactory queryBeanFactory = new BusquedaInfoQueryBeanFactory();
-		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), busquedaInfo);
+		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		fromClause
+			.add(this.getPersistentClass(), "personas")
+			.innerJoin("personas.tagsBuscables", "tags");
+		WhereClause whereClause = (WhereClause) queryBuilder.buildWhereClause();
+		whereClause
+			.in("tags", busquedaInfo.getTagsBuscables());
+		return (List<Persona>) super.findAllByQuery(queryBuilder.buildQuery());
+		/*
+		String q = "from ar.com.gsalazar.beans.Proyecto personas inner join personas.tagsBuscables tags where tags in ( :parameterList )";
 		Query query = super.getSession().createQuery(q);
+		query.setParameterList("parameterList", busquedaInfo.getTagsBuscables());
 		return query.list();
+		*/
 	}
 }

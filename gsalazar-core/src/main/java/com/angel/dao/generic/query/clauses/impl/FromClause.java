@@ -65,7 +65,7 @@ public class FromClause implements QueryClause{
 				}
 			}
 		}
-		return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
+		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 
 	public <T extends Object> FromClause add(Class<T> objectBean, String alias) {

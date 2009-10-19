@@ -453,17 +453,9 @@ public class GenericHibernateDAO<T extends Object, Code extends Serializable> ex
 		this.getSession().getTransaction().rollback();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<T> findAllByQueryBuilder(QueryBuilder queryBuilder) {
 		com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
-		List<T> entities = null;
-		try {
-			Session session = (Session) super.getTransaction().getCurrentSession();
-			entities = (List<T>) session.createQuery(query.getQuery()).setParameters(query.getParams().toArray(), null);
-		} catch(Exception e){
-			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
-		}
-		return entities;
+		return this.findAllByQuery(query);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -472,7 +464,7 @@ public class GenericHibernateDAO<T extends Object, Code extends Serializable> ex
 		List<T> entities = null;
 		try {
 			Session session = (Session) super.getTransaction().getCurrentSession();
-			entities = (List<T>) session.createQuery(query.getQuery()).setParameters(query.getParams().toArray(), null);
+			entities = (List<T>) session.createQuery(query.getQuery()).setParameters(query.getParams(), null);
 		} catch(Exception e){
 			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
 		}
@@ -480,5 +472,17 @@ public class GenericHibernateDAO<T extends Object, Code extends Serializable> ex
 			throw new GenericDAOException("Not unique result for query [" + query.getQuery() + "].");
 		}
 		return entities.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<T> findAllByQuery(com.angel.dao.generic.query.Query query) {
+		List<T> entities = null;
+		try {
+			Session session = (Session) super.getTransaction().getCurrentSession();
+			entities = (List<T>) session.createQuery(query.getQuery()).setParameters(query.getParams(), null);
+		} catch(Exception e){
+			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
+		}
+		return entities;
 	}
 }

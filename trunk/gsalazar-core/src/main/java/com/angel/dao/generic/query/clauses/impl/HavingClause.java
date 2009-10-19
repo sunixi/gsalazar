@@ -47,7 +47,7 @@ public class HavingClause implements QueryClause{
 				clause += qcp.queryCondition();
 			}
 		}
-		return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
+		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
 	private boolean hasQueryConditionParams() {

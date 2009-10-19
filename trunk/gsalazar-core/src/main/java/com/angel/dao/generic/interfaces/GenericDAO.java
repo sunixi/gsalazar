@@ -379,4 +379,6 @@ public interface GenericDAO<T extends Object, Code extends Serializable> {
 	public Collection<T> findAllByQueryBuilder(QueryBuilder queryBuilder);
 	
 	public T findUniqueByQueryBuilder(QueryBuilder queryBuilder);
+	
+	public Collection<T> findAllByQuery(com.angel.dao.generic.query.Query query);
 }

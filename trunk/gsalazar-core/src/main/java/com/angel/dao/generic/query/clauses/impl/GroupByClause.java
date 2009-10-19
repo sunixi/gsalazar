@@ -35,7 +35,7 @@ public class GroupByClause implements QueryClause{
 				}
 			}
 		}
-		return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
+		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 		//return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
 	}
 

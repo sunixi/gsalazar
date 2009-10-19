@@ -16,8 +16,12 @@ import com.angel.dao.generic.query.condition.Condition;
 public interface QueryConditionParam {
 	
 	public String getName();
-
+	
 	public List<Object> getValues();
+	
+	public ParamType getParamType();
+	
+	//public String getParamName();
 
 	public Condition getCondition();
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.angel.gsalazar.services;
+package ar.com.gsalazar.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,15 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ar.com.gsalazar.GSalazarBaseTestCase;
 import ar.com.gsalazar.beans.Articulo;
+import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ArticuloDAO;
 import ar.com.gsalazar.daos.TagSearchDAO;
+import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ArticuloService;
 
-import com.angel.gsalazar.GSalazarBaseTestCase;
 
 /**
  * 
@@ -31,6 +33,8 @@ public class SearcherServiceTestCase extends GSalazarBaseTestCase{
 	
 	@Autowired
 	private ArticuloService articuloService;
+	@Autowired
+	private PersonaService personaService;
 	
 	@Test
 	public void testBuscarArticulosPorTagsSearchConDAOs(){
@@ -60,6 +64,28 @@ public class SearcherServiceTestCase extends GSalazarBaseTestCase{
 
 		assertNotNull("Articulos searchers shouldn't be null.", list);
 		assertTrue("Articulos searchers size shouldn't be more than 0.", list.size() > 0);
+	}
+	
+	@Test
+	public void testBuscarArticulosMaxComentados(){
+		List<Articulo> list = this.getArticuloService().buscarTodosMasComentados(1);
+
+		assertNotNull("Articulos searchers shouldn't be null.", list);
+		assertTrue("Articulos searchers size shouldn't be more than 1.", list.size() >= 1);
+	}
+	
+	@Test
+	public void testbuscarTodasPersonasPorBusquedaInfo(){
+		List<String> a = new ArrayList<String>();
+		a.add("ODRA Solutions");
+		List<TagSearch> tags = (List<TagSearch>) this.getTagSearchDAO().buscarTodosPorLabels(a);
+		
+		BusquedaInfo busquedaInfo = new BusquedaInfo();
+		busquedaInfo.setTagsBuscables(tags);
+		List<Persona> personas = this.getPersonaService().buscarTodosPorBusquedaInfo(busquedaInfo);
+
+		assertNotNull("Articulos searchers shouldn't be null.", personas);
+		assertTrue("Articulos searchers size shouldn't be equals or more than 0.", personas.size() >= 0);
 	}
 	
 	/**
@@ -102,5 +128,19 @@ public class SearcherServiceTestCase extends GSalazarBaseTestCase{
 	 */
 	public void setArticuloService(ArticuloService articuloService) {
 		this.articuloService = articuloService;
+	}
+
+	/**
+	 * @return the personaService
+	 */
+	public PersonaService getPersonaService() {
+		return personaService;
+	}
+
+	/**
+	 * @param personaService the personaService to set
+	 */
+	public void setPersonaService(PersonaService personaService) {
+		this.personaService = personaService;
 	}
 }

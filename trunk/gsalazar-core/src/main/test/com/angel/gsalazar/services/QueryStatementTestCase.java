@@ -131,15 +131,17 @@ public class QueryStatementTestCase {
 	
 	@Test
 	public void testQuery(){
-		FromClause fromClause = new FromClause();
+		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		
+		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
 		fromClause
 			.add(Comentario.class, "comentario")
 			.add("Articulos", "articulos");
-		WhereClause whereClause = new WhereClause();
+		WhereClause whereClause = (WhereClause) queryBuilder.buildWhereClause();
 		whereClause
 			.between("age", 15, 25)
 			.notEquals("name", "Diego");
-		QueryBuilder queryBuilder = new HQLQueryBuilder(null, fromClause, whereClause);
+		
 		System.out.println("Query: " + queryBuilder.buildQuery().getQuery());
 	}
 }

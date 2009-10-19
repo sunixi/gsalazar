@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.angel.dao.generic.query.Query;
 import com.angel.dao.generic.query.builder.QueryBuilder;
+import com.angel.dao.generic.query.clauses.QueryClause;
 import com.angel.dao.generic.query.clauses.impl.FromClause;
 import com.angel.dao.generic.query.clauses.impl.GroupByClause;
 import com.angel.dao.generic.query.clauses.impl.HavingClause;
@@ -36,49 +37,12 @@ public class HQLQueryBuilder implements QueryBuilder{
 	
 	private OrderByClause orderByClause;
 	
-	public HQLQueryBuilder(SelectClause selectClause, FromClause fromClause, WhereClause whereClause, GroupByClause groupByClause, HavingClause havingClause, OrderByClause orderByClause){
-		super();
-		this.setSelectClause(selectClause);
-		this.setFromClause(fromClause);
-		this.setWhereClause(whereClause);
-		this.setGroupByClause(groupByClause);
-		this.setHavingClause(havingClause);
-		this.setOrderByClause(orderByClause);
-	}
+	private int maxResult;
 	
-	public HQLQueryBuilder(SelectClause selectClause, FromClause fromClause, WhereClause whereClause, GroupByClause groupByClause, HavingClause havingClause){
-		super();
-		this.setSelectClause(selectClause);
-		this.setFromClause(fromClause);
-		this.setWhereClause(whereClause);
-		this.setGroupByClause(groupByClause);
-		this.setHavingClause(havingClause);
-	}
+	private int fetchSize;
 	
-	public HQLQueryBuilder(SelectClause selectClause, FromClause fromClause, WhereClause whereClause, GroupByClause groupByClause){
+	public HQLQueryBuilder(){
 		super();
-		this.setSelectClause(selectClause);
-		this.setFromClause(fromClause);
-		this.setWhereClause(whereClause);
-		this.setGroupByClause(groupByClause);
-	}
-	
-	public HQLQueryBuilder(SelectClause selectClause, FromClause fromClause, WhereClause whereClause){
-		super();
-		this.setSelectClause(selectClause);
-		this.setFromClause(fromClause);
-		this.setWhereClause(whereClause);
-	}
-	
-	public HQLQueryBuilder(SelectClause selectClause, FromClause fromClause){
-		super();
-		this.setSelectClause(selectClause);
-		this.setFromClause(fromClause);
-	}
-	
-	public HQLQueryBuilder(FromClause fromClause){
-		super();
-		this.setFromClause(fromClause);
 	}
 
 	/**
@@ -178,8 +142,73 @@ public class HQLQueryBuilder implements QueryBuilder{
 		
 		String query = selectQuery + fromQuery + whereQuery + groupByQuery + havingQuery + orderByQuery; 
 		List<Object> params = new ArrayList<Object>();
-		params.addAll(this.getWhereClause() != null ? this.getWhereClause().getParams(): new ArrayList<QueryConditionParam>());
-		params.addAll(this.getHavingClause() != null ? this.getHavingClause().getParams(): new ArrayList<QueryConditionParam>());
-		return new Query(query, params);
+		List<QueryConditionParam> conditions = new ArrayList<QueryConditionParam>();
+		if(this.getWhereClause() != null){
+			for(Object o: this.getWhereClause().getParams()){
+				params.add(o);
+			}
+			conditions.addAll(this.getWhereClause().getConditions());
+		}
+		//params.addAll(this.getWhereClause() != null ? this.getWhereClause().getParams().toArray(): new ArrayList<QueryConditionParam>().toArray());
+		//params.addAll(this.getHavingClause() != null ? this.getHavingClause().getParams().toArray(): new ArrayList<QueryConditionParam>().toArray());
+		return new Query(query.trim(), params, conditions);
+	}
+
+	public QueryClause buildFromClause() {
+		this.setFromClause(new FromClause());
+		return this.getFromClause();
+	}
+
+	public QueryClause buildGroupByClause() {
+		this.setGroupByClause(new GroupByClause());
+		return this.getGroupByClause();
+	}
+
+	public QueryClause buildHavingClause() {
+		this.setHavingClause(new HavingClause());
+		return this.getHavingClause();
+	}
+
+	public QueryClause buildOrderByClause() {
+		this.setOrderByClause(new OrderByClause());
+		return this.getOrderByClause();
+	}
+
+	public QueryClause buildSelectClause() {
+		this.setSelectClause(new SelectClause());
+		return this.getSelectClause();
+	}
+
+	public QueryClause buildWhereClause() {
+		this.setWhereClause(new WhereClause());
+		return this.getWhereClause();
+	}
+
+	/**
+	 * @return the maxResult
+	 */
+	public int getMaxResult() {
+		return maxResult;
+	}
+
+	/**
+	 * @param maxResult the maxResult to set
+	 */
+	public void setMaxResult(int maxResult) {
+		this.maxResult = maxResult;
+	}
+
+	/**
+	 * @return the fetchSize
+	 */
+	public int getFetchSize() {
+		return fetchSize;
+	}
+
+	/**
+	 * @param fetchSize the fetchSize to set
+	 */
+	public void setFetchSize(int fetchSize) {
+		this.fetchSize = fetchSize;
 	}
 }

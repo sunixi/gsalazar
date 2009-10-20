@@ -14,12 +14,12 @@ import org.hibernate.Hibernate;
 import ar.com.gsalazar.beans.Estado;
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.Proyecto;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.PersonaDAO;
 import ar.com.gsalazar.daos.ProyectoDAO;
-import ar.com.gsalazar.daos.TagSearchDAO;
 
+import com.angel.architecture.daos.TagSearchDAO;
 import com.angel.architecture.exceptions.NonBusinessException;
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.data.generator.annotations.Inject;

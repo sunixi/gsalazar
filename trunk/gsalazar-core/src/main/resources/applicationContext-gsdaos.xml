@@ -24,11 +24,6 @@
 		<property name="persistentClass"    value="ar.com.gsalazar.beans.Articulo"/>
         <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
     </bean>
-    <bean id="tagSearchDAO" class="ar.com.gsalazar.daos.impl.TagSearchSpringHibernateDAO" singleton="true">
-        <property name="sessionFactory"     ref="sessionFactory"/>
-		<property name="persistentClass"    value="ar.com.gsalazar.beans.TagSearch"/>
-        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
-    </bean>
     <bean id="categoriaDAO" class="ar.com.gsalazar.daos.impl.CategoriaSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>
 		<property name="persistentClass"    value="ar.com.gsalazar.beans.Categoria"/>

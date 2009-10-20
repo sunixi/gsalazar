@@ -7,9 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.architecture.persistence.beans.TagSearch;
+
 import ar.com.gsalazar.beans.Buscable;
 import ar.com.gsalazar.beans.Comentario;
-import ar.com.gsalazar.beans.TagSearch;
 
 /**
  * 

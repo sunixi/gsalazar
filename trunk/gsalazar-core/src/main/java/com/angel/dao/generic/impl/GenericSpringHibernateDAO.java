@@ -27,7 +27,6 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.hql.ast.QuerySyntaxException;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.angel.dao.generic.base.InstancesActionManager;

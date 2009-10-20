@@ -30,13 +30,6 @@
 			</bean>
 		</property>
 	</bean>
-   	<bean id="tagSearchService" parent="txProxyTemplate">
-		<property name="target">
-			<bean class="ar.com.gsalazar.services.impl.TagSearchServiceImpl">
-                <property name="genericDAO" ref="tagSearchDAO"/>
-			</bean>
-		</property>
-	</bean>
    	<bean id="categoriaService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.gsalazar.services.impl.CategoriaServiceImpl">

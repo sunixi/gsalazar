@@ -11,13 +11,13 @@ import org.hibernate.criterion.Restrictions;
 
 import ar.com.gsalazar.beans.Estado;
 import ar.com.gsalazar.beans.Proyecto;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ProyectoDAO;
 import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
 import ar.com.gsalazar.daos.queryBuilder.impl.BusquedaInfoQueryBeanFactory;
 import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 

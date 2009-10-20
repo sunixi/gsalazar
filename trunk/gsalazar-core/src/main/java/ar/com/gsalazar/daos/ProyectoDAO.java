@@ -6,9 +6,9 @@ package ar.com.gsalazar.daos;
 import java.util.List;
 
 import ar.com.gsalazar.beans.Proyecto;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.interfaces.GenericDAO;
 

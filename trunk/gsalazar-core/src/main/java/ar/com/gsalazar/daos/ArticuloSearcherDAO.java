@@ -7,8 +7,8 @@ import java.util.List;
 
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.ArticuloSearcher;
-import ar.com.gsalazar.beans.TagSearch;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.interfaces.GenericDAO;
 

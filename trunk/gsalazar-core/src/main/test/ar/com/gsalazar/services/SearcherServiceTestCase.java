@@ -9,12 +9,13 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.angel.architecture.daos.TagSearchDAO;
+import com.angel.architecture.persistence.beans.TagSearch;
+
 import ar.com.gsalazar.GSalazarBaseTestCase;
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.Persona;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ArticuloDAO;
-import ar.com.gsalazar.daos.TagSearchDAO;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ArticuloService;
 

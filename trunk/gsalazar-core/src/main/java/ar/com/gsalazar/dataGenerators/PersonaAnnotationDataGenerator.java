@@ -27,7 +27,7 @@ import com.angel.io.processors.runners.imports.impl.ImportFileProcessorRunner;
  */
 @Generator(
 		objectClass = Persona.class,
-		dependencies = {},
+		dependencies = {TagSearchAnnotationDataGenerator.class},
 		daoName = "personaDAO",
 		pages = {}
 )

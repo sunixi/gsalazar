@@ -6,9 +6,9 @@ package ar.com.gsalazar.services;
 import java.util.List;
 
 import ar.com.gsalazar.beans.Buscable;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.services.interfaces.GenericService;
 
 /**

@@ -1,20 +1,21 @@
 /**
  * 
  */
-package ar.com.gsalazar.services;
+package com.angel.architecture.daos;
 
 import java.util.List;
 
-import ar.com.gsalazar.beans.TagSearch;
-import ar.com.gsalazar.beans.TagSearchContainer;
 
-import com.angel.architecture.services.interfaces.GenericService;
+import com.angel.architecture.persistence.beans.TagSearch;
+import com.angel.architecture.persistence.ids.ObjectId;
+import com.angel.dao.generic.interfaces.GenericDAO;
 
 /**
- * @author Guillermo Salazar
+ * @author Guillermo Salazar.
+ * @since 27/Agosto/2009.
  *
  */
-public interface TagSearchService extends GenericService {
+public interface TagSearchDAO extends GenericDAO<TagSearch, ObjectId>{
 
 	public TagSearch buscarUnicoONuloPorLabel(String label);
 	
@@ -25,6 +26,5 @@ public interface TagSearchService extends GenericService {
 	public TagSearch buscarUnicoPorDescripcion(String descripcion);
 	
 	public TagSearch buscarUnicoONuloPorDescripcion(String descripcion);
-	
-	public TagSearchContainer buscarTodos();
+
 }

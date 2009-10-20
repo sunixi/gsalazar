@@ -3,10 +3,10 @@
  */
 package ar.com.gsalazar.rowProcessors;
 
-import ar.com.gsalazar.beans.TagSearch;
-import ar.com.gsalazar.daos.TagSearchDAO;
 
+import com.angel.architecture.daos.TagSearchDAO;
 import com.angel.architecture.exceptions.NonBusinessException;
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.common.helpers.StringHelper;
 import com.angel.data.generator.annotations.Inject;
 import com.angel.io.annotations.ColumnRow;

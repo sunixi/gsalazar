@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import com.angel.architecture.persistence.base.PersistentObject;
+import com.angel.architecture.persistence.beans.TagSearch;
 
 /**
  * 
@@ -31,6 +32,7 @@ public abstract class Buscable extends PersistentObject {
 	private String descripcion;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
+	@Column(unique = false)
 	private List<TagSearch> tagsBuscables;
 	
 	private long visualizado = 0;

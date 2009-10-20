@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="objectLocator" class="com.angel.architecture.flex.locator.ObjectLocator"></bean>
+    <bean id="objectRefetcher" class="com.angel.architecture.flex.syncronization.ObjectRefetcher" >
+        <property name="sessionFactory"     ref="sessionFactory"/>
+    </bean>
+    <bean id="clickUserDAO" class="com.angel.architecture.daos.impl.ClickUserSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.ClickUser"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="tagSearchDAO" class="com.angel.architecture.daos.impl.TagSearchSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="com.angel.architecture.persistence.beans.TagSearch"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="parameterAreaDAO" class="com.angel.architecture.daos.impl.ParameterAreaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.ParameterArea"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="fileProcessorDescriptorDAO" class="com.angel.architecture.daos.impl.FileProcessorDescriptorSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.io.descriptor.FileProcessorDescriptor"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="processorLogDAO" class="com.angel.architecture.daos.impl.ProcessorLogSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.io.log.ProcessorLog"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="rowMessageLogDAO" class="com.angel.architecture.daos.impl.RowMessageLogSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.io.log.RowMessageLog"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="roleDAO" class="com.angel.architecture.daos.impl.RoleSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.Role"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="actionDAO" class="com.angel.architecture.daos.impl.ActionSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.Action"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="userDAO" class="com.angel.architecture.daos.impl.UserSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.User"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="userRoleDAO" class="com.angel.architecture.daos.impl.UserRoleSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.UserRoles"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="configurationParameterDAO" class="com.angel.architecture.daos.impl.ConfigurationParameterSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.ConfigurationParameter"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="languageDAO" class="com.angel.architecture.daos.impl.LanguageSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.Language"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="errorMessageDAO" class="com.angel.architecture.daos.impl.ErrorMessageSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.ErrorMessage"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+    <bean id="countryDAO" class="com.angel.architecture.daos.impl.CountrySpringHibernateDAO" singleton="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="persistentClass" value="com.angel.architecture.persistence.beans.Country"/>
+        <property name="codeClass" value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+<!--
+    <bean id="architectureDAOFactory" class="com.angel.architecture.daos.factory.ArchitectureDAOFactory" singleton="true" init-method="createInstance">
+        <property name="actionDAO"					ref="actionDAO"/>
+		<property name="configurationParameterDAO"	ref="configurationParameterDAO"/>
+        <property name="languageDAO"				ref="languageDAO"/>
+        <property name="roleDAO"					ref="roleDAO"/>
+        <property name="userDAO"					ref="userDAO"/>
+        <property name="userRoleDAO"				ref="userRoleDAO"/>
+        <property name="errorMessageDAO"			ref="errorMessageDAO"/>
+    </bean>-->
+</beans>

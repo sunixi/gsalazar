@@ -1,15 +1,15 @@
 /**
  * 
  */
-package ar.com.gsalazar.services.impl;
+package com.angel.architecture.services.impl;
 
 import java.util.List;
 
-import ar.com.gsalazar.beans.TagSearch;
-import ar.com.gsalazar.beans.TagSearchContainer;
-import ar.com.gsalazar.daos.TagSearchDAO;
-import ar.com.gsalazar.services.TagSearchService;
 
+import com.angel.architecture.daos.TagSearchDAO;
+import com.angel.architecture.persistence.beans.TagSearch;
+import com.angel.architecture.persistence.beans.TagSearchContainer;
+import com.angel.architecture.services.TagSearchService;
 import com.angel.architecture.services.impl.GenericServiceImpl;
 
 /**

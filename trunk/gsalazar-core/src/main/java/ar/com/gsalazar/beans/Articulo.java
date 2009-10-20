@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Type;
 
+import com.angel.architecture.persistence.beans.TagSearch;
+
 /**
  * 
  *	@author Guillermo Daniel Salazar.

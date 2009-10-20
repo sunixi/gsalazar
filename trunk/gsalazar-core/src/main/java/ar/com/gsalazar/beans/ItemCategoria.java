@@ -25,7 +25,7 @@ public class ItemCategoria extends PersistentObject {
 
 	@Column(nullable = false)
 	private String nombre;
-	@Column(nullable = false)
+	@Column(nullable = false, length = 300)
 	private String descripcion;
 	@Column(nullable = true)
 	private Date comienzo;

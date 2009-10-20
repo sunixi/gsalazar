@@ -6,10 +6,10 @@ package ar.com.gsalazar.services;
 import java.util.List;
 
 import ar.com.gsalazar.beans.Persona;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.dtos.PersonaDTO;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.services.interfaces.GenericService;
 
 /**

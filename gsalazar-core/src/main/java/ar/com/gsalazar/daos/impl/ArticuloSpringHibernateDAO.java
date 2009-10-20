@@ -10,13 +10,13 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.gsalazar.beans.Articulo;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ArticuloDAO;
 import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
 import ar.com.gsalazar.daos.queryBuilder.impl.ArticulosBusquedaInfoQueryBeanFactory;
 import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;

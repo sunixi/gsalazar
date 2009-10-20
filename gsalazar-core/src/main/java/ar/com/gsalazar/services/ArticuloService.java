@@ -8,9 +8,9 @@ import java.util.List;
 
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.Comentario;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.services.interfaces.GenericService;
 
 /**

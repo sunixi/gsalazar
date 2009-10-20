@@ -5,10 +5,10 @@ package ar.com.gsalazar.daos.queryBuilder.impl;
 
 import java.util.List;
 
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
 
 import com.angel.architecture.persistence.base.PersistentObject;
+import com.angel.architecture.persistence.beans.TagSearch;
 
 /**
  * 

@@ -8,12 +8,12 @@ import java.util.List;
 import org.hibernate.Query;
 
 import ar.com.gsalazar.beans.Persona;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.PersonaDAO;
 import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
 import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;

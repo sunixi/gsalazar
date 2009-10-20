@@ -1,15 +1,15 @@
 /**
  * 
  */
-package ar.com.gsalazar.daos.impl;
+package com.angel.architecture.daos.impl;
 
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
 
-import ar.com.gsalazar.beans.TagSearch;
-import ar.com.gsalazar.daos.TagSearchDAO;
 
+import com.angel.architecture.daos.TagSearchDAO;
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 

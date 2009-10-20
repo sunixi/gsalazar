@@ -6,9 +6,9 @@ package ar.com.gsalazar.dtos;
 import java.io.Serializable;
 import java.util.List;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.common.helpers.StringHelper;
 
-import ar.com.gsalazar.beans.TagSearch;
 
 /**
  * 

@@ -12,13 +12,13 @@ import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.beans.Buscable;
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.beans.Proyecto;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ArticuloService;
 import ar.com.gsalazar.services.PersonaService;
 import ar.com.gsalazar.services.ProyectoService;
 import ar.com.gsalazar.services.SearcherService;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.services.impl.GenericServiceImpl;
 
 /**

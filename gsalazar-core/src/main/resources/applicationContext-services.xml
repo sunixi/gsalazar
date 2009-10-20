@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+	<!-- XXXXXXXXX     CREACION DE SERVICE´S      XXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+	<!-- XXXXXXXXX     ORDENAR ALFABETICAMENTE          XXXXXXXXXXXXXXXXXXXXXX -->
+	<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+    <!-- Transaction template para todos los service, ver:
+         http://blog.exis.com/colin/archives/2004/07/31/concise-transaction-definitions-spring-11/
+         abstract="true"-->
+    <bean id="txProxyTemplate"	class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="preInterceptors">
+            <list>
+                <ref bean="errorHandlingInterceptor"/>
+                <ref bean="securityInterceptor"/>
+            </list>
+        </property>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="persist*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="findAll*">PROPAGATION_REQUIRED</prop>
+                <prop key="findUnique*">PROPAGATION_REQUIRED</prop>
+
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="create*">PROPAGATION_REQUIRED</prop>
+                <prop key="remove*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="modify*">PROPAGATION_REQUIRED</prop>
+                <prop key="run*">PROPAGATION_REQUIRED</prop>
+                <prop key="execute*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="add*">PROPAGATION_REQUIRED</prop>
+                <prop key="versionar*">PROPAGATION_REQUIRED</prop>
+                <!-- Asignar es read only. Se agrego para asignar las descripciones de las relaciones -->
+                <prop key="asignar*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="pasar*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="registrarImportacionErronea">PROPAGATION_REQUIRES_NEW</prop>
+                <prop key="initializeDataInformation">PROPAGATION_REQUIRED</prop>
+                <prop key="runGenerator">PROPAGATION_REQUIRED</prop>
+                <prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+            </props>
+        </property>
+        <property name="proxyTargetClass" value="true"/>
+
+        <property name="target">
+            <bean id="applicationProcessRunner" class="com.angel.architecture.runner.ApplicationProcessRunner">
+                <property name="sessionFactory" ref="sessionFactory"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="clickUserService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.ClickUserServiceImpl">
+				<property name="genericDAO" ref="clickUserDAO"/>
+			</bean>
+		</property>
+	</bean>
+   	<bean id="tagSearchService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.TagSearchServiceImpl">
+                <property name="genericDAO" ref="tagSearchDAO"/>
+			</bean>
+		</property>
+	</bean>
+    <bean id="parameterAreaService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.ParameterAreaServiceImpl">
+				<property name="genericDAO" ref="parameterAreaDAO"/>
+			</bean>
+		</property>
+	</bean>
+
+    <bean id="dataGeneratorService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.DataGeneratorServiceImpl"/>
+		</property>
+	</bean>
+
+    <bean id="multipleService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.MultipleServiceImpl"/>
+		</property>
+	</bean>
+
+	<bean id="roleService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.RoleServiceImpl">
+				<property name="genericDAO" ref="roleDAO"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="actionService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.ActionServiceImpl">
+				<property name="genericDAO" ref="actionDAO"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="objectIdService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.ObjectIdServiceImpl"/>
+		</property>
+	</bean>
+
+	<bean id="userService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.UserServiceImpl">
+				<property name="genericDAO" ref="userDAO"/>
+			</bean>
+		</property>
+	</bean>
+	<bean id="securityService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.SecurityServiceImpl">
+				<!-- <property name="daoSpring"><ref bean="securityDAO"/></property>  -->
+			</bean>
+		</property>
+	</bean>
+	<bean id="configurationParameterService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.ConfigurationParameterServiceImpl">
+                <property name="genericDAO" ref="configurationParameterDAO"/>
+                <!-- <property name="configurationParameterDAO" ref="configurationParameterDAO"/>-->
+			</bean>
+		</property>
+	</bean>
+
+   	<bean id="languageService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.LanguageServiceImpl">
+                <property name="genericDAO" ref="languageDAO"/>
+                <property name="languageDAO" ref="languageDAO"/>
+			</bean>
+		</property>
+	</bean>
+
+   	<bean id="errorMessageService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.ErrorMessageServiceImpl">
+                <property name="genericDAO" ref="errorMessageDAO"/>
+                <!--<property name="errorMessageDAO" ref="errorMessageDAO"/>-->
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="initializerConfigurationService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.architecture.services.impl.InitializerConfigurationServiceImpl">
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="exportFilesService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.angel.webapp.services.impl.ExportFilesServiceImpl">
+			</bean>
+		</property>
+	</bean>
+</beans>

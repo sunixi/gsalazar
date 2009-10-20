@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import com.angel.architecture.persistence.base.PersistentObject;
+import com.angel.architecture.persistence.beans.TagSearch;
 
 /**
  * 

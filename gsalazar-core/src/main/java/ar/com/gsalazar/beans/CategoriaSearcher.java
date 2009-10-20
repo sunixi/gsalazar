@@ -6,6 +6,8 @@ package ar.com.gsalazar.beans;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.angel.architecture.persistence.beans.TagSearch;
+
 /**
  * 
  *	@author Guillermo Daniel Salazar.

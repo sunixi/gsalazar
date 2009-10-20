@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import com.angel.architecture.persistence.beans.TagSearch;
+
 /**
  * 
  *	@author Guillermo Daniel Salazar.

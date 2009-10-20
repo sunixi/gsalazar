@@ -8,12 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.com.gsalazar.beans.Proyecto;
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.daos.ProyectoDAO;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 import ar.com.gsalazar.services.ProyectoService;
-import ar.com.gsalazar.services.TagSearchService;
 
+import com.angel.architecture.persistence.beans.TagSearch;
+import com.angel.architecture.services.TagSearchService;
 import com.angel.architecture.services.impl.GenericServiceImpl;
 
 /**

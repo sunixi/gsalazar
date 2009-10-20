@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.gsalazar.beans;
+package com.angel.architecture.persistence.beans;
 
 import java.util.List;
 

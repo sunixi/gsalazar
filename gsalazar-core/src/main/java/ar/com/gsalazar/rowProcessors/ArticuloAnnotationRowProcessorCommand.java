@@ -10,8 +10,8 @@ import java.io.InputStream;
 
 import ar.com.gsalazar.beans.Articulo;
 import ar.com.gsalazar.daos.ArticuloDAO;
-import ar.com.gsalazar.daos.TagSearchDAO;
 
+import com.angel.architecture.daos.TagSearchDAO;
 import com.angel.architecture.exceptions.NonBusinessException;
 import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.StringHelper;

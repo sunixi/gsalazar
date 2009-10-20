@@ -6,10 +6,10 @@ package ar.com.gsalazar.dataGenerators;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import ar.com.gsalazar.beans.TagSearch;
 import ar.com.gsalazar.resources.ResourceLocation;
 import ar.com.gsalazar.rowProcessors.TagSearchAnnotationRowProcessorCommand;
 
+import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.common.helpers.FileHelper;
 import com.angel.data.generator.annotations.Generator;
 import com.angel.data.generator.annotations.importFileProcessorRunner.ImportFileProcessorRunnerBuilder;

@@ -49,6 +49,7 @@ public class Categoria extends PersistentObject {
 	public Categoria(){
 		super();
 		this.setSubCategorias(new ArrayList<Categoria>());
+		this.setItems(new ArrayList<ItemCategoria>());
 	}
 
 	/**

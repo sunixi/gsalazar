@@ -8,6 +8,7 @@ import ar.com.gsalazar.dataGenerators.ArticuloSearcherAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.CategoriaAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ContactoWebAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ItemCategoriaAnnotationDataGenerator;
+import ar.com.gsalazar.dataGenerators.ItemCategoriaCategoriaAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.PersonaAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.ProyectoAnnotationDataGenerator;
 import ar.com.gsalazar.dataGenerators.SubCategoriasAnnotationDataGenerator;
@@ -30,6 +31,7 @@ public class DataGeneratorExecutable implements Executable {
 	public void execute() {
 		DataGeneratorAnnotationRunnerBuilder builder = new DataGeneratorAnnotationRunnerBuilder();
 		builder.addDataGeneratorClass(ItemCategoriaAnnotationDataGenerator.class);
+		builder.addDataGeneratorClass(ItemCategoriaCategoriaAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(CategoriaAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(SubCategoriasAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(ContactoWebAnnotationDataGenerator.class);

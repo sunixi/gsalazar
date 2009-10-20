@@ -6,9 +6,9 @@ package ar.com.gsalazar.dataGenerators;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import ar.com.gsalazar.beans.ItemCategoria;
+import ar.com.gsalazar.beans.Categoria;
 import ar.com.gsalazar.resources.ResourceLocation;
-import ar.com.gsalazar.rowProcessors.ItemCategoriaAnnotationRowProcessorCommand;
+import ar.com.gsalazar.rowProcessors.ItemCategoriaCategoriaAnnotationRowProcessorCommand;
 
 import com.angel.common.helpers.FileHelper;
 import com.angel.data.generator.annotations.Generator;
@@ -26,16 +26,16 @@ import com.angel.io.processors.runners.imports.impl.ImportFileProcessorRunner;
  *
  */
 @Generator(
-		objectClass = ItemCategoria.class,
-		dependencies = {CategoriaAnnotationDataGenerator.class},
-		daoName = "itemCategoriaDAO",
+		objectClass = Categoria.class,
+		dependencies = {CategoriaAnnotationDataGenerator.class, ItemCategoriaAnnotationDataGenerator.class},
+		daoName = "categoriaDAO",
 		pages = {}
 )
-public class ItemCategoriaAnnotationDataGenerator {
+public class ItemCategoriaCategoriaAnnotationDataGenerator {
 
-	@ImportFileProcessorRunnerBuilder(fileProcessorDescriptor = FileProcessorDescriptor.class, name = "Importacion de Items Categorias")
+	@ImportFileProcessorRunnerBuilder(fileProcessorDescriptor = FileProcessorDescriptor.class, name = "Importacion de los items categorias de las Categorias")
     public ImportFileProcessorRunner prepareImportFileProcessorRunner(FileProcessorDescriptor fileProcessorDescriptor) {
-		ImportFileAnnotationProcessorRunner a = new ImportFileAnnotationProcessorRunner(fileProcessorDescriptor, new ExcelFileProcessorCommand(), new ItemCategoriaAnnotationRowProcessorCommand());
+		ImportFileAnnotationProcessorRunner a = new ImportFileAnnotationProcessorRunner(fileProcessorDescriptor, new ExcelFileProcessorCommand(), new ItemCategoriaCategoriaAnnotationRowProcessorCommand());
         return a;
     }
 

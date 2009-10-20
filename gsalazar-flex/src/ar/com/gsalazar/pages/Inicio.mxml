@@ -9,15 +9,15 @@
 
 	<mx:Script>
 	<![CDATA[
+		import com.angel.beans.TagSearchContainer;
+		import com.angel.beans.TagSearch;
+		import com.angel.events.ClickTagSearchEvent;
 		import com.angel.syncronization.TransactionalBlock;
-		import com.angel.components.tagCloud.TagSearchContainer;
 		import ar.com.gsalazar.components.ResultadoBusqueda;
-		import com.angel.components.tagCloud.TagSearch;
 		import mx.collections.ArrayCollection;
 		import com.angel.locator.ServiceLocator;
 		import mx.core.Application;
 		import mx.managers.PopUpManager;
-		import ar.com.gsalazar.events.ClickTagSearchEvent;
 		import mx.collections.IList;
 		
 		

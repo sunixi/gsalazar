@@ -2,8 +2,8 @@ package ar.com.gsalazar.beans {
 	import ar.com.gsalazar.stateless.Stateless;
 	
 	import com.angel.beans.PersistentObject;
+	import com.angel.beans.TagSearch;
 	import com.angel.components.rankeable.Rankeable;
-	import com.angel.components.tagCloud.TagSearch;
 	
 	import flash.display.DisplayObject;
 	

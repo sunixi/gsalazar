@@ -2,8 +2,8 @@ package ar.com.gsalazar.model {
 
 	import ar.com.gsalazar.beans.Articulo;
 	import ar.com.gsalazar.beans.Categoria;
-
-	import com.angel.components.tagCloud.TagSearchContainer;
+	
+	import com.angel.beans.TagSearchContainer;
 	import com.angel.syncronization.TransactionalBlock;
 	
 	import mx.collections.IList;

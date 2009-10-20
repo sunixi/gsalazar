@@ -6,6 +6,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import com.angel.beans.TagSearch;
 			import mx.events.FlexEvent;
 			import mx.controls.TextInput;
 			import ar.com.gsalazar.model.ApplicationLocator;
@@ -13,7 +14,6 @@
 			import mx.managers.PopUpManager;
 			import mx.core.Application;
 			import com.angel.locator.ServiceLocator;
-			import com.angel.components.tagCloud.TagSearch;
 			import mx.collections.IList;
 			
 			

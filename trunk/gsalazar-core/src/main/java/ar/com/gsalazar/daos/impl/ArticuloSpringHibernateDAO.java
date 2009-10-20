@@ -23,6 +23,7 @@ import com.angel.dao.generic.query.builder.QueryBuilder;
 import com.angel.dao.generic.query.builder.impl.HQLQueryBuilder;
 import com.angel.dao.generic.query.clauses.impl.FromClause;
 import com.angel.dao.generic.query.clauses.impl.OrderByClause;
+import com.angel.dao.generic.query.clauses.impl.SelectClause;
 
 /**
  * 
@@ -85,12 +86,41 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	public List<Articulo> buscarTodosMasComentados(int cantidadComentada) {
 		QueryBuilder queryBuilder = new HQLQueryBuilder();
 		queryBuilder.setMaxResult(cantidadComentada);
-		
 		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
 		fromClause.add(super.getPersistentClass(), "articulo");
 		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
 		orderByClause.desc("size(comentarios)");
 
+		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(queryBuilder.buildQuery());
+		return articulos;
+	}
+
+	public List<Articulo> buscarTodosMasVisualizados(int cantidadTotal) {
+		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		queryBuilder.setMaxResult(cantidadTotal);
+		SelectClause selectClause = (SelectClause) queryBuilder.buildSelectClause();
+		selectClause.add("articulo");
+		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		fromClause.add(super.getPersistentClass(), "articulo");
+		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
+		orderByClause.desc("articulo","visualizado");
+		
+		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(queryBuilder.buildQuery());
+		return articulos;
+	}
+
+	public List<Articulo> buscarTodosMayorRating(int cantidadTotal) {
+		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		queryBuilder.setMaxResult(cantidadTotal);
+		SelectClause selectClause = (SelectClause) queryBuilder.buildSelectClause();
+		selectClause.add("articulos");
+		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		fromClause
+			.add(super.getPersistentClass(), "articulos")
+			.innerJoin("articulos.comentarios", "c");
+		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
+		orderByClause.desc("avg(c.rating)");
+		
 		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(queryBuilder.buildQuery());
 		return articulos;
 	}

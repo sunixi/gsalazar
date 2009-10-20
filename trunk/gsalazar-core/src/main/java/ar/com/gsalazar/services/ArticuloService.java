@@ -38,4 +38,8 @@ public interface ArticuloService extends GenericService {
 	public List<Articulo> buscarTodosUltimosAgregados(int cantidadAgregada);
 
 	public List<Articulo> buscarTodosMasComentados(int cantidadComentada);
+	
+	public List<Articulo> buscarTodosMayorRating(int cantidadTotal);
+	
+	public List<Articulo> buscarTodosMasVisualizados(int cantidadTotal);
 }

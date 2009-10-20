@@ -79,6 +79,14 @@ public class ArticuloServiceImpl extends GenericServiceImpl implements ArticuloS
 	public List<Articulo> buscarTodosMasComentados(int cantidadComentada){
 		return 	this.getArticuloDAO().buscarTodosMasComentados(cantidadComentada);
 	}
+
+	public List<Articulo> buscarTodosMayorRating(int cantidadTotal){
+		return this.getArticuloDAO().buscarTodosMayorRating(cantidadTotal);
+	}
+
+	public List<Articulo> buscarTodosMasVisualizados(int cantidadTotal){
+		return this.getArticuloDAO().buscarTodosMasVisualizados(cantidadTotal);
+	}
 	
 	/**
 	 * @return the tagSearchService

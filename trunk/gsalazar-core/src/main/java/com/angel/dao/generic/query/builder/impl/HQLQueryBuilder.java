@@ -151,7 +151,14 @@ public class HQLQueryBuilder implements QueryBuilder{
 		}
 		//params.addAll(this.getWhereClause() != null ? this.getWhereClause().getParams().toArray(): new ArrayList<QueryConditionParam>().toArray());
 		//params.addAll(this.getHavingClause() != null ? this.getHavingClause().getParams().toArray(): new ArrayList<QueryConditionParam>().toArray());
-		return new Query(query.trim(), params, conditions);
+		Query q = new Query(query.trim(), params, conditions);
+		if(this.getMaxResult() > 0){
+			q.setMaxResult(this.getMaxResult());
+		}
+		if(this.getFetchSize() > 0){
+			q.setFetchSize(this.getFetchSize());
+		}
+		return q;
 	}
 
 	public QueryClause buildFromClause() {

@@ -6,7 +6,7 @@
 	 creationComplete="init()"
 	 paddingTop="5" paddingBottom="5"
 	 paddingLeft="10" paddingRight="10"
-	 width="100%" height="100%" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:paint="com.degrafa.paint.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:autoComplete="com.angel.thirds.components.hillelcoren.autoComplete.*" xmlns:com="com.*" xmlns:components="com.hillelcoren.components.*" xmlns:renderers="com.angel.renderers.*" xmlns:manager="com.flexblocks.imagecropper.manager.*" xmlns:components1="ar.com.gsalazar.components.*">
+	 width="100%" height="100%" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:paint="com.degrafa.paint.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:autoComplete="com.angel.thirds.components.hillelcoren.autoComplete.*" xmlns:com="com.*" xmlns:components="com.hillelcoren.components.*" xmlns:renderers="com.angel.renderers.*" xmlns:manager="com.flexblocks.imagecropper.manager.*" xmlns:components1="ar.com.gsalazar.components.*" xmlns:buttons="com.angel.components.buttons.*">
 	 <mx:Style>
 	 	AutoComplete
 {
@@ -96,6 +96,7 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import ar.com.gsalazar.popups.BuscablePopup;
 			import ar.com.gsalazar.beans.Persona;
 			import ar.com.gsalazar.beans.Contacto;
 			import ar.com.gsalazar.beans.Proyecto;
@@ -103,7 +104,6 @@
 			import ar.com.gsalazar.dtos.ContactoWebDTO;
 			import ar.com.gsalazar.popups.CrearArticuloPopup;
 			import ar.com.gsalazar.popups.FCKHTMLEditorPopup;
-			import com.angel.components.tagCloud.TagSearch;
 			import com.angel.locator.ServiceLocator;
 			import com.angel.syncronization.TransactionalBlock;
 			import mx.controls.Alert;
@@ -189,7 +189,10 @@
 			private function mouseOut(event:Event = null):void {
 				PopUpManager.removePopUp(popup);
 			}
-			
+			private function beforeClickEvent(event:Event):void {
+				var button:XButton = event.currentTarget as XButton;
+				ServiceLocator.getService("clickUserService",this).createClick(button.label, button.data, new Date());
+			}
 
 		]]>
 	</mx:Script>
@@ -205,6 +208,9 @@
 		<mx:Spacer width="25%"/>
 	</mx:ApplicationControlBar>
 	<mx:HBox width="100%" height="2%" includeInLayout="false" visible="false">
+		<buttons:XButton mouseOver="mouseOver(event);" mouseOut="mouseOut(event);" width="100%"
+			label="Invocacion a Web Service" beforeClick="beforeClickEvent(event);"
+			data="Se invoca a un Web Service permitiendo conocer el valor de una moneda 'origen' respecto de una moneda 'destino'."/>
 		<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);"/>
 		<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}" toolTipShow="mouseOver(event);" toolTipHide="mouseOut(event);" toolTip=" "/>
 		<mx:Button label="HTML Editor" click="{PopUpManager.createPopUp(this, HTMLEditorPopup, true);}"/>

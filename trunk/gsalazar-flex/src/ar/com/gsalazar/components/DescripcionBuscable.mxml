@@ -57,6 +57,7 @@
 
 	<mx:Script>
 	<![CDATA[
+		import com.angel.beans.TagSearch;
 		import org.alivepdf.fonts.Style;
 		import org.alivepdf.layout.Size;
 		import org.alivepdf.layout.Orientation;
@@ -68,7 +69,6 @@
 		import org.alivepdf.pdf.PDF;
 		import ar.com.gsalazar.events.ChangeBuscableComentariosEvent;
 		import ar.com.gsalazar.components.ComentarioBuscable;
-		import com.angel.components.tagCloud.TagSearch;
 		import mx.collections.ArrayCollection;
 		import com.angel.helpers.StringUtils;
 		import mx.core.Application;

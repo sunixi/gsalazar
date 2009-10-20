@@ -15,7 +15,6 @@
 		import ar.com.gsalazar.events.BusquedaInfoRealizadaEvent;
 		import ar.com.gsalazar.model.ApplicationLocator;
 		import ar.com.gsalazar.events.ResultadoBusquedaEvent;
-		import com.angel.components.tagCloud.TagSearch;
 		import ar.com.gsalazar.dtos.BusquedaInfo;
 		import com.angel.locator.ServiceLocator;
 		import mx.events.CloseEvent;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.angel.common.helpers.CollectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.dao.generic.query.Query;
 import com.angel.dao.generic.query.builder.QueryBuilder;
@@ -61,15 +62,6 @@ public class HQLWhereClause implements WhereClause{
 		return this;
 	}
 	
-	public HQLWhereClause grouped(HQLWhereClause whereClause) {
-		this.openGroup();
-		for(QueryConditionParam qcp: whereClause.getConditions()){
-			this.addQueryWhereParam(qcp);
-		}
-		this.closeGroup();
-		return this;
-	}
-
 	public HQLWhereClause equals(String propertyName, Object value) {
 		return this.addQueryWhereParam(propertyName + " = ?", value);
 	}
@@ -494,16 +486,34 @@ public class HQLWhereClause implements WhereClause{
 		return this.addQueryWhereParam( alias + "." + propertyName + " = some ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 
-	public WhereClause addSubSelectExists(QueryBuilder queryBuilder,
-			String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectExists(QueryBuilder queryBuilder, String... propertiesNames) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+		List<String> params = CollectionHelper.convertGenericTo(propertiesNames);
+		String notExistsQuery = StringHelper.convertToPlainString(params.toArray(), ",");
+		return this.addQueryWhereParam( notExistsQuery + " exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 
-	public WhereClause addSubSelectExists(String alias,
-			QueryBuilder queryBuilder, String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectExists(String alias, QueryBuilder queryBuilder, String... propertiesNames) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+
+		if(propertiesNames != null && propertiesNames.length > 1){
+			List<String> aliasProperties = new ArrayList<String>();
+			for(String o: propertiesNames){
+				aliasProperties.add(alias + "." + o);
+			}
+			String existsQuery = StringHelper.convertToPlainString(aliasProperties.toArray(), ", ");
+			return this.addQueryWhereParam( existsQuery + " not exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);	
+		} else {
+			if(propertiesNames.length == 1){
+				return this.addSubSelectNotIn(alias, propertiesNames[0], queryBuilder);
+			} else {
+				return this.addQueryWhereParam( alias + " not exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);				
+			}
+		}
 	}
 
 	public WhereClause addSubSelectGT(String alias, String propertyName, QueryBuilder queryBuilder) {
@@ -521,14 +531,41 @@ public class HQLWhereClause implements WhereClause{
 	}
 
 	public WhereClause addSubSelectIn(String alias, QueryBuilder queryBuilder, String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+
+		if(propertiesNames != null && propertiesNames.length > 1){
+			List<String> aliasProperties = new ArrayList<String>();
+			for(String o: propertiesNames){
+				aliasProperties.add(alias + "." + o);
+			}
+			String notInQuery = StringHelper.convertToPlainString(aliasProperties.toArray(), ", ");
+			return this.addQueryWhereParam( notInQuery + " in ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);	
+		} else {
+			if(propertiesNames.length == 1){
+				return this.addSubSelectNotIn(alias, propertiesNames[0], queryBuilder);
+			} else {
+				return this.addQueryWhereParam( alias + " in ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);				
+			}
+		}
 	}
 
-	public WhereClause addSubSelectIn(QueryBuilder queryBuilder,
-			String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectIn(QueryBuilder queryBuilder,String... propertiesNames) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+
+		if(propertiesNames != null && propertiesNames.length > 1){
+			String inQuery = StringHelper.convertToPlainString(propertiesNames, ", ");
+			return this.addQueryWhereParam( inQuery + " in ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);	
+		} else {
+			if(propertiesNames.length == 1){
+				return this.addSubSelectNotIn(propertiesNames[0], queryBuilder);
+			} else {
+				throw new RuntimeException("Properties names should be more than zero because it hasn't a alias.");
+			}
+		}
 	}
 
 	public WhereClause addSubSelectNotExists(QueryBuilder queryBuilder) {
@@ -538,16 +575,34 @@ public class HQLWhereClause implements WhereClause{
 		return this.addQueryWhereParam( " not exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 	
-	public WhereClause addSubSelectNotExists(QueryBuilder queryBuilder,
-			String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectNotExists(QueryBuilder queryBuilder, String... propertiesNames) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+		List<String> params = CollectionHelper.convertGenericTo(propertiesNames);
+		String notExistsQuery = StringHelper.convertToPlainString(params.toArray(), ",");
+		return this.addQueryWhereParam( notExistsQuery + " not exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 
-	public WhereClause addSubSelectNotExists(String alias,
-			QueryBuilder queryBuilder, String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectNotExists(String alias, QueryBuilder queryBuilder, String... propertiesNames) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+
+		if(propertiesNames != null && propertiesNames.length > 1){
+			List<String> aliasProperties = new ArrayList<String>();
+			for(String o: propertiesNames){
+				aliasProperties.add(alias + "." + o);
+			}
+			String notExistsQuery = StringHelper.convertToPlainString(aliasProperties.toArray(), ", ");
+			return this.addQueryWhereParam( notExistsQuery + " not exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);	
+		} else {
+			if(propertiesNames.length == 1){
+				return this.addSubSelectNotIn(alias, propertiesNames[0], queryBuilder);
+			} else {
+				return this.addQueryWhereParam( alias + " not exists ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);				
+			}
+		}
 	}
 
 	public WhereClause addSubSelectNotIn(String alias, String propertyName, QueryBuilder queryBuilder) {
@@ -581,26 +636,36 @@ public class HQLWhereClause implements WhereClause{
 		}
 	}
 
-	public WhereClause addSubSelectNotIn(QueryBuilder queryBuilder,
-			String... propertiesNames) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectNotIn(QueryBuilder queryBuilder, String... propertiesNames) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+		List<String> params = CollectionHelper.convertGenericTo(propertiesNames);
+		String notInQuery = StringHelper.convertToPlainString(params.toArray(), ",");
+		return this.addQueryWhereParam( notInQuery + " not in ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 
-	public WhereClause addSubSelectST(String alias, String propertyName,
-			QueryBuilder queryBuilder) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectST(String alias, String propertyName, QueryBuilder queryBuilder) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+		return this.addQueryWhereParam( alias + "." + propertyName + " < ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 
-	public WhereClause addSubSelectST(String propertyName,
-			QueryBuilder queryBuilder) {
-		// TODO Auto-generated method stub
-		return null;
+	public WhereClause addSubSelectST(String propertyName, QueryBuilder queryBuilder) {
+		Query query = queryBuilder.buildQuery();
+		Object[] subQueryParams = query.getParams();
+		String subQuery = query.getQuery();
+		return this.addQueryWhereParam( propertyName + " > ( " + subQuery + " )", ParamType.OBJECT_PARAMETER, subQueryParams);
 	}
 
 	public WhereClause grouped(WhereClause whereClause) {
-		// TODO Auto-generated method stub
-		return null;
+		this.openGroup();
+		for(QueryConditionParam qcp: whereClause.getConditions()){
+			this.addQueryWhereParam(qcp);
+		}
+		this.closeGroup();
+		return this;
 	}
+
 }

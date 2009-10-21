@@ -59,6 +59,7 @@
 				index++;
 			}
 			windowsShadeGroup.windows = windowsShade;
+			seccionCurriculumVitaeCategoria.categoria = Categoria(subCategorias.getItemAt(0));
 		}
 
 		private function onClickXWindowShade(event:ClickXWindowShadeEvent):void {
@@ -71,12 +72,14 @@
 		}
 	]]>
 	</mx:Script>
+	<mx:DateFormatter id="fechaFormatter" formatString="DD/MM/YYYY"/>
 	<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
 		<mx:VBox width="30%" height="90%" verticalAlign="top" horizontalAlign="center">
 			<mx:Label text="Secciones del Curriculum Vitae: " fontSize="13" fontStyle="italic"/>
 			<windowsShade:WindowsShadeGroup id="windowsShadeGroup" indexOpened="0" width="30%" height="100%"
 				clickXWindowShade="onClickXWindowShade(event);">
 			</windowsShade:WindowsShadeGroup>
+			<mx:Label text="Ultima actualizacion: {fechaFormatter.format(new Date())}" fontSize="10" fontStyle="italic" textAlign="center" width="100%"/>
 		</mx:VBox>
 		<mx:VRule height="100%" width="1"/>
 		<mx:VBox width="70%" height="90%">

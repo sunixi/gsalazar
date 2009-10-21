@@ -34,7 +34,10 @@
 				<mx:Image source="{data.imagen}" toolTip="{data.descripcion}" width="60" height="60"/>	
 			</mx:VBox>
 			<mx:VBox width="80%" height="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="10" paddingTop="5">
-				<mx:Label text="{data.titulo}" color="black" fontSize="13" fontWeight="bold" />
+				<mx:HBox width="100%" verticalAlign="middle">
+					<mx:Label text="{data.titulo}" color="black" fontSize="13" fontWeight="bold" />
+					<mx:Label text=" - {String(data.estado).replace('_',' ')}" color="black" fontSize="11" fontWeight="bold" fontStyle="italic"/>
+				</mx:HBox>
 				<mx:Text width="100%" text="{data.descripcion}" color="black" selectable="false"/>
 			</mx:VBox>
 			<mx:VBox width="10%" height="100%" verticalAlign="top" horizontalAlign="right" paddingLeft="10" paddingTop="5">

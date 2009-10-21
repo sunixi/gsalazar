@@ -17,9 +17,10 @@ import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;
-import com.angel.dao.generic.query.builder.impl.HQLQueryBuilder;
-import com.angel.dao.generic.query.clauses.impl.FromClause;
-import com.angel.dao.generic.query.clauses.impl.WhereClause;
+import com.angel.dao.generic.query.builder.impl.QueryBuilderImpl;
+import com.angel.dao.generic.query.clauses.impl.HQLFromClause;
+import com.angel.dao.generic.query.clauses.impl.HQLWhereClause;
+import com.angel.dao.generic.query.factory.impl.HQLClauseFactory;
 
 /**
  * 
@@ -55,12 +56,12 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 	}
 	
 	public List<Persona> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
-		QueryBuilder queryBuilder = new HQLQueryBuilder();
-		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
+		HQLFromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause
 			.add(this.getPersistentClass(), "personas")
 			.innerJoin("personas.tagsBuscables", "tags");
-		WhereClause whereClause = (WhereClause) queryBuilder.buildWhereClause();
+		HQLWhereClause whereClause = (HQLWhereClause) queryBuilder.getWhereClause();
 		whereClause
 			.in("tags", busquedaInfo.getTagsBuscables());
 		return (List<Persona>) super.findAllByQuery(queryBuilder.buildQuery());

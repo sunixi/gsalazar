@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
-import com.angel.dao.generic.query.clauses.QueryClause;
+import com.angel.dao.generic.query.clauses.GroupByClause;
 
 
 
@@ -14,11 +14,11 @@ import com.angel.dao.generic.query.clauses.QueryClause;
  * @author Guille Salazar
  * @since 14/Jul/2009
  */
-public class GroupByClause implements QueryClause{
+public class HQLGroupByClause implements GroupByClause{
 	
 	private List<String> queryGroups;
 
-	public GroupByClause(){
+	public HQLGroupByClause(){
 		super();
 		this.setQueryGroups(new ArrayList<String>());
 	}
@@ -39,18 +39,18 @@ public class GroupByClause implements QueryClause{
 		//return StringHelper.replaceAllRecursively(clause, "  ", " ").trim();
 	}
 
-	protected boolean hasQueryGroupsParams() {
+	public boolean hasQueryGroupsParams() {
 		return this.getQueryGroups().size() > 0;
 	}
-	public GroupByClause add(String alias, String property){
+	public HQLGroupByClause add(String alias, String property){
 		return this.addQueryGroupBy(alias + "." + property);
 	}
 	
-	public GroupByClause add(String property){
+	public HQLGroupByClause add(String property){
 		return this.addQueryGroupBy(property);
 	}
 	
-	protected GroupByClause addQueryGroupBy(String property){
+	protected HQLGroupByClause addQueryGroupBy(String property){
 		this.getQueryGroups().add(property);
 		return this;
 	}

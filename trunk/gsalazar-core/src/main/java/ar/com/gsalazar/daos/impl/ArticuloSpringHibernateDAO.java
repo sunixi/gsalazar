@@ -20,10 +20,13 @@ import com.angel.architecture.persistence.beans.TagSearch;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;
-import com.angel.dao.generic.query.builder.impl.HQLQueryBuilder;
-import com.angel.dao.generic.query.clauses.impl.FromClause;
-import com.angel.dao.generic.query.clauses.impl.OrderByClause;
-import com.angel.dao.generic.query.clauses.impl.SelectClause;
+import com.angel.dao.generic.query.builder.impl.QueryBuilderImpl;
+import com.angel.dao.generic.query.clauses.FromClause;
+import com.angel.dao.generic.query.clauses.OrderByClause;
+import com.angel.dao.generic.query.clauses.SelectClause;
+import com.angel.dao.generic.query.clauses.impl.HQLFromClause;
+import com.angel.dao.generic.query.clauses.impl.HQLOrderByClause;
+import com.angel.dao.generic.query.factory.impl.HQLClauseFactory;
 
 /**
  * 
@@ -71,12 +74,12 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	}
 
 	public List<Articulo> buscarTodosUltimosAgregados(int cantidadAgregada) {
-		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.setMaxResult(cantidadAgregada);
 
-		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause.add(super.getPersistentClass(), "articulo");
-		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
+		OrderByClause orderByClause = (HQLOrderByClause) queryBuilder.getOrderByClause();
 		orderByClause.desc("articulo", "creationDate");
 
 		List<Articulo> articulos = (List<Articulo>) super.findAllByQueryBuilder(queryBuilder);
@@ -84,11 +87,11 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	}
 
 	public List<Articulo> buscarTodosMasComentados(int cantidadComentada) {
-		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.setMaxResult(cantidadComentada);
-		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause.add(super.getPersistentClass(), "articulo");
-		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
+		OrderByClause orderByClause = (HQLOrderByClause) queryBuilder.getOrderByClause();
 		orderByClause.desc("size(comentarios)");
 
 		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(queryBuilder.buildQuery());
@@ -96,13 +99,13 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	}
 
 	public List<Articulo> buscarTodosMasVisualizados(int cantidadTotal) {
-		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.setMaxResult(cantidadTotal);
-		SelectClause selectClause = (SelectClause) queryBuilder.buildSelectClause();
+		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.add("articulo");
-		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause.add(super.getPersistentClass(), "articulo");
-		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
+		OrderByClause orderByClause = (HQLOrderByClause) queryBuilder.getOrderByClause();
 		orderByClause.desc("articulo","visualizado");
 		
 		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(queryBuilder.buildQuery());
@@ -110,15 +113,18 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	}
 
 	public List<Articulo> buscarTodosMayorRating(int cantidadTotal) {
-		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.setMaxResult(cantidadTotal);
-		SelectClause selectClause = (SelectClause) queryBuilder.buildSelectClause();
+		
+		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.add("articulos");
-		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+	
+		FromClause fromClause = queryBuilder.getFromClause();
 		fromClause
 			.add(super.getPersistentClass(), "articulos")
 			.innerJoin("articulos.comentarios", "c");
-		OrderByClause orderByClause = (OrderByClause) queryBuilder.buildOrderByClause();
+
+		OrderByClause orderByClause = queryBuilder.getOrderByClause();
 		orderByClause.desc("avg(c.rating)");
 		
 		List<Articulo> articulos = (List<Articulo>) super.findAllByQuery(queryBuilder.buildQuery());

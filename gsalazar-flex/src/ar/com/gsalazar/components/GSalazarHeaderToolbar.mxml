@@ -57,16 +57,26 @@
 		]]>
 	</mx:Script>
 	<mx:Component id="dropDownItemRenderer">
-		<mx:VBox width="80%" verticalGap="0">
+		<mx:VBox width="80%" verticalGap="0" backgroundAlpha="0.8">
 			<mx:Script>
 				<![CDATA[
+					import com.angel.beans.TagSearch;
 					import mx.utils.StringUtil;
 					import com.angel.thirds.components.hillelcoren.utils.StringUtils;
+					
+					private function prepareText(data:Object):String{
+						var tagSearch:TagSearch = TagSearch(data);
+						if(tagSearch.description.length < 40){
+							return tagSearch.description;
+						} else {
+							return data.description.substr(0, 40) + '...';
+						}
+					}
 				]]>
 			</mx:Script>
-			<mx:Label id="nameLabel" fontSize="12" text="{data.label} ({ data.occurrences})"/>
-			<mx:HBox>
-				<mx:Label id="hexLabel" fontSize="10" text="{data.description.substr(0, 30)}..."/>
+			<mx:Label id="nameLabel" fontSize="12" text="{data.label} ({ data.occurrences})" color="black"/>
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="left">
+				<mx:Label id="hexLabel" fontSize="10" text="{this.prepareText(data)}" color="black"/>
 			</mx:HBox>		
 		</mx:VBox>
 	</mx:Component>

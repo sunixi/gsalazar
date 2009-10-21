@@ -8,17 +8,17 @@
 
 	<mx:Script>
 	<![CDATA[
+		import ar.com.gsalazar.itemRenderers.ItemCategoriaItemRenderer;
 		import ar.com.gsalazar.beans.Categoria;
 		
 		[Bindable]
 		public var categoria:Categoria;
 
 		private function init():void {
-
 		}
 		
-		private function updateRowHeigth(event:Event):void {
-			curriculumVitaeSeccionList.rowHeight = curriculumVitaeSeccionList.height / curriculumVitaeSeccionList.rowCount + 40;
+		private function updateCurriculumVitaeSeccionRowHeigth(event:Event):void {
+			//curriculumVitaeSeccionList.rowHeight = curriculumVitaeSeccionList.height / curriculumVitaeSeccionList.rowCount + 40;
 		}
 	]]>
 	</mx:Script>	
@@ -26,12 +26,22 @@
 		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="left">
 			<mx:Label text="Sección: " fontWeight="bold" fontSize="13"/>
 			<mx:Label text="{categoria.nombre}" fontStyle="italic" fontSize="13"/>
+			<mx:Label text="SubSección: " fontWeight="bold" fontSize="13" visible="{categoria.subCategorias.length > 0}"/>
+			<mx:ComboBox id="subSeccionComboBox" dataProvider="{categoria.subCategorias}" labelField="nombre" visible="{categoria.subCategorias.length > 0}"/>
 		</mx:HBox>
-		<mx:List	id="curriculumVitaeSeccionList" dataProvider="{categoria.subCategorias}" labelField="nombre"
-			width="100%" height="100%" paddingLeft="0" paddingTop="0"
-			paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
-			alternatingItemColors="#ffffff, #eff1f2" creationComplete="updateRowHeigth(event)"
+		<mx:HRule width="100%"/>
+		<mx:List	id="curriculumVitaeSeccionList" dataProvider="{subSeccionComboBox.selectedItem.items}" labelField="nombre"
+			width="100%" height="95%" paddingLeft="0" paddingTop="0" visible="{subSeccionComboBox.selectedItem.items.length > 0}"
+			paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc" includeInLayout="false"
+			alternatingItemColors="#ffffff, #eff1f2" creationComplete="updateCurriculumVitaeSeccionRowHeigth(event)"
 			selectable="false" verticalAlign="middle" borderStyle="none"
 			itemRenderer="ar.com.gsalazar.itemRenderers.SeccionCurriculumVitaeCategoriaItemRenderer"/>
+
+		<mx:List	id="infoPersonalCurriculumVitaeCategoriaList" dataProvider="{categoria.items}" labelField="nombre"
+			width="100%" height="100%" paddingLeft="0" paddingTop="0" verticalAlign="middle" borderStyle="none"  
+			paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc" 
+			alternatingItemColors="#ffffff, #eff1f2" rowHeight="{infoPersonalCurriculumVitaeCategoriaList.height * 0.4}"
+			selectable="false" itemRenderer="ar.com.gsalazar.itemRenderers.ItemCategoriaItemRenderer"
+			/>
 	</mx:VBox>
 </mx:Box>

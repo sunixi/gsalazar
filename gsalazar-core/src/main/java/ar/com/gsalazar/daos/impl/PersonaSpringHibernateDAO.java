@@ -5,12 +5,8 @@ package ar.com.gsalazar.daos.impl;
 
 import java.util.List;
 
-import org.hibernate.Query;
-
 import ar.com.gsalazar.beans.Persona;
 import ar.com.gsalazar.daos.PersonaDAO;
-import ar.com.gsalazar.daos.queryBuilder.QueryBeanFactory;
-import ar.com.gsalazar.daos.queryBuilder.impl.TagsSearchQueryBeanFactory;
 import ar.com.gsalazar.dtos.BusquedaInfo;
 
 import com.angel.architecture.persistence.beans.TagSearch;
@@ -47,15 +43,27 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 		return super.findUnique("nombre", nombre);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Persona> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
-		QueryBeanFactory queryBeanFactory = new TagsSearchQueryBeanFactory();
+		QueryBuilder queryBuilder = this.createQueryBuilderFor(tagsSearch);
+		/*QueryBeanFactory queryBeanFactory = new TagsSearchQueryBeanFactory();
 		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), tagsSearch);
-		Query query = super.getSession().createQuery(q);
-		return query.list();
+		Query query = super.getSession().createQuery(q);*/
+		return (List<Persona>) super.findAllByQuery(queryBuilder.buildQuery());
 	}
 	
 	public List<Persona> buscarTodosPorBusquedaInfo(BusquedaInfo busquedaInfo) {
+		QueryBuilder queryBuilder = this.createQueryBuilderFor(busquedaInfo.getTagsBuscables());
+		return (List<Persona>) super.findAllByQuery(queryBuilder.buildQuery());
+	}
+	
+	/**
+	 * Construye un query builder para buscar todas las personas que tengan los tags de busqueda
+	 * que se pasan como parametro.
+	 * 
+	 * @param tagsSearch a buscar en las personas.
+	 * @return todas las personas que tengas los tags de busquedas.
+	 */
+	protected QueryBuilder createQueryBuilderFor(List<TagSearch> tagsSearch){
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		HQLFromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause
@@ -63,13 +71,7 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 			.innerJoin("personas.tagsBuscables", "tags");
 		HQLWhereClause whereClause = (HQLWhereClause) queryBuilder.getWhereClause();
 		whereClause
-			.in("tags", busquedaInfo.getTagsBuscables());
-		return (List<Persona>) super.findAllByQuery(queryBuilder.buildQuery());
-		/*
-		String q = "from ar.com.gsalazar.beans.Proyecto personas inner join personas.tagsBuscables tags where tags in ( :parameterList )";
-		Query query = super.getSession().createQuery(q);
-		query.setParameterList("parameterList", busquedaInfo.getTagsBuscables());
-		return query.list();
-		*/
+			.in("tags", tagsSearch);
+		return queryBuilder;
 	}
 }

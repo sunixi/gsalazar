@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
-import com.angel.dao.generic.query.clauses.QueryClause;
+import com.angel.dao.generic.query.clauses.OrderByClause;
 
 
 
@@ -14,11 +14,11 @@ import com.angel.dao.generic.query.clauses.QueryClause;
  * @author Guille Salazar
  * @since 14/Jul/2009
  */
-public class OrderByClause implements QueryClause{
+public class HQLOrderByClause implements OrderByClause{
 	
 	private List<String> ordersBy;
 	
-	public OrderByClause(){
+	public HQLOrderByClause(){
 		super();
 		this.setOrdersBy(new ArrayList<String>());
 	}
@@ -39,28 +39,28 @@ public class OrderByClause implements QueryClause{
 		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
-	protected boolean hasOrderByParams(){
+	public boolean hasOrderByParams(){
 		return this.getOrdersBy().size() > 0;
 	}
 	
-	protected OrderByClause addOrderByClause(String property) {
+	public HQLOrderByClause addOrderByClause(String property) {
 		this.getOrdersBy().add(property);
 		return this;
 	}
 	
-	public OrderByClause desc(String property) {
+	public HQLOrderByClause desc(String property) {
 		return this.addOrderByClause(property + " desc ");
 	}
 	
-	public OrderByClause desc(String alias, String property) {
+	public HQLOrderByClause desc(String alias, String property) {
 		return this.addOrderByClause(alias + "." + property + " desc ");
 	}
 
-	public OrderByClause asc(String property) {
+	public HQLOrderByClause asc(String property) {
 		return this.addOrderByClause(property + " asc ");
 	}
 	
-	public OrderByClause asc(String alias, String property) {
+	public HQLOrderByClause asc(String alias, String property) {
 		return this.addOrderByClause(alias + "." + property + " asc ");
 	}
 

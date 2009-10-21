@@ -3,15 +3,23 @@ package com.angel.dao.generic.query.builder.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.common.helpers.CollectionHelper;
+import com.angel.common.helpers.StringHelper;
 import com.angel.dao.generic.query.Query;
 import com.angel.dao.generic.query.builder.QueryBuilder;
-import com.angel.dao.generic.query.clauses.QueryClause;
-import com.angel.dao.generic.query.clauses.impl.FromClause;
-import com.angel.dao.generic.query.clauses.impl.GroupByClause;
-import com.angel.dao.generic.query.clauses.impl.HavingClause;
-import com.angel.dao.generic.query.clauses.impl.OrderByClause;
-import com.angel.dao.generic.query.clauses.impl.SelectClause;
-import com.angel.dao.generic.query.clauses.impl.WhereClause;
+import com.angel.dao.generic.query.clauses.FromClause;
+import com.angel.dao.generic.query.clauses.GroupByClause;
+import com.angel.dao.generic.query.clauses.HavingClause;
+import com.angel.dao.generic.query.clauses.OrderByClause;
+import com.angel.dao.generic.query.clauses.SelectClause;
+import com.angel.dao.generic.query.clauses.WhereClause;
+import com.angel.dao.generic.query.clauses.impl.HQLFromClause;
+import com.angel.dao.generic.query.clauses.impl.HQLGroupByClause;
+import com.angel.dao.generic.query.clauses.impl.HQLHavingClause;
+import com.angel.dao.generic.query.clauses.impl.HQLOrderByClause;
+import com.angel.dao.generic.query.clauses.impl.HQLSelectClause;
+import com.angel.dao.generic.query.clauses.impl.HQLWhereClause;
+import com.angel.dao.generic.query.factory.ClauseFactory;
 import com.angel.dao.generic.query.params.QueryConditionParam;
 
 
@@ -23,7 +31,7 @@ import com.angel.dao.generic.query.params.QueryConditionParam;
  * @author Guille Salazar
  * @since 14/Jul/2009
  */
-public class HQLQueryBuilder implements QueryBuilder{
+public class QueryBuilderImpl implements QueryBuilder{
 
 	private SelectClause selectClause;
 
@@ -41,8 +49,14 @@ public class HQLQueryBuilder implements QueryBuilder{
 	
 	private int fetchSize;
 	
-	public HQLQueryBuilder(){
+	public QueryBuilderImpl(ClauseFactory clauseFactory){
 		super();
+		this.setSelectClause(clauseFactory.createSelectClause());
+		this.setFromClause(clauseFactory.createFromClause());
+		this.setWhereClause(clauseFactory.createWhereClause());
+		this.setGroupByClause(clauseFactory.createGroupByClause());
+		this.setHavingClause(clauseFactory.createHavingClause());
+		this.setOrderByClause(clauseFactory.createOrderByClause());
 	}
 
 	/**
@@ -130,18 +144,16 @@ public class HQLQueryBuilder implements QueryBuilder{
 	}
 
 	public Query buildQuery() {
-		if(this.getFromClause() == null){
-			throw new RuntimeException("It must have a from clause");
-		}
-		String selectQuery = this.getSelectClause() != null ? this.getSelectClause().createClause() :"";
+		String selectQuery = this.getSelectClause().createClause();
 		String fromQuery = this.getFromClause().createClause();
-		String whereQuery = this.getWhereClause() != null ? this.getWhereClause().createClause(): "";
-		String groupByQuery = this.getGroupByClause() != null ? this.getGroupByClause().createClause() :"";
-		String havingQuery = this.getHavingClause() != null ? this.getHavingClause().createClause(): "";
-		String orderByQuery = this.getOrderByClause() != null ? this.getOrderByClause().createClause(): "";
+		String whereQuery = this.getWhereClause().createClause();
+		String groupByQuery = this.getGroupByClause().createClause();
+		String havingQuery = this.getHavingClause().createClause();
+		String orderByQuery = this.getOrderByClause().createClause();
 		
 		String query = selectQuery + fromQuery + whereQuery + groupByQuery + havingQuery + orderByQuery; 
 		List<Object> params = new ArrayList<Object>();
+		params.addAll(CollectionHelper.convertGenericTo(this.getSelectClause().getSubQueriesParams()));
 		List<QueryConditionParam> conditions = new ArrayList<QueryConditionParam>();
 		if(this.getWhereClause() != null){
 			for(Object o: this.getWhereClause().getParams()){
@@ -149,8 +161,7 @@ public class HQLQueryBuilder implements QueryBuilder{
 			}
 			conditions.addAll(this.getWhereClause().getConditions());
 		}
-		//params.addAll(this.getWhereClause() != null ? this.getWhereClause().getParams().toArray(): new ArrayList<QueryConditionParam>().toArray());
-		//params.addAll(this.getHavingClause() != null ? this.getHavingClause().getParams().toArray(): new ArrayList<QueryConditionParam>().toArray());
+		query = StringHelper.replaceAllRecursively(query, "  ", " ");
 		Query q = new Query(query.trim(), params, conditions);
 		if(this.getMaxResult() > 0){
 			q.setMaxResult(this.getMaxResult());
@@ -161,33 +172,33 @@ public class HQLQueryBuilder implements QueryBuilder{
 		return q;
 	}
 
-	public QueryClause buildFromClause() {
-		this.setFromClause(new FromClause());
+	public FromClause buildFromClause() {
+		this.setFromClause(new HQLFromClause());
 		return this.getFromClause();
 	}
 
-	public QueryClause buildGroupByClause() {
-		this.setGroupByClause(new GroupByClause());
+	public GroupByClause buildGroupByClause() {
+		this.setGroupByClause(new HQLGroupByClause());
 		return this.getGroupByClause();
 	}
 
-	public QueryClause buildHavingClause() {
-		this.setHavingClause(new HavingClause());
+	public HavingClause buildHavingClause() {
+		this.setHavingClause(new HQLHavingClause());
 		return this.getHavingClause();
 	}
 
-	public QueryClause buildOrderByClause() {
-		this.setOrderByClause(new OrderByClause());
+	public OrderByClause buildOrderByClause() {
+		this.setOrderByClause(new HQLOrderByClause());
 		return this.getOrderByClause();
 	}
 
-	public QueryClause buildSelectClause() {
-		this.setSelectClause(new SelectClause());
+	public SelectClause buildSelectClause() {
+		this.setSelectClause(new HQLSelectClause());
 		return this.getSelectClause();
 	}
 
-	public QueryClause buildWhereClause() {
-		this.setWhereClause(new WhereClause());
+	public WhereClause buildWhereClause() {
+		this.setWhereClause(new HQLWhereClause());
 		return this.getWhereClause();
 	}
 

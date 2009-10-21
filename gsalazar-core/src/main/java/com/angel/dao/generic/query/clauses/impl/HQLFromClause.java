@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
-import com.angel.dao.generic.query.clauses.QueryClause;
+import com.angel.dao.generic.query.clauses.FromClause;
 import com.angel.dao.generic.query.params.QueryFromParam;
 import com.angel.dao.generic.query.params.impl.HQLSelectFromParam;
 
@@ -16,11 +16,11 @@ import com.angel.dao.generic.query.params.impl.HQLSelectFromParam;
  * @author Guille Salazar
  * @since 14/Jul/2009
  */
-public class FromClause implements QueryClause{
+public class HQLFromClause implements FromClause{
 	
 	private List<QueryFromParam> fromParams;
 	
-	public FromClause(){
+	public HQLFromClause(){
 		super();
 		this.setFromParams(new ArrayList<QueryFromParam>());
 	}
@@ -39,7 +39,7 @@ public class FromClause implements QueryClause{
 		this.fromParams = fromParams;
 	}
 	
-	protected boolean hasQueryFromParams(){
+	public boolean hasQueryFromParams(){
 		return this.getFromParams().size() > 0 ;
 	}
 
@@ -68,19 +68,19 @@ public class FromClause implements QueryClause{
 		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 
-	public <T extends Object> FromClause add(Class<T> objectBean, String alias) {
+	public <T extends Object> HQLFromClause add(Class<T> objectBean, String alias) {
 		return this.addQueryFromParam(objectBean.getName(), alias);
 	}
 	
-	protected FromClause addQueryFromParam(String beanName, String alias){
+	public HQLFromClause addQueryFromParam(String beanName, String alias){
 		return this.addQueryFromParam(beanName, alias, false);
 	}
 	
-	protected FromClause addQueryJoinFromParam(String beanName, String alias){
+	public HQLFromClause addQueryJoinFromParam(String beanName, String alias){
 		return this.addQueryFromParam(beanName, alias, true);
 	}
 	
-	protected FromClause addQueryFromParam(String beanName, String alias, boolean isJoin){
+	protected HQLFromClause addQueryFromParam(String beanName, String alias, boolean isJoin){
 		HQLSelectFromParam fromParam = new HQLSelectFromParam();
 		fromParam.setAlias(alias);
 		fromParam.setName(beanName);
@@ -89,54 +89,54 @@ public class FromClause implements QueryClause{
 		return this;
 	}
 
-	public FromClause add(String beanName, String alias) {
+	public HQLFromClause add(String beanName, String alias) {
 		return this.addQueryFromParam(beanName, alias);
 	}
 	
-	public <T extends Object> FromClause innerJoin(Class<T> objectBean){
+	public <T extends Object> HQLFromClause innerJoin(Class<T> objectBean){
 		return this.innerJoin(objectBean.getName(), StringHelper.EMPTY_STRING);
 	}
-	public <T extends Object> FromClause innerJoin(Class<T> objectBean, String alias){
+	public <T extends Object> HQLFromClause innerJoin(Class<T> objectBean, String alias){
 		return this.innerJoin(objectBean.getName(), alias);
 	}
-	public FromClause innerJoin(String beanName){
+	public HQLFromClause innerJoin(String beanName){
 		return this.innerJoin(beanName, StringHelper.EMPTY_STRING);
 	}
-	public FromClause innerJoin(String beanName, String alias){
+	public HQLFromClause innerJoin(String beanName, String alias){
 		return this.innerJoin(beanName, StringHelper.EMPTY_STRING, alias);
 	}
-	public FromClause innerJoin(String beanName, String propertyBeanName, String alias){
+	public HQLFromClause innerJoin(String beanName, String propertyBeanName, String alias){
 		String bean = beanName + (StringHelper.isEmpty(propertyBeanName) ? "": "." + propertyBeanName);
 		return this.addQueryJoinFromParam("inner join " + bean + " ", alias);
 	}
 	
-	public <T extends Object> FromClause leftJoin(Class<T> objectBean){
+	public <T extends Object> HQLFromClause leftJoin(Class<T> objectBean){
 		return this.leftJoin(objectBean.getName(), StringHelper.EMPTY_STRING);
 	}
-	public <T extends Object> FromClause leftJoin(Class<T> objectBean, String alias){
+	public <T extends Object> HQLFromClause leftJoin(Class<T> objectBean, String alias){
 		return this.leftJoin(objectBean.getName(), alias);
 	}
-	public <T extends Object> FromClause leftJoin(String objectBean){
+	public <T extends Object> HQLFromClause leftJoin(String objectBean){
 		return this.leftJoin(objectBean, StringHelper.EMPTY_STRING);
 	}
-	public <T extends Object> FromClause leftJoin(String objectBean, String alias){
+	public <T extends Object> HQLFromClause leftJoin(String objectBean, String alias){
 		return this.addQueryJoinFromParam("left join " + objectBean + " ", alias);
 	}
 	
-	public <T extends Object> FromClause rightJoin(String objectBean){
+	public <T extends Object> HQLFromClause rightJoin(String objectBean){
 		return this.rightJoin(objectBean, StringHelper.EMPTY_STRING);
 	}
-	public <T extends Object> FromClause rightJoin(String objectBean, String propertyBeanName, String alias){
+	public <T extends Object> HQLFromClause rightJoin(String objectBean, String propertyBeanName, String alias){
 		String bean = objectBean + (StringHelper.isEmpty(propertyBeanName) ? "": "." + propertyBeanName);
 		return this.addQueryJoinFromParam("right join " + bean + " ", alias);
 	}
-	public <T extends Object> FromClause rightJoin(String objectBean, String alias){
+	public <T extends Object> HQLFromClause rightJoin(String objectBean, String alias){
 		return this.addQueryJoinFromParam("right join " + objectBean + " ", alias);
 	}
-	public <T extends Object> FromClause rightJoin(Class<T> objectBean){
+	public <T extends Object> HQLFromClause rightJoin(Class<T> objectBean){
 		return this.rightJoin(objectBean.getName(), StringHelper.EMPTY_STRING);
 	}
-	public <T extends Object> FromClause rightJoin(Class<T> objectBean, String alias){
+	public <T extends Object> HQLFromClause rightJoin(Class<T> objectBean, String alias){
 		return this.rightJoin(objectBean.getName(), alias);
 	}
 	

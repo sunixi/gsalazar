@@ -19,8 +19,8 @@ public class Query {
 	private String query;
 	private Object[] params;
 	private List<QueryConditionParam> conditions;
-	private int maxResult = 99999999;
-	private int fetchSize;
+	private int maxResult = 0;
+	private int fetchSize = 0;
 	
 	public Query(String query, List<Object> params, List<QueryConditionParam> conditions, int maxResult, int fetchSize){
 		this(query, params, conditions);

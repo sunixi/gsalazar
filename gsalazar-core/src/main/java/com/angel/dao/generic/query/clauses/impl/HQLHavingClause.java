@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
-import com.angel.dao.generic.query.clauses.QueryClause;
+import com.angel.dao.generic.query.clauses.HavingClause;
 import com.angel.dao.generic.query.condition.Condition;
 import com.angel.dao.generic.query.params.QueryConditionParam;
 import com.angel.dao.generic.query.params.impl.HQLWhereParam;
@@ -18,23 +18,23 @@ import com.angel.dao.generic.query.params.impl.HQLWhereParam;
  * @author Guille Salazar
  * @since 14/Jul/2009
  */
-public class HavingClause implements QueryClause{
+public class HQLHavingClause implements HavingClause {
 	
 	private Condition condition;
 	private boolean openGroup;
 	private List<QueryConditionParam> conditions;
 	
-	public HavingClause(){
+	public HQLHavingClause(){
 		super();
 		this.setConditions(new ArrayList<QueryConditionParam>());
 	}
 	
-	public HavingClause and(){
+	public HQLHavingClause and(){
 		this.setCondition(Condition.AND);
 		return this;
 	}
 	
-	public HavingClause or(){
+	public HQLHavingClause or(){
 		this.setCondition(Condition.OR);
 		return this;
 	}
@@ -50,20 +50,20 @@ public class HavingClause implements QueryClause{
 		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
-	private boolean hasQueryConditionParams() {
+	public boolean hasQueryConditionParams() {
 		return this.getConditions().size() > 0;
 	}
 
-	public HavingClause closeGroup(){
+	public HQLHavingClause closeGroup(){
 		this.setOpenGroup(false);
 		return this;
 	}
 	
-	public HavingClause openGroup(){
+	public HQLHavingClause openGroup(){
 		this.setOpenGroup(true);
 		return this;
 	}
-	public HavingClause grouped(HavingClause havingClause){
+	public HQLHavingClause grouped(HQLHavingClause havingClause){
 		this.openGroup();
 		for(QueryConditionParam qcp: havingClause.getConditions()){
 			this.addQueryWhereParam(qcp);
@@ -72,7 +72,7 @@ public class HavingClause implements QueryClause{
 		return this;
 	}
 	
-	protected HavingClause addQueryWhereParam(String name, Object ...valuesParams){
+	protected HQLHavingClause addQueryWhereParam(String name, Object ...valuesParams){
 		List<Object> values = new ArrayList<Object>();
 		if(valuesParams != null){
 			for(Object param: valuesParams){
@@ -82,7 +82,7 @@ public class HavingClause implements QueryClause{
 		return this.addQueryWhereParam(new HQLWhereParam(this.getCondition(), name, this.isOpenGroup(), !this.isOpenGroup(), values));
 	}
 	
-	protected HavingClause addQueryWhereParam(QueryConditionParam queryConditionParam) {
+	protected HQLHavingClause addQueryWhereParam(QueryConditionParam queryConditionParam) {
 		this.getConditions().add(queryConditionParam);
 		if(this.getConditions().size() == 1){
 			this.setCondition(Condition.AND);
@@ -90,117 +90,117 @@ public class HavingClause implements QueryClause{
 		return this;
 	}
 
-	public HavingClause minGT(String alias, String property, long value){
+	public HQLHavingClause minGT(String alias, String property, long value){
 		return this.addQueryWhereParam("min(" + alias + "." + property + ") > ?", value);
 	}
-	public HavingClause minGT(String property, long value){
+	public HQLHavingClause minGT(String property, long value){
 		return this.addQueryWhereParam("min(" + property + ") > ?", value);
 	}
-	public HavingClause minST(String property, long value){
+	public HQLHavingClause minST(String property, long value){
 		return this.addQueryWhereParam("min(" + property + ") < ?", value);
 	}
-	public HavingClause minST(String alias, String property, long value){
+	public HQLHavingClause minST(String alias, String property, long value){
 		return this.addQueryWhereParam("min(" + alias + "." + property + ") < ?", value);
 	}
-	public HavingClause minEQ(String property, long value){
+	public HQLHavingClause minEQ(String property, long value){
 		return this.addQueryWhereParam("min(" + property + ") = ?", value);
 	}
-	public HavingClause minEQ(String alias, String property, long value){
+	public HQLHavingClause minEQ(String alias, String property, long value){
 		return this.addQueryWhereParam("min(" + alias + "." + property + ") = ?", value);
 	}
 
-	public HavingClause maxGT(String property, long value){
+	public HQLHavingClause maxGT(String property, long value){
 		return this.addQueryWhereParam("max(" + property + ") > ?", value);
 	}
-	public HavingClause maxGT(String alias, String property, long value){
+	public HQLHavingClause maxGT(String alias, String property, long value){
 		return this.addQueryWhereParam("max(" + alias + "." + property + ") > ?", value);
 	}
-	public HavingClause maxST(String property, long value){
+	public HQLHavingClause maxST(String property, long value){
 		return this.addQueryWhereParam("min(" + property + ") < ?", value);
 	}
-	public HavingClause maxST(String alias, String property, long value){
+	public HQLHavingClause maxST(String alias, String property, long value){
 		return this.addQueryWhereParam("min(" + alias + "." + property + ") < ?", value);
 	}
-	public HavingClause maxEQ(String property, long value){
+	public HQLHavingClause maxEQ(String property, long value){
 		return this.addQueryWhereParam("min(" + property + ") = ?", value);
 	}
-	public HavingClause maxEQ(String alias, String property, long value){
+	public HQLHavingClause maxEQ(String alias, String property, long value){
 		return this.addQueryWhereParam("min(" + alias + "." + property + ") = ?", value);
 	}
 	
-	public HavingClause countGT(String property, long value){
+	public HQLHavingClause countGT(String property, long value){
 		return this.addQueryWhereParam("count(" + property + ") > ?", value);
 	}
-	public HavingClause countGT(String alias, String property, long value){
+	public HQLHavingClause countGT(String alias, String property, long value){
 		return this.addQueryWhereParam("count(" + alias + "." + property + ") > ?", value);
 	}
-	public HavingClause countST(String property, long value){
+	public HQLHavingClause countST(String property, long value){
 		return this.addQueryWhereParam("count(" + property + ") < ?", value);
 	}
-	public HavingClause countST(String alias, String property, long value){
+	public HQLHavingClause countST(String alias, String property, long value){
 		return this.addQueryWhereParam("count(" + alias + "." + property + ") < ?", value);
 	}
-	public HavingClause countEQ(String property, long value){
+	public HQLHavingClause countEQ(String property, long value){
 		return this.addQueryWhereParam("count(" + property + ") = ?", value);
 	}
-	public HavingClause countEQ(String alias, String property, long value){
+	public HQLHavingClause countEQ(String alias, String property, long value){
 		return this.addQueryWhereParam("count(" + alias + "." + property + ") = ?", value);
 	}
 	
-	public HavingClause avgGT(String property, long value){
+	public HQLHavingClause avgGT(String property, long value){
 		return this.addQueryWhereParam("avg(" + property + ") > ?", value);
 	}
-	public HavingClause avgGT(String alias, String property, long value){
+	public HQLHavingClause avgGT(String alias, String property, long value){
 		return this.addQueryWhereParam("avg(" + alias + "." + property + ") > ?", value);
 	}
-	public HavingClause avgST(String property, long value){
+	public HQLHavingClause avgST(String property, long value){
 		return this.addQueryWhereParam("avg(" + property + ") < ?", value);
 	}
-	public HavingClause avgST(String alias, String property, long value){
+	public HQLHavingClause avgST(String alias, String property, long value){
 		return this.addQueryWhereParam("avg(" + alias + "." + property + ") < ?", value);
 	}
-	public HavingClause avgEQ(String property, long value){
+	public HQLHavingClause avgEQ(String property, long value){
 		return this.addQueryWhereParam("avg(" + property + ") = ?", value);
 	}
-	public HavingClause avgEQ(String alias, String property, long value){
+	public HQLHavingClause avgEQ(String alias, String property, long value){
 		return this.addQueryWhereParam("avg(" + alias + "." + property + ") = ?", value);
 	}
 	
-	public HavingClause sumGT(String property, long value){
+	public HQLHavingClause sumGT(String property, long value){
 		return this.addQueryWhereParam("sum(" + property + ") > ?", value);
 	}
-	public HavingClause sumGT(String alias, String property, long value){
+	public HQLHavingClause sumGT(String alias, String property, long value){
 		return this.addQueryWhereParam("sum(" + alias + "." + property + ") > ?", value);
 	}
-	public HavingClause sumST(String property, long value){
+	public HQLHavingClause sumST(String property, long value){
 		return this.addQueryWhereParam("sum(" + property + ") < ?", value);
 	}
-	public HavingClause sumST(String alias, String property, long value){
+	public HQLHavingClause sumST(String alias, String property, long value){
 		return this.addQueryWhereParam("sum(" + alias + "." + property + ") < ?", value);
 	}
-	public HavingClause sumEQ(String property, long value){
+	public HQLHavingClause sumEQ(String property, long value){
 		return this.addQueryWhereParam("sum(" + property + ") = ?", value);
 	}
-	public HavingClause sumEQ(String alias, String property, long value){
+	public HQLHavingClause sumEQ(String alias, String property, long value){
 		return this.addQueryWhereParam("sum(" + alias + "." + property + ") = ?", value);
 	}
 	
-	public HavingClause countDistinctGT(String property, long value){
+	public HQLHavingClause countDistinctGT(String property, long value){
 		return this.addQueryWhereParam("count( distinct " + property + ") > ?", value);
 	}
-	public HavingClause countDistinctGT(String alias, String property, long value){
+	public HQLHavingClause countDistinctGT(String alias, String property, long value){
 		return this.addQueryWhereParam("count( distinct " + alias + "." + property + ") > ?", value);
 	}
-	public HavingClause countDistinctST(String property, long value){
+	public HQLHavingClause countDistinctST(String property, long value){
 		return this.addQueryWhereParam("count( distinct " + property + ") < ?", value);
 	}
-	public HavingClause countDistinctST(String alias, String property, long value){
+	public HQLHavingClause countDistinctST(String alias, String property, long value){
 		return this.addQueryWhereParam("count( distinct " + alias + "." + property + ") < ?", value);
 	}
-	public HavingClause countDistinctEQ(String property, long value){
+	public HQLHavingClause countDistinctEQ(String property, long value){
 		return this.addQueryWhereParam("count( distinct " + property + ") = ?", value);
 	}
-	public HavingClause countDistinctEQ(String alias, String property, long value){
+	public HQLHavingClause countDistinctEQ(String alias, String property, long value){
 		return this.addQueryWhereParam("count( distinct " + alias + "." + property + ") = ?", value);
 	}
 
@@ -236,7 +236,7 @@ public class HavingClause implements QueryClause{
 	/**
 	 * @return the openGroup
 	 */
-	protected boolean isOpenGroup() {
+	public boolean isOpenGroup() {
 		return openGroup;
 	}
 

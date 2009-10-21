@@ -3,8 +3,11 @@ package com.angel.dao.generic.query.clauses.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.common.helpers.CollectionHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.dao.generic.query.clauses.QueryClause;
+import com.angel.dao.generic.query.Query;
+import com.angel.dao.generic.query.builder.QueryBuilder;
+import com.angel.dao.generic.query.clauses.SelectClause;
 import com.angel.dao.generic.query.params.QuerySelectParam;
 import com.angel.dao.generic.query.params.impl.HQLSelectFromParam;
 
@@ -16,13 +19,15 @@ import com.angel.dao.generic.query.params.impl.HQLSelectFromParam;
  * @author Guille Salazar
  * @since 14/Jul/2009
  */
-public class SelectClause implements QueryClause{
+public class HQLSelectClause implements SelectClause {
 	
 	private List<QuerySelectParam> selectParams;
+	private List<Object> subQueriesParams;
 
-	public SelectClause(){
+	public HQLSelectClause(){
 		super();
 		this.setSelectParams(new ArrayList<QuerySelectParam>());
+		this.setSubQueriesParams(new ArrayList<Object>());
 	}
 	
 	/**
@@ -61,72 +66,104 @@ public class SelectClause implements QueryClause{
 		return StringHelper.replaceAllRecursively(clause, "  ", " ");
 	}
 	
-	protected boolean hasQuerySelectParams(){
+	public boolean hasQuerySelectParams(){
 		return this.getSelectParams().size() > 0;
 	}
 	
-	public SelectClause add(String property){
+	public HQLSelectClause add(String property){
 		return this.add(property, StringHelper.EMPTY_STRING);
 	}
-	public SelectClause add(String propertyName, String alias){
+	public HQLSelectClause add(String propertyName, String alias){
 		return this.addQuerySelectParam(propertyName, alias);
 	}
 	
-	protected SelectClause addQuerySelectParam(String propertyName, String alias){
+	public HQLSelectClause add(String prefix, String beanName, String alias) {
+		return this.addQuerySelectParam(prefix + "." + beanName, alias);
+	}
+	
+	public HQLSelectClause addAliased(String prefix, String beanName) {
+		return this.addQuerySelectParam(prefix + "." + beanName, StringHelper.EMPTY_STRING);
+	}
+	
+	protected HQLSelectClause addQuerySelectParam(String propertyName, String alias){
 		this.getSelectParams().add(new HQLSelectFromParam(propertyName, alias));
 		return this;
 	}
 
-	public SelectClause addMin(String propertyName, String alias){
+	public HQLSelectClause addMin(String propertyName, String alias){
 		return this.addQuerySelectParam("min(" + propertyName + ")", alias);
 	}
-	public SelectClause addMin(String property){
+	public HQLSelectClause addMin(String property){
 		return this.addMin(property, StringHelper.EMPTY_STRING);
 	}
 	
-	public SelectClause addMax(String propertyName, String alias){
+	public HQLSelectClause addMax(String propertyName, String alias){
 		return this.addQuerySelectParam("max(" + propertyName + ")", alias);
 	}
-	public SelectClause addMax(String property){
+	public HQLSelectClause addMax(String property){
 		return this.addMax(property, StringHelper.EMPTY_STRING);
 	}
 	
-	public SelectClause addCount(String propertyName, String alias){
+	public HQLSelectClause addCount(String propertyName, String alias){
 		return this.addQuerySelectParam("count(" + propertyName + ")", alias);
 	}
-	public SelectClause addCount(String property){
+	public HQLSelectClause addCount(String property){
 		return this.addCount(property, StringHelper.EMPTY_STRING);
 	}
 	
-	public SelectClause addAvg(String propertyName, String alias){
+	public HQLSelectClause addAvg(String propertyName, String alias){
 		return this.addQuerySelectParam("avg(" + propertyName + ")", alias);
 	}
-	public SelectClause addAvg(String property){
+	public HQLSelectClause addAvg(String property){
 		return this.addAvg(property, StringHelper.EMPTY_STRING);
 	}
 	
-	public SelectClause addSum(String propertyName, String alias){
+	public HQLSelectClause addSum(String propertyName, String alias){
 		return this.addQuerySelectParam("sum(" + propertyName + ")", alias);
 	}
-	public SelectClause addSum(String property){
+	public HQLSelectClause addSum(String property){
 		return this.addSum(property, StringHelper.EMPTY_STRING);
 	}
 
-	public SelectClause addDistinct(String propertyName, String alias){
+	public HQLSelectClause addDistinct(String propertyName, String alias){
 		return this.addQuerySelectParam("distinct " + propertyName, alias);
 	}
-	public SelectClause addDistinct(String property){
+	public HQLSelectClause addDistinct(String property){
 		return this.addDistinct(property, StringHelper.EMPTY_STRING);
 	}
 	
-	public SelectClause addCountDistincts(String alias, String ...propertiesNames){
+	public HQLSelectClause addCountDistincts(String alias, String ...propertiesNames){
 		String propertiesNamePlain = StringHelper.convertToPlainString(propertiesNames, ",");
 		return this.addQuerySelectParam("count( distinct " + propertiesNamePlain + ")", alias);
 	}
-	public SelectClause addCountDistinct(String propertyName, String alias){
+	public HQLSelectClause addCountDistinct(String propertyName, String alias){
 		return this.addQuerySelectParam("count( distinct " + propertyName + ")", alias);
 	}
-	public SelectClause addCountDistinct(String property){
+	public HQLSelectClause addCountDistinct(String property){
 		return this.addCountDistinct(property, StringHelper.EMPTY_STRING);
+	}
+
+	public SelectClause addSubQuery(QueryBuilder queryBuilder) {
+		Query query = queryBuilder.buildQuery();
+		String q = query.getQuery();
+		List<?> params = CollectionHelper.convertTo(query.getParams());
+		this.subQueriesParams.addAll(params);
+		return this.addQuerySelectParam("( " + q + ")", StringHelper.EMPTY_STRING);
+	}
+	
+	public SelectClause addSubQuery(QueryBuilder queryBuilder, String alias){
+		
+		return this;
+	}
+
+	public Object[] getSubQueriesParams() {
+		return this.subQueriesParams.toArray();
+	}
+
+	/**
+	 * @param subQueriesParams the subQueriesParams to set
+	 */
+	protected void setSubQueriesParams(List<Object> subQueriesParams) {
+		this.subQueriesParams = subQueriesParams;
 	}
 }

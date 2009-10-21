@@ -3,7 +3,7 @@
  */
 package com.angel.gsalazar.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,14 @@ import org.junit.Test;
 import ar.com.gsalazar.beans.Comentario;
 
 import com.angel.dao.generic.query.builder.QueryBuilder;
-import com.angel.dao.generic.query.builder.impl.HQLQueryBuilder;
-import com.angel.dao.generic.query.clauses.impl.FromClause;
-import com.angel.dao.generic.query.clauses.impl.HavingClause;
-import com.angel.dao.generic.query.clauses.impl.SelectClause;
-import com.angel.dao.generic.query.clauses.impl.WhereClause;
+import com.angel.dao.generic.query.builder.impl.QueryBuilderImpl;
+import com.angel.dao.generic.query.clauses.FromClause;
+import com.angel.dao.generic.query.clauses.WhereClause;
+import com.angel.dao.generic.query.clauses.impl.HQLFromClause;
+import com.angel.dao.generic.query.clauses.impl.HQLHavingClause;
+import com.angel.dao.generic.query.clauses.impl.HQLSelectClause;
+import com.angel.dao.generic.query.clauses.impl.HQLWhereClause;
+import com.angel.dao.generic.query.factory.impl.HQLClauseFactory;
 
 /**
  * 
@@ -68,7 +71,7 @@ public class QueryStatementTestCase {
 	 */
 	@Test
 	public void testCreateQuery(){
-		SelectClause selectClause = new SelectClause();
+		HQLSelectClause selectClause = new HQLSelectClause();
 		selectClause.add("cust");
 		/*
 		FromClause fromClause = new FromClause();
@@ -88,7 +91,7 @@ public class QueryStatementTestCase {
 	
 	@Test
 	public void testCreateSelectClauseQuery(){
-		SelectClause selectClause = new SelectClause();
+		HQLSelectClause selectClause = new HQLSelectClause();
 		selectClause.add("cust").addCount("age").addCount("size", "s");
 		
 		System.out.println("Query: " + selectClause.createClause());
@@ -96,7 +99,7 @@ public class QueryStatementTestCase {
 	
 	@Test
 	public void testCreateFromClauseQuery(){
-		FromClause fromClause = new FromClause();
+		HQLFromClause fromClause = new HQLFromClause();
 		fromClause.add("Articulo", "arti").innerJoin(Comentario.class);
 		System.out.println("Query: " + fromClause.createClause());
 		assertEquals("Query for from clause should be equals.", "from Articulo arti inner join " + Comentario.class.getName(), fromClause.createClause());
@@ -104,7 +107,7 @@ public class QueryStatementTestCase {
 	
 	@Test
 	public void testCreateWhereQuery(){
-		FromClause fromClause = new FromClause();
+		HQLFromClause fromClause = new HQLFromClause();
 		fromClause	.add("Product", "prod")
 					.add("Store", "store")
 					.innerJoin("Customer", "cust");
@@ -112,7 +115,7 @@ public class QueryStatementTestCase {
 		List<String> list = new ArrayList<String>();
 		list.add("Melbourne");
 		list.add("Sydney");
-		WhereClause whereClause = new WhereClause();
+		HQLWhereClause whereClause = new HQLWhereClause();
 		whereClause.equals("prod", "name", "widget");
 		whereClause.in("store", "location.name", list);
 		whereClause.allElementsValuesEQ("prod", "cust", "currentOrder.lineItems");
@@ -121,7 +124,7 @@ public class QueryStatementTestCase {
 	
 	@Test
 	public void testCreateHavingQuery(){
-		HavingClause havingClause = new HavingClause();
+		HQLHavingClause havingClause = new HQLHavingClause();
 		havingClause
 			.avgEQ("percent", 18)
 			.and().countDistinctEQ("cust", "age", 47);
@@ -131,13 +134,13 @@ public class QueryStatementTestCase {
 	
 	@Test
 	public void testQuery(){
-		QueryBuilder queryBuilder = new HQLQueryBuilder();
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		
-		FromClause fromClause = (FromClause) queryBuilder.buildFromClause();
+		FromClause fromClause = queryBuilder.getFromClause();
 		fromClause
 			.add(Comentario.class, "comentario")
 			.add("Articulos", "articulos");
-		WhereClause whereClause = (WhereClause) queryBuilder.buildWhereClause();
+		WhereClause whereClause = queryBuilder.getWhereClause();
 		whereClause
 			.between("age", 15, 25)
 			.notEquals("name", "Diego");

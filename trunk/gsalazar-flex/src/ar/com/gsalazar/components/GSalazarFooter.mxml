@@ -2,6 +2,11 @@
 <mx:Box width="100%" 	xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
+		
+		
+			[Bindable]
+			public var ultimaActualizacion:Date;
+
 			private function clickEmail():void {
 				navigateToURL(new URLRequest("mailto:guillesalazar@google.com?subject=Consulta"));
 			}
@@ -13,7 +18,7 @@
 	<mx:HRule width="100%"/>
 	<mx:ControlBar width="90%" height="5%" paddingBottom="0" paddingTop="0" verticalAlign="middle" horizontalAlign="center" >
 		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
-		<mx:Label fontSize="10" fontWeight="bold" text="Ultima Actualizacion: {shortDateFormatter.format(new Date())} "/>
+		<mx:Label fontSize="10" fontWeight="bold" text="Ultima Actualizacion: {shortDateFormatter.format(ultimaActualizacion)} "/>
 		<mx:Label fontSize="10" fontWeight="bold" text=" | " />
 		<mx:Label fontSize="10" fontWeight="bold" text="2009 - 2010"/>
 		<mx:Label fontSize="10" fontWeight="bold" text=" | "/>

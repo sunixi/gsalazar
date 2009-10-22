@@ -64,7 +64,7 @@
 				<mx:TextArea id="descripcionArticuloTextInput" width="70%" color="black" maxChars="200"/>
 			</mx:FormItem>
 			<mx:FormItem label="Contenido:" labelStyleName="normal" required="true" errorString="La descripción es requerida.">
-				<fck:FCKEditor id="contenidoFCKEditor" width="800" height="500">
+				<fck:FCKEditor id="contenidoFCKEditor" width="300" height="400">
 					
 				</fck:FCKEditor>
 			</mx:FormItem>

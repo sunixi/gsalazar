@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			public var versionSistema:Number;
+
+		]]>
+	</mx:Script>
+	<mx:Label width="100%" textAlign="right" text="Versión {versionSistema}" fontSize="12" fontWeight="bold" color="black"/>
 	<mx:Canvas id="initContainer" fontFamily="amplitudFamily"
 		x="{this.width-initContainer.width-100}"
 		y="5">

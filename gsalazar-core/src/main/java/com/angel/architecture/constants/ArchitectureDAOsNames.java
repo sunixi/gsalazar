@@ -29,5 +29,7 @@ public class ArchitectureDAOsNames {
     public static final String USER_CLICK_DAO_NAME = "userClickDAO";
     
     public static final String TAG_SEARCH_DAO_NAME = "tagSearchDAO";
+    
+    public static final String PARAMETER_AREA_DAO_NAME = "parameterAreaDAO";
 
 }

@@ -24,7 +24,8 @@
 		
 		[Bindable]
 		public var subCategorias:IList;
-
+		[Bindable]
+		public var ultimaActualizacionCV:Date;
 
 		public function init():void {
 			inicializarSubCategorias();
@@ -79,7 +80,7 @@
 			<windowsShade:WindowsShadeGroup id="windowsShadeGroup" indexOpened="0" width="30%" height="100%"
 				clickXWindowShade="onClickXWindowShade(event);">
 			</windowsShade:WindowsShadeGroup>
-			<mx:Label text="Ultima actualizacion: {fechaFormatter.format(new Date())}" fontSize="10" fontStyle="italic" textAlign="center" width="100%"/>
+			<mx:Label text="Ultima actualizacion: {fechaFormatter.format(ultimaActualizacionCV)}" fontSize="10" fontStyle="italic" textAlign="center" width="100%"/>
 		</mx:VBox>
 		<mx:VRule height="100%" width="1"/>
 		<mx:VBox width="70%" height="90%">

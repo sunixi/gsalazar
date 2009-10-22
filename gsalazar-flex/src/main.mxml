@@ -138,6 +138,9 @@
 				(paginas.getChildAt(2) as Proyectos).proyectos = ApplicationLocator.instance.proyectos;
 				(paginas.getChildAt(3) as Articulos).articulos = ApplicationLocator.instance.articulos;
 				(paginas.getChildAt(4) as WebAmigas).contactosWeb = ApplicationLocator.instance.contactosWeb;
+				gsalazarHeader.versionSistema = ApplicationLocator.instance.versionSistema;
+				gsalazarFooter.ultimaActualizacion = ApplicationLocator.instance.ultimaActualizacion;
+				(paginas.getChildAt(1) as CurriculumVitae).ultimaActualizacionCV = ApplicationLocator.instance.ultimaActualizacionCV;
 				BrowserManager.getInstance().setTitle("Bienvenido a GSalazar.com.ar");
 			}
 
@@ -197,7 +200,7 @@
 		]]>
 	</mx:Script>
 	<mx:Style source="/styles/style.css"/>
-	<components1:GSalazarHeader width="100%" clipContent="false" height="25%"/>
+	<components1:GSalazarHeader id="gsalazarHeader" width="100%" clipContent="false" height="25%"/>
 	<mx:HRule width="100%"/>
 	<components1:GSalazarHeaderToolbar id="gsalazarHeaderToolbar" width="100%" height="1%"/>
 	<mx:HRule width="100%"/>
@@ -207,7 +210,7 @@
 		<mx:LinkBar dataProvider="paginas" height="30" fontSize="15"/>
 		<mx:Spacer width="25%"/>
 	</mx:ApplicationControlBar>
-	<mx:HBox width="100%" height="2%" includeInLayout="false" visible="false">
+	<mx:HBox width="100%" height="2%" includeInLayout="false" visible="true">
 		<buttons:XButton mouseOver="mouseOver(event);" mouseOut="mouseOut(event);" width="100%"
 			label="Invocacion a Web Service" beforeClick="beforeClickEvent(event);"
 			data="Se invoca a un Web Service permitiendo conocer el valor de una moneda 'origen' respecto de una moneda 'destino'."/>
@@ -226,5 +229,5 @@
 		mouseOver="mouseOverPage(event);"
 		mouseOut="mouseOutPage(event);">
 	</mx:ViewStack>
-	<components1:GSalazarFooter/>
+	<components1:GSalazarFooter id="gsalazarFooter"/>
 </mx:Application>

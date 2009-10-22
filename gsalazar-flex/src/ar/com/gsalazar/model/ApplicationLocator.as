@@ -3,6 +3,7 @@ package ar.com.gsalazar.model {
 	import ar.com.gsalazar.beans.Articulo;
 	import ar.com.gsalazar.beans.Categoria;
 	
+	import com.angel.beans.ConfigurationParameter;
 	import com.angel.beans.TagSearchContainer;
 	import com.angel.syncronization.TransactionalBlock;
 	
@@ -43,6 +44,9 @@ package ar.com.gsalazar.model {
 		private var _contactosWeb:IList;
 		
 		[Bindable]
+		private var _parametrosConfiguracion:IList;
+		
+		[Bindable]
 		private var mainPage:main;
 	   	
 	   	public function get tagsSearchs():IList {
@@ -54,6 +58,13 @@ package ar.com.gsalazar.model {
 	   	}
 	   	public function set tagSearchContainer(data:TagSearchContainer):void{
 			_tagSearchContainer = data;
+	   	}
+	   	
+	   	public function get parametrosConfiguracion():IList {
+			return _parametrosConfiguracion;
+	   	}
+	   	public function set parametrosConfiguracion(data:IList):void{
+			_parametrosConfiguracion = data;
 	   	}
 	   	
 	   	public function get proyectos():IList {
@@ -106,14 +117,21 @@ package ar.com.gsalazar.model {
 				transactionalBlock.register("articuloService",		"findAll").callbackFunction(inicializarArticulosCallbackFunction);
 				transactionalBlock.register("proyectoService",		"buscarTodos").callbackFunction(inicializarProyectosCallbackFunction);
 				transactionalBlock.register("categoriaService",		"findAll").callbackFunction(inicializarCategoriasCallbackFunction);
+				transactionalBlock.register("configurationParameterService",
+																	"findAll").callbackFunction(inicializarParametrosConfiguracionCallbackFunction);
 				transactionalBlock.register("contactoWebService",	"buscarTodos").callbackFunction(inicializarContactosWebCallbackFunction);
 				transactionalBlock.execute(uiComponent);
 			}
 	   	}
 	   	
 	   	public function estaInicializado():Boolean {
-			return _tagSearchContainer != null || _contactosWeb != null && _categorias != null;
+			return _tagSearchContainer != null || _contactosWeb != null && _categorias != null
+				|| _parametrosConfiguracion != null;
 	   	}
+		
+		private function inicializarParametrosConfiguracionCallbackFunction(data:IList):void{
+			_parametrosConfiguracion = data;
+		}
 
 		private function inicializarTagSearchCallbackFunction(data:TagSearchContainer):void{
 			_tagSearchContainer = data;
@@ -156,6 +174,30 @@ package ar.com.gsalazar.model {
 	 			_articulos.addItem(_articulo);
 	 		}
 	 	}
+	 	
+	 	public function get ultimaActualizacionCV():Date{
+	 		var parametro:ConfigurationParameter = this.parametroConfiguracion('CV_LAST_UPDATE');
+			return parametro != null ? parametro.dateValue : null;
+	   	}
+	 	
+	 	public function get ultimaActualizacion():Date{
+	 		var parametro:ConfigurationParameter = this.parametroConfiguracion('SYSTEM_LAST_UPDATE');
+			return parametro != null ? parametro.dateValue : null;
+	   	}
+	 	
+	 	public function get versionSistema():Number{
+	 		var parametro:ConfigurationParameter = this.parametroConfiguracion('SYSTEM_LAST_VERSION');
+			return parametro != null ? parametro.doubleValue : 0.0;
+	   	}
+	   	
+	   	private function parametroConfiguracion(nombre:String):ConfigurationParameter{
+	   		for each(var cp:ConfigurationParameter in _parametrosConfiguracion){
+	   			if(cp.name == nombre){
+	   				return cp;
+	   			}
+	   		}
+	   		return null;
+	   	}
 	}
 }
 

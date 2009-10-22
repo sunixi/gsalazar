@@ -3,7 +3,8 @@
  */
 package ar.com.gsalazar.runner;
 
-import ar.com.gsalazar.executables.DataGeneratorExecutable;
+import ar.com.gsalazar.executables.GSDataAnnotationGeneratorExecutable;
+import ar.com.gsalazar.executables.GSDataClassesGeneratorExecutable;
 
 import com.angel.architecture.runner.ApplicationProcessRunner;
 import com.angel.architecture.spring.ApplicationContextSpring;
@@ -27,7 +28,8 @@ public class GSProcessorRunners {
 	public static void main(String[] args) {
 		ApplicationContextSpring applicationContextSpring = ApplicationContextSpring.createInstance(MC_SPRING_APPLICATION_CONTEXTS).prepareApplicationContext();
 		ApplicationProcessRunner applicationProcessRunner = applicationContextSpring.getApplicationProcessRunner();
-		applicationProcessRunner.addExecutable(new DataGeneratorExecutable());
+		applicationProcessRunner.addExecutable(new GSDataAnnotationGeneratorExecutable());
+		applicationProcessRunner.addExecutable(new GSDataClassesGeneratorExecutable());
 		applicationProcessRunner.run();
 	}
 

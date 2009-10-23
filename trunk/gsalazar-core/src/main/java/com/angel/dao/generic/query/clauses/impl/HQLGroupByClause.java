@@ -66,4 +66,8 @@ public class HQLGroupByClause implements GroupByClause{
 	protected void setQueryGroups(List<String> queryGroups) {
 		this.queryGroups = queryGroups;
 	}
+	
+	public boolean hasQuery(){
+		return this.getQueryGroups().size() > 0;
+	}
 }

@@ -166,4 +166,8 @@ public class HQLSelectClause implements SelectClause {
 	protected void setSubQueriesParams(List<Object> subQueriesParams) {
 		this.subQueriesParams = subQueriesParams;
 	}
+	
+	public boolean hasQuery(){
+		return this.getSelectParams().size() > 0;
+	}
 }

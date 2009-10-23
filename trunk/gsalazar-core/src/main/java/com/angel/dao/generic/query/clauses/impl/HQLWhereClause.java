@@ -168,101 +168,101 @@ public class HQLWhereClause implements WhereClause{
 	}
 
 	public HQLWhereClause collectionSizeGT(String propertyName, long value) {
-		return this.addQueryWhereParam("size(" + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("size( " + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionSizeGT(String alias, String propertyName, long value) {
-		return this.addQueryWhereParam("size(" + alias + "." + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("size( " + alias + "." + propertyName + " ) > ?", value);
 	}
 
 	public HQLWhereClause collectionSizeST(String propertyName, long value) {
-		return this.addQueryWhereParam("size(" + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("size( " + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionSizeST(String alias, String propertyName, long value) {
-		return this.addQueryWhereParam("size(" + alias + "." + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("size( " + alias + "." + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionSizeEQ(String propertyName, long value) {
-		return this.addQueryWhereParam("size(" + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("size( " + propertyName + " ) = ?", value);
 	}
 	public HQLWhereClause collectionSizeEQ(String alias, String propertyName, long value) {
-		return this.addQueryWhereParam("size(" + alias + "." + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("size( " + alias + "." + propertyName + " ) = ?", value);
 	}
 
 	public HQLWhereClause collectionMinElementGT(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("minelement(" + alias + "." + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("minelement( " + alias + "." + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMinElementST(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("minelement(" + alias + "." + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("minelement( " + alias + "." + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionMinElementEQ(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("minelement(" + alias + "." + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("minelement( " + alias + "." + propertyName + " ) = ?", value);
 	}
 	public HQLWhereClause collectionMinElementGT(String propertyName, Object value) {
-		return this.addQueryWhereParam("minelement(" + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("minelement( " + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMinElementST(String propertyName, Object value) {
-		return this.addQueryWhereParam("minelement(" + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("minelement( " + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionMinElementEQ(String propertyName, Object value) {
-		return this.addQueryWhereParam("minelement(" + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("minelement( " + propertyName + " ) = ?", value);
 	}
 	
 	public HQLWhereClause collectionMaxElementGT(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("maxelement(" + alias + "." + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("maxelement( " + alias + "." + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMaxElementST(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("maxelement(" + alias + "." + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("maxelement( " + alias + "." + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionMaxElementEQ(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("maxelement(" + alias + "." + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("maxelement( " + alias + "." + propertyName + " ) = ?", value);
 	}
 	
 	public HQLWhereClause collectionMaxElementGT(String propertyName, Object value) {
-		return this.addQueryWhereParam("maxelement(" + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("maxelement( " + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMaxElementST(String propertyName, Object value) {
-		return this.addQueryWhereParam("maxelement(" + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("maxelement( " + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionMaxElementEQ(String propertyName, Object value) {
-		return this.addQueryWhereParam("maxelement(" + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("maxelement( " + propertyName + " ) = ?", value);
 	}
 
 	public HQLWhereClause collectionMinIndexGT(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("minindex(" + alias + "." + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("minindex( " + alias + "." + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMinIndexST(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("minindex(" + alias + "." + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("minindex( " + alias + "." + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMinIndexEQ(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("minindex(" + alias + "." + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("minindex( " + alias + "." + propertyName + " ) = ?", value);
 	}
 	public HQLWhereClause collectionMinIndexGT(String propertyName, Object value) {
-		return this.addQueryWhereParam("minindex(" + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("minindex( " + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMinIndexST(String propertyName, Object value) {
-		return this.addQueryWhereParam("minindex(" + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("minindex( " + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMinIndexEQ(String propertyName, Object value) {
-		return this.addQueryWhereParam("minindex(" + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("minindex( " + propertyName + " ) = ?", value);
 	}
 	
 	public HQLWhereClause collectionMaxIndexGT(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("maxindex(" + alias + "." + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("maxindex( " + alias + "." + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMaxIndexST(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("maxindex(" + alias + "." + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("maxindex( " + alias + "." + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionMaxIndexEQ(String alias, String propertyName, Object value) {
-		return this.addQueryWhereParam("maxindex(" + alias + "." + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("maxindex( " + alias + "." + propertyName + " ) = ?", value);
 	}
 	
 	public HQLWhereClause collectionMaxIndexGT(String propertyName, Object value) {
-		return this.addQueryWhereParam("maxindex(" + propertyName + ") > ?", value);
+		return this.addQueryWhereParam("maxindex(" + propertyName + " ) > ?", value);
 	}
 	public HQLWhereClause collectionMaxIndexST(String propertyName, Object value) {
-		return this.addQueryWhereParam("maxindex(" + propertyName + ") < ?", value);
+		return this.addQueryWhereParam("maxindex( " + propertyName + " ) < ?", value);
 	}
 	public HQLWhereClause collectionMaxIndexEQ(String propertyName, Object value) {
-		return this.addQueryWhereParam("maxindex(" + propertyName + ") = ?", value);
+		return this.addQueryWhereParam("maxindex( " + propertyName + " ) = ?", value);
 	}
 	
 	public HQLWhereClause between(String propertyName, Object minValue, Object maxValue) {
@@ -308,57 +308,57 @@ public class HQLWhereClause implements WhereClause{
 
 	public <T extends Object> HQLWhereClause inElements(String alias, String propertyName, Collection<T> collection){
 		/** select mother from Cat as mother, Cat as kit where kit in elements(foo.kittens).*/
-		return this.addQueryWhereParam(alias + "." + propertyName + " in elements(?)", ParamType.LIST_PARAMETER, collection);
+		return this.addQueryWhereParam(alias + "." + propertyName + " in elements( ? )", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> HQLWhereClause inElements(String propertyName, Collection<T> collection){
 		/** select mother from Cat as mother, Cat as kit where kit in elements(foo.kittens).*/
-		return this.addQueryWhereParam(propertyName + " in elements(?)", ParamType.LIST_PARAMETER, collection);
+		return this.addQueryWhereParam(propertyName + " in elements( ? )", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> HQLWhereClause someElements(String alias, String propertyName, Collection<T> collection){
 		/** select p from NameList list, Person p where p.name = some elements(list.names).*/
-		return this.addQueryWhereParam(alias + "." + propertyName + " = some elements(?)", ParamType.LIST_PARAMETER, collection);
+		return this.addQueryWhereParam(alias + "." + propertyName + " = some elements( ? )", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> HQLWhereClause someElements(String propertyName, Collection<T> collection){
 		/** select p from NameList list, Person p where p.name = some elements(list.names).*/
-		return this.addQueryWhereParam(propertyName + " = some elements(?)", ParamType.LIST_PARAMETER, collection);
+		return this.addQueryWhereParam(propertyName + " = some elements( ? )", ParamType.LIST_PARAMETER, collection);
 	}
 	public <T extends Object> HQLWhereClause existElements(String alias, String propertyName){
 		/** from Cat cat where exists elements(cat.kittens).*/
-		return this.addQueryWhereParam("exists elements(" + alias + "." + propertyName + ")");
+		return this.addQueryWhereParam("exists elements( " + alias + "." + propertyName + " )");
 	}
 	public <T extends Object> HQLWhereClause existElements(String propertyName){
 		/** from Cat cat where exists elements(cat.kittens).*/
-		return this.addQueryWhereParam("exists elements(" + propertyName + ")");
+		return this.addQueryWhereParam("exists elements( " + propertyName + " )");
 	}
 
 	public <T extends Object> HQLWhereClause allElementsGT(String alias, String propertyName, long value){
 		/** from Player p where 3 > all elements(p.scores). */
-		return this.addQueryWhereParam(" ? > all elements(" + alias + "." + propertyName + ")");
+		return this.addQueryWhereParam(" ? > all elements( " + alias + "." + propertyName + " )");
 	}
 	public <T extends Object> HQLWhereClause allElementsGT(String propertyName, long value){
 		/** from Player p where 3 > all elements(p.scores). */
-		return this.addQueryWhereParam(" ? > all elements(" + propertyName + ")");
+		return this.addQueryWhereParam(" ? > all elements( " + propertyName + " )");
 	}
 	
 	public <T extends Object> HQLWhereClause allElementsST(String alias, String propertyName, long value){
 		/** from Player p where 3 > all elements(p.scores). */
-		return this.addQueryWhereParam(" ? < all elements(" + alias + "." + propertyName + ")");
+		return this.addQueryWhereParam(" ? < all elements( " + alias + "." + propertyName + " )");
 	}
 	public <T extends Object> HQLWhereClause allElementsST(String propertyName, long value){
 		/** from Player p where 3 > all elements(p.scores). */
-		return this.addQueryWhereParam(" ? < all elements(" + propertyName + ")", value);
+		return this.addQueryWhereParam(" ? < all elements( " + propertyName + " )", value);
 	}
 	public <T extends Object> HQLWhereClause allElementsEQ(String propertyName, long value){
 		/** from Player p where 3 > all elements(p.scores). */
-		return this.addQueryWhereParam(" ? = all elements(" + propertyName + ")");
+		return this.addQueryWhereParam(" ? = all elements( " + propertyName + " )");
 	}
 	public <T extends Object> HQLWhereClause allElementsEQ(String alias, String propertyName, long value){
 		/** from Player p where 3 > all elements(p.scores). */
-		return this.addQueryWhereParam(" ? = all elements(" + alias + "." + propertyName + ")");
+		return this.addQueryWhereParam(" ? = all elements( " + alias + "." + propertyName + " )");
 	}
 	public <T extends Object> HQLWhereClause inIndices(String alias, String propertyName, String value){
 		/** from Show show where 'fizard' in indices(show.acts). */
-		return this.addQueryWhereParam(" ? in indices(" + alias + "." + propertyName + ")");
+		return this.addQueryWhereParam(" ? in indices( " + alias + "." + propertyName + " )");
 	}
 	public <T extends Object> HQLWhereClause inIndices(String propertyName, String value){
 		return this.inIndices(StringHelper.EMPTY_STRING, propertyName, value);
@@ -389,11 +389,11 @@ public class HQLWhereClause implements WhereClause{
 
 	public HQLWhereClause allElementsValuesEQ(String beanName, String alias, String propertyName) {
 		/** prod = all elements(cust.currentOrder.lineItems)*/
-		return this.addQueryWhereParam(beanName + " = all elements(" + alias + "." + propertyName + ")");
+		return this.addQueryWhereParam(beanName + " = all elements( " + alias + "." + propertyName + " )");
 	}
 	public HQLWhereClause allElementsValuesEQ(String beanName, String propertyName) {
 		/** prod = all elements(cust.currentOrder.lineItems)*/
-		return this.addQueryWhereParam(beanName + " = all elements(" + propertyName + ")");
+		return this.addQueryWhereParam(beanName + " = all elements( " + propertyName + " )");
 	}
 	
 	public HQLWhereClause allElementsValuesEQ(String propertyName, Collection<?> values) {
@@ -668,4 +668,7 @@ public class HQLWhereClause implements WhereClause{
 		return this;
 	}
 
+	public boolean hasQuery(){
+		return this.getConditions().size() > 0;
+	}
 }

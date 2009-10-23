@@ -144,12 +144,12 @@ public class QueryBuilderImpl implements QueryBuilder{
 	}
 
 	public Query buildQuery() {
-		String selectQuery = this.getSelectClause().createClause();
-		String fromQuery = this.getFromClause().createClause();
-		String whereQuery = this.getWhereClause().createClause();
-		String groupByQuery = this.getGroupByClause().createClause();
-		String havingQuery = this.getHavingClause().createClause();
-		String orderByQuery = this.getOrderByClause().createClause();
+		String selectQuery = this.getSelectClause().hasQuery() ? this.getSelectClause().createClause(): "";
+		String fromQuery = this.getFromClause().hasQuery() ? " " + this.getFromClause().createClause() : "";
+		String whereQuery = this.getWhereClause().hasQuery() ? " " + this.getWhereClause().createClause(): "";
+		String groupByQuery = this.getGroupByClause().hasQuery() ? " " + this.getGroupByClause().createClause(): "";
+		String havingQuery = this.getHavingClause().hasQuery() ? " " + this.getHavingClause().createClause(): "";
+		String orderByQuery = this.getOrderByClause().hasQuery() ? " " + this.getOrderByClause().createClause(): "";
 		
 		String query = selectQuery + fromQuery + whereQuery + groupByQuery + havingQuery + orderByQuery; 
 		List<Object> params = new ArrayList<Object>();

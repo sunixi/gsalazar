@@ -1,5 +1,7 @@
 package com.angel.dao.generic.query.params.impl;
 
+import org.hibernate.annotations.common.util.StringHelper;
+
 import com.angel.dao.generic.query.params.QueryFromParam;
 import com.angel.dao.generic.query.params.QuerySelectParam;
 
@@ -40,7 +42,7 @@ public class HQLSelectFromParam implements QuerySelectParam, QueryFromParam{
 	}
 
 	public String getSelection() {
-		return this.getName() + " " + this.getAlias();
+		return this.getName() + (StringHelper.isEmpty(this.getAlias()) ? "": " " + this.getAlias());
 	}
 
 	/**

@@ -96,6 +96,8 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import mx.containers.Box;
+			import ar.com.gsalazar.beans.Categoria;
 			import ar.com.gsalazar.popups.BuscablePopup;
 			import ar.com.gsalazar.beans.Persona;
 			import ar.com.gsalazar.beans.Contacto;
@@ -172,6 +174,13 @@
 			}
 			
 			private function mouseOverPage(event:Event):void {
+				var itemStack:ViewStack = ViewStack(event.currentTarget);
+				var displayChild:DisplayObject = itemStack.selectedChild;
+				for each(var c:Categoria in ApplicationLocator.instance.categorias){
+					if(c.nombre == Box(displayChild).label){
+						itemMenuDescripcion.text = c.descripcion;
+					}
+				}
 				itemMenuDescripcion.visible = false;				
 			}
 			
@@ -210,7 +219,7 @@
 		<mx:LinkBar dataProvider="paginas" height="30" fontSize="15"/>
 		<mx:Spacer width="25%"/>
 	</mx:ApplicationControlBar>
-	<mx:HBox width="100%" height="2%" includeInLayout="false" visible="true">
+	<mx:HBox width="100%" height="2%" includeInLayout="false" visible="false">
 		<buttons:XButton mouseOver="mouseOver(event);" mouseOut="mouseOut(event);" width="100%"
 			label="Invocacion a Web Service" beforeClick="beforeClickEvent(event);"
 			data="Se invoca a un Web Service permitiendo conocer el valor de una moneda 'origen' respecto de una moneda 'destino'."/>

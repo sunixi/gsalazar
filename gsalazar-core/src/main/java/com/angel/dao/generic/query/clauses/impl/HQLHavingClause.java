@@ -252,5 +252,9 @@ public class HQLHavingClause implements HavingClause {
 	 */
 	protected void setConditions(List<QueryConditionParam> conditions) {
 		this.conditions = conditions;
-	}	
+	}
+	
+	public boolean hasQuery(){
+		return this.getConditions().size() > 0;
+	}
 }

@@ -51,6 +51,7 @@ public class Query {
 		int i = 0;
 		while(StringHelper.containsCharacter(this.getQuery(), '?')){
 			query = StringHelper.replaceFirst(this.getQuery(), "?", PREFIX_PARAM_NAME + i);
+			i++;
 		}
 	}
 	

@@ -5,8 +5,6 @@ package com.angel.gsalazar.services;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.angel.dao.generic.query.builder.QueryBuilder;
@@ -21,11 +19,9 @@ import com.angel.dao.generic.query.factory.impl.HQLClauseFactory;
  *	@author Guillermo Daniel Salazar.
  *	@since 16/Semptiembre/2009.
  */
-public class SubQueriesTestCase {
+public class SubQueriesTestCase extends BaseQueriesTestCase{
 	
 	//from Cat as cat where not ( cat.name, cat.color ) in ( select cat.name, cat.color from DomesticCat cat )
-	
-	private QueryBuilder queryBuilder;
 
 	@Test
 	public void testAddSubQueryGTInWhereClause(){
@@ -147,7 +143,7 @@ public class SubQueriesTestCase {
 	
 	@Test
 	public void testAddSubQueryInSelectClause(){
-		String expectedQuery = "select cat.id , ( select max(kit.weight) from cat.kitten kit) from Cat cat";
+		String expectedQuery = "select cat.id, ( select max(kit.weight) from cat.kitten kit) from Cat cat";
 		SelectClause selectClause = this.getQueryBuilder().getSelectClause();
 		selectClause
 			.addAliased("cat", "id")
@@ -174,29 +170,5 @@ public class SubQueriesTestCase {
 		FromClause fromClause = queryBuilder.getFromClause();
 		fromClause.add("cat.kitten", "kit");
 		return queryBuilder;
-	}
-	
-	@Before
-	public void beforeEachTest(){
-		this.queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
-	}
-
-	@After
-	public void afterEachTest(){
-		this.queryBuilder = null;
-	}
-
-	/**
-	 * @return the queryBuilder
-	 */
-	protected QueryBuilder getQueryBuilder() {
-		return queryBuilder;
-	}
-
-	/**
-	 * @param queryBuilder the queryBuilder to set
-	 */
-	protected void setQueryBuilder(QueryBuilder queryBuilder) {
-		this.queryBuilder = queryBuilder;
 	}
 }

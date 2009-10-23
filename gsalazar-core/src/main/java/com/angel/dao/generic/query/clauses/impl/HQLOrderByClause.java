@@ -76,5 +76,9 @@ public class HQLOrderByClause implements OrderByClause{
 	 */
 	protected void setOrdersBy(List<String> ordersBy) {
 		this.ordersBy = ordersBy;
-	}	
+	}
+	
+	public boolean hasQuery(){
+		return this.getOrdersBy().size() > 0;
+	}
 }

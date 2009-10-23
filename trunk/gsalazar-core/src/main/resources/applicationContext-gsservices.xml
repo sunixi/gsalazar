@@ -3,6 +3,11 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean id="enviarEmailService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.EnviarEmailServiceImpl"/>
+		</property>
+	</bean>
 	<bean id="personaService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.gsalazar.services.impl.PersonaServiceImpl">

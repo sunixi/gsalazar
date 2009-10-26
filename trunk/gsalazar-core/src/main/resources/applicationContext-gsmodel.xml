@@ -47,6 +47,7 @@
 
         <property name="annotatedClasses">
             <list>
+            	<value>ar.com.gsalazar.beans.SolicitudCV</value>
 				<value>ar.com.gsalazar.beans.Persona</value>
             	<value>ar.com.gsalazar.beans.Comentario</value>
             	<value>ar.com.gsalazar.beans.Fuente</value>

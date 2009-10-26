@@ -3,6 +3,13 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
+	<bean id="solicitudCVService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.gsalazar.services.impl.SolicitudCVServiceImpl">
+				<property name="genericDAO" ref="solicitudCVDAO"/>
+			</bean>
+		</property>
+	</bean>
 	<bean id="enviarEmailService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.gsalazar.services.impl.EnviarEmailServiceImpl"/>

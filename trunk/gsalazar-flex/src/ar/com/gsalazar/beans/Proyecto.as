@@ -23,8 +23,8 @@ package ar.com.gsalazar.beans {
 		
 		public override function buildDetallePopup(_displayObject:DisplayObject):void {
 			var _popup:BuscablePopup = BuscablePopup(PopUpManager.createPopUp(_displayObject, BuscablePopup, true));
-			_popup.height = Application.application.height * 0.95;
-			_popup.width = Application.application.width * 0.85;
+			_popup.height = Application.application.height * 0.8;
+			_popup.width = Application.application.width * 0.5;
 			_popup.x = (Application.application.width / 2) - _popup.width / 2;
 			_popup.y = (Application.application.height / 2) - _popup.height / 2;
 			_popup.buscable = this;

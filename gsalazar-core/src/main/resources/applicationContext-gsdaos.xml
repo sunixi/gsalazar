@@ -4,6 +4,11 @@
 <beans>
 
 <!-- Domain Object DAOs. -->
+    <bean id="solicitudCVDAO" class="ar.com.gsalazar.daos.impl.SolicitudCVSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.gsalazar.beans.SolicitudCV"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
     <bean id="personaDAO" class="ar.com.gsalazar.daos.impl.PersonaSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>
 		<property name="persistentClass"    value="ar.com.gsalazar.beans.Persona"/>

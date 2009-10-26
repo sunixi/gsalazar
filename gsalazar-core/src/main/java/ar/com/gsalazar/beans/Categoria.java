@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.angel.architecture.persistence.base.PersistentObject;
 
@@ -31,6 +32,7 @@ public class Categoria extends PersistentObject {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Categoria> subCategorias;
 	@OneToMany(cascade = CascadeType.ALL)
+	@OrderBy(value = "comienzo desc, fin desc")
 	private List<ItemCategoria> items;
 
 	public Categoria(String nombre, String descripcion, List<Categoria> subCategorias){

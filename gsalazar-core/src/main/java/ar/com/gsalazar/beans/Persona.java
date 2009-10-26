@@ -4,6 +4,7 @@
 package ar.com.gsalazar.beans;
 
 import java.sql.Blob;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +38,19 @@ public class Persona extends Buscable {
 	
 	@Column(nullable = false, unique = true, length = 100)
 	private String email;
+
+	@Column(nullable = false)
+	private Date nacimiento;
+
+	@Column(nullable = true)
+	private String tituloUniversitario;
+
+	@Column(nullable = false)
+	private boolean trabajando = true;
+
+	@Column(nullable = true, length = 100)
+	private String empresa;
+
 
 	/**
 	 * @return the imagen
@@ -108,4 +122,60 @@ public class Persona extends Buscable {
 	public void setImagenArray(byte[] imagenArray) {
 		this.imagenArray = imagenArray;
 	}
+
+	/**
+	 * @return the nacimiento
+	 */
+	public Date getNacimiento() {
+		return nacimiento;
+	}
+
+	/**
+	 * @param nacimiento the nacimiento to set
+	 */
+	public void setNacimiento(Date nacimiento) {
+		this.nacimiento = nacimiento;
+	}
+
+	/**
+	 * @return the tituloUniversitario
+	 */
+	public String getTituloUniversitario() {
+		return tituloUniversitario;
+	}
+
+	/**
+	 * @param tituloUniversitario the tituloUniversitario to set
+	 */
+	public void setTituloUniversitario(String tituloUniversitario) {
+		this.tituloUniversitario = tituloUniversitario;
+	}
+
+	/**
+	 * @return the trabajando
+	 */
+	public boolean isTrabajando() {
+		return trabajando;
+	}
+
+	/**
+	 * @param trabajando the trabajando to set
+	 */
+	public void setTrabajando(boolean trabajando) {
+		this.trabajando = trabajando;
+	}
+
+	/**
+	 * @return the empresa
+	 */
+	public String getEmpresa() {
+		return empresa;
+	}
+
+	/**
+	 * @param empresa the empresa to set
+	 */
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
+	}	
 }

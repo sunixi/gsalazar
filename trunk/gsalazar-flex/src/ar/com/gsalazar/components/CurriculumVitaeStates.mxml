@@ -86,9 +86,9 @@
 		<mx:State name="categorias">
 			<mx:AddChild relativeTo="{vBoxContainer}">
 				<mx:List	id="infoPersonalCurriculumVitaeCategoriaList"  labelField="nombre"
-					width="100%" height="100%" paddingLeft="0" paddingTop="0" verticalAlign="middle" borderStyle="none"  
-					paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"  
-					alternatingItemColors="#ffffff, #eff1f2" rowHeight="{infoPersonalCurriculumVitaeCategoriaList.height * 0.4}"
+					width="100%" height="100%" paddingLeft="5" paddingTop="0" verticalAlign="middle" borderStyle="none"  
+					paddingBottom="0" paddingRight="5" backgroundAlpha="0" selectionColor="#cccccc"  
+					alternatingItemColors="#ffffff, #eff1f2" rowHeight="{infoPersonalCurriculumVitaeCategoriaList.height * 0.5}"
 					selectable="false" itemRenderer="ar.com.gsalazar.itemRenderers.ItemCategoriaItemRenderer"
 					/>
 			</mx:AddChild>

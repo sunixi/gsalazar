@@ -24,7 +24,7 @@
 		}
 
 		private function updateRowHeigth(event:Event):void {
-			proyectosList.rowHeight = proyectosList.height / proyectosList.rowCount + 10;
+			proyectosList.rowHeight = proyectosList.height / proyectosList.rowCount + 15;
 		}
 	]]>
 	</mx:Script>
@@ -34,7 +34,7 @@
 		<mx:Label text="- {proyectos.length} resultados." fontWeight="bold" fontSize="14"/>
 	</mx:HBox>
 	<mx:List	id="proyectosList" cornerRadius="23" dataProvider="{proyectos}" labelField="titulo"
-				width="60%" rowCount="3" styleName="proyectosAdvancedDataGrid" paddingLeft="0" paddingTop="0"
+				width="80%" rowCount="3" styleName="proyectosAdvancedDataGrid" paddingLeft="0" paddingTop="0"
 				paddingBottom="0" paddingRight="20" backgroundAlpha="0" selectionColor="#cccccc"
 				alternatingItemColors="#ffffff, #eff1f2" creationComplete="updateRowHeigth(event)"
 				selectable="false" verticalAlign="middle" 

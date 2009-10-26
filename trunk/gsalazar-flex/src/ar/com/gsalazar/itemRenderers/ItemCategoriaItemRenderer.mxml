@@ -30,8 +30,7 @@
 	<mx:HBox width="100%" height="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="10" paddingTop="5">
 		<mx:VBox width="100%" height="100%">
 			<mx:HBox width="100%" verticalAlign="middle">
-				<mx:Text text="{data.nombre}" color="black" fontSize="13" fontWeight="bold" selectable="false"/>
-				<mx:Text height="10%" text="{this.buildFechasText(data)}" fontSize="12" fontWeight="bold" color="black" selectable="false"/>
+				<mx:Text width="95%" text="{data.nombre} - {this.buildFechasText(data)}" color="black" fontSize="12" fontWeight="bold" selectable="false"/>
 			</mx:HBox>
 			<mx:HBox width="100%" verticalAlign="middle">
 				<mx:Text width="100%" text="{data.descripcion}" color="black" selectable="false"/>

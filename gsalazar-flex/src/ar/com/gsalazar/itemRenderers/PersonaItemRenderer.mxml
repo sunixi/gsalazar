@@ -27,24 +27,28 @@
 		public var apellido:String;
 		public var email:String;
 		-->
-	<mx:HBox width="100%" height="100%" verticalAlign="top" horizontalAlign="left" paddingLeft="10" paddingTop="5">
-		<mx:VBox width="30%">
-			<mx:Image source="{data.imagenArray}" toolTip="{data.descripcion}" width="60" height="60"/>
+	<mx:HBox width="100%" height="100%" verticalAlign="middle" paddingLeft="10" paddingTop="5">
+		<mx:VBox width="20%" height="95%" verticalAlign="middle" horizontalAlign="center">
+			<mx:Image source="{data.imagenArray}" toolTip="{data.descripcion}" width="100" height="100"/>
 		</mx:VBox>
-		<mx:VBox width="70%">
-			<mx:HBox width="100%" height="100%" verticalAlign="top" paddingLeft="10" paddingTop="5">
-				<mx:Label text="Nombre: " color="black" fontSize="13" fontWeight="bold" />
-				<mx:Text text="{data.apellido}, {data.nombre}" color="black"/>
+		<mx:VBox width="75%" height="95%" horizontalAlign="left">
+			<mx:HBox width="100%" height="2%" verticalAlign="top" paddingLeft="5" paddingTop="5">
+				<mx:Label text="Nombre: " color="black" fontSize="12" fontWeight="bold" />
+				<mx:Text text="{data.apellido}, {data.nombre}" color="black" selectable="false"/>
 			</mx:HBox>
-			<mx:HBox width="100%" height="100%" verticalAlign="top" paddingLeft="10" paddingTop="5">
-				<mx:Label text="Email: " color="black" fontSize="13" fontWeight="bold" />
-				<mx:Text text="{data.email}" color="black"/>
+			<mx:HBox width="100%" height="2%" verticalAlign="top" paddingLeft="5" paddingTop="5">
+				<mx:Label text="Email: " color="black" fontSize="12" fontWeight="bold" />
+				<mx:Text text="{data.email}" color="black" selectable="false"/>
 			</mx:HBox>
-			<!--
-			<mx:HBox width="100%" height="100%" verticalAlign="top" paddingLeft="10" paddingTop="5">
-				<mx:Label text="Presentación: " color="black" fontSize="13" fontWeight="bold" />
-				<mx:Text text="{data.descripcion}" color="black"/>
-			</mx:HBox>-->
+			<mx:HBox width="100%" height="2%" verticalAlign="top" paddingLeft="5" paddingTop="5">
+				<mx:Label text="Título: " color="black" fontSize="12" fontWeight="bold" />
+				<mx:Text text="{data.tituloUniversitario}" color="black" selectable="false"/>
+			</mx:HBox>
+		</mx:VBox>
+		<mx:VBox width="2%" verticalAlign="middle" height="95%" horizontalAlign="center">
+			<mx:Image source="@Embed(source = 'images/desarrolladorMasInfo.png')" 
+				toolTip="Mas Información de {data.apellido + ', ' + data.nombre}." width="24" height="24"
+					click="{data.buildDetallePopup(this);}"/>
 		</mx:VBox>
 	</mx:HBox>
 </mx:VBox>

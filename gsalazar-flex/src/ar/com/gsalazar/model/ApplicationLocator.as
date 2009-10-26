@@ -7,6 +7,7 @@ package ar.com.gsalazar.model {
 	import com.angel.beans.TagSearchContainer;
 	import com.angel.syncronization.TransactionalBlock;
 	
+	import mx.collections.ArrayCollection;
 	import mx.collections.IList;
 	import mx.core.UIComponent;
 	
@@ -96,9 +97,14 @@ package ar.com.gsalazar.model {
 	   	}
 	   	
 	   	public function buscarSubCategoriasPara(nombreCategoria:String):IList{
+			var categoria:Categoria = this.buscarCategoriaPara(nombreCategoria);
+			return categoria != null ? categoria.subCategorias: new ArrayCollection();;
+	   	}
+	   	
+	   	public function buscarCategoriaPara(nombreCategoria:String):Categoria{
 			for each(var categoria:Categoria in this.categorias){
 				if(categoria.nombre == nombreCategoria){
-					return categoria.subCategorias;
+					return categoria;
 				}
 			}
 			return null;

@@ -96,6 +96,7 @@
 	 </mx:Style>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.IndexChangedEvent;
 			import mx.containers.Box;
 			import ar.com.gsalazar.beans.Categoria;
 			import ar.com.gsalazar.popups.BuscablePopup;
@@ -132,7 +133,11 @@
 
 			[Bindable]
 			private var popup:IFlexDisplayObject;
-			
+			/** Tag de Google Webmaster para index.html:
+			 
+			 * <meta name="google-site-verification" content="Oazp_OtA5403Y0D0DM-aGv4NsWodyb-g9D_eYQQxgOs" />
+			 * 
+			 */
 			private function endsLoading(event:Event = null):void {
 				gsalazarHeaderToolbar.tagsSearch = ApplicationLocator.instance.tagsSearchs;
 				(paginas.getChildAt(0) as Inicio).tagSearchContainer = ApplicationLocator.instance.tagSearchContainer;
@@ -201,9 +206,11 @@
 			private function mouseOut(event:Event = null):void {
 				PopUpManager.removePopUp(popup);
 			}
-			private function beforeClickEvent(event:Event):void {
-				var button:XButton = event.currentTarget as XButton;
-				ServiceLocator.getService("clickUserService",this).createClick(button.label, button.data, new Date());
+			private function beforeClickEvent(event:IndexChangedEvent):void {
+				var child:Object = event.relatedObject;
+				var name:String = child.label;
+				var categoria:Categoria = ApplicationLocator.instance.buscarCategoriaPara(name);
+				ServiceLocator.getService("clickUserService",this).createClick(categoria.nombre, categoria.descripcion, new Date());
 			}
 
 		]]>
@@ -221,7 +228,7 @@
 	</mx:ApplicationControlBar>
 	<mx:HBox width="100%" height="2%" includeInLayout="false" visible="false">
 		<buttons:XButton mouseOver="mouseOver(event);" mouseOut="mouseOut(event);" width="100%"
-			label="Invocacion a Web Service" beforeClick="beforeClickEvent(event);"
+			label="Invocacion a Web Service" 
 			data="Se invoca a un Web Service permitiendo conocer el valor de una moneda 'origen' respecto de una moneda 'destino'."/>
 		<mx:Button label="Crop Image" click="{PopUpManager.createPopUp(this, ImageCropperPopup, true);}" mouseOver="mouseOver(event);" mouseOut="mouseOut(event);"/>
 		<mx:Button label="Super Panel" click="{PopUpManager.createPopUp(this, MainView, true);}" toolTipShow="mouseOver(event);" toolTipHide="mouseOut(event);" toolTip=" "/>
@@ -234,7 +241,7 @@
 	<mx:Label id="itemMenuDescripcion" width="1%" fontSize="12" fontStyle="italic" visible="false"/>
 	<mx:ViewStack id="paginas" width="100%" height="70%" selectedIndex="0"
 		creationComplete="inicializarPaginas()"
-		mouseOver="mouseOverPage(event);"
+		mouseOver="mouseOverPage(event);" change="beforeClickEvent(event);"
 		mouseOut="mouseOutPage(event);">
 	</mx:ViewStack>
 	<components1:GSalazarFooter id="gsalazarFooter"/>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	verticalAlign="middle" horizontalAlign="center">
+	
+	
+	<mx:Label text="El Angel Durmiente" fontSize="45"/>
+	<mx:Image source="@Embed(source = '/images/trabajando.png')" toolTip="Momentaneamente el sitio se esta actualizando."
+		width="250" height="250"/>
+</mx:Application>

@@ -28,7 +28,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 		String expectedQuery = "from Cat fatcat where fatcat.weight > ( select avg(cat.weight) from DomesticCat cat )";
 		
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
-		fromClause.add("Cat", "fatcat");
+		fromClause.from("Cat", "fatcat");
 		WhereClause whereClause = this.getQueryBuilder().getWhereClause();
 		whereClause.addSubSelectGT("fatcat", "weight", this.newQueryBuilderForTestAddSubQueryGTInWhereClause());
 
@@ -47,7 +47,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 	protected QueryBuilder newQueryBuilderForTestAddSubQueryGTInWhereClause(){
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());		
 		FromClause fromClause = queryBuilder.getFromClause();
-		fromClause.add("DomesticCat", "cat");
+		fromClause.from("DomesticCat", "cat");
 		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.addAvg("cat.weight");
 		return queryBuilder;
@@ -58,7 +58,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 		String expectedQuery = "from DomesticCat cat where cat.name = some ( select name.nickName from Name name )";
 		
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
-		fromClause.add("DomesticCat", "cat");
+		fromClause.from("DomesticCat", "cat");
 		WhereClause whereClause = this.getQueryBuilder().getWhereClause();
 		whereClause.addSubSelectEQSome("cat", "name", this.newQueryBuilderForTestAddSubQueryEQSomeInWhereClause());
 
@@ -76,7 +76,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 	protected QueryBuilder newQueryBuilderForTestAddSubQueryEQSomeInWhereClause(){
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());		
 		FromClause fromClause = queryBuilder.getFromClause();
-		fromClause.add("Name", "name");
+		fromClause.from("Name", "name");
 		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.add("name.nickName");
 		return queryBuilder;
@@ -87,7 +87,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 		String expectedQuery = "from Cat cat where not exists ( from Cat mate where mate.mate = cat )";
 		
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
-		fromClause.add("Cat", "cat");
+		fromClause.from("Cat", "cat");
 		WhereClause whereClause = this.getQueryBuilder().getWhereClause();
 		whereClause.addSubSelectNotExists(this.newQueryBuilderForTestAddSubQueryNotExistsInWhereClause());
 
@@ -106,7 +106,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 	protected QueryBuilder newQueryBuilderForTestAddSubQueryNotExistsInWhereClause(){
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());		
 		FromClause fromClause = queryBuilder.getFromClause();
-		fromClause.add("Cat", "mate");
+		fromClause.from("Cat", "mate");
 		WhereClause whereClause = queryBuilder.getWhereClause();
 		whereClause.equalsAlias("mate", "mate", "cat");
 		return queryBuilder;
@@ -117,7 +117,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 		String expectedQuery = "from DomesticCat cat where cat.name not in ( select name.nickName from Name name )";
 		
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
-		fromClause.add("DomesticCat", "cat");
+		fromClause.from("DomesticCat", "cat");
 		WhereClause whereClause = this.getQueryBuilder().getWhereClause();
 		whereClause.addSubSelectNotIn("cat", "name", this.newQueryBuilderForTestAddSubQueryNotInInWhereClause());
 
@@ -137,7 +137,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.addAliased("name", "nickName");
 		FromClause fromClause = queryBuilder.getFromClause();
-		fromClause.add("Name", "name");
+		fromClause.from("Name", "name");
 		return queryBuilder;
 	}
 	
@@ -150,7 +150,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 			.addSubQuery(this.newQueryBuilderForTestAddSubQueryInSelectClause());
 		
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
-		fromClause.add("Cat", "cat");
+		fromClause.from("Cat", "cat");
 
 		String query = this.getQueryBuilder().buildQuery().getQuery();
 
@@ -168,7 +168,7 @@ public class SubQueriesTestCase extends BaseQueriesTestCase{
 		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.addMax("kit.weight");
 		FromClause fromClause = queryBuilder.getFromClause();
-		fromClause.add("cat.kitten", "kit");
+		fromClause.from("cat.kitten", "kit");
 		return queryBuilder;
 	}
 }

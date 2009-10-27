@@ -31,7 +31,7 @@ public class FullQueriesTestCase extends BasicQueriesTestCase{
 		String expectedQuery = "from Cat cat inner join cat.mate mate left join cat.kittens kitten";
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
 		fromClause
-			.add("Cat","cat")
+			.from("Cat","cat")
 			.innerJoin("cat.mate", "mate")
 			.leftJoin("cat.kittens", "kitten");
 
@@ -66,8 +66,8 @@ public class FullQueriesTestCase extends BasicQueriesTestCase{
 		
 		FromClause fromClause = this.getQueryBuilder().getFromClause();
 		fromClause
-			.add("Product","prod")
-			.add("Store", "store")
+			.from("Product","prod")
+			.from("Store", "store")
 			.innerJoin("store.customers", "cust");
 
 		List<String> cities = new java.util.ArrayList<String>();

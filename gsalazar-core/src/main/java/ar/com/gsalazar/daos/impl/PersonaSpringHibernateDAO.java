@@ -67,7 +67,7 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		HQLFromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause
-			.add(this.getPersistentClass(), "personas")
+			.from(this.getPersistentClass(), "personas")
 			.innerJoin("personas.tagsBuscables", "tags");
 		HQLWhereClause whereClause = (HQLWhereClause) queryBuilder.getWhereClause();
 		whereClause

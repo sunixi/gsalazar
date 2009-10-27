@@ -78,7 +78,7 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 		queryBuilder.setMaxResult(cantidadAgregada);
 
 		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
-		fromClause.add(super.getPersistentClass(), "articulo");
+		fromClause.from(super.getPersistentClass(), "articulo");
 		OrderByClause orderByClause = (HQLOrderByClause) queryBuilder.getOrderByClause();
 		orderByClause.desc("articulo", "creationDate");
 
@@ -90,7 +90,7 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.setMaxResult(cantidadComentada);
 		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
-		fromClause.add(super.getPersistentClass(), "articulo");
+		fromClause.from(super.getPersistentClass(), "articulo");
 		OrderByClause orderByClause = (HQLOrderByClause) queryBuilder.getOrderByClause();
 		orderByClause.desc("size(comentarios)");
 
@@ -104,7 +104,7 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 		SelectClause selectClause = queryBuilder.getSelectClause();
 		selectClause.add("articulo");
 		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
-		fromClause.add(super.getPersistentClass(), "articulo");
+		fromClause.from(super.getPersistentClass(), "articulo");
 		OrderByClause orderByClause = (HQLOrderByClause) queryBuilder.getOrderByClause();
 		orderByClause.desc("articulo","visualizado");
 		
@@ -121,7 +121,7 @@ public class ArticuloSpringHibernateDAO extends GenericSpringHibernateDAO<Articu
 	
 		FromClause fromClause = queryBuilder.getFromClause();
 		fromClause
-			.add(super.getPersistentClass(), "articulos")
+			.from(super.getPersistentClass(), "articulos")
 			.innerJoin("articulos.comentarios", "c");
 
 		OrderByClause orderByClause = queryBuilder.getOrderByClause();

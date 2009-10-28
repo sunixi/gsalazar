@@ -13,6 +13,15 @@ ApplicationControlBar {
 	dropShadowColor: #000066;
 }
 
+ToolTip {
+   backgroundAlpha: 0.18;
+   cornerRadius: 13;
+   paddingLeft: 5;
+   paddingRight: 5;
+   backgroundColor: #0099ff;
+   color: #000099;
+}
+
 .mainViewstack {
 	roundedBottomCorners: true;
 	cornerRadius: 23;

@@ -17,7 +17,7 @@
 	</mx:HBox>
 	<mx:ViewStack id="paginas" width="100%" height="80%" selectedIndex="0" styleName="mainViewstack">
 		<pages:Inicio width="100%" height="100%" />
-		<pages:Quinceaneras width="100%" height="100%">
+		<pages:Quinceaneras width="100%" height="100%" toolTip="Disfruta de este momento tan inolvidable ahora via web con tus amigas y amigos.">
 			<pages:quinceaneras>
 				<mx:Object nombre="Laura" apellido="Gonzalez"/>
 				<mx:Object nombre="Sabrina" apellido="Gutierrez"/>
@@ -25,7 +25,7 @@
 				<mx:Object nombre="Emilse" apellido="Larrea"/>
 			</pages:quinceaneras>
 		</pages:Quinceaneras>
-		<pages:Casamientos width="100%" height="100%"/>
+		<pages:Casamientos width="100%" height="100%" toolTip="Festeja tu casamiento, y seguí disfrutandolo de manera online."/>
 		<pages:EventosGenerales width="100%" height="100%"/>
 		<pages:Contacto width="100%" height="100%"/>
 	</mx:ViewStack>

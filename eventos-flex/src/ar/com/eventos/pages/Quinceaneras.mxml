@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	creationComplete="init();" 
+	horizontalAlign="center"
+	verticalAlign="middle"
+	label="Quinceañeras">
+	<mx:Style>
+
+	</mx:Style>
+	<mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		
+		[Bindable]
+		public var quinceaneras:Array;
+
+		public function init():void {
+			
+		}
+		
+
+	]]>
+	</mx:Script>
+	<mx:TileList dataProvider="{quinceaneras}" width="50%" height="60%" rowCount="1" columnCount="3"
+		verticalAlign="middle" labelField="nombre" backgroundAlpha="0" maxRows="1" 
+		itemRenderer="ar.com.eventos.itemRenderers.QuinceanerasItemRenderer"/>
+</mx:Box>

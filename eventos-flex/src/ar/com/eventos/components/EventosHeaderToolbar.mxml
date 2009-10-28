@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ControlBar  
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	verticalAlign="middle" paddingBottom="0" paddingTop="0" xmlns:components="com.hillelcoren.components.*"
+	creationComplete="init();">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.angel.beans.TagSearch;
+			import mx.events.FlexEvent;
+			import mx.controls.TextInput;
+			import ar.com.gsalazar.model.ApplicationLocator;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import mx.core.Application;
+			import com.angel.locator.ServiceLocator;
+			import mx.collections.IList;
+			
+			
+			[Bindable]
+			private var _tagsSearch:IList;
+			
+			
+			private function init():void {
+				buscar.textInput.addEventListener(FlexEvent.ENTER, enterHandler);
+			}
+
+			public function set tagsSearch(data:IList):void {
+				_tagsSearch = data;
+				buscar.dataProvider= new ArrayCollection(data.toArray());
+			}
+			
+			private function buscarArticulos(event:Event = null):void {
+				var tagNames:IList = new ArrayCollection();
+				var items:IList = buscar.selectedItems;
+				for each(var a:TagSearch in items){
+					tagNames.addItem(a.label);
+				}
+				ServiceLocator.getServiceWithCallback('searcherService', buscarArticulosCallbackFunction).buscarTodosPorTagsNames(tagNames);
+			}
+			
+			private function enterHandler(event:Event):void {
+				this.buscarArticulos(event);
+			}
+			
+			private function buscarArticulosCallbackFunction(data:IList):void {
+				var _popup:ResultadoBusqueda = PopUpManager.createPopUp(this, ResultadoBusqueda, true) as ResultadoBusqueda;
+				_popup.height = Application.application.height * 1;
+				_popup.width = Application.application.width * 0.85;
+				_popup.x = Application.application.width / 2 - _popup.width / 2;
+				_popup.y = Application.application.height / 2 - _popup.height / 2;
+				_popup.tagBuscados = buscar.selectedItems;
+				_popup.buscados = data;
+				_popup.title = 'Resultado de busqueda - Encontrados ' + data.length +' resultados.';
+				PopUpManager.bringToFront(_popup);				
+			}
+		]]>
+	</mx:Script>
+	<mx:Component id="dropDownItemRenderer">
+		<mx:VBox width="80%" verticalGap="0" backgroundAlpha="0.8">
+			<mx:Script>
+				<![CDATA[
+					import com.angel.beans.TagSearch;
+					import mx.utils.StringUtil;
+					import com.angel.thirds.components.hillelcoren.utils.StringUtils;
+					
+					private function prepareText(data:Object):String{
+						var tagSearch:TagSearch = TagSearch(data);
+						if(tagSearch.description.length < 40){
+							return tagSearch.description;
+						} else {
+							return data.description.substr(0, 40) + '...';
+						}
+					}
+				]]>
+			</mx:Script>
+			<mx:Label id="nameLabel" fontSize="12" text="{data.label} ({ data.occurrences})" color="black"/>
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="left">
+				<mx:Label id="hexLabel" fontSize="10" text="{this.prepareText(data)}" color="black"/>
+			</mx:HBox>		
+		</mx:VBox>
+	</mx:Component>
+	<mx:HBox width="30%" verticalAlign="middle" horizontalAlign="left">
+		<mx:Label fontSize="14" fontWeight="bold" text="Bienvenido a GSalazar.com.ar - "/>
+		<mx:Label fontSize="11" fontWeight="bold" text="{shortDateFormatter.format(new Date())}" fontStyle="italic" textAlign="left" />
+	</mx:HBox>
+	<mx:HBox width="70%" verticalAlign="middle" horizontalAlign="right">
+		<!--<mx:LinkButton label="Comentarios" color="#FB2121" fontSize="12" textDecoration="underline"/>-->
+		<components:AutoComplete id="buscar" labelField="label" matchType="anyPart" verticalAlign="middle" horizontalAlign="right" 
+			prompt="Ingrese tags de busqueda." width="35%"
+		allowNewValues="{false}" selectedItemStyleName="{ AutoComplete.STYLE_MAC_MAIL }" backspaceAction="focus" 
+		allowDuplicates="{ false}" allowMultipleSelection="{ true}"
+		allowEditingNewValues="{ false}" dropDownItemRenderer="{ dropDownItemRenderer }"/>
+		<mx:Image source="@Embed(source='images/bigSearch.png')" height="{buscar.height}" width="30" toolTip="Buscar..." click="buscarArticulos(event);"/>
+	</mx:HBox>
+	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY"/>
+</mx:ControlBar>

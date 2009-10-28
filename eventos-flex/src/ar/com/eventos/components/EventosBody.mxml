@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" xmlns:pages="ar.com.eventos.pages.*">
+	<mx:Script>
+		<![CDATA[
+			
+			
+
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" height="15%" verticalAlign="middle" horizontalAlign="left">
+		<mx:Image source="@Embed(source = 'images/presentacion.jpg')" toolTip="Tu fiesta on line." height="90%" width="30%"/>
+		<mx:ApplicationControlBar width="70%" horizontalAlign="center" verticalAlign="middle" height="10%">
+			<mx:Spacer width="15%"/>
+			<mx:LinkBar dataProvider="paginas" height="35" fontSize="16" styleName="mainPageStyle"/>
+			<mx:Spacer width="15%"/>
+		</mx:ApplicationControlBar>
+	</mx:HBox>
+	<mx:ViewStack id="paginas" width="100%" height="80%" selectedIndex="0" styleName="mainViewstack">
+		<pages:Inicio width="100%" height="100%" />
+		<pages:Quinceaneras width="100%" height="100%">
+			<pages:quinceaneras>
+				<mx:Object nombre="Laura" apellido="Gonzalez"/>
+				<mx:Object nombre="Sabrina" apellido="Gutierrez"/>
+				<mx:Object nombre="Rocio" apellido="Santos"/>
+				<mx:Object nombre="Emilse" apellido="Larrea"/>
+			</pages:quinceaneras>
+		</pages:Quinceaneras>
+		<pages:Casamientos width="100%" height="100%"/>
+		<pages:EventosGenerales width="100%" height="100%"/>
+		<pages:Contacto width="100%" height="100%"/>
+	</mx:ViewStack>
+</mx:VBox>

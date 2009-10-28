@@ -4,25 +4,35 @@
 	creationComplete="init();" 
 	horizontalAlign="center"
 	verticalAlign="middle"
-	label="Quinceañeras">
+	label="Quinceañeras" xmlns:components="ar.com.eventos.components.*">
 	<mx:Style>
 
 	</mx:Style>
 	<mx:Script>
 	<![CDATA[
+		import mx.binding.utils.ChangeWatcher;
+		import mx.controls.TileList;
 		import mx.collections.ArrayCollection;
 		
 		[Bindable]
 		public var quinceaneras:Array;
 
 		public function init():void {
-			
+			//ChangeWatcher.canWatch(
 		}
 		
+		private function onMouseFocusChange(event:Event):void {
+			var tileList:TileList = TileList(event.currentTarget);
+			nombres.text = tileList.selectedItem.nombre;
+		}
 
 	]]>
 	</mx:Script>
-	<mx:TileList dataProvider="{quinceaneras}" width="50%" height="60%" rowCount="1" columnCount="3"
-		verticalAlign="middle" labelField="nombre" backgroundAlpha="0" maxRows="1" 
+	<mx:Label id="nombres" width="100%"/>
+	<components:TileListEx id="quinceanerasList" dataProvider="{quinceaneras}" width="70%" height="70%" rowCount="1" columnCount="3"
+		verticalAlign="middle" labelField="nombre" backgroundAlpha="0" maxRows="1"
+		mouseFocusChange="onMouseFocusChange(event);"
+		toolTip="{quinceanerasList.selectedItem.nombre}" cornerRadius="24" useRollOver="false"
+		verticalScrollPolicy="off" horizontalScrollPolicy="auto" paddingLeft="20" paddingTop="20"
 		itemRenderer="ar.com.eventos.itemRenderers.QuinceanerasItemRenderer"/>
 </mx:Box>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" xmlns:components="ar.com.eventos.components.*"
-	creationComplete="{Alert.show('Ancho' + Application.application.width + 'Alto: ' + idasda.height)}">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" 
+	xmlns:components="ar.com.eventos.components.*">
 	<mx:Script>
 		<![CDATA[
-			import mx.controls.Alert;
+			
 		]]>
 	</mx:Script>
 	<mx:Style source="/styles/style.css"/>

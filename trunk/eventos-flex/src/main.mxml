@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" xmlns:components="ar.com.eventos.components.*"
+	creationComplete="{Alert.show('Ancho' + Application.application.width + 'Alto: ' + idasda.height)}">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+		]]>
+	</mx:Script>
+	<mx:Style source="/styles/style.css"/>
+	<components:EventosBody id="idasda" width="100%" height="100%"/>
+	<components:EventosFooter width="100%" height="3%" ultimaActualizacion="{new Date()}" verticalAlign="middle" horizontalAlign="center"/>
+</mx:Application>

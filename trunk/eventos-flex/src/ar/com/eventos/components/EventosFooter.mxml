@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox width="100%" height="100%"	xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+
+			[Bindable]
+			public var ultimaActualizacion:Date;
+
+			private function clickEmail():void {
+				navigateToURL(new URLRequest("mailto:eventos@odra.com.ar?subject=Servicio ODRA Eventos"));
+			}
+			private function clickODRASolucionesInformaticasWebSite():void {
+				navigateToURL(new URLRequest("http://www.odra.com.ar"));
+			}
+		]]>
+	</mx:Script>
+	<mx:ControlBar verticalAlign="middle" horizontalAlign="center" paddingBottom="0" paddingTop="0">
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text="Ultima Actualizacion: {shortDateFormatter.format(ultimaActualizacion)} " styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text="2009 - 2010" styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text="Diseñado por: " styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" ODRA Soluciones Informaticas" click="clickODRASolucionesInformaticasWebSite();" styleName="mainFooterStyle"/>
+		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
+	</mx:ControlBar>
+	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY"/>
+</mx:HBox>

@@ -4,11 +4,22 @@
 <beans>
 
 <!-- Domain Object DAOs. -->
- <!-- 
- 	<bean id="solicitudCVDAO" class="ar.com.gsalazar.daos.impl.SolicitudCVSpringHibernateDAO" singleton="true">
+
+ 	<bean id="eventoDAO" class="ar.com.eventos.daos.impl.EventoSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>
-		<property name="persistentClass"    value="ar.com.gsalazar.beans.SolicitudCV"/>
+		<property name="persistentClass"    value="ar.com.eventos.beans.Evento"/>
         <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
     </bean>
- -->
+
+     <bean id="salonDAO" class="ar.com.eventos.daos.impl.SalonSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.eventos.beans.Salon"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+     <bean id="personaDAO" class="ar.com.eventos.daos.impl.PersonaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.eventos.beans.Persona"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
 </beans>

@@ -47,6 +47,14 @@
 
         <property name="annotatedClasses">
             <list>
+				<value>ar.com.eventos.beans.Comentario</value>
+				<value>ar.com.eventos.beans.Imagen</value>
+				<value>ar.com.eventos.beans.Persona</value>
+				<value>ar.com.eventos.beans.Salon</value>
+				<value>ar.com.eventos.beans.Evento</value>
+				<value>ar.com.eventos.beans.Casamiento</value>
+				<value>ar.com.eventos.beans.Cumple15</value>
+				<value>ar.com.eventos.beans.Cumple21</value>
             	<!--<value>com.angel.architecture.persistence.beans.ClickUser</value>-->
 			</list>
 		</property>

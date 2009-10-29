@@ -14,6 +14,9 @@ import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;
 import com.angel.dao.generic.query.builder.impl.QueryBuilderImpl;
+import com.angel.dao.generic.query.clauses.FromClause;
+import com.angel.dao.generic.query.clauses.SelectClause;
+import com.angel.dao.generic.query.clauses.WhereClause;
 import com.angel.dao.generic.query.clauses.impl.HQLFromClause;
 import com.angel.dao.generic.query.clauses.impl.HQLWhereClause;
 import com.angel.dao.generic.query.factory.impl.HQLClauseFactory;
@@ -45,9 +48,6 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 	
 	public List<Persona> buscarTodosPorTagsSearch(List<TagSearch> tagsSearch) {
 		QueryBuilder queryBuilder = this.createQueryBuilderFor(tagsSearch);
-		/*QueryBeanFactory queryBeanFactory = new TagsSearchQueryBeanFactory();
-		String q = queryBeanFactory.createQueryBean(this.getPersistentClass(), tagsSearch);
-		Query query = super.getSession().createQuery(q);*/
 		return (List<Persona>) super.findAllByQuery(queryBuilder.buildQuery());
 	}
 	
@@ -65,13 +65,16 @@ public class PersonaSpringHibernateDAO extends GenericSpringHibernateDAO<Persona
 	 */
 	protected QueryBuilder createQueryBuilderFor(List<TagSearch> tagsSearch){
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
-		HQLFromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
+		SelectClause selectClause = queryBuilder.getSelectClause();
+		selectClause.add("personas");
+		FromClause fromClause = (HQLFromClause) queryBuilder.getFromClause();
 		fromClause
 			.from(this.getPersistentClass(), "personas")
 			.innerJoin("personas.tagsBuscables", "tags");
-		HQLWhereClause whereClause = (HQLWhereClause) queryBuilder.getWhereClause();
-		whereClause
-			.in("tags", tagsSearch);
+		if(tagsSearch != null && !tagsSearch.isEmpty()){
+			WhereClause whereClause = (HQLWhereClause) queryBuilder.getWhereClause();
+			whereClause.in("tags", tagsSearch);
+		}
 		return queryBuilder;
 	}
 }

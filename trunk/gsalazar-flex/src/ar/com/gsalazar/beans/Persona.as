@@ -52,5 +52,18 @@ package ar.com.gsalazar.beans {
 		public override function getFullTitulo():String {
 			return 'Información Personal de ' + this.titulo;
 		}
+		
+		public override function getRanking():Number{
+			return -1;
+		}
+
+		public override function get visualizado():Number{
+			return -1;
+		}
+		
+		public override function set visualizado(valor:Number):void{
+			super.visualizado = valor;
+		}
+		
 	}
 }

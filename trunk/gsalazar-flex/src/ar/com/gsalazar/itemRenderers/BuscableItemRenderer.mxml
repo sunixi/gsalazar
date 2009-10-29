@@ -24,9 +24,9 @@
 			</mx:HBox>
 			<mx:HBox width="100%" horizontalAlign="left">
 				<mx:Label text="Visualizado: " color="black" fontSize="11" fontStyle="italic" fontWeight="bold"/>
-				<mx:Label text="{data.visualizado}" fontSize="10" fontStyle="italic" color="black"/>
+				<mx:Label text="{data.visualizado == -1 ? '-' : data.visualizado}" fontSize="10" fontStyle="italic" color="black"/>
 				<mx:Label text="Rating: " color="black" fontSize="11" fontStyle="italic" fontWeight="bold"/>
-				<mx:Label text="{data.getRanking()}" fontSize="10" fontStyle="italic" color="black"/>
+				<mx:Label text="{data.getRanking() == -1 ? '-' : data.getRanking()}" fontSize="10" fontStyle="italic" color="black"/>
 			</mx:HBox>
 		</mx:VBox>
 		<mx:VBox width="10%" height="100%" verticalAlign="middle" horizontalAlign="center">

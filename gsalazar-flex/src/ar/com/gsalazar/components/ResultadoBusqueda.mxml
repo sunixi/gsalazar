@@ -59,7 +59,13 @@
 		}
 		
 		private function onResultadoBusqueda(event:ResultadoBusquedaEvent): void {
-			this.buscados = event.buscables;
+			var resultado:IList = event.buscables;
+			if(resultado.length < 4){
+				resultadoList.rowCount = resultado.length;
+			} else {
+				resultadoList.rowCount = 3; 
+			}
+			this.buscados = resultado;
 			Alert.show('Se han encontrado ' + this.buscados.length + ' resultados.','Busqueda Realizada.');
 		}
 		
@@ -80,7 +86,7 @@
 		cornerRadius="10" selectable="false" color="black"/>
 	<mx:Label id="resultadoVacioLabel" text="No se han encontrado resultado para la busqueda realizada." fontSize="13" fontWeight="bold" fontStyle="italic" 
 		visible="false" includeInLayout="false"/>
-	<mx:List id="resultadoList" dataProvider="{buscados}" labelField="titulo" width="90%" rowCount="4" styleName="articulosAdvancedDataGrid"
+	<mx:List id="resultadoList" dataProvider="{buscados}" labelField="titulo" width="90%" rowCount="3" styleName="articulosAdvancedDataGrid"
 				paddingLeft="5" paddingTop="5" paddingBottom="5" paddingRight="5" backgroundAlpha="0" selectionColor="#cccccc"
 				selectable="false" alternatingItemColors="#ffffff, #eff1f2" creationComplete="updateRowHeigth(event)"
 				itemRenderer="ar.com.gsalazar.itemRenderers.BuscableItemRenderer"/>

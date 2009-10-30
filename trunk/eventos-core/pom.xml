@@ -631,7 +631,30 @@
                         <!--<archiveClasses>true</archiveClasses>-->
                     </configuration>
                 </plugin>
-
+                
+				<plugin>
+			        <groupId>org.codehaus.mojo</groupId>
+			        <artifactId>exec-maven-plugin</artifactId>
+			        <version>1.1</version>
+			        <executions>
+			          <execution>
+			            <goals>
+			              <goal>exec</goal>
+			            </goals>
+			          </execution>
+			        </executions>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <!--<argument>-Dmyproperty=myvalue</argument>-->
+            <argument>-classpath</argument>
+            <!-- automatically creates the classpath using all project dependencies,
+                 also adding the project build directory -->
+            <classpath/>
+            <argument>ar.com.eventos.runner.EVProcessorRunners</argument>
+          </arguments>
+        </configuration>
+				</plugin>
             </plugins>
         </pluginManagement>
     </build>

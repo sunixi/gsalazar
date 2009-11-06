@@ -1,0 +1,7 @@
+Application {    
+    background-image:	 Embed("images/fondoElAngelDurmiente.jpg");
+    background-repeat:   repeat;
+    background-position: center;
+    background-blend:    multiply;
+    borderSkin:          ClassReference("com.degrafa.skins.CSSSkin");
+} 

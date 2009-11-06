@@ -1,7 +1,7 @@
-Application {
+/*Application {
 	backgroundImage: Embed(source="/images/backgrounds.swf#retroFifties");
 }
-
+*/
 ApplicationControlBar {
 	highlightAlphas: 0.32, 0;
 	fillAlphas: 0, 0.56;

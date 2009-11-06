@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-	verticalAlign="middle" horizontalAlign="center">
+	verticalAlign="middle" horizontalAlign="center"
+	paddingTop="0" paddingRight="0" paddingLeft="0" paddingBottom="0">
 	
-	
+	<mx:Style source="styles/styles.css"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.BrowserManager;
+			
+			
+			private function onCreationComplete():void {
+				BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
+			}
+		]]>
+	</mx:Script>
+	<mx:Label text="www.elangeldurmiente.com.ar" fontSize="35" color="black"/>
+	<mx:HRule width="75%"/>
+	<mx:Text fontSize="13" color="white" textAlign="center">
+		<mx:htmlText>
+			<![CDATA[
+	Momentáneamente <b>www.elangeldurmiente.com.ar</b> se encuentra en mantenimiento.
+	El sitio esta siendo actualizado para poder mejorar la experiencia de los usuarios, y poder brindar los servicios en su mejor rendimiento.
+	Pedimos disculpas a todas las personas romanticas que no pueden acceder, y esperamos que puedan entender la situación.
+	<br/><br/>Desde Ya Muchas Gracias.<br/>El Angel Durmiente.<br/>
+			]]>
+		</mx:htmlText>
+	</mx:Text>
+	<mx:HRule width="75%"/>
 	<mx:Label text="El Angel Durmiente" fontSize="45"/>
 	<mx:Image source="@Embed(source = '/images/trabajando.png')" toolTip="Momentaneamente el sitio se esta actualizando."
 		width="250" height="250"/>
+	
 </mx:Application>

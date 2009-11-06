@@ -8,22 +8,23 @@
         <property name="driver" value="com.mysql.jdbc.Driver"/>
         <!--Localhost -->
         <property name="driverUrl" value="jdbc:mysql://localhost:3306/eventos"/>
+        
+        <!-- Localhost 
         <property name="delegateProperties" value="user=root,password=root"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>
+        -->
 
-        <!-- db4free.net -->
-        <!--<property name="driverUrl" value="jdbc:mysql://db4free.net:3306/personaltraveler"/>
-        <property name="delegateProperties" value="user=gsalazar1983,password=42416467"/>
-        <property name="user" value="gsalazar1983"/>
-        <property name="password" value="42416467"/>
-        <property name="loginTimeout" value="900000" />-->
+        <!-- ODRA Server -->
+		<property name="delegateProperties" value="user=dba,password=trAyU2eg"/>
+        <property name="user" value="dba"/>
+        <property name="password" value="trAyU2eg"/>
 
         <!--<property name="houseKeepingSleepTime" value="15000"/>--> 
         <!-- Este parametro es el sql que usa para testear. Tener cuidado con lo que se setea -->
         <property name="houseKeepingTestSql" value="select 1 from dual" />
-        <property name="maximumConnectionCount" value="3"/>
-        <property name="minimumConnectionCount" value="3"/>
+        <property name="maximumConnectionCount" value="5"/>
+        <property name="minimumConnectionCount" value="5"/>
         <!-- Tiempo de coneccion ejecutando algo = 20 minutos -->
         <property name="maximumActiveTime" value="1200000"/>
         <!--<property name="maximumConnectionLifetime" value="7200000"/>--> 
@@ -47,6 +48,7 @@
 
         <property name="annotatedClasses">
             <list>
+            	<!-- 
 				<value>ar.com.eventos.beans.Comentario</value>
 				<value>ar.com.eventos.beans.Imagen</value>
 				<value>ar.com.eventos.beans.Persona</value>
@@ -54,7 +56,7 @@
 				<value>ar.com.eventos.beans.Evento</value>
 				<value>ar.com.eventos.beans.Casamiento</value>
 				<value>ar.com.eventos.beans.Cumple15</value>
-				<value>ar.com.eventos.beans.Cumple21</value>
+				<value>ar.com.eventos.beans.Cumple21</value>-->
             	<!--<value>com.angel.architecture.persistence.beans.ClickUser</value>-->
 			</list>
 		</property>

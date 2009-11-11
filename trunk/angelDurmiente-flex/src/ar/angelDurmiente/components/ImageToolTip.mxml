@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eFlexComponents:CustomToolTip xmlns:mx="http://www.adobe.com/2006/mxml"
+       xmlns:eFlexComponents="com.everythingFlex.components.*"
+       backgroundColor="{myBackgroundColor}" 
+       backgroundAlpha="{myBackgroundAlpha}"
+       borderColor="{myBorderColor}" 
+       borderThickness="{myBorderThickness}" 
+       borderStyle="{myBorderStyle}" 
+       alpha="{myAlpha}" 
+       dropShadowEnabled="{myDropShadowEnabled}" 
+       dropShadowColor="{myDropShadowColor}">
+       
+       <mx:Script>
+       	<![CDATA[
+       		[Bindable]
+       		public var myImage:String;
+       		[Bindable]
+       		public var myBackgroundColor:uint=0xFFFFFF;
+       		[Bindable]
+       		public var myBackgroundAlpha:Number=1;
+       		[Bindable]
+       		public var myBorderColor:uint=0x000000;
+       		[Bindable]
+       		public var myBorderThickness:Number=1;
+       		[Bindable]
+       		public var myBorderStyle:String="solid";
+       		[Bindable]
+       		public var myDropShadowEnabled:Boolean=true;
+       		[Bindable]
+       		public var myDropShadowColor:uint=0x000000;
+       		[Bindable]
+       		public var myAlpha:Number=1;
+       	]]>
+       </mx:Script>
+  	<mx:Image source="{myImage}" />
+</eFlexComponents:CustomToolTip>

@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-	verticalAlign="middle" horizontalAlign="center"
+	verticalAlign="middle" horizontalAlign="center" backgroundColor="#999999"
 	paddingTop="0" paddingRight="0" paddingLeft="0" paddingBottom="0">
 	
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ToolTipEvent;
+			import mx.managers.ToolTipManager;
+			import ar.angelDurmiente.toolTip.VBoxToolTip;
+			import ar.angelDurmiente.components.InfoTooltip;
 			import mx.managers.BrowserManager;
 			
 			
 			private function onCreationComplete():void {
 				BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
 			}
+			
+			private function createCustomTip(title:String, body:String, event:ToolTipEvent):void {
+           var ptt:InfoTooltip = new InfoTooltip();
+           ptt.title = title;
+           ptt.bodyText = body;
+           event.toolTip = ptt;
+        }
+
+
 		]]>
 	</mx:Script>
 	<mx:Label text="www.elangeldurmiente.com.ar" fontSize="35" color="black"/>
@@ -28,7 +41,7 @@
 	</mx:Text>
 	<mx:HRule width="75%"/>
 	<mx:Label text="El Angel Durmiente" fontSize="45"/>
-	<mx:Image source="@Embed(source = '/images/trabajando.png')" toolTip="Momentaneamente el sitio se esta actualizando."
-		width="250" height="250"/>
+	<mx:Image source="@Embed(source = '/images/trabajando.png')" toolTip=" "
+		width="250" height="250" toolTipCreate="this.createCustomTip('Titulo','Custom ToolTip', event)"/>
 	
 </mx:Application>

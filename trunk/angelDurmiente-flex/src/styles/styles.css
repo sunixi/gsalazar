@@ -1,7 +1,70 @@
-Application {    
+/*Application {    
     background-image:	 Embed("images/fondoElAngelDurmiente.jpg");
     background-repeat:   repeat;
     background-position: center;
     background-blend:    multiply;
     borderSkin:          ClassReference("com.degrafa.skins.CSSSkin");
+}*/
+
+Application {    
+    background-image:	 Embed("images/fondoElAngelDurmiente3.jpg");
+    background-position: center;
+    background-color: #00CCCC;
+    /*background-repeat:   repeat;*/
+    /*background-blend:    multiply;*/
+    /*borderSkin:          ClassReference("com.degrafa.skins.CSSSkin");*/
 } 
+
+Button
+{
+    theme-color: #474747;
+    up-skin: ClassReference('assets.skins.flexraysButtonSkin');
+    over-skin: ClassReference('assets.skins.flexraysButtonSkin');
+    down-skin: ClassReference('assets.skins.flexraysButtonSkin');
+    disabled-skin: ClassReference('assets.skins.flexraysButtonSkin');
+}
+
+
+.labelStyleName{
+	background-color: none;
+	font-weight: bold;	
+}
+
+.footerPanel {
+	padding-bottom: 0;
+	padding-left: 10;
+	padding-right: 10;
+	padding-top: 0;
+	header-height: 0;
+	background-alpha: 0.4;
+	border-thickness-bottom: 0;
+	border-thickness-left: 0;
+	border-thickness-right: 0;
+	border-thickness-top: 0;
+}
+
+.menuPanel {
+	background-alpha: 0.4;
+	text-align: center;
+	header-style-name: headerPanelStyle;
+}
+
+.headerPanelStyle {
+	font-size: 15;
+	font-weight: bold;
+}
+
+.searchInput{
+    borderSkin:Embed(source='images/searchInput.png', scaleGridLeft=22, scaleGridRight=65, scaleGridTop=18,scaleGridBottom=19);
+    cornerRadius:12;
+    textIndent:18;
+    fontSize:12;
+    fontFamily:Verdana;
+    borderThikness:1;
+    borderStyle:solid;
+}
+/*
+paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" headerHeight="0"
+			 backgroundAlpha="0.4" borderStyle="solid" borderThicknessTop="0" borderThicknessRight="0" borderThicknessLeft="0"
+			 borderThicknessBottom="0" cornerRadius="15"	
+*/

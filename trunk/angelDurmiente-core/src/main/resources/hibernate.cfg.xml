@@ -8,14 +8,14 @@
 	org.hibernate.dialect.Oracle10gDialect-->
   <property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
   <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+  <property name="connection.url">jdbc:mysql://localhost:3306/angelDurmiente</property>
 
-  <!-- Localhost   -->
-  <property name="connection.url">jdbc:mysql://localhost:3306/angelDurmiente</property> 
+  <!-- Localhost 
   <property name="connection.username">root</property>
   <property name="connection.password">root</property>
+  -->
 
-  <!-- ODRA Server 
-  <property name="connection.url">jdbc:mysql://200.110.137.44:3306/gsalazar</property>
+  <!-- ODRA Server  
   <property name="connection.username">dba</property>
   <property name="connection.password">trAyU2eg</property>
 -->

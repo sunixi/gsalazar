@@ -6,18 +6,17 @@
     <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
         <property name="alias" value="ad"/>
         <property name="driver" value="com.mysql.jdbc.Driver"/>
-        <!--Localhost -->
         <property name="driverUrl" value="jdbc:mysql://localhost:3306/angelDurmiente"/>
+        
+        <!-- ODRA Server 
+        <property name="delegateProperties" value="user=dba,password=trAyU2eg"/>
+        <property name="user" value="dba"/>
+        <property name="password" value="trAyU2eg"/>
+        -->
+        <!--Localhost -->
         <property name="delegateProperties" value="user=root,password=root"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>
-
-        <!-- db4free.net -->
-        <!--<property name="driverUrl" value="jdbc:mysql://db4free.net:3306/personaltraveler"/>
-        <property name="delegateProperties" value="user=gsalazar1983,password=42416467"/>
-        <property name="user" value="gsalazar1983"/>
-        <property name="password" value="42416467"/>
-        <property name="loginTimeout" value="900000" />-->
 
         <!--<property name="houseKeepingSleepTime" value="15000"/>--> 
         <!-- Este parametro es el sql que usa para testear. Tener cuidado con lo que se setea -->

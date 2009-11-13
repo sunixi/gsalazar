@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-	verticalAlign="middle" horizontalAlign="center" backgroundColor="#999999"
-	paddingTop="0" paddingRight="0" paddingLeft="0" paddingBottom="0">
+	verticalAlign="middle" horizontalAlign="center" width="100%" height="100%"
+	paddingTop="0" paddingRight="0" paddingLeft="0" paddingBottom="0" xmlns:components="ar.angelDurmiente.components.*">
 	
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
@@ -27,21 +27,40 @@
 
 		]]>
 	</mx:Script>
-	<mx:Label text="www.elangeldurmiente.com.ar" fontSize="35" color="black"/>
-	<mx:HRule width="75%"/>
-	<mx:Text fontSize="13" color="white" textAlign="center">
-		<mx:htmlText>
-			<![CDATA[
-	Momentáneamente <b>www.elangeldurmiente.com.ar</b> se encuentra en mantenimiento.
-	El sitio esta siendo actualizado para poder mejorar la experiencia de los usuarios, y poder brindar los servicios en su mejor rendimiento.
-	Pedimos disculpas a todas las personas romanticas que no pueden acceder, y esperamos que puedan entender la situación.
-	<br/><br/>Desde Ya Muchas Gracias.<br/>El Angel Durmiente.<br/>
-			]]>
-		</mx:htmlText>
-	</mx:Text>
-	<mx:HRule width="75%"/>
-	<mx:Label text="El Angel Durmiente" fontSize="45"/>
-	<mx:Image source="@Embed(source = '/images/trabajando.png')" toolTip=" "
-		width="250" height="250" toolTipCreate="this.createCustomTip('Titulo','Custom ToolTip', event)"/>
-	
+	<mx:VBox width="95%" height="95%" backgroundAlpha="0.7">
+		<mx:Panel width="100%" height="2%" cornerRadius="20" styleName="footerPanel">
+			<mx:HBox width="100%" height="100%" backgroundAlpha="0.4" verticalAlign="middle" horizontalAlign="right" 
+				paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5">
+				<mx:Label text="Busqueda General: " fontWeight="bold" fontStyle="italic"/>
+				<mx:TextInput id="busquedaTextInput" styleName="searchInput" />
+			</mx:HBox>
+		</mx:Panel>
+		<mx:Panel width="100%" height="20%" cornerRadius="20" styleName="footerPanel" verticalAlign="middle">
+			<mx:Label text="www.elangeldurmiente.com.ar" fontSize="35" color="black"/>
+		</mx:Panel>
+		<mx:HBox width="100%" height="75%" backgroundAlpha="0.4">
+			<mx:Panel width="15%" height="100%" cornerRadius="20" title="Menú" fontSize="15" styleName="menuPanel">
+				<mx:Button label="Bienvenido" width="100%" toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Página Inicial de El Angel Durmiente.', event)"/>
+				<mx:Button label="Poemas y Poesías" width="100%"/>
+				<mx:Button label="Letras de Canciones" width="100%"/>
+				<mx:Button label="Frases y Piropos" width="100%"/>
+				<mx:Button label="Tus Historias" width="100%"/>
+				<mx:Button label="Cuentos con Moralejas" width="100%"/>
+			</mx:Panel>
+			<mx:Panel width="85%" height="100%" cornerRadius="20" backgroundAlpha="0.4" headerHeight="0" layout="horizontal">
+				<components:PanelPrincipal width="100%" height="100%"/>
+			</mx:Panel>
+		</mx:HBox>
+		<mx:Panel width="100%" height="1%" styleName="footerPanel" cornerRadius="15" verticalAlign="middle" horizontalAlign="center">
+			<mx:HBox width="100%" height="100%" backgroundAlpha="0.4" verticalAlign="middle" horizontalAlign="center">
+				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
+				<mx:Text selectable="false" text="2009 - 2010" fontSize="15" height="100%"/>
+				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
+				<mx:Text selectable="false" text="www.elangeldurmiente.com.ar" fontSize="15" height="100%"/>
+				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
+				<mx:Text selectable="false" text="Diseñado por Guillermo Daniel Salazar" fontSize="15" height="100%"/>
+				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>			
+			</mx:HBox>
+		</mx:Panel>
+	</mx:VBox>
 </mx:Application>

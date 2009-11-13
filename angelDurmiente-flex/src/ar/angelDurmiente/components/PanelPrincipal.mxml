@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+    width="100%" 
+    alpha="0.6"
+    backgroundAlpha="0.1"
+    mouseOver="{this.visible = true}"
+    borderThickness="0"
+    dropShadowEnabled="false" 
+    borderColor="black"
+    borderStyle="solid"
+    headerHeight="0"
+    color="white"
+    layout="horizontal"
+    cornerRadius="20"
+xmlns:components="ar.angelDurmiente.components.*">
+    <mx:Script><![CDATA[
+
+
+		private function changeState(newState:String):void {
+			super.currentState = newState;
+		}
+		
+		private function thisWidth():Number{
+			return super.width;
+		}
+    ]]></mx:Script>
+	
+	<components:PanelDescriptionSlider id="poemasPoesias" width="20%" height="80%" title="Poemas y Poesias" mouseOver="{this.changeState('poemasPoesiasState')}" mouseOut="{this.changeState('')}"/>
+	<components:PanelDescriptionSlider id="letrasCanciones" width="20%" height="80%" title="Letras de Canciones" />
+	<components:PanelDescriptionSlider id="frasesPiropos" width="20%" height="80%" title="Frases y Piropos" />
+	<components:PanelDescriptionSlider id="tusHistorias" width="20%" height="80%" title="Tus Historias"/>
+	<components:PanelDescriptionSlider id="cuentos" width="20%" height="80%" title="Cuentos" />
+	
+	<mx:states>
+		<mx:State name="poemasPoesiasState">
+			<mx:SetProperty target="{poemasPoesias}" name="percentWidth" value="100"/>
+<!--
+			<mx:SetProperty target="{letrasCanciones}" name="percentWidth" value="1"/>
+			<mx:SetProperty target="{frasesPiropos}" name="percentWidth" value="1"/>
+			<mx:SetProperty target="{tusHistorias}" name="percentWidth" value="2"/>
+			<mx:SetProperty target="{cuentos}" name="percentWidth" value="1"/>-->
+		</mx:State>
+	</mx:states>
+	<!--
+				<mx:SetProperty target="{letrasCanciones}" name="visible" value="{false}"/>
+			<mx:SetProperty target="{frasesPiropos}" name="visible" value="{false}"/>
+			<mx:SetProperty target="{tusHistorias}" name="visible" value="{false}"/>
+			<mx:SetProperty target="{cuentos}" name="visible" value="{false}"/>
+	
+	-->
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="poemasPoesiasState">
+			<mx:Parallel>
+				<mx:Resize target="{poemasPoesias}" duration="1000"/>
+				<!--<mx:Resize targets="{[cuentos,letrasCanciones,frasesPiropos,tusHistorias]}" duration="1000" widthTo="0"/>-->
+				<mx:Blur targets="{[cuentos,letrasCanciones,frasesPiropos,tusHistorias]}" blurXTo="10" blurYTo="10" blurXFrom="0" blurYFrom="0" duration="1000"/>
+			</mx:Parallel>
+		</mx:Transition>
+		<mx:Transition fromState="poemasPoesiasState" toState="*">
+			<mx:Parallel>
+				<mx:Resize target="{poemasPoesias}" duration="1000"/>
+				<mx:Resize targets="{[cuentos,letrasCanciones,frasesPiropos,tusHistorias]}" duration="1000"/>
+				<mx:Blur targets="{[cuentos,letrasCanciones,frasesPiropos,tusHistorias]}" blurXTo="0" blurYTo="0" duration="1000"/>
+			</mx:Parallel>
+		</mx:Transition>
+	</mx:transitions>
+</mx:Panel>

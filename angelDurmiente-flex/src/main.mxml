@@ -1,66 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 	verticalAlign="middle" horizontalAlign="center" width="100%" height="100%"
-	paddingTop="0" paddingRight="0" paddingLeft="0" paddingBottom="0" xmlns:components="ar.angelDurmiente.components.*">
+	paddingTop="0" paddingRight="0" paddingLeft="0" paddingBottom="0"
+	creationComplete="onCreationComplete();"
+	xmlns:components="ar.angelDurmiente.components.*" >
 	
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
 		<![CDATA[
-			import mx.events.ToolTipEvent;
-			import mx.managers.ToolTipManager;
-			import ar.angelDurmiente.toolTip.VBoxToolTip;
-			import ar.angelDurmiente.components.InfoTooltip;
-			import mx.managers.BrowserManager;
+		import mx.managers.BrowserManager;
 			
 			
-			private function onCreationComplete():void {
-				BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
-			}
-			
-			private function createCustomTip(title:String, body:String, event:ToolTipEvent):void {
-           var ptt:InfoTooltip = new InfoTooltip();
-           ptt.title = title;
-           ptt.bodyText = body;
-           event.toolTip = ptt;
-        }
-
+		private function onCreationComplete():void {
+			BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
+		}
 
 		]]>
 	</mx:Script>
-	<mx:VBox width="95%" height="95%" backgroundAlpha="0.7">
-		<mx:Panel width="100%" height="2%" cornerRadius="20" styleName="footerPanel">
-			<mx:HBox width="100%" height="100%" backgroundAlpha="0.4" verticalAlign="middle" horizontalAlign="right" 
-				paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5">
-				<mx:Label text="Busqueda General: " fontWeight="bold" fontStyle="italic"/>
-				<mx:TextInput id="busquedaTextInput" styleName="searchInput" />
+	<!-- backgroundColor="0x0066cc" -->
+	<mx:Box width="100%" height="100%" backgroundAlpha="0.3"
+		verticalAlign="middle" horizontalAlign="center">
+		<mx:VBox width="95%" height="95%" backgroundAlpha="0">
+			<mx:HBox width="100%" height="24%">
+				<components:AngelDurmienteHeader width="100%" height="100%"/>
 			</mx:HBox>
-		</mx:Panel>
-		<mx:Panel width="100%" height="20%" cornerRadius="20" styleName="footerPanel" verticalAlign="middle" horizontalAlign="center">
-			<mx:Label text="www.elangeldurmiente.com.ar" fontSize="35" color="black"/>
-		</mx:Panel>
-		<mx:HBox width="100%" height="75%" backgroundAlpha="0.4">
-			<mx:Panel width="15%" height="100%" cornerRadius="20" title="Menú" fontSize="15" styleName="menuPanel">
-				<mx:Button label="Bienvenido" width="100%" toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Página Inicial de El Angel Durmiente.', event)"/>
-				<mx:Button label="Poemas y Poesías" width="100%"/>
-				<mx:Button label="Letras de Canciones" width="100%"/>
-				<mx:Button label="Frases y Piropos" width="100%"/>
-				<mx:Button label="Tus Historias" width="100%"/>
-				<mx:Button label="Cuentos con Moralejas" width="100%"/>
-			</mx:Panel>
-			<mx:Panel width="85%" height="100%" cornerRadius="20" backgroundAlpha="0.4" headerHeight="0" layout="horizontal">
-				<components:PanelPrincipal width="100%" height="100%"/>
-			</mx:Panel>
-		</mx:HBox>
-		<mx:Panel width="100%" height="1%" styleName="footerPanel" cornerRadius="15" verticalAlign="middle" horizontalAlign="center">
-			<mx:HBox width="100%" height="100%" backgroundAlpha="0.4" verticalAlign="middle" horizontalAlign="center">
-				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
-				<mx:Text selectable="false" text="2009 - 2010" fontSize="15" height="100%"/>
-				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
-				<mx:Text selectable="false" text="www.elangeldurmiente.com.ar" fontSize="15" height="100%"/>
-				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
-				<mx:Text selectable="false" text="Diseñado por Guillermo Daniel Salazar" fontSize="15" height="100%"/>
-				<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>			
+			<mx:HBox width="100%" height="75%">
+				<components:AngelDurmienteContenido width="100%" height="100%" backgroundAlpha="0.4"/>
 			</mx:HBox>
-		</mx:Panel>
-	</mx:VBox>
+			<mx:Panel width="100%" height="1%" styleName="footerPanel" cornerRadius="15" verticalAlign="middle" horizontalAlign="center">
+				<components:AngelDurmienteFooter width="100%" height="100%"/>
+			</mx:Panel>
+		</mx:VBox>
+	</mx:Box>
 </mx:Application>

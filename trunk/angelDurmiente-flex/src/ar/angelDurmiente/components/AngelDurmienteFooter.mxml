@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	alpha="0.6" width="100%" height="100%" backgroundAlpha="0.1"
+	mouseOver="{this.visible = true}"
+	verticalAlign="middle" horizontalAlign="center">
+    <mx:Script><![CDATA[
+
+    ]]></mx:Script>
+	<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
+	<mx:Text selectable="false" text="2009 - 2010" fontSize="15" height="100%"/>
+	<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
+	<mx:Text selectable="false" text="www.elangeldurmiente.com.ar" fontSize="15" height="100%"/>
+	<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>
+	<mx:Text selectable="false" text="Diseñado por Guillermo Daniel Salazar" fontSize="15" height="100%"/>
+	<mx:Text selectable="false" text="|" fontSize="15" height="100%"/>			
+</mx:HBox>

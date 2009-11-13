@@ -8,11 +8,13 @@
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 		import mx.managers.BrowserManager;
 			
 			
 		private function onCreationComplete():void {
 			BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
+			Alert.show('Momentáneamente el sitio se encuentra en actualización, debido a su nuevo formato y estilo. Por favor vuelva a ingresar en los proximos dias.','El Angel Durmiente - Solo para personas románticas.');
 		}
 
 		]]>

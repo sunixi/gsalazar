@@ -1,21 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
-	width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-	
+	width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" >
+	<mx:Metadata> 
+		/** Evento ejecutado cuando se realiza click al realizar una busqueda comun. */
+		[Event(name="searchClick", type="ar.angelDurmiente.events.AttachInfoEvent")]
+		/** Evento ejecutado cuando se realiza click para realizar una busqueda avanzada. */
+		[Event(name="advancedSearchClick", type="ar.angelDurmiente.events.AttachInfoEvent")]
+		/** Evento ejecutado cuando se realiza click para logearse al sistema. */
+		[Event(name="loginClick", type="ar.angelDurmiente.events.AttachInfoEvent")]
+	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
+			import ar.angelDurmiente.events.AttachInfoEvent;
 
+			private function doSearch():void {
+				if(busquedaTextInput.text != null && busquedaTextInput.text.length > 0){
+					this.dispatchAttachInfoEvent('searchClick', busquedaTextInput.text);
+				} else {
+					Alert.show('Falta ingresar los datos a buscar para realizar la busqueda.','Busqueda simple :: ElAngelDurmiente.com.ar');
+				}
+			}
+			
+			private function dispatchAttachInfoEvent(eventName:String, info:String):void {
+				dispatchEvent(new AttachInfoEvent(eventName, info));
+			}
+			
+			private function doAdvancedSearch():void {
+				this.dispatchAttachInfoEvent('advancedSearchClick', busquedaTextInput.text);	
+			}
+			
+			private function doLoginClick():void {
+				this.dispatchAttachInfoEvent('loginClick', '');	
+			}
 		]]>
 	</mx:Script>
 	
-	<mx:Panel width="100%" height="10%" cornerRadius="20" styleName="footerPanel">
-		<mx:HBox width="100%" height="100%" backgroundAlpha="0.4" verticalAlign="middle" horizontalAlign="right" 
+	<mx:Panel width="100%" height="10%" cornerRadius="20" styleName="footerPanel" backgroundAlpha="0.4">
+		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="right" 
 			paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5">
+			<mx:LinkButton label="Iniciar Sesión" fontWeight="bold" click="this.doLoginClick()"/>
 			<mx:Label text="Busqueda General: " fontWeight="bold" fontStyle="italic"/>
 			<mx:TextInput id="busquedaTextInput" styleName="searchInput" />
+			<mx:Image source="@Embed(source = 'images/busqueda.png')" height="100%" width="30" click="this.doSearch()"/>
+			<mx:Image source="@Embed(source = 'images/busquedaAvanzada.png')" height="100%" width="30" click="this.doAdvancedSearch()"/>
 		</mx:HBox>
 	</mx:Panel>
-	<mx:Panel width="100%" height="90%" cornerRadius="20" styleName="footerPanel" verticalAlign="middle" horizontalAlign="center">
+	<mx:Panel width="100%" height="90%" cornerRadius="20" styleName="footerPanel" verticalAlign="middle" horizontalAlign="center"
+		backgroundAlpha="0.4">
 		<mx:Label text="www.elangeldurmiente.com.ar" fontSize="35" color="black"/>
 	</mx:Panel>
 </mx:VBox>

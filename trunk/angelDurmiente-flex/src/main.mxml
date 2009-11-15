@@ -8,29 +8,71 @@
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
+			import ar.angelDurmiente.components.LoginPopup;
+			import ar.angelDurmiente.events.AttachInfoEvent;
+			import ar.angelDurmiente.beans.ApplicationLocator;
 			import mx.controls.Alert;
 		import mx.managers.BrowserManager;
 			
 			
 		private function onCreationComplete():void {
 			BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
-			Alert.show('Momentáneamente el sitio se encuentra en actualización, debido a su nuevo formato y estilo. Por favor vuelva a ingresar en los proximos dias.','El Angel Durmiente - Solo para personas románticas.');
+			//Alert.show('Momentáneamente el sitio se encuentra en actualización, debido a su nuevo formato y estilo. Por favor vuelva a ingresar en los proximos dias.','El Angel Durmiente - Solo para personas románticas.');
+			ApplicationLocator.instance.textos = buscables;
+			angelDurmienteHeader.addEventListener("searchClick", onSearchClick);
+			angelDurmienteHeader.addEventListener("advancedSearchClick", onAdvancedSearchClick);
+			angelDurmienteHeader.addEventListener("loginClick", onLoginClick);			
+		}
+		
+		private function onSearchClick(event:AttachInfoEvent):void {
+			Alert.show('Busqueda simple','ElAngelDurmiente.com.ar');
+			angelDurmienteContenido.doSearchFor(String(event.info));
+		}
+		
+		private function onAdvancedSearchClick(event:AttachInfoEvent):void {
+			if(event.hasInfo()){
+				angelDurmienteContenido.doSearchFor(String(event.info));
+			} 
+		}
+		
+		private function onLoginClick(event:AttachInfoEvent):void {
+			var loginPopup:LoginPopup = LoginPopup(PopUpManager.createPopUp(this, LoginPopup, true));
+			/*
+			loginPopup.height = 300;
+			loginPopup.width = 500;
+			*/
+			loginPopup.percentHeight = 60;
+			loginPopup.percentWidth = 60;
+			PopUpManager.centerPopUp(loginPopup);
 		}
 
 		]]>
 	</mx:Script>
 	<!-- backgroundColor="0x0066cc" -->
+	<mx:ArrayCollection id="buscables">
+		<mx:Object nombre="Si tu no estuvieras." 			votos="5" cantidadComentarios="6" nombreAutor="Guillermo Daniel Salazar"
+			categoría="['Amor']" imagenAutor="images/trabajando.png"/>
+		<mx:Object nombre="Al final del camino estas tu."	votos="3" cantidadComentarios="3" nombreAutor="Guillermo Daniel Salazar"/>
+		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"/>
+		<mx:Object nombre="Pensar que no estas."			votos="7" cantidadComentarios="9" nombreAutor="Guillermo Daniel Salazar"/>
+		<!--
+		<mx:Object nombre="Como si no estuvieras aquí." rating="8" cantidadComentarios="1" nombreAutor="Guillermo Daniel Salazar"/>
+		<mx:Object nombre="Corriendo en camara lenta." rating="4" cantidadComentarios="0" nombreAutor="Guillermo Daniel Salazar"/>
+		-->
+	</mx:ArrayCollection>
+
 	<mx:Box width="100%" height="100%" backgroundAlpha="0.3"
 		verticalAlign="middle" horizontalAlign="center">
 		<mx:VBox width="95%" height="95%" backgroundAlpha="0">
 			<mx:HBox width="100%" height="24%">
-				<components:AngelDurmienteHeader width="100%" height="100%"/>
+				<components:AngelDurmienteHeader id="angelDurmienteHeader" width="100%" height="100%"/>
 			</mx:HBox>
 			<mx:HBox width="100%" height="75%">
-				<components:AngelDurmienteContenido width="100%" height="100%" backgroundAlpha="0.4"/>
+				<components:AngelDurmienteContenido id="angelDurmienteContenido" width="100%" height="100%" backgroundAlpha="0.4" poemasYPoesias="{buscables}"/>
 			</mx:HBox>
 			<mx:Panel width="100%" height="1%" styleName="footerPanel" cornerRadius="15" verticalAlign="middle" horizontalAlign="center">
-				<components:AngelDurmienteFooter width="100%" height="100%"/>
+				<components:AngelDurmienteFooter id="angelDurmienteFooter" width="100%" height="100%"/>
 			</mx:Panel>
 		</mx:VBox>
 	</mx:Box>

@@ -7,9 +7,9 @@
 }*/
 
 Application {    
-    background-image:	 Embed("images/fondoElAngelDurmiente3.jpg");
+    background-image:	 Embed("images/fondoElAngelDurmiente4.jpg");
     background-position: center;
-    background-color: #00CCCC;
+    /*background-color: #00CCCC;*/
     /*background-repeat:   repeat;*/
     /*background-blend:    multiply;*/
     /*borderSkin:          ClassReference("com.degrafa.skins.CSSSkin");*/
@@ -41,6 +41,7 @@ Button
 	border-thickness-left: 0;
 	border-thickness-right: 0;
 	border-thickness-top: 0;
+	roundedBottomCorners: true;
 }
 
 .menuPanel {
@@ -68,3 +69,23 @@ paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" headerHeight="
 			 backgroundAlpha="0.4" borderStyle="solid" borderThicknessTop="0" borderThicknessRight="0" borderThicknessLeft="0"
 			 borderThicknessBottom="0" cornerRadius="15"	
 */
+
+AdvancedDataGrid
+{
+     headerStyleName: "dataGridStyles";
+     alternatingItemColors: #F7F7F7, #CCCCCC; 
+     padding-bottom: 0;
+     padding-left: 0;
+     padding-right: 0;
+     padding-top: 0;
+}
+
+AdvancedDataGridItemRenderer
+{
+    paddingLeft: 5;
+}
+
+.dataGridStyles
+{
+    fontWeight: "bold";
+}

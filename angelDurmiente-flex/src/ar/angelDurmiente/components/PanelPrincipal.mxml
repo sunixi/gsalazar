@@ -12,10 +12,35 @@
     color="white"
     layout="vertical"
     cornerRadius="20"
+    creationComplete="onCreationComplete();"
 	xmlns:components="ar.angelDurmiente.components.*">
     <mx:Script><![CDATA[
+    	import ar.angelDurmiente.panelClasses.PoemasPoesiasClass;
+    	import mx.collections.ArrayCollection;
+    	import mx.controls.Alert;
+    	import mx.controls.List;
+    	import mx.collections.IList;
     	import mx.effects.easing.Elastic;
+		
+		[Bindable]
+		public var poemasYPoesias:IList;
+		
+		[Bindable]
+		private var panelSliders:IList;
 
+		private function onCreationComplete():void {
+			this.initializePanelsSliders();
+			poemasPoesias.listData = poemasYPoesias;
+		}
+		
+		private function initializePanelsSliders():void {
+			this.panelSliders = new ArrayCollection();
+			this.panelSliders.addItem(poemasPoesias);
+			this.panelSliders.addItem(letrasCanciones);
+			this.panelSliders.addItem(frasesPiropos);
+			this.panelSliders.addItem(tusHistorias);
+			this.panelSliders.addItem(cuentos);
+		}
 
 		private function changeState(newState:String):void {
 			super.currentState = newState;
@@ -24,26 +49,93 @@
 		private function thisWidth():Number{
 			return super.width / 5;
 		}
+		
+		private function onMinimizeSlide(event:Event):void {
+			this.changeState('');
+		}
+		
+		private function onEffectFinish(event:Event):void {
+			var panelSlider:PanelDescriptionSlider = PanelDescriptionSlider(event.target);
+			panelSlider.dispatchEvent(new Event("currentStateChangingFinish"));
+		}
+		
+		/**
+		 * Evento que se ejecuta al comenzar el efecto de cambio de estado.
+		 * Se utiliza para cambiar el estado interno de los paneles o hacer visible componentes de los paneles, 
+		 * ya que minimizados no se visualizan correctamente. 
+		 */
+		private function onEffectStart(event:Event):void {
+			var panelSlider:PanelDescriptionSlider = PanelDescriptionSlider(event.target);
+			panelSlider.dispatchEvent(new Event("currentStateChangingBegin"));
+		}
+		
+		/**
+		 * Minimiza todos los paneles agregados a panelSliders, y luego cambia a un estado determinado.
+		 * Esto es utilizado por ejemplo para cuando tengo un panel slide maximizado, y quiero maximizar la busqueda. 
+		 * Primero minimizo el panel maximizado, y luego cambio el estado hacia ampliar la busqueda.
+		 * 
+		 */
+		private function onMinimizeSlides(event:Event, eventChangeName:String):void {
+			for each(var ps:PanelDescriptionSlider in panelSliders){
+				ps.doMinimize();
+			}
+			this.changeState(eventChangeName);
+		}
+		/**
+		 * Activa el panel de busqueda minimizando todas los demas paneles.
+		 * 
+		 * @param searchText texto buscado. 
+		 */
+		public function activateSearch(searchText:String):void {
+			this.onMinimizeSlides(null,'busquedaAvanzadaState');
+		}
     ]]></mx:Script>
 
 	<mx:HBox id="panelsDescriptorsContainer" width="100%" height="68%">
 		<components:PanelDescriptionSlider id="poemasPoesias" width="20%" height="100%"
-			title="Poemas y Poesias" mouseOver="{this.changeState('poemasPoesiasState')}"
-			mouseOut="{this.changeState('')}"/>
+			title="Poemas y Poesias" minimizeClass="{PoemasPoesiasClass}"
+			effectEnd="onEffectFinish(event);"
+			effectStart="onEffectStart(event);"
+			minimizeSlide="onMinimizeSlide(event);"
+			maximizeSlide="changeState('poemasPoesiasState');"
+			toolTip="{poemasPoesias.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="letrasCanciones" width="20%" height="100%"
-			title="Letras de Canciones" mouseOver="{this.changeState('letrasCancionesState')}"
-			mouseOut="{this.changeState('')}"/>
+			title="Letras de Canciones"
+			effectEnd="onEffectFinish(event);"
+			effectStart="onEffectStart(event);"
+			minimizeSlide="onMinimizeSlide(event);"
+			maximizeSlide="changeState('letrasCancionesState');"
+			toolTip="{letrasCanciones.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="frasesPiropos" width="20%" height="100%"
-			title="Frases y Piropos" />
+			title="Frases y Piropos"
+			effectEnd="onEffectFinish(event);"
+			effectStart="onEffectStart(event);"
+			minimizeSlide="onMinimizeSlide(event);"
+			maximizeSlide="changeState('frasesPiroposState');"
+			toolTip="{frasesPiropos.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="tusHistorias" width="20%" height="100%"
-			title="Tus Historias"/>
+			title="Tus Historias"
+			effectEnd="onEffectFinish(event);"
+			effectStart="onEffectStart(event);"
+			minimizeSlide="onMinimizeSlide(event);"
+			maximizeSlide="changeState('tusHistoriasState');"
+			toolTip="{tusHistorias.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="cuentos" width="20%" height="100%"
-			title="Cuentos" />
+			title="Cuentos"
+			effectEnd="onEffectFinish(event);"
+			effectStart="onEffectStart(event);"
+			minimizeSlide="onMinimizeSlide(event);"
+			maximizeSlide="changeState('cuentosState');"
+			toolTip="{cuentos.title } (hacer click para maximizar)."/>
 	</mx:HBox>
 	<mx:HRule width="100%"/>
 	<components:PanelDescriptionSlider id="busquedaAvanzada" width="100%" 
 		height="30%" title="Busqueda Avanzada." headerColors="['black']"
-		mouseOver="{this.changeState('busquedaAvanzadaState')}" mouseOut="{this.changeState('')}"/>
+		effectEnd="onEffectFinish(event);"
+		effectStart="onEffectStart(event);"
+		minimizeSlide="onMinimizeSlide(event);"
+		maximizeSlide="onMinimizeSlides(event,'busquedaAvanzadaState');"
+		toolTip="{busquedaAvanzada.title } (hacer click para maximizar)."/>
 	<mx:states>
 		<mx:State name="poemasPoesiasState">
 			<mx:SetProperty target="{poemasPoesias}"	name="percentWidth" value="100"/>
@@ -58,6 +150,27 @@
 			<mx:SetProperty target="{frasesPiropos}"	name="percentWidth" value="0"/>
 			<mx:SetProperty target="{tusHistorias}"		name="percentWidth" value="0"/>
 			<mx:SetProperty target="{cuentos}"			name="percentWidth" value="0"/>
+		</mx:State>
+		<mx:State name="frasesPiroposState">
+			<mx:SetProperty target="{frasesPiropos}"	name="percentWidth" value="100"/>
+			<mx:SetProperty target="{letrasCanciones}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{poemasPoesias}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{tusHistorias}"		name="percentWidth" value="0"/>
+			<mx:SetProperty target="{cuentos}"			name="percentWidth" value="0"/>
+		</mx:State>
+		<mx:State name="tusHistoriasState">
+			<mx:SetProperty target="{frasesPiropos}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{letrasCanciones}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{poemasPoesias}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{tusHistorias}"		name="percentWidth" value="100"/>
+			<mx:SetProperty target="{cuentos}"			name="percentWidth" value="0"/>
+		</mx:State>
+		<mx:State name="cuentosState">
+			<mx:SetProperty target="{frasesPiropos}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{letrasCanciones}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{poemasPoesias}"	name="percentWidth" value="0"/>
+			<mx:SetProperty target="{tusHistorias}"		name="percentWidth" value="0"/>
+			<mx:SetProperty target="{cuentos}"			name="percentWidth" value="100"/>
 		</mx:State>
 		<mx:State name="busquedaAvanzadaState">
 			<mx:SetProperty target="{panelsDescriptorsContainer}"	name="percentHeight" value="0"/>
@@ -103,6 +216,60 @@
 				<mx:Parallel>
 					<mx:Blur targets="{[cuentos,poemasPoesias,frasesPiropos,tusHistorias]}" blurXTo="0" blurYTo="0" duration="500"/>
 					<mx:Resize targets="{[cuentos,poemasPoesias,frasesPiropos,tusHistorias]}" duration="500"/>
+				</mx:Parallel>
+			</mx:Sequence>
+		</mx:Transition>
+		<mx:Transition fromState="tusHistoriasState" toState="">
+			<mx:Sequence>
+				<mx:Resize target="{tusHistorias}" duration="500"/>
+				<mx:Parallel>
+					<mx:Blur targets="{[cuentos,poemasPoesias,frasesPiropos,letrasCanciones]}" blurXTo="0" blurYTo="0" duration="500"/>
+					<mx:Resize targets="{[cuentos,poemasPoesias,frasesPiropos,letrasCanciones]}" duration="500"/>
+				</mx:Parallel>
+			</mx:Sequence>
+		</mx:Transition>
+		<mx:Transition fromState="" toState="tusHistoriasState">
+			<mx:Sequence>
+				<mx:Resize target="{tusHistorias}" duration="500"/>
+				<mx:Parallel>
+					<mx:Blur targets="{[cuentos,poemasPoesias,frasesPiropos,letrasCanciones]}" blurXTo="10" blurYTo="10" blurXFrom="0" blurYFrom="0" duration="500"/>
+					<mx:Resize targets="{[cuentos,poemasPoesias,frasesPiropos,letrasCanciones]}" duration="500" widthTo="10"/>
+				</mx:Parallel>
+			</mx:Sequence>
+		</mx:Transition>
+		<mx:Transition fromState="" toState="frasesPiroposState">
+			<mx:Sequence>
+				<mx:Resize target="{frasesPiropos}" duration="500"/>
+				<mx:Parallel>
+					<mx:Blur targets="{[cuentos,poemasPoesias,tusHistorias,letrasCanciones]}" blurXTo="10" blurYTo="10" blurXFrom="0" blurYFrom="0" duration="500"/>
+					<mx:Resize targets="{[cuentos,poemasPoesias,tusHistorias,letrasCanciones]}" duration="500" widthTo="10"/>
+				</mx:Parallel>
+			</mx:Sequence>
+		</mx:Transition>
+		<mx:Transition fromState="frasesPiroposState" toState="">
+			<mx:Sequence>
+				<mx:Resize target="{frasesPiropos}" duration="500"/>
+				<mx:Parallel>
+					<mx:Blur targets="{[cuentos,poemasPoesias,letrasCanciones,tusHistorias]}" blurXTo="0" blurYTo="0" duration="500"/>
+					<mx:Resize targets="{[cuentos,poemasPoesias,letrasCanciones,tusHistorias]}" duration="500"/>
+				</mx:Parallel>
+			</mx:Sequence>
+		</mx:Transition>
+		<mx:Transition fromState="" toState="cuentosState">
+			<mx:Sequence>
+				<mx:Resize target="{cuentos}" duration="500"/>
+				<mx:Parallel>
+					<mx:Blur targets="{[frasesPiropos,poemasPoesias,tusHistorias,letrasCanciones]}" blurXTo="10" blurYTo="10" blurXFrom="0" blurYFrom="0" duration="500"/>
+					<mx:Resize targets="{[frasesPiropos,poemasPoesias,tusHistorias,letrasCanciones]}" duration="500" widthTo="10"/>
+				</mx:Parallel>
+			</mx:Sequence>
+		</mx:Transition>
+		<mx:Transition fromState="cuentosState" toState="">
+			<mx:Sequence>
+				<mx:Resize target="{cuentos}" duration="500"/>
+				<mx:Parallel>
+					<mx:Blur targets="{[frasesPiropos,poemasPoesias,letrasCanciones,tusHistorias]}" blurXTo="0" blurYTo="0" duration="500"/>
+					<mx:Resize targets="{[frasesPiropos,poemasPoesias,letrasCanciones,tusHistorias]}" duration="500"/>
 				</mx:Parallel>
 			</mx:Sequence>
 		</mx:Transition>

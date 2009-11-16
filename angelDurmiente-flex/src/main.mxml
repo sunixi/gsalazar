@@ -38,10 +38,6 @@
 		
 		private function onLoginClick(event:AttachInfoEvent):void {
 			var loginPopup:LoginPopup = LoginPopup(PopUpManager.createPopUp(this, LoginPopup, true));
-			/*
-			loginPopup.height = 300;
-			loginPopup.width = 500;
-			*/
 			loginPopup.percentHeight = 60;
 			loginPopup.percentWidth = 60;
 			PopUpManager.centerPopUp(loginPopup);

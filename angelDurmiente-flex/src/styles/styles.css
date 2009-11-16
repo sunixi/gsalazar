@@ -70,22 +70,30 @@ paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" headerHeight="
 			 borderThicknessBottom="0" cornerRadius="15"	
 */
 
-AdvancedDataGrid
-{
-     headerStyleName: "dataGridStyles";
-     alternatingItemColors: #F7F7F7, #CCCCCC; 
-     padding-bottom: 0;
-     padding-left: 0;
-     padding-right: 0;
-     padding-top: 0;
+AdvancedDataGrid {
+   backgroundAlpha: 0.4;
+   backgroundColor: #ffffff;
+   horizontalGridLines: true;
+   horizontalGridLineColor: #cccccc;
+   verticalGridLines: false;
+   verticalGridLineColor: #3366ff;
+   useRollOver: false;
+   borderThickness: 0;
+   borderColor: #000000;
+   iconColor: #666666;
+   selectionColor: #cccccc;
+   color: #333333;
+   textSelectedColor: #990000;
+   dropShadowEnabled: true;
+   shadowDistance: 2;
+   shadowDirection: right;
+   dropShadowColor: #993300;
 }
 
-AdvancedDataGridItemRenderer
-{
-    paddingLeft: 5;
-}
-
-.dataGridStyles
-{
-    fontWeight: "bold";
+ToolTip {
+   backgroundAlpha: 0.65;
+   backgroundColor: #cc0000;
+   color: #ffffff;
+   fontSize: 12;
+   fontWeight: normal;
 }

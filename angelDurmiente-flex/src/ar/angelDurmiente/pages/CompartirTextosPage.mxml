@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" xmlns:buttons="com.angel.components.buttons.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.IList;
+			
+		
+
+			private function compartirTexto():void {
+				
+			}
+
+		]]>
+	</mx:Script>
+	<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
+		headerHeight="0" layout="vertical" paddingBottom="10" paddingLeft="10"
+		paddingRight="10" paddingTop="10">
+		
+		<mx:LinkBar dataProvider="{compartirTextoViewStack}" borderStyle="solid"
+			backgroundAlpha="0.6"/>
+		
+		<mx:ViewStack id="compartirTextoViewStack" borderStyle="solid" width="100%" height="100%"
+			backgroundAlpha="0.6">
+		
+			<mx:Canvas id="datosPersonales" label="1- Datos Personales">
+				<mx:Label text="Search Screen"/>
+			</mx:Canvas>
+		
+			<mx:Canvas id="datosTextoACompartir" label="2- Datos del Texto a Compartir">
+				<mx:Label text="Customer Info"/>
+			</mx:Canvas>
+		
+			<mx:Canvas id="textoACompartir" label="3- Texto a Compartir">
+				<mx:Label text="Account Info"/>
+			</mx:Canvas>
+		</mx:ViewStack>
+
+	<!--
+		<mx:Form width="95%" height="90%" id="contactoFormulario" 
+			labelWidth="150" indicatorGap="18">
+
+			<mx:FormItem label="Nombre(s):" required="true" labelStyleName="labelStyle">
+				<mx:TextInput id="nombresContacto" width="100%"/>
+			</mx:FormItem>
+			<mx:FormItem label="Apellido(s):" labelStyleName="labelStyle" required="true">
+				<mx:TextInput id="apellidoContacto"/>
+			</mx:FormItem>	
+			<mx:FormItem label="Pais:" labelStyleName="labelStyle" required="true">
+				<mx:ComboBox id="paisComboBox" prompt="Seleccione su pais..."/>
+			</mx:FormItem>
+			<mx:FormItem label="Localidad:" labelStyleName="labelStyle">
+				<mx:TextInput id="localidadContacto"/>
+			</mx:FormItem>
+			<mx:FormItem label="Email:" labelStyleName="labelStyle" required="true" 
+				width="100%">
+				<mx:TextInput id="emailContacto" width="100%"/>
+			</mx:FormItem>
+			<mx:FormItem label="Fecha de Nacimiento:" labelStyleName="labelStyle" width="100%">
+				<mx:DateField id="fechaNacimiento"/>
+			</mx:FormItem>
+			<mx:FormItem width="100%" label="Asunto:" labelStyleName="labelStyle" required="true">
+				<mx:TextInput id="asuntoContacto" width="100%"/>
+			</mx:FormItem>
+			<mx:FormItem width="100%" label="Comentario:" labelStyleName="labelStyle" required="true" errorString="La asunto es requerido.">
+				<mx:TextArea id="descripcionContacto" 
+					width="100%" maxChars="350"
+					color="black"
+					change="{descripcionLabel.text = 'Faltan ' + (descripcionContacto.maxChars - descripcionContacto.text.length) + ' caracter(es).'}"/>
+				<mx:Label id="descripcionLabel" text="Faltan {descripcionContacto.maxChars} caracter(es)." color="black"
+					 fontStyle="italic" width="100%" textAlign="center"/>
+			</mx:FormItem>
+			<mx:HRule width="100%"/>
+			<mx:HBox width="90%" horizontalAlign="center">
+				<buttons:ButtonValidator clickHandler="compartirTexto()" labelButton="Consultar" errorMessage="Hay errores para validar.">
+					<buttons:validators>
+						<mx:StringValidator source="{nombresContacto}" property="text" 
+							maxLength="30" 
+		    				minLength="4" 
+		    				required="true"
+		    				requiredFieldError="El/los nombre(s) es/son requerido(s)." 
+		    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 
+		    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
+						/>
+						<mx:EmailValidator source="{emailContacto}" property="text"
+						invalidCharError="Direccion de email contiene caracteres invalidos."
+				    	invalidDomainError= "El dominio del email no esta correctamente formateado." 
+				    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
+				    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
+				    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
+				    	required="true"
+		    			requiredFieldError="El email es requerido." 
+				    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
+				    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
+					    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."
+						/>
+					</buttons:validators>
+				</buttons:ButtonValidator>
+			</mx:HBox>
+		</mx:Form>	
+-->
+	</mx:Panel>
+</mx:HBox>

@@ -26,6 +26,8 @@ package ar.angelDurmiente.beans {
 		public static const titleApplication:String = "El Angel Durmiente";
 		
 		public static const urlApplication:String = "ElAngelDurmiente.com.ar";
+		
+		public static const tooltipTitle:String = "ElAngelDurmiente.com.ar";
 
 		public static const initStateApplication:String = "aplicacion";
 

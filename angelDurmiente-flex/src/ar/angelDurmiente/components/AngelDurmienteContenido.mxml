@@ -2,10 +2,12 @@
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
 	width="100%" height="100%" verticalAlign="middle" horizontalAlign="center"
 	currentState="bienvenidoState" 
-	xmlns:components="ar.angelDurmiente.components.*">
+	xmlns:components="ar.angelDurmiente.components.*" xmlns:pages="ar.angelDurmiente.pages.*">
 	
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.beans.ApplicationLocator;
+			import mx.controls.Alert;
 			import mx.collections.IList;
 			import mx.controls.List;
 			import mx.events.ToolTipEvent;
@@ -13,11 +15,14 @@
 			[Bindable]
 			public var poemasYPoesias:IList;
 
-	private function createCustomTip(title:String, body:String, event:ToolTipEvent):void {
-		var ptt:InfoTooltip = new InfoTooltip();
-		ptt.title = title;
-		ptt.bodyText = body;
-		event.toolTip = ptt;
+	private function createCustomTip(imageURL:String, body:String, event:ToolTipEvent):void {
+		var bit:ButtonInfoTooltip = new ButtonInfoTooltip();
+		bit.title = ApplicationLocator.tooltipTitle;
+		bit.bodyText = body;
+		bit.classSource = imageURL;
+		//bit.height = 150;
+		bit.width = 300;
+		event.toolTip = bit;
 	}
 	
 		private function changeState(newStateName:String):void {
@@ -48,31 +53,31 @@
 	<mx:Panel width="15%" height="100%" cornerRadius="20" title="Menú" fontSize="15"
 		styleName="menuPanel" backgroundAlpha="0.4" roundedBottomCorners="true">
 		<mx:Button label="Bienvenido"				width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Página Inicial de El Angel Durmiente.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/rose.png','Página Inicial de El Angel Durmiente.', event)"
 			click="this.changeState('bienvenidoState')"/>
 		<mx:Button label="Poemas y Poesías"			width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Poemas y Poesías.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/crown.png','Poemas y Poesías.', event)"
 			click="this.changeState('poemasPoesiasState')"/>
 		<mx:Button label="Letras de Canciones"		width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Letras de canciones en todos los idiomas.', event)"
-			click="this.changeState('letrasCancionesState')"/>
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/champagne.png','Letras de canciones en todos los idiomas.', event)"
+			click="this.changeState('letrasCancionesState');Alert.show('','');"/>
 		<mx:Button label="Canciones con Acordes" 	width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Canciones con acordes para guitarras', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/heart.png','Canciones con acordes para guitarras', event)"
 			click="this.changeState('cancionesAcordesState')"/>
 		<mx:Button label="Frases y Piropos"			width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Frases y piropos.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/tiffany.png','Frases y piropos.', event)"
 			click="this.changeState('frasesPiroposState')"/>
 		<mx:Button label="Tus Historias"			width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Tus historias de amor.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/heart.png','Tus historias de amor.', event)"
 			click="this.changeState('tusHistoriasState')"/>
 		<mx:Button label="Cuentos con Moralejas"	width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Cuentos e historias que nos dejan enseñanza.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/rose.png','Cuentos e historias que nos dejan enseñanza.', event)"
 			click="this.changeState('cuentosMoralejasState')"/>
 		<mx:Button label="Compartir Textos"			width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Comparti con todos nosotros tus poemas, poesias, letras de canciones, canciones con acordes, freses, piropos, tus historias de amor, cuentos e historias.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/champagne.png','Comparti con todos nosotros tus poemas, poesias, letras de canciones, canciones con acordes, freses, piropos, tus historias de amor, cuentos e historias.', event)"
 			click="this.changeState('compartirTextosState')"/>
 		<mx:Button label="Contacto"					width="100%" mouseDownEffect="{unglowButton}"
-			toolTip=" " toolTipCreate="this.createCustomTip('elAngelDurmiente.com.ar','Realiza comentarios, sugerencias, y/o quejas acerca de elAngelDurmiente.com.ar.', event)"
+			toolTip=" " toolTipCreate="this.createCustomTip('images/romantics/heart.png','Realiza comentarios, sugerencias, y/o quejas acerca de elAngelDurmiente.com.ar.', event)"
 			click="this.changeState('contactoState')"/>
 	</mx:Panel>
 	
@@ -86,36 +91,7 @@
 		</mx:State>
 		<mx:State name="poemasPoesiasState">
 			<mx:AddChild>
-				<mx:VDividedBox width="70%" height="100%">
-					<mx:Panel width="100%" height="100%" cornerRadius="20" backgroundAlpha="0.4" headerHeight="0" layout="horizontal">					
-						<!--
-						We dont want to sort the columns when we click on them so,  sortableColumns="false"
-						similarly draggableColumns="false"
-						-->
-						<mx:AdvancedDataGrid id="adg" dataProvider="{poemasYPoesias}" sortableColumns="true" draggableColumns="true" 
-							width="100%" height="100%" itemRollOver="{poemaDescripcion.percentHeight = 30}"
-							itemRollOut="{poemaDescripcion.percentHeight = 0}" rollOutEffect="Resize" rollOverEffect="Resize" >
-							<mx:columns>
-							<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
-								<mx:AdvancedDataGridColumn headerText="Nombre" dataField="nombre" />
-								<mx:AdvancedDataGridColumn headerText="" dataField="nombreAutor"/>
-								<mx:AdvancedDataGridColumn headerText="Cantidad Comentarios" dataField="cantidadComentarios" />
-							</mx:columns>
-						</mx:AdvancedDataGrid>
-					</mx:Panel>
-					<mx:Panel id="poemaDescripcion" width="100%" height="0%" cornerRadius="20" backgroundAlpha="0.4" headerHeight="0" layout="horizontal">
-						<mx:Label text="Datos del Poema o Poesía:" width="100%"/>
-					</mx:Panel>
-				</mx:VDividedBox>
-			</mx:AddChild>
-			<mx:AddChild>
-				<mx:Panel width="30%" height="100%" cornerRadius="20" backgroundAlpha="0.4" headerHeight="0" layout="horizontal">					
-					<!--
-					We dont want to sort the columns when we click on them so,  sortableColumns="false"
-					similarly draggableColumns="false"
-					-->
-					
-				</mx:Panel>
+				<pages:PoemasPoesiasPage width="100%" height="100%" poemasYPoesias="{poemasYPoesias}"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="letrasCancionesState">

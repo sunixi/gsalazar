@@ -21,8 +21,8 @@
         <!--<property name="houseKeepingSleepTime" value="15000"/>--> 
         <!-- Este parametro es el sql que usa para testear. Tener cuidado con lo que se setea -->
         <property name="houseKeepingTestSql" value="select 1 from dual" />
-        <property name="maximumConnectionCount" value="50"/>
-        <property name="minimumConnectionCount" value="15"/>
+        <property name="maximumConnectionCount" value="5"/>
+        <property name="minimumConnectionCount" value="5"/>
         <!-- Tiempo de coneccion ejecutando algo = 20 minutos -->
         <property name="maximumActiveTime" value="1200000"/>
         <!--<property name="maximumConnectionLifetime" value="7200000"/>--> 

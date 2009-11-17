@@ -11,7 +11,7 @@
 
 		]]>
 	</mx:Script>
-	<mx:VDividedBox width="70%" height="100%" >
+	<mx:VDividedBox width="100%" height="100%" >
 		<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
 			headerHeight="0" layout="horizontal" paddingBottom="10" paddingLeft="10"
 			paddingRight="10" paddingTop="10">					
@@ -42,15 +42,7 @@
 		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
 			backgroundAlpha="0.4" headerHeight="0" layout="horizontal"
 			paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			<mx:Label text="Datos del Poema o Poesía:" width="100%"/>
+			<mx:Label text="Datos de la Canción:" width="100%"/>
 		</mx:Panel>
 	</mx:VDividedBox>
-	<mx:Panel width="30%" height="100%" cornerRadius="20" backgroundAlpha="0.4"
-		headerHeight="0" layout="horizontal">					
-		<!--
-		We dont want to sort the columns when we click on them so,  sortableColumns="false"
-		similarly draggableColumns="false"
-		-->
-		
-	</mx:Panel>
 </mx:HBox>

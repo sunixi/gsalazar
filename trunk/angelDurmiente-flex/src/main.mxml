@@ -56,8 +56,9 @@
 			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
 		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"
 			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<!--
 		<mx:Object nombre="Pensar que no estas."			votos="7" cantidadComentarios="9" nombreAutor="Guillermo Daniel Salazar"
-			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>-->
 	</mx:ArrayCollection>
 
 	<mx:ArrayCollection id="masVisitados">

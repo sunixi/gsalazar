@@ -160,7 +160,7 @@
 						<mx:List height="100%" dataProvider="{listData}" labelField="nombre" width="40%"
 							rowCount="4" paddingLeft="10" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" 
 							verticalAlign="middle" selectable="false" borderStyle="none"
-							itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
+							itemRenderer="ar.angelDurmiente.itemRenderers.TextoAdvancedItemRenderer"/>
 					</mx:HBox>
 				</mx:Box>
 			</mx:AddChild>

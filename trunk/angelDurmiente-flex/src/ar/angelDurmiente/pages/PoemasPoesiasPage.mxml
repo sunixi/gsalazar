@@ -71,13 +71,13 @@
 			<mx:Label text="Poemas y Poesías Mas Votados:" fontWeight="bold"/>
 			<mx:HRule width="100%"/>
 			<mx:List height="50%" dataProvider="{ApplicationLocator.instance.masVotados}" labelField="nombre" width="100%"
-				rowCount="3" paddingLeft="10" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" 
+				rowCount="3" paddingLeft="5" paddingTop="0" paddingBottom="0" paddingRight="5" backgroundAlpha="0" 
 				verticalAlign="middle" selectable="false" borderStyle="none"
 				itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
 			<mx:Label text="Poemas y Poesías Mas Vistos:" fontWeight="bold"/>
 			<mx:HRule width="100%"/>
 			<mx:List height="50%" dataProvider="{ApplicationLocator.instance.masComentados}" labelField="nombre" width="100%"
-				rowCount="3" paddingLeft="10" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" 
+				rowCount="3" paddingLeft="5" paddingTop="0" paddingBottom="0" paddingRight="5" backgroundAlpha="0" 
 				verticalAlign="middle" selectable="false" borderStyle="none" 
 				itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
 	</mx:Panel>

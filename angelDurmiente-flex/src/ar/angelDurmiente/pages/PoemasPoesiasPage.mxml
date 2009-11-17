@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.beans.ApplicationLocator;
 			import mx.collections.IList;
 			
 			[Bindable]
@@ -13,31 +14,51 @@
 	</mx:Script>
 	<mx:VDividedBox width="70%" height="100%" >
 		<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
-			headerHeight="0" layout="horizontal" paddingBottom="10" paddingLeft="10"
+			headerHeight="0" layout="vertical" paddingBottom="10" paddingLeft="10"
 			paddingRight="10" paddingTop="10">					
 			<!--
 			We dont want to sort the columns when we click on them so,  sortableColumns="false"
 			similarly draggableColumns="false"
 			-->
+			<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="center">
+				<mx:Label text="Poemas y poesías con la letra: "/>
+				<mx:ComboBox id="letraPoema" labelField="label">
+					<mx:dataProvider>
+						<mx:Object label="A" data="A"/>
+						<mx:Object label="B" data="B"/>
+						<mx:Object label="C" data="C"/>
+						<mx:Object label="D" data="D"/>
+						<mx:Object label="E" data="E"/>
+					</mx:dataProvider>
+				</mx:ComboBox>
+			</mx:HBox>
 			<mx:AdvancedDataGrid id="poemasYPoesiasDataGrid" dataProvider="{poemasYPoesias}"
-				sortableColumns="true" draggableColumns="true" width="100%" height="100%"
+				sortableColumns="true" draggableColumns="true" width="100%" height="90%"
 				verticalAlign="middle">
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
-					<mx:AdvancedDataGridColumn headerText="Poema / Poesía" dataField="nombre" />
-					<mx:AdvancedDataGridColumn headerText="Autor" dataField="nombreAutor"/>
-					<mx:AdvancedDataGridColumn headerText="Comentarios"
-						dataField="cantidadComentarios" />
-					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">
+					<mx:AdvancedDataGridColumn headerText="Poema / Poesía" dataField="nombre" width="120"/>
+					<mx:AdvancedDataGridColumn headerText="Autor" dataField="nombreAutor" width="120"/>
+					<mx:AdvancedDataGridColumn headerText="Subido Por" dataField="nombreUsuario" width="100"/>
+					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false" width="70" textAlign="center">
 						<mx:itemRenderer>
 							<mx:Component>
-								<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
-									toolTip="Ver texto completo."/>
+								<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="center">
+									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+										toolTip="Ver Texto Completo."/>
+									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+										toolTip="Ver Info. Texto"/>
+									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+										toolTip="Ver Info. Usuario"/>
+								</mx:HBox>
 							</mx:Component>
 						</mx:itemRenderer>
 					</mx:AdvancedDataGridColumn>
 				</mx:columns>
 			</mx:AdvancedDataGrid>
+			<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Label text="{poemasYPoesias.length} resultado(s)." fontStyle="italic"/>
+			</mx:HBox>
 		</mx:Panel>
 		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
 			backgroundAlpha="0.4" headerHeight="0" layout="horizontal"
@@ -46,11 +67,18 @@
 		</mx:Panel>
 	</mx:VDividedBox>
 	<mx:Panel width="30%" height="100%" cornerRadius="20" backgroundAlpha="0.4"
-		headerHeight="0" layout="horizontal">					
-		<!--
-		We dont want to sort the columns when we click on them so,  sortableColumns="false"
-		similarly draggableColumns="false"
-		-->
-		
+		headerHeight="0" layout="vertical" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+			<mx:Label text="Poemas y Poesías Mas Votados:" fontWeight="bold"/>
+			<mx:HRule width="100%"/>
+			<mx:List height="50%" dataProvider="{ApplicationLocator.instance.masVotados}" labelField="nombre" width="100%"
+				rowCount="3" paddingLeft="10" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" 
+				verticalAlign="middle" selectable="false" borderStyle="none"
+				itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
+			<mx:Label text="Poemas y Poesías Mas Vistos:" fontWeight="bold"/>
+			<mx:HRule width="100%"/>
+			<mx:List height="50%" dataProvider="{ApplicationLocator.instance.masComentados}" labelField="nombre" width="100%"
+				rowCount="3" paddingLeft="10" paddingTop="0" paddingBottom="0" paddingRight="10" backgroundAlpha="0" 
+				verticalAlign="middle" selectable="false" borderStyle="none" 
+				itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
 	</mx:Panel>
 </mx:HBox>

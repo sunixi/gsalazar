@@ -20,7 +20,6 @@
 		bit.title = ApplicationLocator.tooltipTitle;
 		bit.bodyText = body;
 		bit.classSource = imageURL;
-		//bit.height = 150;
 		bit.width = 300;
 		event.toolTip = bit;
 	}

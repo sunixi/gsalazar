@@ -20,6 +20,9 @@
 			BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
 			//Alert.show('Momentáneamente el sitio se encuentra en actualización, debido a su nuevo formato y estilo. Por favor vuelva a ingresar en los proximos dias.','El Angel Durmiente - Solo para personas románticas.');
 			ApplicationLocator.instance.textos = buscables;
+			//TODO Borrar.
+			ApplicationLocator.instance.masComentados = masVisitados;
+			ApplicationLocator.instance.masVotados = masVotados;
 			angelDurmienteHeader.addEventListener("searchClick", onSearchClick);
 			angelDurmienteHeader.addEventListener("advancedSearchClick", onAdvancedSearchClick);
 			angelDurmienteHeader.addEventListener("loginClick", onLoginClick);			
@@ -48,14 +51,31 @@
 	<!-- backgroundColor="0x0066cc" -->
 	<mx:ArrayCollection id="buscables">
 		<mx:Object nombre="Si tu no estuvieras." 			votos="5" cantidadComentarios="6" nombreAutor="Guillermo Daniel Salazar"
-			categoría="['Amor']" imagenAutor="images/trabajando.png"/>
-		<mx:Object nombre="Al final del camino estas tu."	votos="3" cantidadComentarios="3" nombreAutor="Guillermo Daniel Salazar"/>
-		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"/>
-		<mx:Object nombre="Pensar que no estas."			votos="7" cantidadComentarios="9" nombreAutor="Guillermo Daniel Salazar"/>
-		<!--
-		<mx:Object nombre="Como si no estuvieras aquí." rating="8" cantidadComentarios="1" nombreAutor="Guillermo Daniel Salazar"/>
-		<mx:Object nombre="Corriendo en camara lenta." rating="4" cantidadComentarios="0" nombreAutor="Guillermo Daniel Salazar"/>
-		-->
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Al final del camino estas tu."	votos="3" cantidadComentarios="3" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Pensar que no estas."			votos="7" cantidadComentarios="9" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+	</mx:ArrayCollection>
+
+	<mx:ArrayCollection id="masVisitados">
+		<mx:Object nombre="Si tu no estuvieras." 			votos="5" cantidadComentarios="6" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Al final del camino estas tu."	votos="3" cantidadComentarios="3" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+	</mx:ArrayCollection>
+
+	<mx:ArrayCollection id="masVotados">
+		<mx:Object nombre="Si tu no estuvieras." 			votos="5" cantidadComentarios="6" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Al final del camino estas tu."	votos="3" cantidadComentarios="3" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"
+			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
 	</mx:ArrayCollection>
 
 	<mx:Box width="100%" height="100%" backgroundAlpha="0.3"

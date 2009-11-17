@@ -22,6 +22,10 @@ package ar.angelDurmiente.beans {
 		
 		[Bindable]
 		public var textos:IList;
+		[Bindable]
+		public var masVotados:IList;
+		[Bindable]
+		public var masComentados:IList;
 
 		public static const titleApplication:String = "El Angel Durmiente";
 		

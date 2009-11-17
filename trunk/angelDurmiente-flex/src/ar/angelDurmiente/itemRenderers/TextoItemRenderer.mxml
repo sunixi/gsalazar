@@ -3,6 +3,12 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	width="100%" height="100%" backgroundAlpha="0.1" cornerRadius="20" alpha="1.0"
 	backgroundColor="black" borderStyle="solid" borderColor="blue" toolTip="{data.nombre}">
+	<mx:Script>
+		<![CDATA[
+			import com.angel.helpers.StringUtils;
+			import mx.utils.StringUtil;
+		]]>
+	</mx:Script>
 	<mx:Style>
 		.articulosAdvancedDataGrid {
 			roundedBottomCorners: true;
@@ -11,11 +17,12 @@
 		}
 	</mx:Style>
 	<mx:HBox width="100%" height="100%">
-		<mx:VBox width="85%" height="95%">
-			<mx:Label text="{data.nombre}" fontWeight="bold" fontSize="12" color="white" height="45%"/>
-			<mx:Label text="{data.votos} voto(s) - {data.cantidadComentarios} comentario(s)" width="80%" color="white" selectable="false"
-				fontSize="11" fontStyle="italic" height="50%"/>
+		<mx:VBox width="90%" height="95%" paddingBottom="2" paddingLeft="2" paddingRight="2" paddingTop="2">
+			<mx:Text text="{data.nombre.length > 15 ? String(data.nombre).substr(0,15) + '...': data.nombre}" selectable="false" 
+				fontWeight="bold" fontSize="12" color="white" width="90%"/>
+			<mx:Text text="{data.votos} votos | {data.cantidadComentarios} coment. " width="90%" color="white" selectable="false"
+				fontSize="11" fontStyle="italic" toolTip="{data.votos} votos | {data.cantidadComentarios} comentarios."/>
 		</mx:VBox>
-		<mx:Image source="{data.imagenAutor}" width="15%" height="95%" toolTip="{data.nombreAutor}"/>
+		<mx:Image source="{data.imagenAutor}" width="50" height="50" toolTip="{data.nombreUsuario}"/>
 	</mx:HBox>
 </mx:HBox>

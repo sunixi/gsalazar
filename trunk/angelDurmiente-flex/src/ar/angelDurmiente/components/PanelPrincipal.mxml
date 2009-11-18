@@ -56,7 +56,7 @@
 		
 		private function onEffectFinish(event:Event):void {
 			var panelSlider:PanelDescriptionSlider = PanelDescriptionSlider(event.target);
-			panelSlider.dispatchEvent(new Event("currentStateChangingFinish"));
+			panelSlider.dispatchEvent(new Event("currentStateHorizontalChangingFinish"));
 		}
 		
 		/**
@@ -66,7 +66,17 @@
 		 */
 		private function onEffectStart(event:Event):void {
 			var panelSlider:PanelDescriptionSlider = PanelDescriptionSlider(event.target);
-			panelSlider.dispatchEvent(new Event("currentStateChangingBegin"));
+			panelSlider.dispatchEvent(new Event("currentStateHorizontalChangingBegin"));
+		}
+		
+		private function onVerticalEffectFinish(event:Event):void {
+			var panelSlider:PanelDescriptionSlider = PanelDescriptionSlider(event.target);
+			panelSlider.dispatchEvent(new Event("currentStateVerticalChangingFinish"));
+		}
+		
+		private function onVerticalEffectStart(event:Event):void {
+			var panelSlider:PanelDescriptionSlider = PanelDescriptionSlider(event.target);
+			panelSlider.dispatchEvent(new Event("currentStateVerticalChangingBegin"));
 		}
 		
 		/**
@@ -77,7 +87,7 @@
 		 */
 		private function onMinimizeSlides(event:Event, eventChangeName:String):void {
 			for each(var ps:PanelDescriptionSlider in panelSliders){
-				ps.doMinimize();
+				ps.doVerticalMinimize();
 			}
 			this.changeState(eventChangeName);
 		}
@@ -96,45 +106,46 @@
 			title="Poemas y Poesias" minimizeClass="{PoemasPoesiasClass}"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
-			minimizeSlide="onMinimizeSlide(event);"
-			maximizeSlide="changeState('poemasPoesiasState');"
+			minimizeHorizontalSlide="onMinimizeSlide(event);"
+			maximizeHorizontalSlide="changeState('poemasPoesiasState');"
 			toolTip="{poemasPoesias.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="letrasCanciones" width="20%" height="100%"
 			title="Letras de Canciones"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
-			minimizeSlide="onMinimizeSlide(event);"
-			maximizeSlide="changeState('letrasCancionesState');"
+			minimizeHorizontalSlide="onMinimizeSlide(event);"
+			maximizeHorizontalSlide="changeState('letrasCancionesState');"
 			toolTip="{letrasCanciones.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="frasesPiropos" width="20%" height="100%"
 			title="Frases y Piropos"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
-			minimizeSlide="onMinimizeSlide(event);"
-			maximizeSlide="changeState('frasesPiroposState');"
+			minimizeHorizontalSlide="onMinimizeSlide(event);"
+			maximizeHorizontalSlide="changeState('frasesPiroposState');"
 			toolTip="{frasesPiropos.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="tusHistorias" width="20%" height="100%"
 			title="Tus Historias"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
-			minimizeSlide="onMinimizeSlide(event);"
-			maximizeSlide="changeState('tusHistoriasState');"
+			minimizeHorizontalSlide="onMinimizeSlide(event);"
+			maximizeHorizontalSlide="changeState('tusHistoriasState');"
 			toolTip="{tusHistorias.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="cuentos" width="20%" height="100%"
 			title="Cuentos"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
-			minimizeSlide="onMinimizeSlide(event);"
-			maximizeSlide="changeState('cuentosState');"
+			minimizeHorizontalSlide="onMinimizeSlide(event);"
+			maximizeHorizontalSlide="changeState('cuentosState');"
 			toolTip="{cuentos.title } (hacer click para maximizar)."/>
 	</mx:HBox>
 	<mx:HRule width="100%"/>
 	<components:PanelDescriptionSlider id="busquedaAvanzada" width="100%" 
 		height="30%" title="Busqueda Avanzada." headerColors="['black']"
-		effectEnd="onEffectFinish(event);"
-		effectStart="onEffectStart(event);"
-		minimizeSlide="onMinimizeSlide(event);"
-		maximizeSlide="onMinimizeSlides(event,'busquedaAvanzadaState');"
+		effectEnd="onVerticalEffectFinish(event);"
+		effectStart="onVerticalEffectStart(event);"
+		minimizeVerticalSlide="onMinimizeSlide(event);"
+		minimizeStrategy="vertical"
+		maximizeVerticalSlide="onMinimizeSlides(event,'busquedaAvanzadaState');"
 		toolTip="{busquedaAvanzada.title } (hacer click para maximizar)."/>
 	<mx:states>
 		<mx:State name="poemasPoesiasState">

@@ -23,6 +23,7 @@
 			//TODO Borrar.
 			ApplicationLocator.instance.masComentados = masVisitados;
 			ApplicationLocator.instance.masVotados = masVotados;
+			ApplicationLocator.instance.canciones = canciones;
 			angelDurmienteHeader.addEventListener("searchClick", onSearchClick);
 			angelDurmienteHeader.addEventListener("advancedSearchClick", onAdvancedSearchClick);
 			angelDurmienteHeader.addEventListener("loginClick", onLoginClick);			
@@ -77,6 +78,19 @@
 			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
 		<mx:Object nombre="Cuando llueve en invierno." 		votos="2" cantidadComentarios="8" nombreAutor="Guillermo Daniel Salazar"
 			imagenAutor="images/trabajando.png" nombreUsuario="elAngelDurmiente"/>
+	</mx:ArrayCollection>
+
+	<mx:ArrayCollection id="canciones">
+		<mx:Object cancion="Cancion de Despedida." 			cantante="Diego Torres" album="Luna Nueva" nombreUsuario="elAngelDurmiente"
+			imagenAutor="images/trabajando.png" />
+		<mx:Object cancion="Mujer." 			cantante="Los Rancheros" album="Los Rancheros" nombreUsuario="elAngelDurmiente"
+			imagenAutor="images/trabajando.png" />
+		<mx:Object cancion="Mujer." 			cantante="Los Rancheros" album="Los Rancheros" nombreUsuario="elAngelDurmiente"
+			imagenAutor="images/trabajando.png" />
+		<mx:Object cancion="Solo tú." 			cantante="Luis Miguel" album="Tú" nombreUsuario="elAngelDurmiente"
+			imagenAutor="images/trabajando.png" />
+		<mx:Object cancion="Si el norte fuera el sur." 	cantante="Ricardo Arjona" album="Sin Daños a Terceros" nombreUsuario="elAngelDurmiente"
+			imagenAutor="images/trabajando.png" />
 	</mx:ArrayCollection>
 
 	<mx:Box width="100%" height="100%" backgroundAlpha="0.3"

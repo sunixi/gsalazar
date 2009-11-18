@@ -18,7 +18,7 @@
 	</mx:Style>
 	<mx:HBox width="100%" height="50">
 		<mx:VBox width="100%" height="100%" paddingBottom="2" paddingLeft="2" paddingRight="2" paddingTop="2">
-			<mx:Text text="{data.nombre.length > 20 ? String(data.nombre).substr(0,20) + '...': data.nombre}" selectable="false" 
+			<mx:Text text="{data.nombre.length > 25 ? String(data.nombre).substr(0,25) + '...': data.nombre}" selectable="false" 
 				fontWeight="bold" fontSize="11" color="white" width="100%" height="20" />
 			<mx:Text text="{data.votos} votos | {data.cantidadComentarios} coment. " width="100%" color="white" selectable="false"
 				fontSize="9" fontStyle="italic" toolTip="{data.votos} votos | {data.cantidadComentarios} comentarios."

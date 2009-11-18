@@ -4,40 +4,69 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.beans.ApplicationLocator;
 			import mx.collections.IList;
 			
 			[Bindable]
-			public var poemasYPoesias:IList;
+			public var canciones:IList = ApplicationLocator.instance.canciones;
 
 		]]>
 	</mx:Script>
 	<mx:VDividedBox width="100%" height="100%" >
 		<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
-			headerHeight="0" layout="horizontal" paddingBottom="10" paddingLeft="10"
+			headerHeight="0" layout="vertical" paddingBottom="10" paddingLeft="10"
 			paddingRight="10" paddingTop="10">					
-			<!--
-			We dont want to sort the columns when we click on them so,  sortableColumns="false"
-			similarly draggableColumns="false"
-			-->
-			<mx:AdvancedDataGrid id="poemasYPoesiasDataGrid" dataProvider="{poemasYPoesias}"
+			<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="center">
+				<mx:Label text="Buscar: "/>
+				<mx:TextInput id="textoBusqueda" styleName="searchInput"/>
+				<mx:Label text="En: "/>
+				<mx:ComboBox id="estrategiaBusqueda" labelField="label">
+					<mx:dataProvider>
+						<mx:Object label="Canción"			data="Cancion"/>
+						<mx:Object label="Artista"			data="Artista"/>
+						<mx:Object label="Album"			data="Album"/>
+						<mx:Object label="Subido Por"		data="Subido Por"/>
+					</mx:dataProvider>
+				</mx:ComboBox>
+				<!--
+				<mx:Label text="Con letra: "/>
+				<mx:ComboBox id="letraBusqueda" labelField="label">
+					<mx:dataProvider>
+						<mx:Object label="A" data="A"/>
+						<mx:Object label="B" data="B"/>
+						<mx:Object label="C" data="C"/>
+						<mx:Object label="D" data="D"/>
+						<mx:Object label="E" data="E"/>
+					</mx:dataProvider>
+				</mx:ComboBox>
+				-->
+			</mx:HBox>
+			<mx:AdvancedDataGrid id="letrasCancionesDataGrid" dataProvider="{canciones}"
 				sortableColumns="true" draggableColumns="true" width="100%" height="100%"
 				verticalAlign="middle">
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
-					<mx:AdvancedDataGridColumn headerText="Poema / Poesía" dataField="nombre" />
-					<mx:AdvancedDataGridColumn headerText="Autor" dataField="nombreAutor"/>
-					<mx:AdvancedDataGridColumn headerText="Comentarios"
-						dataField="cantidadComentarios" />
+					<mx:AdvancedDataGridColumn headerText="Nombre de Canción"	dataField="cancion" />
+					<mx:AdvancedDataGridColumn headerText="Grupo / Solista"		dataField="cantante"/>
+					<mx:AdvancedDataGridColumn headerText="Subido Por"			dataField="nombreUsuario"/>
+					<mx:AdvancedDataGridColumn headerText="Album"				dataField="album" />
 					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">
 						<mx:itemRenderer>
 							<mx:Component>
-								<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
-									toolTip="Ver texto completo."/>
+								<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+										toolTip="Ver texto completo."/>
+									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+										toolTip="Ver Info. canción."/>
+									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+										toolTip="Ver Info. usuario."/>
+								</mx:HBox>
 							</mx:Component>
 						</mx:itemRenderer>
 					</mx:AdvancedDataGridColumn>
 				</mx:columns>
 			</mx:AdvancedDataGrid>
+			<mx:Label text="Resultado: {canciones.length}" fontSize="10" fontStyle="italic" width="100%" textAlign="right"/>
 		</mx:Panel>
 		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
 			backgroundAlpha="0.4" headerHeight="0" layout="horizontal"

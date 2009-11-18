@@ -7,50 +7,46 @@
 			import mx.collections.IList;
 			
 			[Bindable]
-			public var poemasYPoesias:IList;
+			public var frasesYPiropos:IList;
 
 		]]>
 	</mx:Script>
-	<mx:VDividedBox width="70%" height="100%" >
-		<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
-			headerHeight="0" layout="horizontal" paddingBottom="10" paddingLeft="10"
-			paddingRight="10" paddingTop="10">					
-			<!--
-			We dont want to sort the columns when we click on them so,  sortableColumns="false"
-			similarly draggableColumns="false"
-			-->
-			<mx:AdvancedDataGrid id="poemasYPoesiasDataGrid" dataProvider="{poemasYPoesias}"
-				sortableColumns="true" draggableColumns="true" width="100%" height="100%"
+	<mx:VDividedBox width="50%" height="100%" >
+		<mx:Panel width="100%" height="100%" cornerRadius="20" backgroundAlpha="0.4"
+			headerHeight="0" layout="vertical" paddingBottom="10" paddingLeft="10"
+			paddingRight="10" paddingTop="10">		
+			<mx:VBox width="100%" height="10%" verticalAlign="middle" horizontalAlign="center">
+				<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="center">
+					<mx:Label text="Buscar: "/>
+					<mx:TextInput id="textoBusqueda" styleName="searchInput"/>
+				</mx:HBox>
+				<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="center">
+					<mx:Label text="Estilo: "/>
+					<mx:ComboBox id="estrategiaBusqueda" labelField="label">
+						<mx:dataProvider>
+							<mx:Object label="Todos"			data="Todos"/>
+							<mx:Object label="Románticos"		data="Romanticos"/>
+							<mx:Object label="Chistosos"		data="Chistosos"/>
+						</mx:dataProvider>
+					</mx:ComboBox>
+				</mx:HBox>
+			</mx:VBox>
+			<mx:AdvancedDataGrid id="frasesYPiroposDataGrid" dataProvider="{frasesYPiropos}"
+				sortableColumns="true" draggableColumns="true" width="100%" height="70%"
 				verticalAlign="middle">
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
-					<mx:AdvancedDataGridColumn headerText="Poema / Poesía" dataField="nombre" />
-					<mx:AdvancedDataGridColumn headerText="Autor" dataField="nombreAutor"/>
-					<mx:AdvancedDataGridColumn headerText="Comentarios"
-						dataField="cantidadComentarios" />
-					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">
-						<mx:itemRenderer>
-							<mx:Component>
-								<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
-									toolTip="Ver texto completo."/>
-							</mx:Component>
-						</mx:itemRenderer>
-					</mx:AdvancedDataGridColumn>
+					<mx:AdvancedDataGridColumn headerText="Frase / Piropo"	dataField="nombre" />
+					<mx:AdvancedDataGridColumn headerText="Estilo" 			dataField="estilo"/>
 				</mx:columns>
 			</mx:AdvancedDataGrid>
-		</mx:Panel>
-		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
-			backgroundAlpha="0.4" headerHeight="0" layout="horizontal"
-			paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			<mx:Label text="Datos del Poema o Poesía:" width="100%"/>
+			<mx:Label text="Resultado: {frasesYPiropos != null ? frasesYPiropos.length: 0}" fontSize="10" 
+				fontStyle="italic" width="100%" textAlign="right" color="black"/>
 		</mx:Panel>
 	</mx:VDividedBox>
-	<mx:Panel width="30%" height="100%" cornerRadius="20" backgroundAlpha="0.4"
+	<mx:Panel width="50%" height="100%" cornerRadius="20" backgroundAlpha="0.3"
 		headerHeight="0" layout="horizontal">					
-		<!--
-		We dont want to sort the columns when we click on them so,  sortableColumns="false"
-		similarly draggableColumns="false"
-		-->
+		<mx:Label text="Datos de la frase o piropo" width="100%" fontWeight="bold"/>
 		
 	</mx:Panel>
 </mx:HBox>

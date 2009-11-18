@@ -15,6 +15,10 @@
     creationComplete="onCreationComplete();"
 	xmlns:components="ar.angelDurmiente.components.*">
     <mx:Script><![CDATA[
+    	import ar.angelDurmiente.panelClasses.CuentosMoralejasClass;
+    	import ar.angelDurmiente.panelClasses.TusHistoriasClass;
+    	import ar.angelDurmiente.panelClasses.FrasesPiroposClass;
+    	import ar.angelDurmiente.panelClasses.LetrasCancionesClass;
     	import ar.angelDurmiente.panelClasses.PoemasPoesiasClass;
     	import mx.collections.ArrayCollection;
     	import mx.controls.Alert;
@@ -110,28 +114,28 @@
 			maximizeHorizontalSlide="changeState('poemasPoesiasState');"
 			toolTip="{poemasPoesias.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="letrasCanciones" width="20%" height="100%"
-			title="Letras de Canciones"
+			title="Letras de Canciones" minimizeClass="{LetrasCancionesClass}"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
 			minimizeHorizontalSlide="onMinimizeSlide(event);"
 			maximizeHorizontalSlide="changeState('letrasCancionesState');"
 			toolTip="{letrasCanciones.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="frasesPiropos" width="20%" height="100%"
-			title="Frases y Piropos"
+			title="Frases y Piropos" minimizeClass="{FrasesPiroposClass}"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
 			minimizeHorizontalSlide="onMinimizeSlide(event);"
 			maximizeHorizontalSlide="changeState('frasesPiroposState');"
 			toolTip="{frasesPiropos.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="tusHistorias" width="20%" height="100%"
-			title="Tus Historias"
+			title="Tus Historias" minimizeClass="{TusHistoriasClass}"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
 			minimizeHorizontalSlide="onMinimizeSlide(event);"
 			maximizeHorizontalSlide="changeState('tusHistoriasState');"
 			toolTip="{tusHistorias.title } (hacer click para maximizar)."/>
 		<components:PanelDescriptionSlider id="cuentos" width="20%" height="100%"
-			title="Cuentos"
+			title="Cuentos" minimizeClass="{CuentosMoralejasClass}"
 			effectEnd="onEffectFinish(event);"
 			effectStart="onEffectStart(event);"
 			minimizeHorizontalSlide="onMinimizeSlide(event);"

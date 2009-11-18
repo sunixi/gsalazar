@@ -30,51 +30,52 @@
 		paddingRight="10" paddingTop="10">				
 		
 		<mx:VBox width="100%" height="20%" verticalAlign="middle" horizontalAlign="center">
-			<mx:Text width="100%" color="black" fontSize="20" 
+			<mx:Text width="100%" color="black" fontSize="20" textAlign="center"
 				text="Formulario de Contacto."/>
+			<mx:HRule width="100%"/>
 			<mx:Text width="100%" color="black" 
-				text="Cualquier consulta, critica y/o comentario que tenga para con El Angel Durmiente le solicitamos por favor enviarlo mediante este formulario."/>
+				text="		Cualquier consulta, critica y/o comentario que tenga para con El Angel Durmiente le solicitamos por favor enviarlo mediante este formulario."/>
 		</mx:VBox>
 
 		<mx:HRule width="100%"/>
-		<mx:Form width="95%" height="70%" id="contactoFormulario"
-			labelWidth="150" indicatorGap="18">
+		<mx:Form width="100%" height="70%" id="contactoFormulario"
+			labelWidth="100" indicatorGap="18">
 			<mx:HBox width="100%" height="100%">
-				<mx:VBox width="50%" height="100%">
+				<mx:VBox width="60%" height="100%" paddingLeft="0" paddingRight="0">
 					<mx:FormItem label="Nombre(s):" required="true" labelStyleName="labelStyle">
 						<mx:TextInput id="nombresContacto" width="100%"/>
-					</mx:FormItem>
-					<mx:FormItem label="Apellido(s):" labelStyleName="labelStyle" required="true">
-						<mx:TextInput id="apellidoContacto"/>
-					</mx:FormItem>	
-					<mx:FormItem label="Pais:" labelStyleName="labelStyle" required="true">
-						<mx:ComboBox id="paisComboBox" prompt="Seleccione su pais..."/>
-					</mx:FormItem>
-					<mx:FormItem label="Localidad:" labelStyleName="labelStyle">
-						<mx:TextInput id="localidadContacto"/>
 					</mx:FormItem>
 					<mx:FormItem label="Email:" labelStyleName="labelStyle" required="true" 
 						width="100%">
 						<mx:TextInput id="emailContacto" width="100%"/>
 					</mx:FormItem>
+					<mx:FormItem label="Pais:" labelStyleName="labelStyle" required="true">
+						<mx:ComboBox id="paisComboBox" prompt="Seleccione su pais..."/>
+					</mx:FormItem>
 				</mx:VBox>
-				<mx:VBox width="50%" height="100%">
-					<mx:FormItem label="Fecha de Nacimiento:" labelStyleName="labelStyle" width="100%">
+				<mx:VBox width="40%" height="100%">
+					<mx:FormItem label="Apellido(s):" labelStyleName="labelStyle" required="true">
+						<mx:TextInput id="apellidoContacto"/>
+					</mx:FormItem>	
+					<mx:FormItem label="Nacimiento.:" labelStyleName="labelStyle" width="100%">
 						<mx:DateField id="fechaNacimiento"/>
 					</mx:FormItem>
-					<mx:FormItem width="100%" label="Asunto:" labelStyleName="labelStyle" required="true">
-						<mx:TextInput id="asuntoContacto" width="100%"/>
-					</mx:FormItem>
-					<mx:FormItem width="100%" label="Comentario:" labelStyleName="labelStyle" required="true" errorString="La asunto es requerido.">
-						<mx:TextArea id="descripcionContacto" 
-							width="100%" maxChars="350"
-							color="black"
-							change="{descripcionLabel.text = 'Faltan ' + (descripcionContacto.maxChars - descripcionContacto.text.length) + ' caracter(es).'}"/>
-						<mx:Label id="descripcionLabel" text="Faltan {descripcionContacto.maxChars} caracter(es)." color="black"
-							 fontStyle="italic" width="100%" textAlign="center"/>
+					<mx:FormItem label="Localidad:" labelStyleName="labelStyle">
+						<mx:TextInput id="localidadContacto"/>
 					</mx:FormItem>
 				</mx:VBox>
 			</mx:HBox>
+			<mx:FormItem width="90%" label="Asunto:" labelStyleName="labelStyle" required="true">
+				<mx:TextInput id="asuntoContacto" width="100%"/>
+			</mx:FormItem>
+			<mx:FormItem width="90%" label="Comentario:" labelStyleName="labelStyle" required="true" errorString="La asunto es requerido.">
+				<mx:TextArea id="descripcionContacto" 
+					width="100%" maxChars="350"
+					color="black"
+					change="{descripcionLabel.text = 'Faltan ' + (descripcionContacto.maxChars - descripcionContacto.text.length) + ' caracter(es).'}"/>
+				<mx:Label id="descripcionLabel" text="Faltan {descripcionContacto.maxChars} caracter(es)." color="black"
+					 fontStyle="italic" width="100%" textAlign="center"/>
+			</mx:FormItem>
 			<mx:HRule width="100%"/>
 			<mx:HBox width="90%" horizontalAlign="center">
 				<buttons:ButtonValidator clickHandler="crearContacto()" labelButton="Consultar" errorMessage="Hay errores para validar.">
@@ -88,16 +89,16 @@
 		    				tooShortError="Valor mas corto que el minimo permitido. Este debe ser al menos de {0} caracter(es)." 
 						/>
 						<mx:EmailValidator source="{emailContacto}" property="text"
-						invalidCharError="Direccion de email contiene caracteres invalidos."
-				    	invalidDomainError= "El dominio del email no esta correctamente formateado." 
-				    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
-				    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
-				    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
-				    	required="true"
-		    			requiredFieldError="El email es requerido." 
-				    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
-				    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
-					    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."
+							invalidCharError="Direccion de email contiene caracteres invalidos."
+					    	invalidDomainError= "El dominio del email no esta correctamente formateado." 
+					    	invalidIPDomainError="La direccion IP del dominio en la direccion de email no esta correctamente formateada." 
+					    	invalidPeriodsInDomainError="El dominio de la direccion de email tiene puntos consecutivos." 
+					    	missingAtSignError="El simbolo @ no se encuentra en la direccion de email."
+					    	required="true"
+			    			requiredFieldError="El email es requerido." 
+					    	missingPeriodInDomainError="Le falta el punto al dominio de la direccion de email." 
+					    	missingUsernameError="Falta el nombre de usuario a la direccion de email." 
+						    tooManyAtSignsError="La direccion de email contiene mas de 64 caracteres."
 						/>
 					</buttons:validators>
 				</buttons:ButtonValidator>

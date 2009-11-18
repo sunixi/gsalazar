@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
 	width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-	
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.components.LibroPopup;
 			import mx.collections.IList;
+			import mx.managers.PopUpManager;
 			
 			[Bindable]
 			public var poemasYPoesias:IList;
+			
+			public function doClickVerTextoCompleto(event:Event):void{
+				var libroBookPopup:LibroPopup = LibroPopup(PopUpManager.createPopUp(this,LibroPopup,true));
+				libroBookPopup.height = 550;
+				libroBookPopup.width = 750;
+				PopUpManager.centerPopUp(libroBookPopup);
+			}
 
 		]]>
 	</mx:Script>
@@ -19,8 +27,9 @@
 			We dont want to sort the columns when we click on them so,  sortableColumns="false"
 			similarly draggableColumns="false"
 			-->
+			<mx:Button click="this.doClickVerTextoCompleto(event);" label="Ver Cuento"/>
 			<mx:AdvancedDataGrid id="poemasYPoesiasDataGrid" dataProvider="{poemasYPoesias}"
-				sortableColumns="true" draggableColumns="true" width="100%" height="100%"
+				sortableColumns="true" draggableColumns="true" width="100%" height="90%"
 				verticalAlign="middle">
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
@@ -32,7 +41,7 @@
 						<mx:itemRenderer>
 							<mx:Component>
 								<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
-									toolTip="Ver texto completo."/>
+									toolTip="Ver texto completo." click="outerDocument.doClickVerTextoCompleto(event);"/>
 							</mx:Component>
 						</mx:itemRenderer>
 					</mx:AdvancedDataGridColumn>

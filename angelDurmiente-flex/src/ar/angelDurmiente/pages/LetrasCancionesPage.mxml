@@ -15,7 +15,7 @@
 	<mx:VDividedBox width="100%" height="100%" >
 		<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
 			headerHeight="0" layout="vertical" paddingBottom="10" paddingLeft="10"
-			paddingRight="10" paddingTop="10">					
+			paddingRight="10" paddingTop="10" minHeight="140">					
 			<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="center">
 				<mx:Label text="Buscar: "/>
 				<mx:TextInput id="textoBusqueda" styleName="searchInput"/>
@@ -69,7 +69,7 @@
 			<mx:Label text="Resultado: {canciones.length}" fontSize="10" fontStyle="italic" width="100%" textAlign="right"/>
 		</mx:Panel>
 		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
-			backgroundAlpha="0.4" headerHeight="0" layout="horizontal"
+			backgroundAlpha="0.4" headerHeight="0" layout="horizontal" minHeight="100"
 			paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 			<mx:Label text="Datos de la Canción:" width="100%"/>
 		</mx:Panel>

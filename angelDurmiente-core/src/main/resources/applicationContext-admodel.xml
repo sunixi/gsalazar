@@ -46,7 +46,16 @@
 
         <property name="annotatedClasses">
             <list>
-            	<!--<value>com.angel.architecture.persistence.beans.ClickUser</value>-->
+				<value>com.angel.architecture.persistence.beans.Role</value>
+				<value>com.angel.architecture.persistence.beans.UserRoles</value>
+				<value>ar.com.angelDurmiente.beans.Usuario</value>
+				<value>ar.com.angelDurmiente.beans.Cancion</value>
+            	<!--
+				<value>com.angel.architecture.persistence.beans.ParameterArea</value>
+                <value>com.angel.architecture.persistence.beans.ConfigurationParameter</value>
+            	<value>com.angel.architecture.persistence.beans.TagSearch</value>
+            	<value>com.angel.architecture.persistence.beans.ClickUser</value>
+            	-->
 			</list>
 		</property>
         <property name="mappingResources">

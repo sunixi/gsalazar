@@ -6,13 +6,31 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.collections.IList;
 			
 		
 
 			private function compartirTexto():void {
-				
+				var htmlString:String = textoRichTextEditor.htmlText;
+				Alert.show(htmlString,'HTML del Texto a Compartir.');
+				Alert.show(cleanHTML(htmlString),'HTML Limpio del Texto a Compartir.');
 			}
+			
+			   1.
+      private function cleanHTML(str:String):String {
+          var pattern:RegExp = /<TEXTFORMAT.*?>/g;
+          var str:String = str.replace(pattern, "");
+          /*pattern = /<FONT.*?>/g;
+          str = str.replace(pattern, "");
+          pattern = /<\/FONT.*?>/g;
+          str = str.replace(pattern, "");*/
+          pattern = /<\/TEXTFORMAT.*?>/g;
+          str = str.replace(pattern, "");
+          return str;
+      }
+
+
 
 		]]>
 	</mx:Script>
@@ -68,8 +86,8 @@
 						<buttons:ButtonValidator clickHandler="compartirTexto()" labelButton="Compartir Texto" errorMessage="Hay errores para validar.">
 							<buttons:validators>
 								<mx:StringValidator source="{textoRichTextEditor}" property="text" 
-									maxLength="30" 
-				    				minLength="4" 
+									maxLength="900" 
+				    				minLength="50" 
 				    				required="true"
 				    				requiredFieldError="El/los nombre(s) es/son requerido(s)." 
 				    				tooLongError="Valor mas largo que el máximo permitido. Este debe ser menor que {0} caracter(es)." 

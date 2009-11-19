@@ -3,6 +3,7 @@
 	width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.beans.ApplicationLocator;
 			import ar.angelDurmiente.components.LibroPopup;
 			import mx.collections.IList;
 			import mx.managers.PopUpManager;
@@ -21,22 +22,30 @@
 	</mx:Script>
 	<mx:VDividedBox width="70%" height="100%" >
 		<mx:Panel width="100%" height="60%" cornerRadius="20" backgroundAlpha="0.4"
-			headerHeight="0" layout="horizontal" paddingBottom="10" paddingLeft="10"
+			headerHeight="0" layout="vertical" paddingBottom="10" paddingLeft="10"
 			paddingRight="10" paddingTop="10">					
-			<!--
-			We dont want to sort the columns when we click on them so,  sortableColumns="false"
-			similarly draggableColumns="false"
+			<mx:HBox width="100%" height="5%" verticalAlign="middle" horizontalAlign="center">
+				<mx:Label text="Buscar en descripción: "/>
+				<mx:TextInput id="textoBusqueda" styleName="searchInput"/>
+<!--
+				<mx:Label text="En: "/>
+				<mx:ComboBox id="estrategiaBusqueda" labelField="label">
+					<mx:dataProvider>
+						<mx:Object label="Canción"			data="Cancion"/>
+						<mx:Object label="Artista"			data="Artista"/>
+						<mx:Object label="Album"			data="Album"/>
+						<mx:Object label="Subido Por"		data="Subido Por"/>
+					</mx:dataProvider>
+				</mx:ComboBox>
 			-->
-			<mx:Button click="this.doClickVerTextoCompleto(event);" label="Ver Cuento"/>
+			</mx:HBox>
 			<mx:AdvancedDataGrid id="poemasYPoesiasDataGrid" dataProvider="{poemasYPoesias}"
 				sortableColumns="true" draggableColumns="true" width="100%" height="90%"
 				verticalAlign="middle">
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
-					<mx:AdvancedDataGridColumn headerText="Poema / Poesía" dataField="nombre" />
-					<mx:AdvancedDataGridColumn headerText="Autor" dataField="nombreAutor"/>
-					<mx:AdvancedDataGridColumn headerText="Comentarios"
-						dataField="cantidadComentarios" />
+					<mx:AdvancedDataGridColumn headerText="Titulo del Cuento" dataField="nombre" />
+					<mx:AdvancedDataGridColumn headerText="Subido por" dataField="nombreAutor"/>
 					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">
 						<mx:itemRenderer>
 							<mx:Component>
@@ -51,15 +60,24 @@
 		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
 			backgroundAlpha="0.4" headerHeight="0" layout="horizontal"
 			paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			<mx:Label text="Datos del Poema o Poesía:" width="100%"/>
+			<mx:Label text="Introducción del cuento con moraleja:" width="100%"/>
+			<mx:Button click="this.doClickVerTextoCompleto(event);" label="Ver Cuento"/>
 		</mx:Panel>
 	</mx:VDividedBox>
 	<mx:Panel width="30%" height="100%" cornerRadius="20" backgroundAlpha="0.4"
-		headerHeight="0" layout="horizontal">					
-		<!--
-		We dont want to sort the columns when we click on them so,  sortableColumns="false"
-		similarly draggableColumns="false"
-		-->
+		headerHeight="0" layout="vertical">					
+			<mx:Label text="Cuentos Mas Votados:" fontWeight="bold"/>
+			<mx:HRule width="100%"/>
+			<mx:List height="50%" dataProvider="{ApplicationLocator.instance.masVotados}" labelField="nombre" width="100%"
+				rowCount="3" paddingLeft="5" paddingTop="0" paddingBottom="0" paddingRight="5" backgroundAlpha="0" 
+				verticalAlign="middle" selectable="false" borderStyle="none"
+				itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
+			<mx:Label text="Cuentos Mas Vistos:" fontWeight="bold"/>
+			<mx:HRule width="100%"/>
+			<mx:List height="50%" dataProvider="{ApplicationLocator.instance.masComentados}" labelField="nombre" width="100%"
+				rowCount="3" paddingLeft="5" paddingTop="0" paddingBottom="0" paddingRight="5" backgroundAlpha="0" 
+				verticalAlign="middle" selectable="false" borderStyle="none" 
+				itemRenderer="ar.angelDurmiente.itemRenderers.TextoItemRenderer"/>
 		
 	</mx:Panel>
 </mx:HBox>

@@ -3,20 +3,34 @@
  */
 package ar.com.angelDurmiente.beans;
 
+import java.sql.Blob;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 import com.angel.architecture.persistence.beans.User;
 
 /**
  * @author Guillermo Salazar
- * 
+ * @since 19/Noviembre/2009.
  *
  */
+@Entity
 public class Usuario extends User {
 
 	private static final long serialVersionUID = -6441190120910247706L;
+
+	@Column(length = 40)
 	private String nombre;
+	@Column(length = 40)
 	private String apellido;
+	
+	@Lob
+	@Column(nullable = true)
+	private Blob imagen;
+
 	private Date nacimiento;
 
 	/**
@@ -73,5 +87,19 @@ public class Usuario extends User {
 	 */
 	public void setNacimiento(Date nacimiento) {
 		this.nacimiento = nacimiento;
+	}
+
+	/**
+	 * @return the imagen
+	 */
+	public Blob getImagen() {
+		return imagen;
+	}
+
+	/**
+	 * @param imagen the imagen to set
+	 */
+	public void setImagen(Blob imagen) {
+		this.imagen = imagen;
 	}
 }

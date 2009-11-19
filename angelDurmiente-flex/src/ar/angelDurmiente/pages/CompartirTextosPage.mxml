@@ -22,17 +22,19 @@
 		paddingRight="10" paddingTop="10">
 		-->
 		<mx:LinkBar dataProvider="{compartirTextoViewStack}" borderStyle="none"
-			backgroundAlpha="0" />
+			verticalAlign="middle" horizontalAlign="center" height="2%" width="100%" backgroundAlpha="0" />
 		
-		<mx:ViewStack id="compartirTextoViewStack" width="100%" height="100%" cornerRadius="20" borderStyle="none"
+		<mx:ViewStack id="compartirTextoViewStack" width="100%" height="95%" cornerRadius="20" borderStyle="none"
 			backgroundAlpha="0">
 		
 			<mx:Panel id="datosPersonales" label="1- Datos Personales" backgroundAlpha="0" borderStyle="solid" cornerRadius="20">
-				<components:LoginPopup currentState="crearUsuario" width="100%" height="100%"/>
+				<components:LoginPopup currentState="crearUsuario" width="100%" height="100%" showCloseButton="false"
+					title=" "/>
 			</mx:Panel>
 		
 			<mx:Panel id="datosTextoACompartir" label="2- Datos del Texto a Compartir" enabled="true" backgroundAlpha="0" borderStyle="solid" cornerRadius="20">
-				<mx:Form width="95%" height="90%" id="datosTextoFormulario"	labelWidth="150" indicatorGap="18">
+				<mx:Form width="95%" height="90%" id="datosTextoFormulario"
+					labelWidth="180" indicatorGap="18">
 					<mx:FormItem label="Nombre del texto:" required="true" labelStyleName="labelStyle">
 						<mx:TextInput id="nombreTextoTextInput" width="100%"/>
 					</mx:FormItem>
@@ -54,9 +56,11 @@
 		
 			<mx:Panel id="textoACompartir" width="100%" height="100%" label="3- Texto a Compartir" enabled="true" 
 				backgroundAlpha="0" borderStyle="solid" cornerRadius="20">
-				<mx:Form width="95%" height="90%" id="textoCompartirFormulario" labelWidth="150" indicatorGap="18">
-					<mx:FormItem width="90%" height="60%" label="Texto:" labelStyleName="labelStyle" required="true" errorString="La texto es requerido.">
-						<mx:RichTextEditor id="textoRichTextEditor" width="90%" color="black" height="70%"
+				<mx:Form width="100%" height="100%" id="textoCompartirFormulario" labelWidth="70"
+					paddingTop="0" paddingBottom="0">
+					<mx:FormItem width="100%" height="100%" label="Texto:" labelStyleName="labelStyle"
+						required="true">
+						<mx:RichTextEditor id="textoRichTextEditor" width="100%" color="black" height="100%"
 							borderThickness="3" headerHeight="4"/>
 					</mx:FormItem>
 					<mx:HRule width="100%"/>

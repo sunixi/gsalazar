@@ -97,3 +97,16 @@ ToolTip {
    fontSize: 12;
    fontWeight: normal;
 }
+
+.headerPanel {
+	padding-bottom: 0;
+	padding-left: 10;
+	padding-right: 10;
+	padding-top: 0;
+	header-height: 0;
+	border-thickness-bottom: 0;
+	border-thickness-left: 0;
+	border-thickness-right: 0;
+	border-thickness-top: 0;
+	roundedBottomCorners: true;
+}

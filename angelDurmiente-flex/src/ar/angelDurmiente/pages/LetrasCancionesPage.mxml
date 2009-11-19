@@ -47,7 +47,7 @@
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
 					<mx:AdvancedDataGridColumn headerText="Nombre de Canción"	dataField="cancion" />
-					<mx:AdvancedDataGridColumn headerText="Grupo / Solista"		dataField="cantante"/>
+					<mx:AdvancedDataGridColumn headerText="Artista"				dataField="artista"/>
 					<mx:AdvancedDataGridColumn headerText="Subido Por"			dataField="nombreUsuario"/>
 					<mx:AdvancedDataGridColumn headerText="Album"				dataField="album" />
 					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">

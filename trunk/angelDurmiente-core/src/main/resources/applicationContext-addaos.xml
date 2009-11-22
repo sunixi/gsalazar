@@ -4,6 +4,23 @@
 <beans>
 
 <!-- Domain Object DAOs. -->
+	<bean id="albumDAO" class="ar.com.angelDurmiente.daos.impl.AlbumSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Album"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean> 
+
+ 	<bean id="artistaDAO" class="ar.com.angelDurmiente.daos.impl.ArtistaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Artista"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+ 	<bean id="discografiaDAO" class="ar.com.angelDurmiente.daos.impl.DiscografiaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Discografia"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
 
  	<bean id="usuarioDAO" class="ar.com.angelDurmiente.daos.impl.UsuarioSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>

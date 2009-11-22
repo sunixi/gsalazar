@@ -3,13 +3,21 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-<!--
-	<bean id="solicitudCVService" parent="txProxyTemplate">
+
+	<bean id="albumService" parent="txProxyTemplate">
 		<property name="target">
-			<bean class="ar.com.gsalazar.services.impl.SolicitudCVServiceImpl">
-				<property name="genericDAO" ref="solicitudCVDAO"/>
+			<bean class="ar.com.angelDurmiente.services.impl.AlbumServiceImpl">
+				<property name="genericDAO" ref="albumDAO"/>
 			</bean>
 		</property>
 	</bean>
--->
+
+	<bean id="cancionService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.CancionServiceImpl">
+				<property name="genericDAO" ref="cancionDAO"/>
+			</bean>
+		</property>
+	</bean>
+
 </beans>

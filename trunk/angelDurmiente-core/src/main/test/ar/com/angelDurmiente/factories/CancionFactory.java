@@ -25,12 +25,7 @@ public class CancionFactory {
 	
 	public static Cancion crearCancion(Usuario usuario){
 		Cancion cancion = crearEmptyCancion();
-		cancion.setContenido(RandomStringUtils.randomAlphabetic(250));
-		cancion.setRating(Integer.valueOf(RandomStringUtils.randomNumeric(1)));
 		cancion.setTitulo(RandomStringUtils.randomAlphabetic(25));
-		cancion.setUsuario(usuario);
-		cancion.setVerificado(true);
-		cancion.setVisitas(Double.valueOf(RandomStringUtils.randomNumeric(5)));
 		return cancion;
 	}
 

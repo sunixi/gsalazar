@@ -6,6 +6,7 @@ package ar.com.angelDurmiente.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -25,7 +26,7 @@ public class Artista extends PersistentObject {
 	@Column(nullable = false)
 	private String nombre;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Album> albums;
 
 	public Artista(){
@@ -62,5 +63,10 @@ public class Artista extends PersistentObject {
 	 */
 	public void setAlbums(List<Album> albums) {
 		this.albums = albums;
+	}
+	
+	public void agregarAlbum(Album album){
+		//album.setArtista(this);
+		this.getAlbums().add(album);
 	}
 }

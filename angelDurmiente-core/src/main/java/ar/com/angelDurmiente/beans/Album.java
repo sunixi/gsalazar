@@ -27,6 +27,9 @@ public class Album extends PersistentObject {
 	private String nombre;
 
 	private int year;
+	
+	/*@ManyToOne(optional = false)
+	private Artista artista;*/
 
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Cancion> canciones;
@@ -80,5 +83,9 @@ public class Album extends PersistentObject {
 	
 	public int cantidadCanciones(){
 		return this.getCanciones().size();
+	}
+	
+	public void agregarCancion(Cancion cancion){
+		this.getCanciones().add(cancion);
 	}
 }

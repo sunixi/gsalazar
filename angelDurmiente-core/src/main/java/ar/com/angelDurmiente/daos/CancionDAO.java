@@ -5,6 +5,7 @@ package ar.com.angelDurmiente.daos;
 
 import java.util.List;
 
+import ar.com.angelDurmiente.beans.Artista;
 import ar.com.angelDurmiente.beans.Cancion;
 
 import com.angel.architecture.persistence.ids.ObjectId;
@@ -21,5 +22,7 @@ public interface CancionDAO extends GenericDAO<Cancion, ObjectId>{
 	public List<Cancion> buscarTodosPorTitulo(String titulo);
 	
 	public List<Cancion> buscarTodosPorContenido(String contenido);
+
+	public Cancion buscarUnicoPorArtistaYNombre(Artista artista, String nombreCancion);
 
 }

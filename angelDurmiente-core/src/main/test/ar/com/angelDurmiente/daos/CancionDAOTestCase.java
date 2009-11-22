@@ -35,8 +35,8 @@ public class CancionDAOTestCase extends AngelDurmienteBaseTestCase{
 
 		List<Cancion> cancionesCargadas = this.getCancionDAO().buscarTodosPorTitulo(titulo);		
 		assertTrue("Las Canciones cargadas con el titulo [" + titulo + "] debe ser una.", cancionesCargadas.size() == 1);
-		Cancion cancionCargada = cancionesCargadas.get(0);
-		assertEquals("El usuario de la cancion cargada debe ser igual.", cancion.getUsuario().getName(), cancionCargada.getUsuario().getName());
+	//	Cancion cancionCargada = cancionesCargadas.get(0);
+		//assertEquals("El usuario de la cancion cargada debe ser igual.", cancion.getUsuario().getName(), cancionCargada.getUsuario().getName());
 	}
 	
 	public Usuario beforeTestCrearCancionValido(){

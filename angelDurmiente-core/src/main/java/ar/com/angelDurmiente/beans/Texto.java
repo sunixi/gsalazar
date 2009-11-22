@@ -4,9 +4,9 @@
 package ar.com.angelDurmiente.beans;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Type;
 
@@ -17,8 +17,8 @@ import com.angel.architecture.persistence.base.PersistentObject;
  * @since 19/Noviembre/2009.
  *
  */
-@MappedSuperclass
-public abstract class Texto extends PersistentObject {
+@Entity
+public class Texto extends PersistentObject {
 
 	private static final long serialVersionUID = -1457278499744128408L;
 
@@ -41,6 +41,11 @@ public abstract class Texto extends PersistentObject {
 	
 	public Texto(String contenido){
 		this();
+		this.setContenido(contenido);
+	}
+	public Texto(String contenido, Usuario usuario){
+		this(contenido);
+		this.setUsuario(usuario);
 	}
 
 	/**

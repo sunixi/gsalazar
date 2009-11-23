@@ -630,19 +630,8 @@ public class GenericSpringHibernateDAO<T extends Object, Code extends Serializab
 			super.getHibernateTemplate().setFetchSize(query.getFetchSize());
 			super.getHibernateTemplate().setMaxResults(query.getMaxResult());
 			if(query.hasParams()){
-				Query q = super.getSession().createQuery(query.getQuery());
-				List<QueryConditionParam> conditions = query.getConditions();
-				Object[] params = query.getParams();
-				for(int i = 0; i < conditions.size(); i++){
-					QueryConditionParam qcp = conditions.get(i);
-					if(ParamType.OBJECT_PARAMETER == qcp.getParamType()){
-						q.setParameter("param_" + i, params[i]);
-					} else {
-						q.setParameterList("param_" + i, (Collection) params[i]);
-					}
-				}
+				Query q = this.buildQuery(query);
 				entities = q.list();
-				//entities = super.getHibernateTemplate().find(query.getQuery(), query.getParams());
 			} else {
 				entities = super.getHibernateTemplate().find(query.getQuery());
 			}
@@ -657,18 +646,7 @@ public class GenericSpringHibernateDAO<T extends Object, Code extends Serializab
 		com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
 		List<T> entities = null;
 		try {
-			
-			Query q = super.getSession().createQuery(query.getQuery());
-			List<QueryConditionParam> conditions = query.getConditions();
-			Object[] params = query.getParams();
-			for(int i = 0; i < conditions.size(); i++){
-				QueryConditionParam qcp = conditions.get(i);
-				if(ParamType.OBJECT_PARAMETER == qcp.getParamType()){
-					q.setParameter("param_" + i, params[i]);
-				} else {
-					q.setParameterList("param_" + i, (Collection) params[i]);
-				}
-			}
+			Query q = this.buildQuery(query);
 			entities = q.list();
 		} catch(Exception e){
 			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
@@ -680,5 +658,33 @@ public class GenericSpringHibernateDAO<T extends Object, Code extends Serializab
 			throw new GenericDAOException("Query [" + query.getQuery() + "] didn't return a unique and NOT NULL result.");
 		}
 		return entities.get(0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Query buildQuery(com.angel.dao.generic.query.Query query){
+		Query q = super.getSession().createQuery(query.getQuery());
+		List<QueryConditionParam> conditions = query.getConditions();
+		Object[] params = query.getParams();
+		for(int i = 0; i < conditions.size(); i++){
+			QueryConditionParam qcp = conditions.get(i);
+			if(ParamType.OBJECT_PARAMETER == qcp.getParamType()){
+				q.setParameter("param_" + i, params[i]);
+			} else {
+				q.setParameterList("param_" + i, (Collection) params[i]);
+			}
+		}
+		return q;
+	}
+	
+	public <C> Collection<C> findAll(QueryBuilder queryBuilder, Class<C> beanClass) {
+		try {
+			Query aQuery = this.buildQuery(queryBuilder.buildQuery());
+			Collection<C> resultList = this.transformResultListQueryToBeanClass(aQuery, beanClass);
+			return resultList;
+		} catch (QuerySyntaxException e) {
+			throw new InvalidQueryException("Cannot execute query because it is a invalid query.", e);
+		} catch(QueryParameterException e){
+			throw new InvalidQueryException("Cannot execute query because it has invalid parameters names.", e);
+		}
 	}
 }

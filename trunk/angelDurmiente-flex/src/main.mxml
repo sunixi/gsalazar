@@ -8,6 +8,7 @@
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.components.DedicatoriaPopup;
 			import mx.managers.PopUpManager;
 			import ar.angelDurmiente.components.LoginPopup;
 			import ar.angelDurmiente.events.AttachInfoEvent;
@@ -18,15 +19,37 @@
 			
 		private function onCreationComplete():void {
 			BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
-			Alert.show('Momentáneamente el sitio se encuentra en actualización, debido a su nuevo formato y estilo. Por favor vuelva a ingresar en los proximos dias.','El Angel Durmiente - Solo para personas románticas.');
-			ApplicationLocator.instance.textos = buscables;
-			//TODO Borrar.
-			ApplicationLocator.instance.masComentados = masVisitados;
-			ApplicationLocator.instance.masVotados = masVotados;
-			ApplicationLocator.instance.canciones = canciones;
+			this.inicializarEventos();
+			this.inicializarMock();
+			this.inicializarDominio();
+		}
+		
+		private function inicializarDominio():void {
+			ApplicationLocator.instance.finishLoad = finishLoad;
+			ApplicationLocator.instance.inicializar(this);
+		}
+		
+		private function finishLoad(event:Event = null):void {
+			
+		}
+		
+		private function inicializarEventos():void {
 			angelDurmienteHeader.addEventListener("searchClick", onSearchClick);
 			angelDurmienteHeader.addEventListener("advancedSearchClick", onAdvancedSearchClick);
 			angelDurmienteHeader.addEventListener("loginClick", onLoginClick);			
+		}
+		
+		private function inicializarMock():void {
+			//TODO Borrar.
+			//Alert.show('Momentáneamente el sitio se encuentra en actualización, debido a su nuevo formato y estilo. Por favor vuelva a ingresar en los proximos dias.','El Angel Durmiente - Solo para personas románticas.');
+			var dedicatoriaPopup:DedicatoriaPopup = DedicatoriaPopup(PopUpManager.createPopUp(this,DedicatoriaPopup,true));
+			dedicatoriaPopup.width = 400;
+			dedicatoriaPopup.height = 600;
+			PopUpManager.centerPopUp(dedicatoriaPopup);
+			ApplicationLocator.instance.textos = buscables;
+			ApplicationLocator.instance.masComentados = masVisitados;
+			ApplicationLocator.instance.masVotados = masVotados;
+			//ApplicationLocator.instance.canciones = canciones;
 		}
 		
 		private function onSearchClick(event:AttachInfoEvent):void {

@@ -157,4 +157,7 @@ public class Texto extends PersistentObject implements Comentable {
 		this.comentar(comentario);		
 	}
 
+	public String getNombreUsuario(){
+		return this.getUsuario().getName();
+	}
 }

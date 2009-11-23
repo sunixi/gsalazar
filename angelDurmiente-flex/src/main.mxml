@@ -8,6 +8,8 @@
 	<mx:Style source="styles/styles.css"/>
 	<mx:Script>
 		<![CDATA[
+			import ar.angelDurmiente.dtos.CancionInfoDTO;
+			import ar.angelDurmiente.dtos.TextoDTO;
 			import ar.angelDurmiente.components.DedicatoriaPopup;
 			import mx.managers.PopUpManager;
 			import ar.angelDurmiente.components.LoginPopup;
@@ -18,10 +20,16 @@
 			
 			
 		private function onCreationComplete():void {
+			this.inicializarClasses();
 			BrowserManager.getInstance().setTitle(":: El Angel Durmiente - Solo Para Personas Románticas ::");
 			this.inicializarEventos();
 			this.inicializarMock();
 			this.inicializarDominio();
+		}
+		
+		private function inicializarClasses():void {
+			TextoDTO;
+			CancionInfoDTO;
 		}
 		
 		private function inicializarDominio():void {

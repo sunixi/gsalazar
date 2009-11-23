@@ -88,4 +88,12 @@ public class Album extends PersistentObject {
 	public void agregarCancion(Cancion cancion){
 		this.getCanciones().add(cancion);
 	}
+
+	public long cantidadTextos() {
+		long textos = 0;
+		for(Cancion c: this.getCanciones()){
+			textos += c.cantidadTextos();
+		}
+		return textos;
+	}
 }

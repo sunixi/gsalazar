@@ -66,7 +66,22 @@ public class Artista extends PersistentObject {
 	}
 	
 	public void agregarAlbum(Album album){
-		//album.setArtista(this);
 		this.getAlbums().add(album);
+	}
+	
+	public long cantidadCanciones(){
+		long canciones = 0;
+		for(Album a: this.getAlbums()){
+			canciones += a.cantidadCanciones();
+		}
+		return canciones;
+	}
+	
+	public long cantidadTextos(){
+		long textos = 0;
+		for(Album a: this.getAlbums()){
+			textos += a.cantidadTextos();
+		}
+		return textos;
 	}
 }

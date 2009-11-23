@@ -4,6 +4,14 @@
 
 <beans>
 
+	<bean id="artistaService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.ArtistaServiceImpl">
+				<property name="genericDAO" ref="artistaDAO"/>
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="albumService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.angelDurmiente.services.impl.AlbumServiceImpl">

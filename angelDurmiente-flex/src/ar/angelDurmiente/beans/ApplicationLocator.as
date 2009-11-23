@@ -1,6 +1,9 @@
 package ar.angelDurmiente.beans {
 
+	import com.angel.syncronization.TransactionalBlock;
+	
 	import mx.collections.IList;
+	import mx.core.UIComponent;
 	
 	public class ApplicationLocator
 	{
@@ -21,6 +24,9 @@ package ar.angelDurmiente.beans {
 		private var mainPage:main;
 		
 		[Bindable]
+		public var finishLoad:Function;
+		
+		[Bindable]
 		public var textos:IList;
 		[Bindable]
 		public var masVotados:IList;
@@ -28,6 +34,8 @@ package ar.angelDurmiente.beans {
 		public var masComentados:IList;
 		[Bindable]
 		public var canciones:IList;
+		[Bindable]
+		public var artistas:IList;
 
 		public static const titleApplication:String = "El Angel Durmiente";
 		
@@ -38,6 +46,24 @@ package ar.angelDurmiente.beans {
 		public static const initStateApplication:String = "aplicacion";
 
 		public static const initVisibleChangeApplicationConfiguration:Boolean = false;
+		
+		
+		public function inicializar(uiComponent:UIComponent = null):void {
+			if(!this.estaInicializado()){
+				var transactionalBlock:TransactionalBlock = new TransactionalBlock();
+				transactionalBlock.addEventListener("endsLoad", finishLoad); 
+				transactionalBlock.register("cancionService",		"buscarTodos").callbackFunction(inicializarFindAllArtistasCallback);
+				transactionalBlock.execute(uiComponent);
+			}
+	   	}
+	   	
+	   	private function inicializarFindAllArtistasCallback(data:IList): void {
+	   		canciones = data;
+	   	}
+	   	
+	   	public function estaInicializado():Boolean {
+			return artistas != null;
+	   	}
 	}
 }
 

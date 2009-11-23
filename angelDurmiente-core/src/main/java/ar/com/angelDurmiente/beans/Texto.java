@@ -3,12 +3,20 @@
  */
 package ar.com.angelDurmiente.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.Type;
+
+import ar.com.angelDurmiente.types.Comentable;
 
 import com.angel.architecture.persistence.base.PersistentObject;
 
@@ -18,7 +26,7 @@ import com.angel.architecture.persistence.base.PersistentObject;
  *
  */
 @Entity
-public class Texto extends PersistentObject {
+public class Texto extends PersistentObject implements Comentable {
 
 	private static final long serialVersionUID = -1457278499744128408L;
 
@@ -35,8 +43,13 @@ public class Texto extends PersistentObject {
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private Usuario usuario;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@OrderBy(value = "creationDate desc, rating desc")
+	private List<Comentario> comentarios;
+	
 	public Texto(){
 		super();
+		this.setComentarios(new ArrayList<Comentario>());
 	}
 	
 	public Texto(String contenido){
@@ -117,4 +130,31 @@ public class Texto extends PersistentObject {
 	public void setVisitas(double visitas) {
 		this.visitas = visitas;
 	}
+
+	/**
+	 * @return the comentarios
+	 */
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	/**
+	 * @param comentarios the comentarios to set
+	 */
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public void comentar(Comentario comentario) {
+		this.getComentarios().add(comentario);
+	}
+
+	public void comentar(String nombre, String valorComentario, int rating) {
+		Comentario comentario = new Comentario();
+		comentario.setComentario(valorComentario);
+		comentario.setNombre(nombre);
+		comentario.setRating(rating);
+		this.comentar(comentario);		
+	}
+
 }

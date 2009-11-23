@@ -48,6 +48,7 @@
             <list>
 				<value>com.angel.architecture.persistence.beans.Role</value>
 				<value>com.angel.architecture.persistence.beans.UserRoles</value>
+				<value>ar.com.angelDurmiente.beans.Comentario</value>
 				<value>ar.com.angelDurmiente.beans.Texto</value>
 				<value>ar.com.angelDurmiente.beans.Usuario</value>
 				<value>ar.com.angelDurmiente.beans.Cancion</value>

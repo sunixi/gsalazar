@@ -97,4 +97,8 @@ public class Cancion extends PersistentObject {
 			this.agregarTexto(texto);
 		}
 	}
+
+	public long cantidadTextos() {
+		return this.getTextos().size();
+	}
 }

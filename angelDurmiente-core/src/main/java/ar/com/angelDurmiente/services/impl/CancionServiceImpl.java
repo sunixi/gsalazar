@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.com.angelDurmiente.beans.Cancion;
 import ar.com.angelDurmiente.daos.CancionDAO;
+import ar.com.angelDurmiente.dtos.CancionInfoDTO;
 import ar.com.angelDurmiente.services.CancionService;
 
 import com.angel.architecture.services.impl.GenericServiceImpl;
@@ -23,6 +24,10 @@ public class CancionServiceImpl extends GenericServiceImpl implements CancionSer
 
 	public List<Cancion> buscarTodosPorTitulo(String titulo) {
 		return this.getCancionDAO().buscarTodosPorTitulo(titulo);
+	}
+	
+	public List<CancionInfoDTO> buscarTodos(){
+		return this.getCancionDAO().buscarTodos();
 	}
 
 	protected CancionDAO getCancionDAO(){

@@ -3,7 +3,6 @@
  */
 package ar.com.angelDurmiente.daos.impl;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -12,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import ar.com.angelDurmiente.beans.Artista;
 import ar.com.angelDurmiente.beans.Cancion;
 import ar.com.angelDurmiente.daos.CancionDAO;
+import ar.com.angelDurmiente.dtos.CancionInfoDTO;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.dao.generic.exceptions.GenericDAOException;
@@ -19,8 +19,6 @@ import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;
 import com.angel.dao.generic.query.builder.impl.QueryBuilderImpl;
 import com.angel.dao.generic.query.factory.impl.HQLClauseFactory;
-import com.angel.dao.generic.query.params.ParamType;
-import com.angel.dao.generic.query.params.QueryConditionParam;
 
 /**
  * 
@@ -55,34 +53,46 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 			.equals("cancion", "titulo", nombreCancion);
 		return (Cancion) this.findUniqueByQueryBuilder(queryBuilder);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public Object findUniqueByQueryBuilder2(QueryBuilder queryBuilder) {
+
+	public List<CancionInfoDTO> buscarTodos() {
+		/*
+		String cancion;
+		private String artista;
+		private String usuario;
+		private String album;
+		 */
+		QueryBuilder subQueryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
+		subQueryBuilder.getSelectClause()
+			.add("us.name",			"as usuario")
+			.add("us.creationDate", "as subido");
+		
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
+		queryBuilder.getSelectClause()
+			.add("new ar.com.angelDurmiente.dtos.CancionInfoDTO(ca.titulo")
+			.add("ar.nombre")
+			.add("te")
+			.add("al.nombre)");
+		queryBuilder.getFromClause()
+			.from(Artista.class			, "ar")
+			.innerJoin("ar.albums"		, "al")
+			.innerJoin("al.canciones"	, "ca")
+			.innerJoin("ca.textos"		, "te")
+			.innerJoin("te.usuario"		, "us");
 		com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
-		List<Object> entities = null;
+		List<?> entities = null;
 		try {
-			
-			Query q = super.getSession().createQuery(query.getQuery());
-			List<QueryConditionParam> conditions = query.getConditions();
-			Object[] params = query.getParams();
-			for(int i = 0; i < conditions.size(); i++){
-				QueryConditionParam qcp = conditions.get(i);
-				if(ParamType.OBJECT_PARAMETER == qcp.getParamType()){
-					q.setParameter("param_" + i, params[i]);
-				} else {
-					q.setParameterList("param_" + i, (Collection) params[i]);
-				}
+			super.getHibernateTemplate().setFetchSize(query.getFetchSize());
+			super.getHibernateTemplate().setMaxResults(query.getMaxResult());
+			if(query.hasParams()){
+				Query q = this.buildQuery(query);
+				entities = q.list();
+			} else {
+				entities = super.getHibernateTemplate().find(query.getQuery());
 			}
-			entities = q.list();
 		} catch(Exception e){
 			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
 		}
-		if(entities.size() > 1){
-			throw new GenericDAOException("Not unique result for query [" + query.getQuery() + "].");
-		}
-		if(entities.isEmpty()){
-			throw new GenericDAOException("Query [" + query.getQuery() + "] didn't return a unique and NOT NULL result.");
-		}
-		return entities.get(0);
+		List<CancionInfoDTO> cancionesDTO = (List<CancionInfoDTO>) entities;
+		return cancionesDTO;
 	}
 }

@@ -1,4 +1,4 @@
-package ar.com.gsalazar.beans {
+package ar.angelDurmiente.dtos {
 	import com.angel.beans.PersistentObject;
 	import com.angel.locator.ServiceLocator;
 	
@@ -10,13 +10,11 @@ package ar.com.gsalazar.beans {
 	
 
 	[Bindable]
-	[RemoteClass(alias="ar.com.angelDurmiente.dtos.CancionDTO")]
-	public class CancionDTO {
+	[RemoteClass(alias="ar.com.angelDurmiente.dtos.TextoDTO")]
+	public class TextoDTO {
 
-		public var cancion:String;
-		public var artista:String;
 		public var usuario:String;
-		public var album:String;
+		public var subido:Date;
 
 		public function verTextoCompleto():void {
 			

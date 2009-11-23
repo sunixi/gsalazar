@@ -4,12 +4,30 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.advancedDataGridClasses.AdvancedDataGridColumn;
+			import ar.angelDurmiente.dtos.TextoDTO;
+			import mx.events.ListEvent;
+			import ar.angelDurmiente.dtos.CancionInfoDTO;
 			import ar.angelDurmiente.beans.ApplicationLocator;
 			import mx.collections.IList;
 			
 			[Bindable]
 			public var canciones:IList = ApplicationLocator.instance.canciones;
 
+			[Bindable]
+			private var cancionInfoDTOSeleccionada:CancionInfoDTO;
+			
+			private function onItemClick(event:ListEvent):void {
+				cancionInfoDTOSeleccionada = CancionInfoDTO(event.itemRenderer.data);
+			}
+			
+			private function onItemFocus(event:Event):void {
+				cancionInfoDTOSeleccionada = CancionInfoDTO(letrasCancionesDataGrid.selectedItem);
+			}
+			
+			private function formatDateLabelFunction(data:Object, advancedDataGridColumn:AdvancedDataGridColumn):String {
+				return shortDateFormatter.format(data.subido);
+			}
 		]]>
 	</mx:Script>
 	<mx:VDividedBox width="100%" height="100%" >
@@ -28,38 +46,29 @@
 						<mx:Object label="Subido Por"		data="Subido Por"/>
 					</mx:dataProvider>
 				</mx:ComboBox>
-				<!--
-				<mx:Label text="Con letra: "/>
-				<mx:ComboBox id="letraBusqueda" labelField="label">
+				<mx:Label text="Visualizar: "/>
+				<mx:ComboBox id="itemPorPagina" labelField="label">
 					<mx:dataProvider>
-						<mx:Object label="A" data="A"/>
-						<mx:Object label="B" data="B"/>
-						<mx:Object label="C" data="C"/>
-						<mx:Object label="D" data="D"/>
-						<mx:Object label="E" data="E"/>
+						<mx:Object label="25"			data="25"/>
+						<mx:Object label="50"			data="50"/>
+						<mx:Object label="100"			data="100"/>
 					</mx:dataProvider>
 				</mx:ComboBox>
-				-->
 			</mx:HBox>
 			<mx:AdvancedDataGrid id="letrasCancionesDataGrid" dataProvider="{canciones}"
 				sortableColumns="true" draggableColumns="true" width="100%" height="100%"
-				verticalAlign="middle">
+				verticalAlign="middle" itemClick="onItemClick(event)" itemFocusIn="onItemFocus(event);">
 				<mx:columns>
 				<!-- headerRenderer="ar.angelDurmiente.itemRenderers.FilterTextInputRenderer" -->
 					<mx:AdvancedDataGridColumn headerText="Nombre de Canción"	dataField="cancion" />
 					<mx:AdvancedDataGridColumn headerText="Artista"				dataField="artista"/>
-					<mx:AdvancedDataGridColumn headerText="Subido Por"			dataField="nombreUsuario"/>
 					<mx:AdvancedDataGridColumn headerText="Album"				dataField="album" />
 					<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">
 						<mx:itemRenderer>
 							<mx:Component>
 								<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
 									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
-										toolTip="Ver texto completo."/>
-									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
 										toolTip="Ver Info. canción."/>
-									<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
-										toolTip="Ver Info. usuario."/>
 								</mx:HBox>
 							</mx:Component>
 						</mx:itemRenderer>
@@ -69,9 +78,56 @@
 			<mx:Label text="Resultado: {canciones.length}" fontSize="10" fontStyle="italic" width="100%" textAlign="right"/>
 		</mx:Panel>
 		<mx:Panel id="poemaDescripcion" width="100%" height="40%" cornerRadius="20"
-			backgroundAlpha="0.4" headerHeight="0" layout="horizontal" minHeight="100"
+			backgroundAlpha="0.4" headerHeight="0" layout="vertical" minHeight="100"
 			paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			<mx:Label text="Datos de la Canción:" width="100%"/>
+			<mx:HBox width="100%" height="100%">
+				<mx:VBox width="40%" height="100%">
+					<mx:Label text="Canción:" width="100%" fontWeight="bold" fontSize="12"/>
+					<mx:HRule width="75%"/>
+					<mx:HBox width="100%">
+						<mx:Label text="Nombre:" fontSize="11" fontWeight="bold"/>
+						<mx:Label text="{cancionInfoDTOSeleccionada.cancion}" fontSize="11" fontWeight="bold" fontStyle="italic"/>
+					</mx:HBox>
+					<mx:HBox width="100%">
+						<mx:Label text="Artista:" fontSize="11" fontWeight="bold"/>
+						<mx:Label text="{cancionInfoDTOSeleccionada.artista}" fontSize="10" fontWeight="bold" fontStyle="italic"/>
+					</mx:HBox>
+					<mx:HBox width="100%">
+						<mx:Label text="Album:" fontSize="11" fontWeight="bold"/>
+						<mx:Label text="{cancionInfoDTOSeleccionada.album}" fontSize="10" fontWeight="bold" fontStyle="italic"/>
+					</mx:HBox>
+					<mx:HBox width="100%">
+						<mx:Label text="Cantidad Textos:" fontSize="11" fontWeight="bold"/>
+						<mx:Label text="{cancionInfoDTOSeleccionada.textosDTO.length}" fontSize="10" fontWeight="bold" fontStyle="italic"/>
+					</mx:HBox>
+				</mx:VBox>
+				<mx:VBox width="60%" height="100%">
+					<mx:Label text="Textos: " width="100%" fontWeight="bold" fontSize="12"/>
+					<mx:AdvancedDataGrid id="textosCancionesAdvancedDataGrid" dataProvider="{cancionInfoDTOSeleccionada.textosDTO}"
+						width="100%" rowCount="4">
+						<mx:columns>
+							<mx:AdvancedDataGridColumn headerText="Subido Por"	dataField="usuario" width="150"/>
+							<mx:AdvancedDataGridColumn headerText="Fecha"		dataField="subido"
+								labelFunction="formatDateLabelFunction"/>
+							<mx:AdvancedDataGridColumn headerText="Acciones" sortable="false">
+								<mx:itemRenderer>
+									<mx:Component>
+										<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+											<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+												toolTip="Ver texto completo."/>
+											<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+												toolTip="Ver Info. Texto."/>
+											<mx:Image source="@Embed(source='images/verTexto.png')" width="20" height="20"
+												toolTip="Ver Info. usuario."/>
+										</mx:HBox>
+									</mx:Component>
+								</mx:itemRenderer>
+							</mx:AdvancedDataGridColumn>
+						</mx:columns>
+					</mx:AdvancedDataGrid>
+				</mx:VBox>
+			</mx:HBox>
 		</mx:Panel>
 	</mx:VDividedBox>
+	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY"/>
 </mx:HBox>

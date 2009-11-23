@@ -5,7 +5,6 @@ package ar.com.angelDurmiente.daos.impl;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.angelDurmiente.beans.Artista;
@@ -14,7 +13,6 @@ import ar.com.angelDurmiente.daos.CancionDAO;
 import ar.com.angelDurmiente.dtos.CancionInfoDTO;
 
 import com.angel.architecture.persistence.ids.ObjectId;
-import com.angel.dao.generic.exceptions.GenericDAOException;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.dao.generic.query.builder.QueryBuilder;
 import com.angel.dao.generic.query.builder.impl.QueryBuilderImpl;
@@ -55,44 +53,17 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 	}
 
 	public List<CancionInfoDTO> buscarTodos() {
-		/*
-		String cancion;
-		private String artista;
-		private String usuario;
-		private String album;
-		 */
-		QueryBuilder subQueryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
-		subQueryBuilder.getSelectClause()
-			.add("us.name",			"as usuario")
-			.add("us.creationDate", "as subido");
-		
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.getSelectClause()
-			.add("new ar.com.angelDurmiente.dtos.CancionInfoDTO(ca.titulo")
-			.add("ar.nombre")
-			.add("te")
-			.add("al.nombre)");
+			.add("new ar.com.angelDurmiente.dtos.CancionInfoDTO(ca")
+			.add("al)");
 		queryBuilder.getFromClause()
 			.from(Artista.class			, "ar")
 			.innerJoin("ar.albums"		, "al")
-			.innerJoin("al.canciones"	, "ca")
-			.innerJoin("ca.textos"		, "te")
-			.innerJoin("te.usuario"		, "us");
-		com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
-		List<?> entities = null;
-		try {
-			super.getHibernateTemplate().setFetchSize(query.getFetchSize());
-			super.getHibernateTemplate().setMaxResults(query.getMaxResult());
-			if(query.hasParams()){
-				Query q = this.buildQuery(query);
-				entities = q.list();
-			} else {
-				entities = super.getHibernateTemplate().find(query.getQuery());
-			}
-		} catch(Exception e){
-			throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
-		}
-		List<CancionInfoDTO> cancionesDTO = (List<CancionInfoDTO>) entities;
+			.innerJoin("al.canciones"	, "ca");
+		/*			.innerJoin("ca.textos"		, "te")
+			.innerJoin("te.usuario"		, "us")*/
+		List<CancionInfoDTO> cancionesDTO = super.findAll(queryBuilder);
 		return cancionesDTO;
 	}
 }

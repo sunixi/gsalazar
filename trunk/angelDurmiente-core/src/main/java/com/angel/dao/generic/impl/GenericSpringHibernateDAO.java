@@ -687,4 +687,23 @@ public class GenericSpringHibernateDAO<T extends Object, Code extends Serializab
 			throw new InvalidQueryException("Cannot execute query because it has invalid parameters names.", e);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <C> List<C> findAll(QueryBuilder queryBuilder) {
+		try {
+			com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
+			List<C> entities = null;
+			try {
+				Query aQuery = this.buildQuery(query);
+				entities = aQuery.list();
+			} catch(Exception e){
+				throw new GenericDAOException("Error during finding query [" + query.getQuery() + "]", e);
+			}
+			return entities;
+		} catch (QuerySyntaxException e) {
+			throw new InvalidQueryException("Cannot execute query because it is a invalid query.", e);
+		} catch(QueryParameterException e){
+			throw new InvalidQueryException("Cannot execute query because it has invalid parameters names.", e);
+		}
+	}
 }

@@ -7,6 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.angelDurmiente.beans.Album;
+import ar.com.angelDurmiente.beans.Cancion;
+import ar.com.angelDurmiente.beans.Texto;
+
 /**
  * @author Guillermo Salazar
  * @since 19/Noviembre/2009.
@@ -18,19 +22,23 @@ public class CancionInfoDTO implements Serializable {
 
 	private String cancion;
 	private String artista;
-	private List<CancionDTO> cancionesDTO;
+	private List<TextoDTO> textosDTO;
 	private String album;
 	
 	public CancionInfoDTO(){
 		super();
-		this.setCancionesDTO(new ArrayList<CancionDTO>());
+		this.setTextosDTO(new ArrayList<TextoDTO>());
 	}
 	
-	public CancionInfoDTO(String titulo, String nombreArtista, Object textos, String nombreAlbum){
+	public CancionInfoDTO(Cancion cancion, Album album){
 		this();
-		this.setCancion(titulo);
-		this.setArtista(nombreArtista);
-		this.setAlbum(nombreAlbum);
+		this.setCancion(cancion.getTitulo());
+		this.setArtista(cancion.getArtista().getNombre());
+		this.setAlbum(album.getNombre());
+		
+		for(Texto t: cancion.getTextos()){
+			this.getTextosDTO().add(new TextoDTO(t));
+		}
 	}
 	
 	/**
@@ -72,16 +80,16 @@ public class CancionInfoDTO implements Serializable {
 	}
 
 	/**
-	 * @return the cancionesDTO
+	 * @return the textosDTO
 	 */
-	public List<CancionDTO> getCancionesDTO() {
-		return cancionesDTO;
+	public List<TextoDTO> getTextosDTO() {
+		return textosDTO;
 	}
 
 	/**
-	 * @param cancionesDTO the cancionesDTO to set
+	 * @param textosDTO the textosDTO to set
 	 */
-	public void setCancionesDTO(List<CancionDTO> cancionesDTO) {
-		this.cancionesDTO = cancionesDTO;
+	public void setTextosDTO(List<TextoDTO> textosDTO) {
+		this.textosDTO = textosDTO;
 	}
 }

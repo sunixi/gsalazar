@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.angel.architecture.persistence.base.PersistentObject;
 
@@ -29,6 +30,7 @@ public class Cancion extends PersistentObject {
 	private Artista artista;
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@OrderBy(value = "creationDate desc")
 	private List<Texto> textos;
 
 	public Cancion(){

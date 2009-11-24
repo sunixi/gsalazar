@@ -30,6 +30,9 @@ public class Texto extends PersistentObject implements Comentable {
 
 	private static final long serialVersionUID = -1457278499744128408L;
 
+	@Column(unique = true)
+	private String titulo;
+
 	@Column(nullable = false)
 	@Type(type = "text")
 	private String contenido;
@@ -159,5 +162,19 @@ public class Texto extends PersistentObject implements Comentable {
 
 	public String getNombreUsuario(){
 		return this.getUsuario().getName();
+	}
+
+	/**
+	 * @return the titulo
+	 */
+	public String getTitulo() {
+		return titulo;
+	}
+
+	/**
+	 * @param titulo the titulo to set
+	 */
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 }

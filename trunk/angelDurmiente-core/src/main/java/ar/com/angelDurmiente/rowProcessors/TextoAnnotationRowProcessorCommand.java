@@ -14,6 +14,7 @@ import ar.com.angelDurmiente.beans.Usuario;
 import ar.com.angelDurmiente.daos.ArtistaDAO;
 import ar.com.angelDurmiente.daos.CancionDAO;
 import ar.com.angelDurmiente.daos.UsuarioDAO;
+import ar.com.angelDurmiente.helpers.TextoHelper;
 
 import com.angel.architecture.exceptions.NonBusinessException;
 import com.angel.common.helpers.FileHelper;
@@ -76,11 +77,16 @@ public class TextoAnnotationRowProcessorCommand {
 		Cancion cancion = this.getCancionDAO().buscarUnicoPorArtistaYNombre(artista, tituloCancion);
 		Usuario usuario = this.getUsuarioDAO().buscarUnicoPorNombreUsuario(nombreUsuario);
 		
+		
 		Texto texto = new Texto();
 		texto.setRating(0);
 		texto.setVerificado(true);
 		texto.setVisitas(0);
 		texto.setUsuario(usuario);
+		
+		cancion.agregarTexto(texto);
+		String titulo = TextoHelper.crearTituloPara(artista, cancion, usuario);
+		texto.setTitulo(titulo);
 
 		InputStream inputStream;
 		try {
@@ -90,7 +96,6 @@ public class TextoAnnotationRowProcessorCommand {
 		} catch (FileNotFoundException e) {
 			throw new NonBusinessException("File not found processing row for persona.", e);
 		}
-		cancion.agregarTexto(texto);
         return cancion;
     }
 	

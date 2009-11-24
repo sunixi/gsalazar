@@ -54,6 +54,7 @@
 				<value>ar.com.angelDurmiente.beans.Cancion</value>
 				<value>ar.com.angelDurmiente.beans.Album</value>
 				<value>ar.com.angelDurmiente.beans.Artista</value>
+				<value>ar.com.angelDurmiente.beans.Dedicatoria</value>
             	<!--
 				<value>com.angel.architecture.persistence.beans.ParameterArea</value>
                 <value>com.angel.architecture.persistence.beans.ConfigurationParameter</value>

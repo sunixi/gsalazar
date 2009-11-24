@@ -4,6 +4,20 @@
 
 <beans>
 
+	<bean id="estadisticaService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.EstadisticaServiceImpl"/>
+		</property>
+	</bean>
+
+	<bean id="dedicatoriaService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.DedicatoriaServiceImpl">
+				<property name="genericDAO" ref="dedicatoriaDAO"/>
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="artistaService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.angelDurmiente.services.impl.ArtistaServiceImpl">

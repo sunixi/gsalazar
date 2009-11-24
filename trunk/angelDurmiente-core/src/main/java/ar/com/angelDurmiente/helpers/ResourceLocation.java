@@ -19,6 +19,8 @@ public class ResourceLocation {
 	
 	public static final String TEXTOS_CANCIONES_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "Textos.xls";
 	
+	public static final String DEDICATORIAS_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "Dedicatorias.xls";
+	
 	public static final String ALBUMS_CANCIONES_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "AlbumsCanciones.xls";
 	
 	public static final String ALBUMS_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "Albums.xls";

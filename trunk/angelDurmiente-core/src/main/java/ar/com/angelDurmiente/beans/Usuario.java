@@ -102,4 +102,8 @@ public class Usuario extends User {
 	public void setImagen(Blob imagen) {
 		this.imagen = imagen;
 	}
+	
+	public String getNombreCompleto(){
+		return this.getNombre() + " " + this.getApellido();
+	}
 }

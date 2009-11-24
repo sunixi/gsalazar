@@ -3,6 +3,7 @@
  */
 package ar.com.angelDurmiente.services.impl;
 
+import ar.com.angelDurmiente.beans.Artista;
 import ar.com.angelDurmiente.daos.ArtistaDAO;
 import ar.com.angelDurmiente.services.ArtistaService;
 
@@ -17,6 +18,10 @@ public class ArtistaServiceImpl extends GenericServiceImpl implements ArtistaSer
 
 	protected ArtistaDAO getArtistaDAO(){
 		return (ArtistaDAO) super.getGenericDAO();
+	}
+
+	public Artista buscarUnicoPorNombre(String nombre) {
+		return this.getArtistaDAO().buscarUnicoPorNombre(nombre);
 	}
 
 }

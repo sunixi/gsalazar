@@ -108,5 +108,13 @@ public class Dedicatoria extends PersistentObject {
 	 */
 	public void setHasta(Date hasta) {
 		this.hasta = hasta;
+	}
+
+	public boolean estaDedicadoPor(Usuario unDedicador) {
+		return this.getDedicador().getName().equalsIgnoreCase(unDedicador.getName());
+	}	
+	
+	public boolean estaDedicadoPara(Usuario unDedicatario) {
+		return this.getDedicatario().getName().equalsIgnoreCase(unDedicatario.getName());
 	}	
 }

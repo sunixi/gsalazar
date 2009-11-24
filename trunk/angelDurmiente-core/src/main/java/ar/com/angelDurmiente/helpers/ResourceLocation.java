@@ -28,6 +28,8 @@ public class ResourceLocation {
 	public static final String ARTISTAS_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "Artistas.xls";
 	
 	public static final String ARTISTAS_ALBUMS_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "ArtistasAlbums.xls";
+	
+	public static final String ACORDES_INIT_DATA_EXCEL_FILE = BASE_RESOURCES_INIT_FILES + "Acordes.xls";
 
 	public final static Class<ResourceLocation> clazz = ResourceLocation.class;
 

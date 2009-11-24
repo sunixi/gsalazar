@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
 
+import ar.com.angelDurmiente.beans.Album;
 import ar.com.angelDurmiente.beans.Artista;
 import ar.com.angelDurmiente.beans.Cancion;
 import ar.com.angelDurmiente.daos.CancionDAO;
@@ -39,16 +40,34 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 		return (List<Cancion>) super.findAllByCriteria(Restrictions.like("texto", contenido));
 	}
 	
-	public Cancion buscarUnicoPorArtistaYNombre(Artista artista, String nombreCancion) {
+	public Cancion buscarUnicoPorTituloArtistaYAlbum(String titulo, Artista artista, Album album) {
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.getSelectClause()
 			.add("cancion");
 		queryBuilder.getFromClause()
 			.from(this.getPersistentClass()	, "cancion")
-			.innerJoin("cancion.artista"	, "artista");
+			.innerJoin("cancion.artista"	, "artista")
+			.innerJoin("artista.albums", "album");
 		queryBuilder.getWhereClause()
 			.equals("artista", artista)
-			.equals("cancion", "titulo", nombreCancion);
+			.equals("album", album)
+			.equals("cancion", "titulo", titulo);
+		return (Cancion) this.findUniqueByQueryBuilder(queryBuilder);
+	}
+	
+	public Cancion buscarUnicoONuloPorTituloArtistaYAlbum(String titulo, Artista artista, Album album) {
+		//TODO Cambiar por el nulo.
+		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
+		queryBuilder.getSelectClause()
+			.add("cancion");
+		queryBuilder.getFromClause()
+			.from(this.getPersistentClass()	, "cancion")
+			.innerJoin("cancion.artista"	, "artista")
+			.innerJoin("artista.albums", "album");
+		queryBuilder.getWhereClause()
+			.equals("artista", artista)
+			.equals("album", album)
+			.equals("cancion", "titulo", titulo);
 		return (Cancion) this.findUniqueByQueryBuilder(queryBuilder);
 	}
 

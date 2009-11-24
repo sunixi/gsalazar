@@ -3,6 +3,7 @@
  */
 package ar.com.angelDurmiente.executables;
 
+import ar.com.angelDurmiente.dataGenerators.AcordeAnnotationDataGenerator;
 import ar.com.angelDurmiente.dataGenerators.AlbumAnnotationDataGenerator;
 import ar.com.angelDurmiente.dataGenerators.AlbumCancionAnnotationDataGenerator;
 import ar.com.angelDurmiente.dataGenerators.ArtistaAlbumAnnotationDataGenerator;
@@ -36,6 +37,7 @@ public class AngelDurmienteDataAnnotationGeneratorExecutable implements Executab
 		builder.addDataGeneratorClass(AlbumCancionAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(TextoAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(DedicatoriaAnnotationDataGenerator.class);
+		builder.addDataGeneratorClass(AcordeAnnotationDataGenerator.class);
 		DataGeneratorRunner runner = builder.buildDataGeneratorRunner();
 		runner.generateData();
 		runner.finalizeGenerator();

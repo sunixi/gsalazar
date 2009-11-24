@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="75%" height="90%"
+	creationComplete="init();"
+	xmlns:components="com.angel.thirds.components.*" xmlns:components1="com.wai.components.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.collections.IList;
+
+			[Bindable]
+			public var itemsPerPage:Number = 10;
+	
+			[Bindable]
+		    public var rangeCount:Number = 5;
+	    
+			[Bindable]		
+			private var _dataProvider:IList;
+			
+			[Bindable]
+			private var _itemsTotal:Number;
+			
+			[Bindable]		
+			public var selectedItems:IList;
+			
+			private function init():void{
+				this.refreshSelectedItems();
+			}
+			
+			public function set dataProvider(data:IList):void {
+				this._dataProvider = data;
+				this._itemsTotal = this._dataProvider != null ? this._dataProvider.length: 0;
+			}
+			
+			private function refreshSelectedItems(event:Event = null):void{
+				selectedItems = new ArrayList();
+				if(_dataProvider != null){
+					var itemBeginIndex:Number = (paginator.selectedIndex + 1) * paginator.itemsPerPage;
+					for( var i:Number = itemBeginIndex; (i < this._itemsTotal && i < paginator.itemsPerPage); i++){
+						var item:Object = _dataProvider.getItemAt(i);
+						selectedItems.addItem(_dataProvider.getItemAt(i));
+					}
+				}
+			}
+			
+			private function pageChangeHandler(event:Event = null):void {
+				this.refreshSelectedItems(event);
+			}
+			
+			private function createToolTip():String{
+				var tooltip:String = "";
+				tooltip += "Total items: " + this._itemsTotal + '\n';
+				tooltip += "Current page: " + this.paginator.selectedIndex + 1 + '\n';
+				tooltip += "Items per page: " + this.paginator.itemsPerPage + '\n';
+				return tooltip;
+			}
+		]]>
+	</mx:Script>
+	<components1:WAIPaginator id="paginator" itemsPerPage="{this.itemsPerPage}" rangeCount="{this.rangeCount}" itemsTotal="{this._itemsTotal}"
+	    selectedIndex="0" pageChange="pageChangeHandler(event);" toolTip="{createToolTip()}"/>
+	
+</mx:Box>

@@ -4,10 +4,39 @@
 
 <beans>
 
+	<bean id="usuarioService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.UsuarioServiceImpl">
+				<property name="genericDAO" ref="usuarioDAO"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="acordeService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.AcordeServiceImpl">
+				<property name="genericDAO" ref="acordeDAO"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="cancionBuilder"		class="ar.com.angelDurmiente.documentoBuilder.impl.CancionBuilder"/>
+	<bean id="cancionAcordeBuilder"	class="ar.com.angelDurmiente.documentoBuilder.impl.CancionAcordeBuilder"/>
+	<bean id="poemaBuilder"			class="ar.com.angelDurmiente.documentoBuilder.impl.PoemaBuilder"/>
+	<bean id="historiaBuilder"		class="ar.com.angelDurmiente.documentoBuilder.impl.HistoriaBuilder"/>
+
 	<bean id="textoService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.angelDurmiente.services.impl.TextoServiceImpl">
 				<property name="genericDAO" ref="textoDAO"/>
+				<property name="documentosBuilders">
+					<map>
+						<entry key="cancionbuilder"><ref bean="cancionBuilder"/></entry>
+						<entry key="cancionacordebuilder"><ref bean="cancionAcordeBuilder"/></entry>
+						<entry key="poemabuilder"><ref bean="poemaBuilder"/></entry>
+						<entry key="historiabuilder"><ref bean="historiaBuilder"/></entry>
+					</map>
+				</property>
 			</bean>
 		</property>
 	</bean>

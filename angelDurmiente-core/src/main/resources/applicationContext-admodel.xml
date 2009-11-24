@@ -48,10 +48,12 @@
             <list>
 				<value>com.angel.architecture.persistence.beans.Role</value>
 				<value>com.angel.architecture.persistence.beans.UserRoles</value>
+				<value>ar.com.angelDurmiente.beans.Acorde</value>
 				<value>ar.com.angelDurmiente.beans.Comentario</value>
 				<value>ar.com.angelDurmiente.beans.Texto</value>
 				<value>ar.com.angelDurmiente.beans.Usuario</value>
 				<value>ar.com.angelDurmiente.beans.Cancion</value>
+				<value>ar.com.angelDurmiente.beans.CancionAcorde</value>
 				<value>ar.com.angelDurmiente.beans.Album</value>
 				<value>ar.com.angelDurmiente.beans.Artista</value>
 				<value>ar.com.angelDurmiente.beans.Dedicatoria</value>

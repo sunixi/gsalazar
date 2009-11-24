@@ -70,7 +70,7 @@ public class AlbumCancionAnnotationRowProcessorCommand {
 
 		Album album = this.getAlbumDAO().buscarUnicoPorTitulo(tituloAlbum);
 		Artista artista = this.getArtistaDAO().buscarUnicoPorNombre(nombreArtista);
-		Cancion cancion = this.getCancionDAO().buscarUnicoPorArtistaYNombre(artista, tituloCancion);
+		Cancion cancion = this.getCancionDAO().buscarUnicoPorTituloArtistaYAlbum(tituloCancion, artista, album);
 		album.agregarCancion(cancion);
         return album;
     }

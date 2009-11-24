@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ar.com.angelDurmiente.beans.Album;
 import ar.com.angelDurmiente.beans.Artista;
 import ar.com.angelDurmiente.beans.Cancion;
 import ar.com.angelDurmiente.beans.Texto;
@@ -15,6 +16,7 @@ import ar.com.angelDurmiente.daos.ArtistaDAO;
 import ar.com.angelDurmiente.daos.CancionDAO;
 import ar.com.angelDurmiente.daos.UsuarioDAO;
 import ar.com.angelDurmiente.helpers.TextoHelper;
+import ar.com.angelDurmiente.services.AlbumService;
 
 import com.angel.architecture.exceptions.NonBusinessException;
 import com.angel.common.helpers.FileHelper;
@@ -56,6 +58,8 @@ public class TextoAnnotationRowProcessorCommand {
 	private CancionDAO cancionDAO;
 	@Inject
 	private ArtistaDAO artistaDAO;
+	@Inject
+	private AlbumService albumService;
 	
 	@RowChecker(columnsParameters = {})
     public void checkRowData(String nombreArtista, String nombreAlbum, String tituloCancion, String nombreUsuario, String archivoContenido) throws InvalidRowDataException {
@@ -73,10 +77,10 @@ public class TextoAnnotationRowProcessorCommand {
 
 	@RowProcessor(columnsParameters = {}, inject = false)
 	public Cancion processRow(String nombreArtista, String nombreAlbum, String tituloCancion, String nombreUsuario, String archivoContenido) {
-		Artista artista = this.getArtistaDAO().buscarUnicoPorNombre(nombreArtista);		
-		Cancion cancion = this.getCancionDAO().buscarUnicoPorArtistaYNombre(artista, tituloCancion);
+		Artista artista = this.getArtistaDAO().buscarUnicoPorNombre(nombreArtista);
+		Album album = this.getAlbumService().buscarUnicoPorTitulo(nombreAlbum);
+		Cancion cancion = this.getCancionDAO().buscarUnicoPorTituloArtistaYAlbum(tituloCancion, artista, album);
 		Usuario usuario = this.getUsuarioDAO().buscarUnicoPorNombreUsuario(nombreUsuario);
-		
 		
 		Texto texto = new Texto();
 		texto.setRating(0);
@@ -160,5 +164,19 @@ public class TextoAnnotationRowProcessorCommand {
 	 */
 	public void setArtistaDAO(ArtistaDAO artistaDAO) {
 		this.artistaDAO = artistaDAO;
+	}
+
+	/**
+	 * @return the albumService
+	 */
+	public AlbumService getAlbumService() {
+		return albumService;
+	}
+
+	/**
+	 * @param albumService the albumService to set
+	 */
+	public void setAlbumService(AlbumService albumService) {
+		this.albumService = albumService;
 	}
 }

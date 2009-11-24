@@ -7,11 +7,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import ar.com.angelDurmiente.beans.Album;
 import ar.com.angelDurmiente.beans.Artista;
 import ar.com.angelDurmiente.beans.Cancion;
 import ar.com.angelDurmiente.beans.Dedicatoria;
 import ar.com.angelDurmiente.beans.Texto;
 import ar.com.angelDurmiente.beans.Usuario;
+import ar.com.angelDurmiente.daos.AlbumDAO;
 import ar.com.angelDurmiente.daos.ArtistaDAO;
 import ar.com.angelDurmiente.daos.CancionDAO;
 import ar.com.angelDurmiente.daos.TextoDAO;
@@ -64,6 +66,8 @@ public class DedicatoriaAnnotationRowProcessorCommand {
 	private ArtistaDAO artistaDAO;
 	@Inject
 	private TextoDAO textoDAO;
+	@Inject
+	private AlbumDAO albumDAO;
 	
 	
 	@RowChecker(columnsParameters = {})
@@ -93,7 +97,8 @@ public class DedicatoriaAnnotationRowProcessorCommand {
 		Usuario dedicador = this.getUsuarioDAO().buscarUnicoPorNombreUsuario(nombreUsuarioDedicatario);
 		Usuario usuarioTexto = this.getUsuarioDAO().buscarUnicoPorNombreUsuario(nombreUsuario);
 		Artista artista = this.getArtistaDAO().buscarUnicoPorNombre(nombreArtista);
-		Cancion cancion = this.getCancionDAO().buscarUnicoPorArtistaYNombre(artista, tituloCancion);
+		Album album = this.getAlbumDAO().buscarUnicoPorTitulo(nombreAlbum);
+		Cancion cancion = this.getCancionDAO().buscarUnicoPorTituloArtistaYAlbum(tituloCancion, artista, album);
 		
 		String tituloTexto = TextoHelper.crearTituloPara(artista, cancion, usuarioTexto);
 		Texto texto = this.getTextoDAO().buscarUnicoPorTitulo(tituloTexto);
@@ -165,5 +170,19 @@ public class DedicatoriaAnnotationRowProcessorCommand {
 	 */
 	public void setArtistaDAO(ArtistaDAO artistaDAO) {
 		this.artistaDAO = artistaDAO;
+	}
+
+	/**
+	 * @return the albumDAO
+	 */
+	public AlbumDAO getAlbumDAO() {
+		return albumDAO;
+	}
+
+	/**
+	 * @param albumDAO the albumDAO to set
+	 */
+	public void setAlbumDAO(AlbumDAO albumDAO) {
+		this.albumDAO = albumDAO;
 	}
 }

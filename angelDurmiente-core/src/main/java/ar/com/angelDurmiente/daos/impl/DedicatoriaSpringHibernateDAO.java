@@ -39,8 +39,8 @@ public class DedicatoriaSpringHibernateDAO extends GenericSpringHibernateDAO<Ded
 
 	public List<Dedicatoria> buscarTodosPorRangoFechas(Date desde, Date hasta) {
 		return (List<Dedicatoria>) super.findAllByCriteria(
-				Restrictions.between("desde", desde, desde),
-				Restrictions.between("hasta", desde, desde)
+				Restrictions.between("desde", desde, hasta),
+				Restrictions.between("hasta", desde, hasta)
 		);
 	}
 

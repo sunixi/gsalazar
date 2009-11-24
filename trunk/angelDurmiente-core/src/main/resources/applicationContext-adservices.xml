@@ -4,6 +4,14 @@
 
 <beans>
 
+	<bean id="textoService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.TextoServiceImpl">
+				<property name="genericDAO" ref="textoDAO"/>
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="estadisticaService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.angelDurmiente.services.impl.EstadisticaServiceImpl"/>

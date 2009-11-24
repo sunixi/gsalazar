@@ -9,6 +9,7 @@ import java.util.List;
 import ar.com.angelDurmiente.beans.Dedicatoria;
 import ar.com.angelDurmiente.beans.Texto;
 import ar.com.angelDurmiente.beans.Usuario;
+import ar.com.angelDurmiente.dtos.TextoDTO;
 
 import com.angel.architecture.services.interfaces.GenericService;
 
@@ -27,4 +28,7 @@ public interface DedicatoriaService extends GenericService {
 	public List<Dedicatoria> buscarTodosPorDedicatorio(Usuario dedicatorio);
 	
 	public List<Dedicatoria> buscarTodosPorRangoFechas(Date desde, Date hasta);
+	
+	public Dedicatoria dedicarTexto(TextoDTO textoDTO, Usuario dedicatario, Usuario dedicador, Date desde, Date hasta);
+	
 }

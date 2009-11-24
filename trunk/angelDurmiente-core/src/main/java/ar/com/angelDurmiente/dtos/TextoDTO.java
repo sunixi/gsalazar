@@ -19,6 +19,7 @@ public class TextoDTO implements Serializable {
 
 	private String usuario;
 	private Date subido;
+	private String titulo;
 	
 	public TextoDTO(){
 		super();
@@ -28,6 +29,7 @@ public class TextoDTO implements Serializable {
 		this();
 		this.setUsuario(texto.getNombreUsuario());
 		this.setSubido(texto.getCreationDate());
+		this.setTitulo(texto.getTitulo());
 	}
 
 	/**
@@ -56,5 +58,19 @@ public class TextoDTO implements Serializable {
 	 */
 	public void setSubido(Date subido) {
 		this.subido = subido;
+	}
+
+	/**
+	 * @return the titulo
+	 */
+	public String getTitulo() {
+		return titulo;
+	}
+
+	/**
+	 * @param titulo the titulo to set
+	 */
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 }

@@ -1,5 +1,7 @@
 package ar.angelDurmiente.beans {
 
+	import ar.angelDurmiente.dtos.AngelDurmienteInfoDTO;
+	
 	import com.angel.syncronization.TransactionalBlock;
 	
 	import mx.collections.IList;
@@ -36,6 +38,8 @@ package ar.angelDurmiente.beans {
 		public var canciones:IList;
 		[Bindable]
 		public var artistas:IList;
+		[Bindable]
+		public var infoAngelDurmiente:AngelDurmienteInfoDTO;
 
 		public static const titleApplication:String = "El Angel Durmiente";
 		
@@ -53,8 +57,13 @@ package ar.angelDurmiente.beans {
 				var transactionalBlock:TransactionalBlock = new TransactionalBlock();
 				transactionalBlock.addEventListener("endsLoad", finishLoad); 
 				transactionalBlock.register("cancionService",		"buscarTodos").callbackFunction(inicializarFindAllArtistasCallback);
+				transactionalBlock.register("estadisticaService",	"buscarInformacionAngelDurmiente").callbackFunction(inicializarInformacionAngelDurmienteCallback);
 				transactionalBlock.execute(uiComponent);
 			}
+	   	}
+	   	
+	   	private function inicializarInformacionAngelDurmienteCallback(data:AngelDurmienteInfoDTO): void {
+	   		infoAngelDurmiente = data;
 	   	}
 	   	
 	   	private function inicializarFindAllArtistasCallback(data:IList): void {

@@ -4,6 +4,7 @@
 package ar.com.angelDurmiente.dtos;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Guillermo Salazar
@@ -25,6 +26,8 @@ public class TextoCompartirInfoDTO implements Serializable {
 	private String tituloDocumento;
 	
 	private String contenidoDocumento;
+	
+	private List<String> nombreAcordes;
 
 	public TextoCompartirInfoDTO(){
 		super();
@@ -112,5 +115,19 @@ public class TextoCompartirInfoDTO implements Serializable {
 	 */
 	public void setContenidoDocumento(String contenidoDocumento) {
 		this.contenidoDocumento = contenidoDocumento;
+	}
+
+	/**
+	 * @return the nombreAcordes
+	 */
+	public List<String> getNombreAcordes() {
+		return nombreAcordes;
+	}
+
+	/**
+	 * @param nombreAcordes the nombreAcordes to set
+	 */
+	public void setNombreAcordes(List<String> nombreAcordes) {
+		this.nombreAcordes = nombreAcordes;
 	}
 }

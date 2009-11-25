@@ -30,7 +30,10 @@ import com.angel.io.processors.runners.imports.impl.ImportFileProcessorRunner;
 		dependencies = {
 			UsuarioAnnotationDataGenerator.class,
 			CancionAnnotationDataGenerator.class,
-			ArtistaAnnotationDataGenerator.class
+			ArtistaAnnotationDataGenerator.class,
+			AlbumAnnotationDataGenerator.class,
+			ArtistaAlbumAnnotationDataGenerator.class,
+			AlbumCancionAnnotationDataGenerator.class
 		},
 		daoName = "cancionDAO",
 		pages = {}

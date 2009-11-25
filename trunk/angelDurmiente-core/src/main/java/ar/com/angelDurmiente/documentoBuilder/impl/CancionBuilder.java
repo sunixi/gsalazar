@@ -23,6 +23,8 @@ import ar.com.angelDurmiente.services.CancionService;
  */
 public class CancionBuilder implements DocumentoBuilder{
 
+	public static final String CANCION_BUILDER = "cancionbuilder";
+
 	@Autowired
 	private CancionService cancionService;
 	@Autowired
@@ -32,20 +34,18 @@ public class CancionBuilder implements DocumentoBuilder{
 
 	public Documento buildDocumento(TextoCompartirInfoDTO textoCompartirInfoDTO, Texto texto) {
 		Artista artista = this.getArtistaService()
-					.buscarUnicoPorNombre(textoCompartirInfoDTO.getNombreArtista());
-		Album album = this.getAlbumService().buscarUnicoPorTitulo(textoCompartirInfoDTO.getNombreAlbum());
-
+				.buscarUnicoPorNombre(textoCompartirInfoDTO.getNombreArtista());
+		Album album = this.getAlbumService()
+				.buscarUnicoPorTitulo(textoCompartirInfoDTO.getNombreAlbum());
 		Cancion cancion = this.getCancionService()
 				.buscarUnicoONuloPorTituloArtistaYAlbum(textoCompartirInfoDTO.getTituloDocumento(), artista, album);
-		
+
 		if(cancion == null){
 			cancion = new Cancion();
+			cancion.setArtista(artista);
+			cancion.setTitulo(textoCompartirInfoDTO.getTituloDocumento());
 		}
-
-		cancion.setArtista(artista);
-		cancion.setTitulo(textoCompartirInfoDTO.getTituloDocumento());
 		cancion.agregarTexto(texto);
-
 		return (Documento) this.getCancionService().create(cancion);
 	}
 

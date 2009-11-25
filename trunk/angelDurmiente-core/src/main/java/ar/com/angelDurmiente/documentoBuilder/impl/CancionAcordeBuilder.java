@@ -15,6 +15,8 @@ import ar.com.angelDurmiente.dtos.TextoCompartirInfoDTO;
  */
 public class CancionAcordeBuilder implements DocumentoBuilder{
 
+	public static final String CANCION_ACORDE_BUILDER = "cancionacordebuilder";
+	
 	public Documento buildDocumento(TextoCompartirInfoDTO textoCompartirInfoDTO, Texto texto) {
 
 		return null;

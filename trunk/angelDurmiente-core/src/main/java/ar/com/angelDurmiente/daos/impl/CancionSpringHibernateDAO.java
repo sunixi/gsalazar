@@ -56,7 +56,6 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 	}
 	
 	public Cancion buscarUnicoONuloPorTituloArtistaYAlbum(String titulo, Artista artista, Album album) {
-		//TODO Cambiar por el nulo.
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.getSelectClause()
 			.add("cancion");
@@ -68,7 +67,7 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 			.equals("artista", artista)
 			.equals("album", album)
 			.equals("cancion", "titulo", titulo);
-		return (Cancion) this.findUniqueByQueryBuilder(queryBuilder);
+		return (Cancion) this.findUniqueOrNullByQueryBuilder(queryBuilder);
 	}
 
 	public List<CancionInfoDTO> buscarTodos() {
@@ -80,8 +79,6 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 			.from(Artista.class			, "ar")
 			.innerJoin("ar.albums"		, "al")
 			.innerJoin("al.canciones"	, "ca");
-		/*			.innerJoin("ca.textos"		, "te")
-			.innerJoin("te.usuario"		, "us")*/
 		List<CancionInfoDTO> cancionesDTO = super.findAll(queryBuilder);
 		return cancionesDTO;
 	}

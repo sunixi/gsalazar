@@ -15,6 +15,8 @@ import ar.com.angelDurmiente.dtos.TextoCompartirInfoDTO;
  */
 public class HistoriaBuilder implements DocumentoBuilder{
 
+	public static final String HISTORIA_BUILDER = "historiabuilder";
+
 	public Documento buildDocumento(TextoCompartirInfoDTO textoCompartirInfoDTO, Texto texto) {
 
 		return null;

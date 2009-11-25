@@ -27,7 +27,7 @@ public class TextoCompartirInfoDTO implements Serializable {
 	
 	private String contenidoDocumento;
 	
-	private List<String> nombreAcordes;
+	private List<AcordeDTO> nombreAcordes;
 
 	public TextoCompartirInfoDTO(){
 		super();
@@ -120,14 +120,14 @@ public class TextoCompartirInfoDTO implements Serializable {
 	/**
 	 * @return the nombreAcordes
 	 */
-	public List<String> getNombreAcordes() {
+	public List<AcordeDTO> getNombreAcordes() {
 		return nombreAcordes;
 	}
 
 	/**
 	 * @param nombreAcordes the nombreAcordes to set
 	 */
-	public void setNombreAcordes(List<String> nombreAcordes) {
+	public void setNombreAcordes(List<AcordeDTO> nombreAcordes) {
 		this.nombreAcordes = nombreAcordes;
 	}
 }

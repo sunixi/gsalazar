@@ -44,4 +44,10 @@ public class CancionAcorde extends Cancion {
 	public void agregarAcorde(Acorde acorde){
 		this.getAcordes().add(acorde);
 	}
+
+	public void agregarAcordes(List<Acorde> acordes) {
+		for(Acorde a: acordes){
+			this.agregarAcorde(a);
+		}
+	}
 }

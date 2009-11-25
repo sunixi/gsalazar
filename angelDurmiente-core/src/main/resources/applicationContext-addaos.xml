@@ -4,6 +4,12 @@
 <beans>
 
 <!-- Domain Object DAOs. -->
+	<bean id="cancionAcordeDAO" class="ar.com.angelDurmiente.daos.impl.CancionAcordeSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.CancionAcorde"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
 	<bean id="acordeDAO" class="ar.com.angelDurmiente.daos.impl.AcordeSpringHibernateDAO" singleton="true">
         <property name="sessionFactory"     ref="sessionFactory"/>
 		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Acorde"/>

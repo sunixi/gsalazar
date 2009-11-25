@@ -32,8 +32,12 @@ public class TextoServiceTestCase extends AngelDurmienteBaseTestCase{
 	@Autowired
 	private AlbumService albumService;
 
+	/**
+	 * Testeo unitario que comparte un nuevo texto para una cancion.
+	 * 
+	 */
 	@Test
-	public void testCompartirTextoValido(){
+	public void testCompartirTextoNuevoValido(){
 		String TITULO_CANCION = "Bonus Track 14";
 		String NOMBRE_ARTISTA = "Maná";
 		String NOMBRE_ALBUM = "MTV Unplugged";
@@ -42,13 +46,12 @@ public class TextoServiceTestCase extends AngelDurmienteBaseTestCase{
 		documentoContenido += "\t\tSegundo Texto de prueba para el contenido del documento.\n\n";
 
 		Usuario usuario = this.getUsuarioService().buscarUnicoPorNombreUsuario("angeldurmiente");
-		TextoCompartirInfoDTO textoCompartirInfoDTO = new TextoCompartirInfoDTO();
-		textoCompartirInfoDTO.setEstrategiaDocumentoBuilder(CancionBuilder.CANCION_BUILDER);		
-		textoCompartirInfoDTO.setContenidoDocumento(documentoContenido);
-		textoCompartirInfoDTO.setNombreAlbum(NOMBRE_ALBUM);
-		textoCompartirInfoDTO.setNombreArtista(NOMBRE_ARTISTA);
-		textoCompartirInfoDTO.setTituloDocumento(TITULO_CANCION);
-		
+		TextoCompartirInfoDTO textoCompartirInfoDTO = 
+				this.buildTextoCompartirInfoDTO(
+						CancionBuilder.CANCION_BUILDER, documentoContenido, 
+						NOMBRE_ALBUM, NOMBRE_ARTISTA, TITULO_CANCION
+				);
+
 		this.getTextoService().compartirTexto(textoCompartirInfoDTO, usuario);
 		
 		Artista artista = this.getArtistaService().buscarUnicoPorNombre(NOMBRE_ARTISTA);
@@ -56,6 +59,19 @@ public class TextoServiceTestCase extends AngelDurmienteBaseTestCase{
 		Cancion cancion = this.getCancionService().buscarUnicoPorTituloArtistaYAlbum(TITULO_CANCION, artista, album);
 		assertNotNull("La cancion buscada NO debe ser nula, ya que se creo recientemente.", cancion);
 		assertEquals("La cantidad de textos deben ser igual a 1, ya que recien se creo la cancion.", 1, cancion.cantidadTextos());
+	}
+	
+	protected TextoCompartirInfoDTO buildTextoCompartirInfoDTO(
+			String estrategiaDocumentoBuilder, String documentoContenido, String nombreAlbum,
+			String nombreArtista, String tituloCancion){
+		TextoCompartirInfoDTO textoCompartirInfoDTO = new TextoCompartirInfoDTO();
+		textoCompartirInfoDTO.setEstrategiaDocumentoBuilder(estrategiaDocumentoBuilder);		
+		textoCompartirInfoDTO.setContenidoDocumento(documentoContenido);
+		textoCompartirInfoDTO.setNombreAlbum(nombreAlbum);
+		textoCompartirInfoDTO.setNombreArtista(nombreArtista);
+		textoCompartirInfoDTO.setTituloDocumento(tituloCancion);
+		return textoCompartirInfoDTO;
+		
 	}
 
 	/**

@@ -4,6 +4,14 @@
 
 <beans>
 
+	<bean id="cancionAcordeService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="ar.com.angelDurmiente.services.impl.CancionAcordeServiceImpl">
+				<property name="genericDAO" ref="cancionAcordeDAO"/>
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="usuarioService" parent="txProxyTemplate">
 		<property name="target">
 			<bean class="ar.com.angelDurmiente.services.impl.UsuarioServiceImpl">

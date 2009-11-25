@@ -15,6 +15,8 @@ import ar.com.angelDurmiente.dtos.TextoCompartirInfoDTO;
  */
 public class PoemaBuilder implements DocumentoBuilder{
 
+	public static final String POEMA_BUILDER = "poemabuilder";
+
 	public Documento buildDocumento(TextoCompartirInfoDTO textoCompartirInfoDTO, Texto texto) {
 
 		return null;

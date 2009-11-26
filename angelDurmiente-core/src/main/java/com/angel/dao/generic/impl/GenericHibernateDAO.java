@@ -490,4 +490,9 @@ public class GenericHibernateDAO<T extends Object, Code extends Serializable> ex
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public <C> List<C> findAllEntitiesByQueryBuilder(QueryBuilder queryBuilder){
+		// TODO Auto-generated method stub
+		return null;		
+	}
 }

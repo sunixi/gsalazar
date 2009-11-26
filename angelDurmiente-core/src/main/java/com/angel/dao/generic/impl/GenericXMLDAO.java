@@ -159,4 +159,8 @@ public class GenericXMLDAO<T extends Object, Code extends Serializable> extends 
 	public T findUniqueOrNullByQueryBuilder(QueryBuilder queryBuilder) {
 		throw new RuntimeException(new NotSupportedException("Not supported funcionality."));
 	}
+	
+	public <C> List<C> findAllEntitiesByQueryBuilder(QueryBuilder queryBuilder){
+		throw new RuntimeException(new NotSupportedException("Not supported funcionality."));
+	}
 }

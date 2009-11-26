@@ -689,7 +689,7 @@ public class GenericSpringHibernateDAO<T extends Object, Code extends Serializab
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <C> List<C> findAll(QueryBuilder queryBuilder) {
+	public <C> List<C> findAllEntitiesByQueryBuilder(QueryBuilder queryBuilder) {
 		try {
 			com.angel.dao.generic.query.Query query = queryBuilder.buildQuery();
 			List<C> entities = null;

@@ -5,6 +5,7 @@ package com.angel.dao.generic.interfaces;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections15.Closure;
@@ -383,4 +384,6 @@ public interface GenericDAO<T extends Object, Code extends Serializable> {
 	public T findUniqueOrNullByQueryBuilder(QueryBuilder queryBuilder);
 	
 	public Collection<T> findAllByQuery(com.angel.dao.generic.query.Query query);
+	
+	public <C> List<C> findAllEntitiesByQueryBuilder(QueryBuilder queryBuilder);
 }

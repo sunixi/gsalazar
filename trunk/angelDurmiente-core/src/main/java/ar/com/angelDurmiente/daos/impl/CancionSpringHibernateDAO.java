@@ -73,13 +73,14 @@ public class CancionSpringHibernateDAO extends GenericSpringHibernateDAO<Cancion
 	public List<CancionInfoDTO> buscarTodos() {
 		QueryBuilder queryBuilder = new QueryBuilderImpl(new HQLClauseFactory());
 		queryBuilder.getSelectClause()
-			.add("new ar.com.angelDurmiente.dtos.CancionInfoDTO(ca")
-			.add("al)");
+			.add("ca")
+			.add("al")
+			.assignBeanClass(CancionInfoDTO.class);
 		queryBuilder.getFromClause()
 			.from(Artista.class			, "ar")
 			.innerJoin("ar.albums"		, "al")
 			.innerJoin("al.canciones"	, "ca");
-		List<CancionInfoDTO> cancionesDTO = super.findAll(queryBuilder);
+		List<CancionInfoDTO> cancionesDTO = super.findAllEntitiesByQueryBuilder(queryBuilder);
 		return cancionesDTO;
 	}
 }

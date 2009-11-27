@@ -16,6 +16,8 @@ public class JavaMethod {
 	private String methodName;
 	private List<JavaParameter> parameters;
 	private JavaParameter returnType;
+	private String contentMethod;
+	private boolean implemented = true;
 
 	public JavaMethod(String methodName){
 		super();
@@ -72,5 +74,33 @@ public class JavaMethod {
 	 */
 	public void setReturnType(JavaParameter returnType) {
 		this.returnType = returnType;
+	}
+
+	/**
+	 * @return the contentMethod
+	 */
+	public String getContentMethod() {
+		return contentMethod;
+	}
+
+	/**
+	 * @param contentMethod the contentMethod to set
+	 */
+	public void setContentMethod(String contentMethod) {
+		this.contentMethod = contentMethod;
+	}
+
+	/**
+	 * @return the implemented
+	 */
+	public boolean isImplemented() {
+		return implemented;
+	}
+
+	/**
+	 * @param implemented the implemented to set
+	 */
+	public void setImplemented(boolean implemented) {
+		this.implemented = implemented;
 	}
 }

@@ -3,13 +3,25 @@
  */
 package com.angel.object.generator.classGenerator;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.object.generator.Generator;
+import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classNameStrategies.ClassNameStrategy;
-import com.angel.object.generator.fileGenerator.FileGenerator;
+import com.angel.object.generator.fileGenerator.impl.JavaClassFileGenerator;
+import com.angel.object.generator.java.JavaFile;
+import com.angel.object.generator.java.JavaMethod;
+import com.angel.object.generator.java.JavaParameter;
+import com.angel.object.generator.methodBuilder.MethodBuilder;
 
 /**
  * @author Guillermo D. Salazar
@@ -22,11 +34,17 @@ public abstract class ClassGenerator {
 	private ClassNameStrategy classNameStrategy;
 	private boolean includeSuperClass = false;
 	private List<Class<?>> excludesDomains;
-	private FileGenerator fileGenerator;
+	private JavaClassFileGenerator javaClassFileGenerator;
+	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
 	
 	public ClassGenerator(){
 		super();
-		this.setExcludesDomains(new ArrayList<Class<?>>());		
+		this.setExcludesDomains(new ArrayList<Class<?>>());	
+		this.setMethodBuilderStrategies(new HashMap<Class<? extends Annotation>, MethodBuilder>());
+		this.getMethodBuilderStrategies().put(Accesor.class, null);
+		this.getMethodBuilderStrategies().put(Column.class, null);
+		this.getMethodBuilderStrategies().put(OneToOne.class, null);
+		this.getMethodBuilderStrategies().put(ManyToOne.class, null);
 	}
 	
 	public ClassGenerator(String basePackage){
@@ -111,22 +129,54 @@ public abstract class ClassGenerator {
 	}
 
 	public void generateClass(Generator generator, Class<?> domainClass) {
-		this.doGenerateClass(generator, domainClass);
+		String classGeneratorName = this.getClassNameStrategy().buildClassName(domainClass);
+		JavaFile javaFile = new JavaFile(classGeneratorName);
+		this.generateContentClass(generator, domainClass, javaFile);
+		
 	}
 	
-	protected abstract void doGenerateClass(Generator generator, Class<?> domainClass);
+	protected abstract void generateContentClass(Generator generator, Class<?> domainClass, JavaFile javaFile);
 
 	/**
-	 * @return the fileGenerator
+	 * @return the javaClassFileGenerator
 	 */
-	public FileGenerator getFileGenerator() {
-		return fileGenerator;
+	public JavaClassFileGenerator getJavaClassFileGenerator() {
+		return javaClassFileGenerator;
 	}
 
 	/**
-	 * @param fileGenerator the fileGenerator to set
+	 * @param javaClassFileGenerator the javaClassFileGenerator to set
 	 */
-	public void setFileGenerator(FileGenerator fileGenerator) {
-		this.fileGenerator = fileGenerator;
+	public void setJavaClassFileGenerator(
+			JavaClassFileGenerator javaClassFileGenerator) {
+		this.javaClassFileGenerator = javaClassFileGenerator;
 	}
+	
+	protected void addJavaMethod(JavaFile javaFile, Class<?> domainClass, String contentMethod){
+		String domainClassDAO = domainClass.getSimpleName() + "DAO";
+		JavaParameter javaParameter = new JavaParameter("", ReflectionHelper.getClassFrom(domainClassDAO));
+		String methodName = ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO");
+		JavaMethod javaMethod = new JavaMethod(methodName, new ArrayList<JavaParameter>(), javaParameter);
+		javaMethod.setContentMethod(contentMethod);
+		javaFile.addJavaMethod(javaMethod);
+	}
+
+	/**
+	 * @return the methodBuilderStrategies
+	 */
+	protected Map<Class<? extends Annotation>, MethodBuilder> getMethodBuilderStrategies() {
+		return methodBuilderStrategies;
+	}
+
+	/**
+	 * @param methodBuilderStrategies the methodBuilderStrategies to set
+	 */
+	protected void setMethodBuilderStrategies(
+			Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies) {
+		this.methodBuilderStrategies = methodBuilderStrategies;
+	}
+
+	public MethodBuilder getMethodBuilderFor(Annotation annotation) {
+		return this.getMethodBuilderStrategies().get(annotation);
+	}	
 }

@@ -5,6 +5,7 @@ package com.angel.object.generator.classGenerator.impl;
 
 import com.angel.object.generator.Generator;
 import com.angel.object.generator.classGenerator.ClassGenerator;
+import com.angel.object.generator.java.JavaFile;
 
 
 /**
@@ -25,7 +26,7 @@ public class DAOClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void doGenerateClass(Generator generator, Class<?> domainClass) {
+	protected void generateContentClass(Generator generator, Class<?> domainClass, JavaFile javaFile) {
 		// TODO Auto-generated method stub
 		
 	}

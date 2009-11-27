@@ -78,4 +78,8 @@ public class JavaFile {
 	public void setMethods(List<JavaMethod> methods) {
 		this.methods = methods;
 	}
+
+	public void addJavaMethod(JavaMethod javaMethod) {
+		this.getMethods().add(javaMethod);
+	}
 }

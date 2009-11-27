@@ -6,7 +6,6 @@ package com.angel.object.generator;
 
 import org.junit.Test;
 
-import ar.com.angelDurmiente.beans.Texto;
 import ar.com.angelDurmiente.beans.Usuario;
 
 import com.angel.object.generator.classGenerator.ClassGenerator;
@@ -29,19 +28,19 @@ public class ObjectGeneratorTestCase {
 		 * 				Se concatena al del objeto Generator.
 		 */
 		ClassGenerator serviceClassGenerator = new ServiceClassGenerator("services");
-		serviceClassGenerator.excludeDomain("com.flex.Usuario");
+		/*serviceClassGenerator.excludeDomain("com.flex.Usuario");
 		serviceClassGenerator.excludeDomain(Usuario.class);
-		serviceClassGenerator.excludeDomain("Serice");
+		serviceClassGenerator.excludeDomain("Serice");*/
 		ClassNameStrategy classNameStrategy = new ClassNameStrategyImpl();
 		serviceClassGenerator.setClassNameStrategy(classNameStrategy);
 		
 		/** Objeto generador principal de clases. */
 		//"ar.com.angelDurmiente": Paquete base del proyecto.
-		Generator generator = new Generator("ar.com.angelDurmiente");
+		ClassesGenerator generator = new ClassesGenerator("ar.com.angelDurmiente");
 		/** serviceClassGenerator: generador de la clase que se desea a partir de la clase del dominio. */
 		generator.addClassGenerator(serviceClassGenerator);
 		generator.addDomain(Usuario.class);
-		generator.addDomain(Texto.class);
+		//generator.addDomain(Texto.class);
 		generator.generateClasses();
 		
 	}

@@ -52,4 +52,8 @@ public class JavaParameter {
 	public boolean equalsParameterType(JavaParameter javaParameter){
 		return this.getParameterType().equals(javaParameter.getParameterType());
 	}
+	
+	public String getSimpleReturnTypeName(){
+		return this.getParameterType().getSimpleName();
+	}
 }

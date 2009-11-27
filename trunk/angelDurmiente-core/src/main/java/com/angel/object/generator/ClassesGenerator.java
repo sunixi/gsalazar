@@ -12,7 +12,7 @@ import com.angel.object.generator.classGenerator.ClassGenerator;
  * @author Guillermo D. Salazar
  *
  */
-public class Generator {
+public class ClassesGenerator {
 
 	private String baseProjectPackage;
 	private List<Class<?>> domainClasses;
@@ -21,13 +21,13 @@ public class Generator {
 	/**
 	 * 
 	 */
-	public Generator() {
+	public ClassesGenerator() {
 		super();
 		this.setClassesGenerators(new ArrayList<ClassGenerator>());
 		this.setDomainClasses(new ArrayList<Class<?>>());
 	}
 
-	public Generator(String baseProjectPackage) {
+	public ClassesGenerator(String baseProjectPackage) {
 		this();
 		this.setBaseProjectPackage(baseProjectPackage);
 	}

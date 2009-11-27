@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 
 import com.angel.architecture.persistence.beans.User;
+import com.angel.object.generator.annotations.Accesor;
 
 /**
  * @author Guillermo Salazar
@@ -31,6 +32,7 @@ public class Usuario extends User {
 	@Column(nullable = true)
 	private Blob imagen;
 
+	@Accesor
 	private Date nacimiento;
 
 	/**

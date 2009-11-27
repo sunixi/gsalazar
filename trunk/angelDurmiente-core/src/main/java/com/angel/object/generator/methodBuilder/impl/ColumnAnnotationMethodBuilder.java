@@ -3,7 +3,6 @@
  */
 package com.angel.object.generator.methodBuilder.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +22,11 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  */
 public class ColumnAnnotationMethodBuilder implements MethodBuilder {
 
-	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property, Annotation annotation) {
-		Column column = (Column) annotation;
+	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property) {
+		Column column = (Column) property.getAnnotation(Column.class);
 		String methodName = "buscar";
 		methodName += column.unique() ? "Unico" : "Todos";
-		methodName += column.nullable() ? "ONulo" : "";
+		methodName += column.unique() && column.nullable() ? "ONulo" : "";
 		methodName += "Por";
 		methodName += StringHelper.capitalize(property.getName());
 		

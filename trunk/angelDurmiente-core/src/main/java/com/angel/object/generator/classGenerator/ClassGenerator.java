@@ -3,25 +3,33 @@
  */
 package com.angel.object.generator.classGenerator;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
+import org.apache.log4j.Logger;
+
+import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.Generator;
+import com.angel.common.helpers.StringHelper;
+import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classNameStrategies.ClassNameStrategy;
 import com.angel.object.generator.fileGenerator.impl.JavaClassFileGenerator;
 import com.angel.object.generator.java.JavaFile;
 import com.angel.object.generator.java.JavaMethod;
-import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
+import com.angel.object.generator.methodBuilder.impl.AccesorAnnotationMethodBuilder;
+import com.angel.object.generator.methodBuilder.impl.ColumnAnnotationMethodBuilder;
 
 /**
  * @author Guillermo D. Salazar
@@ -29,7 +37,8 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  *
  */
 public abstract class ClassGenerator {
-
+	
+	private static final Logger LOGGER = Logger.getLogger(ClassesGenerator.class);
 	private String basePackage = "";
 	private ClassNameStrategy classNameStrategy;
 	private boolean includeSuperClass = false;
@@ -41,10 +50,8 @@ public abstract class ClassGenerator {
 		super();
 		this.setExcludesDomains(new ArrayList<Class<?>>());	
 		this.setMethodBuilderStrategies(new HashMap<Class<? extends Annotation>, MethodBuilder>());
-		this.getMethodBuilderStrategies().put(Accesor.class, null);
-		this.getMethodBuilderStrategies().put(Column.class, null);
-		this.getMethodBuilderStrategies().put(OneToOne.class, null);
-		this.getMethodBuilderStrategies().put(ManyToOne.class, null);
+		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorAnnotationMethodBuilder());
+		this.getMethodBuilderStrategies().put(Column.class, new ColumnAnnotationMethodBuilder());
 	}
 	
 	public ClassGenerator(String basePackage){
@@ -128,14 +135,37 @@ public abstract class ClassGenerator {
 		return this.getExcludesDomains().contains(domainClass);
 	}
 
-	public void generateClass(Generator generator, Class<?> domainClass) {
-		String classGeneratorName = this.getClassNameStrategy().buildClassName(domainClass);
-		JavaFile javaFile = new JavaFile(classGeneratorName);
+	public void generateClass(ClassesGenerator generator, Class<?> domainClass) {
+		String classGeneratorName = this.buildClassName(domainClass);
+		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage();
+		JavaFile javaFile = new JavaFile(classGeneratorName, packageName);
+		javaFile.setSubClass(this.getSubClassForClassGenerator());
 		this.generateContentClass(generator, domainClass, javaFile);
-		
+		this.createJavaClassFile(generator, javaFile);
 	}
 	
-	protected abstract void generateContentClass(Generator generator, Class<?> domainClass, JavaFile javaFile);
+	protected void createJavaClassFile(ClassesGenerator generator, JavaFile javaFile) {
+		String javaFileContent = javaFile.getFileContent();
+		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage();
+		String directory = StringHelper.replaceAll(packageName, ".", "/");
+		File javaClassFile = FileHelper.createFile(javaFile.getFileName(), directory);
+		try {
+			Writer writer = new FileWriter(javaClassFile);
+			writer.append(javaFileContent);
+		} catch (IOException e) {}
+	}
+
+	protected List<Class<?>> getInterfacesClasses(){
+		List<Class<?>> interfaces = new ArrayList<Class<?>>();
+		this.getInterfacesClasses(interfaces);
+		return interfaces;
+	}
+	
+	protected abstract void getInterfacesClasses(List<Class<?>> interfaces);
+	
+	protected abstract String buildClassName(Class<?> domainClass);
+	
+	protected abstract void generateContentClass(ClassesGenerator generator, Class<?> domainClass, JavaFile javaFile);
 
 	/**
 	 * @return the javaClassFileGenerator
@@ -150,15 +180,6 @@ public abstract class ClassGenerator {
 	public void setJavaClassFileGenerator(
 			JavaClassFileGenerator javaClassFileGenerator) {
 		this.javaClassFileGenerator = javaClassFileGenerator;
-	}
-	
-	protected void addJavaMethod(JavaFile javaFile, Class<?> domainClass, String contentMethod){
-		String domainClassDAO = domainClass.getSimpleName() + "DAO";
-		JavaParameter javaParameter = new JavaParameter("", ReflectionHelper.getClassFrom(domainClassDAO));
-		String methodName = ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO");
-		JavaMethod javaMethod = new JavaMethod(methodName, new ArrayList<JavaParameter>(), javaParameter);
-		javaMethod.setContentMethod(contentMethod);
-		javaFile.addJavaMethod(javaMethod);
 	}
 
 	/**
@@ -176,7 +197,24 @@ public abstract class ClassGenerator {
 		this.methodBuilderStrategies = methodBuilderStrategies;
 	}
 
-	public MethodBuilder getMethodBuilderFor(Annotation annotation) {
-		return this.getMethodBuilderStrategies().get(annotation);
-	}	
+	public MethodBuilder getMethodBuilderFor(Field field) {
+		for(Class<? extends Annotation> a: methodBuilderStrategies.keySet()){
+			boolean isPresent = field.isAnnotationPresent(a);
+			if(isPresent){
+				Annotation annotation = field.getAnnotation(a);
+				return this.getMethodBuilderStrategies().get(annotation.annotationType());
+			}
+			LOGGER.warn("Property field [ Name: " + field.getName() + " - Type: " + field.getType() + "]" +
+					" wasn't processed because it wasn't specificied with annotations.");
+		}
+		return null;
+	}
+	
+	protected void buildJavaMethodContent(JavaMethod javaMethod){
+		
+	}
+	
+	public Class<?> getSubClassForClassGenerator(){
+		return Object.class;
+	}
 }

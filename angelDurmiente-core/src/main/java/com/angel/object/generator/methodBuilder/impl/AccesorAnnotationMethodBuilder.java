@@ -3,7 +3,6 @@
  */
 package com.angel.object.generator.methodBuilder.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,8 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  */
 public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 
-	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property, Annotation annotation) {
-		Accesor accesor = (Accesor) annotation;
+	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property) {
+		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
 		String methodName = "buscar";
 		methodName += accesor.unique() ? "Unico" : "Todos";
 		methodName += accesor.optional() ? "ONulo" : "";
@@ -41,7 +40,7 @@ public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 			returnType = List.class;
 		}
 
-		return new JavaMethod(methodName, parameters, new JavaParameter("", returnType));
+		return new JavaMethod(methodName, parameters, new JavaParameter("", returnType), false);
 	}
 
 	

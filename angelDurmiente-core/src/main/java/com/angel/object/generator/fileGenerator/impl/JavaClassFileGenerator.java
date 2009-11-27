@@ -3,6 +3,8 @@
  */
 package com.angel.object.generator.fileGenerator.impl;
 
+import com.angel.object.generator.java.JavaFile;
+
 
 
 /**
@@ -12,28 +14,10 @@ package com.angel.object.generator.fileGenerator.impl;
  */
 public class JavaClassFileGenerator {
 
-	private Class<?> subClass;
+	private JavaFile javaFile;
 
-	public JavaClassFileGenerator(){
+	public JavaClassFileGenerator(JavaFile javaFile){
 		super();
 	}
 	
-	public JavaClassFileGenerator(Class<?> subClass){
-		this();
-		this.setSubClass(subClass);
-	}
-
-	/**
-	 * @return the subClass
-	 */
-	public Class<?> getSubClass() {
-		return subClass;
-	}
-
-	/**
-	 * @param subClass the subClass to set
-	 */
-	public void setSubClass(Class<?> subClass) {
-		this.subClass = subClass;
-	}	
 }

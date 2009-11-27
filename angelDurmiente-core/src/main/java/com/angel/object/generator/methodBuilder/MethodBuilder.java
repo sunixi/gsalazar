@@ -3,7 +3,6 @@
  */
 package com.angel.object.generator.methodBuilder;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import com.angel.object.generator.java.JavaMethod;
@@ -15,5 +14,5 @@ import com.angel.object.generator.java.JavaMethod;
  */
 public interface MethodBuilder {
 
-	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property, Annotation annotation);
+	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property);
 }

@@ -19,7 +19,7 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  * @since 26/Noviembre/2009.
  *
  */
-public class AccesorAnnotationMethodBuilder implements MethodBuilder {
+public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 
 
 	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property) {
@@ -30,12 +30,22 @@ public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 	}
 
 	public <T> String buildMethodContent(Class<T> domainClass, Field property) {
-		// TODO Auto-generated method stub
-		return null;
+		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
+		String contentMethod = "";
+		if(accesor.unique()){
+			if(accesor.optional()){
+				contentMethod = "return super.findUniqueOrNull(\"" + property.getName() + "\", " + property.getName() + ");";
+			} else {
+				contentMethod = "return super.findUnique(\"" + property.getName() + "\", " + property.getName() + ");";
+			}
+		} else {
+			contentMethod = "return super.findAll(\"" + property.getName() + "\", " + property.getName() + ");";
+		}
+		return contentMethod;
 	}
 
 	public <T> String buildMethodName(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
+		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
 		String methodName = "buscar";
 		methodName += accesor.unique() ? "Unico" : "Todos";
 		methodName += accesor.optional() ? "ONulo" : "";
@@ -45,7 +55,7 @@ public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 	}
 
 	public <T> JavaParameter buildReturnParameter(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
+		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
 		Class<?> returnType = null;
 		if(accesor.unique()){
 			returnType = domainClass;
@@ -57,6 +67,7 @@ public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 
 	public <T> Annotation getAnnotation(Class<T> domainClass, Field property) {
 		return property.getAnnotation(Accesor.class);
-	}	
+	}
+	
 
 }

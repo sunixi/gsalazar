@@ -19,23 +19,31 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  * @since 26/Noviembre/2009.
  *
  */
-public class AccesorAnnotationMethodBuilder implements MethodBuilder {
+public class AccesorServiceTestAnnotationMethodBuilder implements MethodBuilder {
 
 
 	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property) {
-		List<JavaParameter> parameters = new ArrayList<JavaParameter>();
-		JavaParameter javaParameter = new JavaParameter(property.getName(), property.getType().getCanonicalName());
-		parameters.add(javaParameter);
-		return parameters;
+		return new ArrayList<JavaParameter>();
 	}
 
 	public <T> String buildMethodContent(Class<T> domainClass, Field property) {
-		// TODO Auto-generated method stub
-		return null;
+		String domainObjectSimpleName = domainClass.getSimpleName();
+		String contentMethod = property.getType().getSimpleName() + " " + property.getName() + " = null;\n\t\t";
+		
+		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
+		if(!accesor.unique()){
+			contentMethod += "List<" + domainClass.getSimpleName() + "> result";
+		} else {
+			contentMethod += domainObjectSimpleName + " " + property.getName();
+		}
+		contentMethod += " = this.get" + domainObjectSimpleName + "Service().";
+		contentMethod += this.buildContentMethodName(domainClass, property);
+		contentMethod += "(" + property.getName() + ");\n";
+		return contentMethod;
 	}
 
-	public <T> String buildMethodName(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
+	public <T> String buildContentMethodName(Class<T> domainClass, Field property) {
+		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
 		String methodName = "buscar";
 		methodName += accesor.unique() ? "Unico" : "Todos";
 		methodName += accesor.optional() ? "ONulo" : "";
@@ -43,20 +51,18 @@ public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 		methodName += StringHelper.capitalize(property.getName());
 		return methodName;
 	}
+	
+	public <T> String buildMethodName(Class<T> domainClass, Field property) {
+		return "test" + this.buildContentMethodName(domainClass, property);
+	}
 
 	public <T> JavaParameter buildReturnParameter(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
-		Class<?> returnType = null;
-		if(accesor.unique()){
-			returnType = domainClass;
-		} else {
-			returnType = List.class;
-		}
-		return new JavaParameter(returnType.getCanonicalName());
+		return null;
 	}
 
 	public <T> Annotation getAnnotation(Class<T> domainClass, Field property) {
 		return property.getAnnotation(Accesor.class);
-	}	
+	}
+	
 
 }

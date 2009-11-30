@@ -14,22 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-
 import org.apache.log4j.Logger;
 
 import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.ClassesGenerator;
-import com.angel.object.generator.annotations.Accesor;
-import com.angel.object.generator.classNameStrategies.ClassNameStrategy;
-import com.angel.object.generator.fileGenerator.impl.JavaClassFileGenerator;
-import com.angel.object.generator.java.JavaFile;
-import com.angel.object.generator.java.JavaMethod;
+import com.angel.object.generator.java.JavaConstructor;
+import com.angel.object.generator.java.JavaProperty;
+import com.angel.object.generator.java.types.JavaInterface;
+import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.AccesorAnnotationMethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.ColumnAnnotationMethodBuilder;
 
 /**
  * @author Guillermo D. Salazar
@@ -39,31 +34,35 @@ import com.angel.object.generator.methodBuilder.impl.ColumnAnnotationMethodBuild
 public abstract class ClassGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(ClassesGenerator.class);
+	private static final String DEFAULT_BASE_SOURCS_DIRECTORY = "\\src\\main\\java\\";
 	private String basePackage = "";
-	private ClassNameStrategy classNameStrategy;
-	private boolean includeSuperClass = false;
 	private List<Class<?>> excludesDomains;
-	private JavaClassFileGenerator javaClassFileGenerator;
+	private JavaType javaType;
+	private String baseJavaSourcesDirectory;
 	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
+	private ClassGenerator interfaceClassGenerator;
+
+	protected abstract JavaType buildJavaType();
 	
 	public ClassGenerator(){
 		super();
-		this.setExcludesDomains(new ArrayList<Class<?>>());	
+		this.setExcludesDomains(new ArrayList<Class<?>>());
 		this.setMethodBuilderStrategies(new HashMap<Class<? extends Annotation>, MethodBuilder>());
-		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorAnnotationMethodBuilder());
-		this.getMethodBuilderStrategies().put(Column.class, new ColumnAnnotationMethodBuilder());
+		this.setBaseJavaSourcesDirectory(DEFAULT_BASE_SOURCS_DIRECTORY);
+		this.setJavaType(this.buildJavaType());
 	}
+	
 	
 	public ClassGenerator(String basePackage){
 		this();
 		this.setBasePackage(basePackage);
 	}
-	
-	public ClassGenerator(String basePackage, boolean includeSuperClass){
-		this(basePackage);
-		this.setIncludeSuperClass(includeSuperClass);
-	}
 
+	public ClassGenerator(String basePackage, ClassGenerator interfaceClassGenerator){
+		this(basePackage);
+		this.setInterfaceClassGenerator(interfaceClassGenerator);
+	}
+	
 	/**
 	 * @return the basePackage
 	 */
@@ -85,36 +84,8 @@ public abstract class ClassGenerator {
 		}
 	}
 
-	/**
-	 * @return the classNameStrategy
-	 */
-	public ClassNameStrategy getClassNameStrategy() {
-		return classNameStrategy;
-	}
-
-	/**
-	 * @param classNameStrategy the classNameStrategy to set
-	 */
-	public void setClassNameStrategy(ClassNameStrategy classNameStrategy) {
-		this.classNameStrategy = classNameStrategy;
-	}
-
 	public <T> void excludeDomain(Class<T> domainClass) {
 		this.getExcludesDomains().add(domainClass);
-	}
-
-	/**
-	 * @return the includeSuperClass
-	 */
-	public boolean isIncludeSuperClass() {
-		return includeSuperClass;
-	}
-
-	/**
-	 * @param includeSuperClass the includeSuperClass to set
-	 */
-	public void setIncludeSuperClass(boolean includeSuperClass) {
-		this.includeSuperClass = includeSuperClass;
 	}
 
 	/**
@@ -136,51 +107,80 @@ public abstract class ClassGenerator {
 	}
 
 	public void generateClass(ClassesGenerator generator, Class<?> domainClass) {
-		String classGeneratorName = this.buildClassName(domainClass);
-		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage();
-		JavaFile javaFile = new JavaFile(classGeneratorName, packageName);
-		javaFile.setSubClass(this.getSubClassForClassGenerator());
-		this.generateContentClass(generator, domainClass, javaFile);
-		this.createJavaClassFile(generator, javaFile);
+		this.updateJavaType(generator, domainClass);
+		this.generateContentClass(generator, domainClass);
+		this.createJavaClassFile(generator);
 	}
 	
-	protected void createJavaClassFile(ClassesGenerator generator, JavaFile javaFile) {
-		String javaFileContent = javaFile.getFileContent();
-		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage();
-		String directory = StringHelper.replaceAll(packageName, ".", "/");
-		File javaClassFile = FileHelper.createFile(javaFile.getFileName(), directory);
+	protected void updateJavaType(ClassesGenerator generator, Class<?> domainClass){
+		String classGeneratorName = this.buildClassName(domainClass);
+		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
+		this.getJavaType().setTypeName(className);
+		this.getJavaType().setDomainObject(domainClass);
+		this.processGlobalTypesImportsClassGenerator(generator);
+		this.processJavaTypeInterfaces();
+		this.processSubClassForClassGenerator();
+		this.updateCurrentJavaType(generator, domainClass);
+	}
+	
+	protected void processGlobalTypesImportsClassGenerator(ClassesGenerator generator){
+		if(this.hasInterfaceClassGenerator()){
+			String classCanonicalNameGenerator = this.getInterfaceClassGenerator().getCanonicalClassNameGenerator(generator);
+			this.getJavaType().addImport(classCanonicalNameGenerator);
+		}
+	}
+	
+	public String getCanonicalClassNameGenerator(ClassesGenerator generator){
+		String classGeneratorName = this.buildClassName(this.getJavaType().getDomainObject());
+		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
+		return className;
+	}
+	
+	protected void processJavaTypeInterfaces(){
+		this.getInterfacesClasses();
+	}
+
+	protected void processSubClassForClassGenerator(){
+		JavaType subJavaType = this.buildJavaType();
+		subJavaType = this.buildSubClassForClassGenerator(subJavaType);
+		if(subJavaType != null){
+			this.getJavaType().setSubJavaType(subJavaType);
+		}
+	}
+	
+	protected abstract void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass);
+	
+	public void addTagComment(String tag, String comment){
+		this.getJavaType().addTagComment(tag, comment);
+	}
+
+	public void addTagAuthor(String author){
+		this.getJavaType().addAuthorTagComment(author);
+	}
+
+	protected void createJavaClassFile(ClassesGenerator generator) {
+		String javaFileContent = this.getJavaType().convert();
+		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "\\";
+		String directory = System.getProperty("user.dir") + this.getBaseJavaSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
+		String fileName = this.getJavaType().getName();
+		File javaClassFile = FileHelper.createFile(directory, fileName);
 		try {
 			Writer writer = new FileWriter(javaClassFile);
-			writer.append(javaFileContent);
+			writer.write(javaFileContent);
+			writer.flush();
 		} catch (IOException e) {}
 	}
 
-	protected List<Class<?>> getInterfacesClasses(){
-		List<Class<?>> interfaces = new ArrayList<Class<?>>();
-		this.getInterfacesClasses(interfaces);
-		return interfaces;
+	protected void getInterfacesClasses(){
+		this.buildInterfacesClasses();
 	}
 	
-	protected abstract void getInterfacesClasses(List<Class<?>> interfaces);
+	protected abstract void buildInterfacesClasses();
 	
 	protected abstract String buildClassName(Class<?> domainClass);
 	
-	protected abstract void generateContentClass(ClassesGenerator generator, Class<?> domainClass, JavaFile javaFile);
+	protected abstract void generateContentClass(ClassesGenerator generator, Class<?> domainClass);
 
-	/**
-	 * @return the javaClassFileGenerator
-	 */
-	public JavaClassFileGenerator getJavaClassFileGenerator() {
-		return javaClassFileGenerator;
-	}
-
-	/**
-	 * @param javaClassFileGenerator the javaClassFileGenerator to set
-	 */
-	public void setJavaClassFileGenerator(
-			JavaClassFileGenerator javaClassFileGenerator) {
-		this.javaClassFileGenerator = javaClassFileGenerator;
-	}
 
 	/**
 	 * @return the methodBuilderStrategies
@@ -197,6 +197,12 @@ public abstract class ClassGenerator {
 		this.methodBuilderStrategies = methodBuilderStrategies;
 	}
 
+	/**
+	 * Get a method builder for a specific field. It depends on field properties and its annotations.
+	 *  
+	 * @param field to verify its properties and annotations.
+	 * @return a method builder for a field. Otherwise it returns null.
+	 */
 	public MethodBuilder getMethodBuilderFor(Field field) {
 		for(Class<? extends Annotation> a: methodBuilderStrategies.keySet()){
 			boolean isPresent = field.isAnnotationPresent(a);
@@ -204,17 +210,96 @@ public abstract class ClassGenerator {
 				Annotation annotation = field.getAnnotation(a);
 				return this.getMethodBuilderStrategies().get(annotation.annotationType());
 			}
-			LOGGER.warn("Property field [ Name: " + field.getName() + " - Type: " + field.getType() + "]" +
-					" wasn't processed because it wasn't specificied with annotations.");
 		}
+		LOGGER.warn("Property field [ Name: " + field.getName() + " - Type: " + field.getType() + "]" +
+		" wasn't processed because it wasn't specificied with annotations.");
 		return null;
 	}
 	
-	protected void buildJavaMethodContent(JavaMethod javaMethod){
-		
+	/**
+	 * Get sub class for class to generate.
+	 * 
+	 * @return a sub class class.
+	 */
+	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
+		return null;
+	}
+
+	/**
+	 * @return the javaType
+	 */
+	protected JavaType getJavaType() {
+		return javaType;
+	}
+
+	/**
+	 * @param javaType the javaType to set
+	 */
+	protected void setJavaType(JavaType javaType) {
+		this.javaType = javaType;
+	}
+
+	/**
+	 * @return the baseJavaSourcesDirectory
+	 */
+	public String getBaseJavaSourcesDirectory() {
+		return baseJavaSourcesDirectory;
+	}
+
+	/**
+	 * @param baseJavaSourcesDirectory the baseJavaSourcesDirectory to set
+	 */
+	public void setBaseJavaSourcesDirectory(String baseJavaSourcesDirectory) {
+		this.baseJavaSourcesDirectory = baseJavaSourcesDirectory;
+	}
+
+	public String getDomainObjectCanonicalName(){
+		return this.getJavaType().getDomainObjectCanonicalName();
 	}
 	
-	public Class<?> getSubClassForClassGenerator(){
-		return Object.class;
+	public String getDomainObjectSimpleName(){
+		return this.getJavaType().getDomainObjectSimpleName();
+	}
+	
+	protected JavaInterface createJavaInterface(){
+		return this.getJavaType().createJavaInterface();
+	}
+
+	protected JavaConstructor createJavaConstructor() {
+		return this.getJavaType().createJavaConstructor();
+	}
+	
+	protected JavaProperty createJavaProperty(String propertyName, String propertyType){
+		return this.getJavaType().createJavaProperty(propertyName, propertyType);
+	}
+
+	protected JavaProperty createJavaProperty(){
+		return this.getJavaType().createJavaProperty();
+	}
+	
+	protected void addMethodBuilderStrategies(Class<? extends Annotation> annotation, MethodBuilder methodBuilder){
+		this.getMethodBuilderStrategies().put(annotation, methodBuilder);
+	}
+	
+	protected boolean isAnImplementationClassGenerator(){
+		return this.getJavaType() != null ? this.getJavaType().isAnImplementationType() : false;
+	}
+
+	/**
+	 * @return the interfaceClassGenerator
+	 */
+	public ClassGenerator getInterfaceClassGenerator() {
+		return interfaceClassGenerator;
+	}
+
+	/**
+	 * @param interfaceClassGenerator the interfaceClassGenerator to set
+	 */
+	public void setInterfaceClassGenerator(ClassGenerator interfaceClassGenerator) {
+		this.interfaceClassGenerator = interfaceClassGenerator;
+	}
+	
+	public boolean hasInterfaceClassGenerator(){
+		return this.getInterfaceClassGenerator() != null;
 	}
 }

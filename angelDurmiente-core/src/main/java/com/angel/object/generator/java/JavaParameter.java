@@ -3,6 +3,9 @@
  */
 package com.angel.object.generator.java;
 
+import com.angel.common.helpers.StringHelper;
+import com.angel.object.generator.helper.PackageHelper;
+
 
 
 /**
@@ -13,12 +16,32 @@ package com.angel.object.generator.java;
 public class JavaParameter {
 
 	private String parameterName;
-	private Class<?> parameterType;
+	private String parameterType;
+	private boolean importType;
 	
-	public JavaParameter(String parameterName, Class<?> parameterType){
+	public JavaParameter(String parameterName, String parameterType){
 		super();
 		this.setParameterName(parameterName);
 		this.setParameterType(parameterType);
+		this.setImportType(true);
+	}
+	
+	public JavaParameter(String parameterType){
+		this(StringHelper.EMPTY_STRING, parameterType);
+	}
+	
+	/**
+	 * @return the parameterType
+	 */
+	public String getParameterType() {
+		return parameterType;
+	}
+
+	/**
+	 * @param parameterType the parameterType to set
+	 */
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
 	}
 
 	/**
@@ -34,26 +57,51 @@ public class JavaParameter {
 	public void setParameterName(String parameterName) {
 		this.parameterName = parameterName;
 	}
-
-	/**
-	 * @return the parameterType
-	 */
-	public Class<?> getParameterType() {
-		return parameterType;
-	}
-
-	/**
-	 * @param parameterType the parameterType to set
-	 */
-	public void setParameterType(Class<?> parameterType) {
-		this.parameterType = parameterType;
-	}
 	
 	public boolean equalsParameterType(JavaParameter javaParameter){
 		return this.getParameterType().equals(javaParameter.getParameterType());
 	}
 	
 	public String getSimpleReturnTypeName(){
-		return this.getParameterType().getSimpleName();
+		return PackageHelper.getClassSimpleName(this.getParameterType());
+	}
+
+	public String getCanonicalReturnTypeName() {
+		return this.getParameterType();
+	}
+
+	public String getParameter() {
+		return this.getSimpleReturnTypeName() + " " + (this.hasParameterName() ? this.getParameterName() : "");
+	}
+
+	public boolean hasParameterName(){
+		return StringHelper.isNotEmpty(this.getParameterName());
+	}
+	
+	@Override
+	public String toString(){
+		return this.getParameterName();
+	}
+
+	/**
+	 * @return the importType
+	 */
+	public boolean isImportType() {
+		return importType;
+	}
+
+	/**
+	 * @param importType the importType to set
+	 */
+	public void setImportType(boolean importType) {
+		this.importType = importType;
+	}
+
+	public void notImportType() {
+		this.setImportType(false);
+	}
+	
+	public void importType() {
+		this.setImportType(true);
 	}
 }

@@ -7,6 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaParameter;
 
 /**
@@ -18,7 +19,7 @@ public interface MethodBuilder {
 
 	public <T> String buildMethodName(Class<T> domainClass, Field property);
 	
-	public <T> String buildMethodContent(Class<T> domainClass, Field property);
+	public <T> JavaBlockCode buildMethodContent(Class<T> domainClass, Field property);
 	
 	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property);
 	

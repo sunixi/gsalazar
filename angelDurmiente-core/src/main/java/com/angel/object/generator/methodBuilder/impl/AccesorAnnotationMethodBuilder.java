@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.annotations.Accesor;
+import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
 
@@ -29,7 +30,7 @@ public class AccesorAnnotationMethodBuilder implements MethodBuilder {
 		return parameters;
 	}
 
-	public <T> String buildMethodContent(Class<T> domainClass, Field property) {
+	public <T> JavaBlockCode buildMethodContent(Class<T> domainClass, Field property) {
 		// TODO Auto-generated method stub
 		return null;
 	}

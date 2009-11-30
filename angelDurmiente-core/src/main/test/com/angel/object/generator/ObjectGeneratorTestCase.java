@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import ar.com.angelDurmiente.beans.BeanDemo;
 
-import com.angel.common.helpers.ReflectionHelper;
 import com.angel.object.generator.classesGeneratorFactory.ClassesGeneratorFactory;
 import com.angel.object.generator.classesGeneratorFactory.impl.ClassesGeneratorFactoryImpl;
 
@@ -49,12 +48,6 @@ public class ObjectGeneratorTestCase {
 		generator.addDomain(BeanDemo.class);
 		generator.addRelativeImport("daos", "BeanDemoDAO");
 		generator.addRelativeImport("services", "BeanDemoService");
-		generator.generateClasses();
-
-		/**
-		Problemas:
-		1- Como importar el dao de BeanDemo -> BeanDemoDAO (y la interface del BeanDemoService).
-		 */
-		
+		generator.generateClasses();		
 	}
 }

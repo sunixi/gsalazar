@@ -7,21 +7,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-import javax.persistence.Column;
-
 import com.angel.architecture.services.impl.GenericServiceImpl;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
+import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaInterface;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.AccesorAnnotationMethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.ColumnAnnotationMethodBuilder;
+import com.angel.object.generator.methodBuilder.impl.AccesorServiceImplAnnotationMethodBuilder;
 
 
 /**
@@ -33,8 +30,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 
 	public ServiceImplClassGenerator(String basePackage) {
 		super(basePackage);
-		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorAnnotationMethodBuilder());
-		this.getMethodBuilderStrategies().put(Column.class, new ColumnAnnotationMethodBuilder());
+		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorServiceImplAnnotationMethodBuilder());
 	}
 	
 	public ServiceImplClassGenerator(String basePackage, ClassGenerator interfaceClassGenerator) {
@@ -65,24 +61,25 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 				String methodName = methodBuilder.buildMethodName(domainClass, f);
 				List<JavaParameter> javaParameters = methodBuilder.buildJavaParameters(domainClass, f);
 				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
+				JavaBlockCode javaBlockCode = methodBuilder.buildMethodContent(domainClass, f);
 
-				String contentMethod = "return this." + 
-					ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO") + "()." +
-					methodName + "(" +
-					StringHelper.convertToPlainString(javaParameters.toArray(), ",") + ");";
-
-				super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter, contentMethod);
+				JavaBlockCode javaBlockCodeGenerated = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
+				javaBlockCodeGenerated.replaceBlockCode(javaBlockCode);
 			}
 		}
 	}
 
 	protected void buildGenericDAOGetter(ClassesGenerator generator, Class<?> domainClass) {
-		String contentMethod = "return (" + domainClass.getSimpleName() + "DAO" + ") super.getGenericDAO();";
 		String domainClassDAO = domainClass.getSimpleName() + "DAO";
+
 		String methodName = ReflectionHelper.getGetMethodName(domainClassDAO);
 		JavaParameter returnParameter = super.getJavaType().buildReturnJavaParameter(domainClassDAO);
 		returnParameter.notImportType();
-		super.getJavaType().addTypeMethodProtectedImplementedWithoutParameters(methodName, returnParameter, contentMethod);
+
+		JavaBlockCode javaBlockCode = super.getJavaType()
+					.addTypeMethodProtectedImplementedWithoutParameters(methodName, returnParameter);
+		
+		javaBlockCode.addLineCodeReturnVariable("(" + domainClassDAO + ") super.getGenericDAO()");
 		
 		String importClassName = generator.getImportForClassName(domainClassDAO);
 		super.getJavaType().addImport(importClassName);

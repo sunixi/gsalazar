@@ -65,7 +65,11 @@ public class JavaTypeComment implements CodeConvertible {
 	}
 
 	public void addTagComment(String tag, String comment){
-		this.getTagsComment().put("@" + tag, comment);
+		if(tag.startsWith("@")){
+			this.getTagsComment().put(tag, comment);
+		} else {
+			this.getTagsComment().put("@" + tag, comment);
+		}
 	}
 
 	public String convert() {
@@ -87,5 +91,9 @@ public class JavaTypeComment implements CodeConvertible {
 
 	public int getQuantityTags(){
 		return this.getTagsComment().size();
+	}
+	
+	public void clearTags(){
+		this.getTagsComment().clear();
 	}
 }

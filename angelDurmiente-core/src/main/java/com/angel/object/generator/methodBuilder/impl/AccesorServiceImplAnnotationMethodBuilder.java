@@ -6,13 +6,12 @@ package com.angel.object.generator.methodBuilder.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaLineCode;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
 
@@ -22,7 +21,7 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  * @since 26/Noviembre/2009.
  *
  */
-public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
+public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder {
 
 
 	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property) {
@@ -32,31 +31,24 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 		return parameters;
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> JavaBlockCode buildMethodContent(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
-		JavaBlockCode contentMethod = new JavaBlockCode();
-		String methodName = "";
-		List<String> parametersNames = new ArrayList<String>();
-		parametersNames.add("\"" + property.getName() + "\"");
-		parametersNames.add(property.getName());
-		if(accesor.unique()){
-			if(accesor.optional()){
-				methodName = "super.findUniqueOrNull";
-			} else {
-				methodName = "super.findUnique";
-			}
-		} else {
-			methodName = "super.findAll";
-		}
-		JavaLineCode lineCode = contentMethod.getLineCodeCalledMethod(methodName, parametersNames);
-		contentMethod.addLineCodeReturnVariableCollectionTypeCasted((Class<? extends Collection<?>>) List.class,
-				domainClass.getCanonicalName(), lineCode);
-		return contentMethod;
+		JavaBlockCode javaBlockCode = new JavaBlockCode();
+		
+		List<String> parameters = new ArrayList<String>();
+		parameters.add(property.getName());
+		String daoMethodName = this.buildMethodName(domainClass, property);//"get" + PackageHelper.getClassSimpleName(domainClass.getClass().getCanonicalName())+ "Service().";
+		
+		String contentMethod = "this." + 
+		ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO") + "()." +
+		daoMethodName + "(" + StringHelper.convertToPlainString(parameters.toArray(), ",") + ")";
+
+		javaBlockCode.addLineCodeReturnVariable(contentMethod);
+
+		return javaBlockCode;
 	}
 
 	public <T> String buildMethodName(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
+		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
 		String methodName = "buscar";
 		methodName += accesor.unique() ? "Unico" : "Todos";
 		methodName += accesor.optional() ? "ONulo" : "";
@@ -66,7 +58,7 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 	}
 
 	public <T> JavaParameter buildReturnParameter(Class<T> domainClass, Field property) {
-		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
+		Accesor accesor = (Accesor) property.getAnnotation(Accesor.class);
 		Class<?> returnType = null;
 		if(accesor.unique()){
 			returnType = domainClass;
@@ -78,7 +70,6 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 
 	public <T> Annotation getAnnotation(Class<T> domainClass, Field property) {
 		return property.getAnnotation(Accesor.class);
-	}
-	
+	}	
 
 }

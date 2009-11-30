@@ -6,12 +6,11 @@ package com.angel.object.generator;
 
 import org.junit.Test;
 
-import ar.com.angelDurmiente.beans.Usuario;
+import ar.com.angelDurmiente.beans.BeanDemo;
 
-import com.angel.object.generator.classGenerator.ClassGenerator;
-import com.angel.object.generator.classGenerator.impl.ServiceClassGenerator;
-import com.angel.object.generator.classNameStrategies.ClassNameStrategy;
-import com.angel.object.generator.classNameStrategies.impl.ClassNameStrategyImpl;
+import com.angel.common.helpers.ReflectionHelper;
+import com.angel.object.generator.classesGeneratorFactory.ClassesGeneratorFactory;
+import com.angel.object.generator.classesGeneratorFactory.impl.ClassesGeneratorFactoryImpl;
 
 /**
  * 
@@ -27,21 +26,35 @@ public class ObjectGeneratorTestCase {
 		 * "services": paquete donde se van a generar las clases. Si no se pone nada se pone services.
 		 * 				Se concatena al del objeto Generator.
 		 */
+		/*
 		ClassGenerator serviceClassGenerator = new ServiceClassGenerator("services");
-		/*serviceClassGenerator.excludeDomain("com.flex.Usuario");
-		serviceClassGenerator.excludeDomain(Usuario.class);
-		serviceClassGenerator.excludeDomain("Serice");*/
-		ClassNameStrategy classNameStrategy = new ClassNameStrategyImpl();
-		serviceClassGenerator.setClassNameStrategy(classNameStrategy);
+		serviceClassGenerator.addTagAuthor("Guillermo Daniel Salazar");
+
+		ClassGenerator serviceImplClassGenerator = new ServiceImplClassGenerator("services.impl", serviceClassGenerator);
+		serviceImplClassGenerator.addTagAuthor("Guillermo Daniel Salazar");
+
+		ClassGenerator daoClassGenerator = new DAOClassGenerator("daos");
+		daoClassGenerator.addTagAuthor("Guillermo Daniel Salazar");
+
+		ClassGenerator daoImplClassGenerator = new DAOImplClassGenerator("daos.impl", daoClassGenerator);
+		daoImplClassGenerator.addTagAuthor("Guillermo Daniel Salazar");*/
+		/*generator.addClassGenerator(serviceImplClassGenerator);
+		generator.addClassGenerator(daoImplClassGenerator);*/
+
 		
 		/** Objeto generador principal de clases. */
-		//"ar.com.angelDurmiente": Paquete base del proyecto.
-		ClassesGenerator generator = new ClassesGenerator("ar.com.angelDurmiente");
-		/** serviceClassGenerator: generador de la clase que se desea a partir de la clase del dominio. */
-		generator.addClassGenerator(serviceClassGenerator);
-		generator.addDomain(Usuario.class);
-		//generator.addDomain(Texto.class);
+		ClassesGeneratorFactory classesGeneratorFactory = new ClassesGeneratorFactoryImpl();
+		ClassesGenerator generator = classesGeneratorFactory.createClassesGenerator("ar.com.angelDurmiente");//new ClassesGenerator("ar.com.angelDurmiente");
+		generator.addAuthorTag("Guillermo Daniel Salazar");
+		generator.addDomain(BeanDemo.class);
+		generator.addRelativeImport("daos", "BeanDemoDAO");
+		generator.addRelativeImport("services", "BeanDemoService");
 		generator.generateClasses();
+
+		/**
+		Problemas:
+		1- Como importar el dao de BeanDemo -> BeanDemoDAO (y la interface del BeanDemoService).
+		 */
 		
 	}
 }

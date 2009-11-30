@@ -3,6 +3,7 @@
  */
 package com.angel.object.generator.methodBuilder.impl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.List;
 import javax.persistence.Column;
 
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.java.JavaMethod;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
 
@@ -22,17 +22,30 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  */
 public class ColumnAnnotationMethodBuilder implements MethodBuilder {
 
-	public <T> JavaMethod buildJavaMethod(Class<T> domainClass, Field property) {
+	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property) {
+		List<JavaParameter> parameters = new ArrayList<JavaParameter>();
+		JavaParameter javaParameter = new JavaParameter(property.getName(), property.getType().getCanonicalName());
+		parameters.add(javaParameter);
+		return parameters;
+	}
+
+	public <T> String buildMethodContent(Class<T> domainClass, Field property) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> String buildMethodName(Class<T> domainClass, Field property) {
 		Column column = (Column) property.getAnnotation(Column.class);
 		String methodName = "buscar";
 		methodName += column.unique() ? "Unico" : "Todos";
 		methodName += column.unique() && column.nullable() ? "ONulo" : "";
 		methodName += "Por";
 		methodName += StringHelper.capitalize(property.getName());
-		
-		List<JavaParameter> parameters = new ArrayList<JavaParameter>();
-		JavaParameter javaParameter = new JavaParameter(property.getName(), property.getDeclaringClass());
-		parameters.add(javaParameter);
+		return methodName;
+	}
+
+	public <T> JavaParameter buildReturnParameter(Class<T> domainClass, Field property) {
+		Column column = (Column) property.getAnnotation(Column.class);
 		
 		Class<?> returnType = null;
 		if(column.unique()){
@@ -40,10 +53,11 @@ public class ColumnAnnotationMethodBuilder implements MethodBuilder {
 		} else {
 			returnType = List.class;
 		}
-
-		return new JavaMethod(methodName, parameters, new JavaParameter("", returnType));
+		return new JavaParameter(returnType.getCanonicalName());
 	}
 
 	
-
+	public <T> Annotation getAnnotation(Class<T> domainClass, Field property) {
+		return property.getAnnotation(Column.class);
+	}
 }

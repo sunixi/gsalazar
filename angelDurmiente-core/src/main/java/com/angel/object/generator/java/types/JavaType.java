@@ -9,6 +9,7 @@ import java.util.List;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.helper.PackageHelper;
+import com.angel.object.generator.java.JavaAnnotation;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
 import com.angel.object.generator.java.JavaParameter;
@@ -54,6 +55,8 @@ public abstract class JavaType implements CodeConvertible {
 	private List<String> globalImports;
 	
 	private List<JavaProperty> properties;
+	
+	private List<JavaAnnotation> annotations;
 
 	public JavaType(){
 		super();
@@ -62,6 +65,7 @@ public abstract class JavaType implements CodeConvertible {
 		this.setComment(new JavaTypeComment());
 		this.setGlobalImports(new ArrayList<String>());
 		this.setProperties(new ArrayList<JavaProperty>());
+		this.setAnnotations(new ArrayList<JavaAnnotation>());
 	}
 	
 	public JavaType(String typeName){
@@ -278,6 +282,7 @@ public abstract class JavaType implements CodeConvertible {
 		String javaTypeConverted = "package " + this.getBasePackage() + ";\n\n";
 		javaTypeConverted += this.getTypesImportPlain() + "\n\n\n"; 
 		javaTypeConverted += this.getComment().convert() + "\n";
+		javaTypeConverted += this.convertAnnotations() + "\n";
 		javaTypeConverted += "public " + this.getJavaTypeIdentifierName() + " " + this.getJavaTypeSign();
 		javaTypeConverted += this.hasSubJavaType() ? " extends " + this.getSubJavaTypeSign() : "";
 		javaTypeConverted += this.hasInterfaces() ? " implements " + this.getInterfacesTypeSign() : "";
@@ -289,6 +294,14 @@ public abstract class JavaType implements CodeConvertible {
 		return javaTypeConverted;
 	}
 	
+	protected String convertAnnotations() {
+		String codeConverter = "";
+		for(CodeConvertible ja: this.getAnnotations()){
+			codeConverter += ja.convert();
+		}
+		return codeConverter;
+	}
+
 	protected String convertJavaProperties(){
 		String codeConverted = "";
 		for(CodeConvertible cc: this.getProperties()){
@@ -525,6 +538,13 @@ public abstract class JavaType implements CodeConvertible {
 		this.getProperties().add(javaProperty);
 	}
 	
+	/**
+	 * Create a java property with its getter and setter method.
+	 * 
+	 * @param propertyName to be created.
+	 * @param propertyType to be created.
+	 * @return a java property with its getter and setter method.
+	 */
 	public JavaProperty createJavaProperty(String propertyName, String propertyType){
 		JavaProperty javaProperty = this.createJavaProperty();
 		javaProperty.setParameterName(propertyName);
@@ -592,5 +612,27 @@ public abstract class JavaType implements CodeConvertible {
 	 */
 	public void setProperties(List<JavaProperty> properties) {
 		this.properties = properties;
+	}
+
+	/**
+	 * @return the annotations
+	 */
+	public List<JavaAnnotation> getAnnotations() {
+		return annotations;
+	}
+
+	/**
+	 * @param annotations the annotations to set
+	 */
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
+	}
+	
+	public void addAnnotation(String canonicalName){
+		this.getAnnotations().add(new JavaAnnotation(canonicalName));
+	}
+	
+	public void addAnnotation(String canonicalName, List<JavaProperty> properties){
+		this.getAnnotations().add(new JavaAnnotation(canonicalName, properties));
 	}
 }

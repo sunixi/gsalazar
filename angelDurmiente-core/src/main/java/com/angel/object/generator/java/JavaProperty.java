@@ -6,6 +6,8 @@ package com.angel.object.generator.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.common.util.StringHelper;
+
 import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.java.enums.TypeModifier;
 import com.angel.object.generator.java.enums.Visibility;
@@ -23,8 +25,10 @@ public class JavaProperty implements CodeConvertible, Importable {
 
 	private Visibility visibility;
 	private TypeModifier typeModifier;
+	//TODO Cambiar parameter por property.
 	private String parameterType;
 	private String parameterName;
+	private String propertyValue;
 	private List<JavaAnnotation> annotations;
 	
 	public JavaProperty(){
@@ -118,17 +122,18 @@ public class JavaProperty implements CodeConvertible, Importable {
 		this.annotations = annotations;
 	}
 
-	/*
-	 * private Visibility visibility;
-	private TypeModifier typeModifier;
-	 */
 	public String convert() {
 		String codeConverter = "\t";
 		codeConverter += this.convertAnnotations();
-		codeConverter += "\t" + this.getVisibility().getVisibility(); 
+		codeConverter += "\t" + this.getVisibility().getVisibility() + " "; 
 		codeConverter += this.hasTypeModifier() ? this.getTypeModifier().getTypeModifier() + " " : "";
-		codeConverter += this.getSimpleTypeName() + " " + this.getParameterName() + ";\n";
+		codeConverter += this.getSimpleTypeName() + " " + this.getParameterName();
+		codeConverter += this.hasPropertyValue() ? " = " + this.getPropertyValue() + ";\n": ";\n";
 		return codeConverter;
+	}
+	
+	public boolean hasPropertyValue(){
+		return StringHelper.isNotEmpty(this.getPropertyValue());
 	}
 	
 	public boolean hasTypeModifier(){
@@ -154,5 +159,27 @@ public class JavaProperty implements CodeConvertible, Importable {
 
 	public void addAnnotation(String canonicalName) {
 		this.getAnnotations().add(new JavaAnnotation(canonicalName));
+	}
+
+	public void setFinalStaticTypeModifier() {
+		this.setTypeModifier(TypeModifier.FINAL_STATIC);
+	}
+
+	/**
+	 * @return the propertyValue
+	 */
+	public String getPropertyValue() {
+		return propertyValue;
+	}
+
+	/**
+	 * @param propertyValue the propertyValue to set
+	 */
+	public void setPropertyValue(String propertyValue) {
+		this.propertyValue = propertyValue;
+	}
+
+	public void setPublicVisibility() {
+		this.setVisibility(Visibility.PUBLIC);
 	}
 }

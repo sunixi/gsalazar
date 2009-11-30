@@ -30,6 +30,11 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 		this.setProperties(new ArrayList<JavaProperty>());
 		this.getImportsType().add(annotationClass);
 	}
+	
+	public JavaAnnotation(String annotationClass, List<JavaProperty> properties){
+		this(annotationClass);
+		this.getProperties().addAll(properties);
+	}
 
 	/**
 	 * @return the name

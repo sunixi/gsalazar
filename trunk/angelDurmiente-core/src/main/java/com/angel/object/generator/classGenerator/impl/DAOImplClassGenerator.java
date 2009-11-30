@@ -13,6 +13,7 @@ import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
+import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.java.types.JavaClass;
@@ -58,9 +59,10 @@ public class DAOImplClassGenerator extends ClassGenerator {
 				String methodName = methodBuilder.buildMethodName(domainClass, f);
 				List<JavaParameter> javaParameters = methodBuilder.buildJavaParameters(domainClass, f);
 				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
-				String contentMethod = methodBuilder.buildMethodContent(domainClass, f);
+				JavaBlockCode blockCode = methodBuilder.buildMethodContent(domainClass, f);
 
-				super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter, contentMethod);
+				JavaBlockCode blockCodeCreated = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
+				blockCodeCreated.replaceBlockCode(blockCode);
 			}
 		}
 	}

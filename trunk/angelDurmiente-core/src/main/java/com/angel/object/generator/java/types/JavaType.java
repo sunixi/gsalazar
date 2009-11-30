@@ -9,6 +9,7 @@ import java.util.List;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.helper.PackageHelper;
+import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.java.JavaProperty;
@@ -106,22 +107,21 @@ public abstract class JavaType implements CodeConvertible {
 	 * @param contentMethod
 	 * @param visibility
 	 */
-	public void addTypeMethod(
+	public JavaBlockCode addTypeMethod(
 			String methodName, 
 			List<JavaParameter> javaParameters,
 			JavaParameter returnParameter,
-			String contentMethod,
 			boolean isImplemented,
 			Visibility visibility
 		){
 		TypeMethod typeMethod = new TypeMethod(methodName);
-		typeMethod.setContentMethod(contentMethod);
 		typeMethod.setParameters(javaParameters);
 		typeMethod.setReturnType(returnParameter);
 		typeMethod.setVisibility(visibility);
 		typeMethod.setImplemented(isImplemented);
 		typeMethod.setOwnerType(this);
 		this.getMethods().add(typeMethod);
+		return typeMethod.getContent();
 	}
 
 	/**
@@ -234,8 +234,8 @@ public abstract class JavaType implements CodeConvertible {
 				this.addImport(typesImports, this.getSubJavaType().getRightGeneric());
 			}
 		}
-		for(TypeMethod tm: this.getMethods()){
-			for(String tmi: tm.getImports()){
+		for(Importable tm: this.getMethods()){
+			for(String tmi: tm.getImportsType()){
 				this.addImport(typesImports, tmi);
 			}
 		}
@@ -312,7 +312,7 @@ public abstract class JavaType implements CodeConvertible {
 	protected String getMethodsSign(){
 		List<String> methodsSigns = new ArrayList<String>();
 		for(TypeMethod tm: this.getMethods()){
-			methodsSigns.add(tm.getMethod());
+			methodsSigns.add(tm.convert());
 		}
 		return StringHelper.convertToPlainString(methodsSigns.toArray(), "\n");
 	}
@@ -401,71 +401,74 @@ public abstract class JavaType implements CodeConvertible {
 		return this.getSimpleName() + ".java";
 	}
 
-	public void addTypeMethodPublic(String methodName, 
+	public JavaBlockCode addTypeMethodPublic(String methodName, 
 			List<JavaParameter> javaParameters,
 			JavaParameter returnParameter,
-			String contentMethod,
 			boolean isImplemented){
-		this.addTypeMethod(methodName, javaParameters, returnParameter, contentMethod, isImplemented, Visibility.PUBLIC);
+		JavaBlockCode javaBlockCode = this.addTypeMethod(methodName, javaParameters, returnParameter, isImplemented, Visibility.PUBLIC);
+		if(isImplemented){
+			return javaBlockCode;
+		}
+		return null;
 	}
 	
-	public void addTypeMethodProtected(String methodName, 
-			List<JavaParameter> javaParameters,
-			JavaParameter returnParameter,
-			String contentMethod,
-			boolean isImplemented){
-		this.addTypeMethod(methodName, javaParameters, returnParameter, contentMethod, isImplemented, Visibility.PROTECTED);
+	public JavaBlockCode addTypeMethodProtected(String methodName, List<JavaParameter> javaParameters, 
+			JavaParameter returnParameter, boolean isImplemented){
+		JavaBlockCode javaBlockCode = this.addTypeMethod(methodName, javaParameters, returnParameter, isImplemented, Visibility.PROTECTED);
+		if(isImplemented){
+			return javaBlockCode;
+		}
+		return null;
 	}
 	
-	public void addTypeMethodProtectedImplemented(String methodName, 
-			List<JavaParameter> javaParameters,
-			JavaParameter returnParameter,
-			String contentMethod){
-		this.addTypeMethod(methodName, javaParameters, returnParameter, contentMethod, true, Visibility.PROTECTED);
+	public JavaBlockCode addTypeMethodProtectedImplemented(String methodName, 
+			List<JavaParameter> javaParameters, JavaParameter returnParameter){
+		return this.addTypeMethod(methodName, javaParameters, returnParameter, true, Visibility.PROTECTED);
 	}
 	
-	public void addTypeMethodProtectedVoidImplemented(String methodName, List<JavaParameter> javaParameters, String contentMethod){
-		this.addTypeMethod(methodName, javaParameters, null, contentMethod, true, Visibility.PROTECTED);
+	public JavaBlockCode addTypeMethodProtectedVoidImplemented(String methodName, List<JavaParameter> javaParameters){
+		return this.addTypeMethod(methodName, javaParameters, null, true, Visibility.PROTECTED);
 	}
 	
-	public void addTypeMethodProtectedImplementedWithoutParameters(String methodName, JavaParameter returnParameter, String contentMethod){
-		this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnParameter, contentMethod, true, Visibility.PROTECTED);
+	public JavaBlockCode addTypeMethodProtectedImplementedWithoutParameters(String methodName, JavaParameter returnParameter){
+		return this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnParameter,true, Visibility.PROTECTED);
 	}
 	
-	public void addTypeMethodPublicVoid(String methodName, 
-			List<JavaParameter> javaParameters,
-			String contentMethod,
-			boolean isImplemented){
-		this.addTypeMethod(methodName, javaParameters, null, contentMethod, isImplemented, Visibility.PUBLIC);
+	public JavaBlockCode addTypeMethodPublicVoid(String methodName, 
+			List<JavaParameter> javaParameters, boolean isImplemented){
+		JavaBlockCode javaBlockCode = this.addTypeMethod(methodName, javaParameters, null, isImplemented, Visibility.PUBLIC);
+		if(isImplemented){
+			return javaBlockCode;
+		}
+		return null;
 	}
 	
-	public void addTypeMethodPublicWithoutParameters(String methodName, 
-			JavaParameter returnType,
-			String contentMethod,
-			boolean isImplemented){
-		this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnType, contentMethod, isImplemented, Visibility.PUBLIC);
+	public JavaBlockCode addTypeMethodPublicWithoutParameters(String methodName, JavaParameter returnType, boolean isImplemented){
+		JavaBlockCode javaBlockCode = this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnType, isImplemented, Visibility.PUBLIC);
+		if(isImplemented){
+			return javaBlockCode;
+		}
+		return null;
 	}
 	
-	public void addTypeMethodPublicWithoutParametersImplemented(String methodName, 
-			JavaParameter returnType,
-			String contentMethod){
-		this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnType, contentMethod, true, Visibility.PUBLIC);
+	public JavaBlockCode addTypeMethodPublicWithoutParametersImplemented(String methodName, JavaParameter returnType){
+		return this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnType, true, Visibility.PUBLIC);
 	}
 	
-	public void addTypeMethodPublicVoidWithoutParametersImplemented(String methodName, String contentMethod){
-		this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), null, contentMethod, true, Visibility.PUBLIC);
+	public JavaBlockCode addTypeMethodPublicVoidWithoutParametersImplemented(String methodName){
+		return this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), null, true, Visibility.PUBLIC);
 	}
 	
 	public void addTypeMethodPublicWithoutParametersNotImplemented(String methodName, JavaParameter returnType){
-		this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnType, StringHelper.EMPTY_STRING, false, Visibility.PUBLIC);
+		this.addTypeMethod(methodName, new ArrayList<JavaParameter>(), returnType, false, Visibility.PUBLIC);
 	}
 	
-	public void addTypeMethodPublicImplemented(String methodName, List<JavaParameter> javaParameters, JavaParameter returnType, String contentMethod){
-		this.addTypeMethod(methodName, javaParameters, returnType, contentMethod, true, Visibility.PUBLIC);
+	public JavaBlockCode addTypeMethodPublicImplemented(String methodName, List<JavaParameter> javaParameters, JavaParameter returnType){
+		return this.addTypeMethod(methodName, javaParameters, returnType, true, Visibility.PUBLIC);
 	}
 	
-	public void addTypeMethodPublicNotImplemented(String methodName, List<JavaParameter> javaParameters, JavaParameter returnType){
-		this.addTypeMethod(methodName, javaParameters, returnType, StringHelper.EMPTY_STRING, false, Visibility.PUBLIC);
+	public void  addTypeMethodPublicNotImplemented(String methodName, List<JavaParameter> javaParameters, JavaParameter returnType){
+		this.addTypeMethod(methodName, javaParameters, returnType, false, Visibility.PUBLIC);
 	}
 	
 	public JavaParameter buildJavaParameter(String parameterName, String parameterType){
@@ -533,18 +536,18 @@ public abstract class JavaType implements CodeConvertible {
 	
 	public void createGetterFor(JavaProperty javaProperty){
 		String getMethodName = ReflectionHelper.getGetMethodName(javaProperty.getParameterName());
-		String getterContent = "return this." + javaProperty.getParameterName() + ";";
-		JavaParameter returnJavaParameter = new JavaParameter(javaProperty.getParameterName(), javaProperty.getParameterName());
-		this.addTypeMethodPublicWithoutParametersImplemented(getMethodName, returnJavaParameter, getterContent);
+		JavaParameter returnJavaParameter = new JavaParameter(javaProperty.getParameterName(), javaProperty.getParameterType());
+		JavaBlockCode javaBlockCode = this.addTypeMethodPublicWithoutParametersImplemented(getMethodName, returnJavaParameter);
+		javaBlockCode.addLineCodeReturnThisVariable(javaProperty.getParameterName());
 	}
 	
 	public void createSetterFor(JavaProperty javaProperty){
 		String setMethodName = ReflectionHelper.getSetMethodName(javaProperty.getParameterName());
-		String setterContent = "this." + javaProperty.getParameterName() + " = " + javaProperty.getParameterName() + ";";		
-		JavaParameter javaParameter = new JavaParameter(javaProperty.getParameterName(), javaProperty.getParameterName());
+		JavaParameter javaParameter = new JavaParameter(javaProperty.getParameterName(), javaProperty.getParameterType());
 		List<JavaParameter> javaParameters = new ArrayList<JavaParameter>();
 		javaParameters.add(javaParameter);
-		this.addTypeMethodPublicVoid(setMethodName, javaParameters, setterContent, true);
+		JavaBlockCode javaBlockCode = this.addTypeMethodPublicVoid(setMethodName, javaParameters, true);
+		javaBlockCode.addLineCodeThisAssigment(javaProperty.getParameterName());
 	}
 	
 	public JavaProperty createJavaProperty(){

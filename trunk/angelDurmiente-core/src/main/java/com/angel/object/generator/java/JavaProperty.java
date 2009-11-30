@@ -125,9 +125,14 @@ public class JavaProperty implements CodeConvertible, Importable {
 	public String convert() {
 		String codeConverter = "\t";
 		codeConverter += this.convertAnnotations();
-		codeConverter += this.getVisibility().getVisibility() + " " + this.getTypeModifier().getTypeModifier() + " ";
+		codeConverter += "\t" + this.getVisibility().getVisibility(); 
+		codeConverter += this.hasTypeModifier() ? this.getTypeModifier().getTypeModifier() + " " : "";
 		codeConverter += this.getSimpleTypeName() + " " + this.getParameterName() + ";\n";
 		return codeConverter;
+	}
+	
+	public boolean hasTypeModifier(){
+		return this.getTypeModifier() != null;
 	}
 	
 	protected String convertAnnotations(){
@@ -141,6 +146,13 @@ public class JavaProperty implements CodeConvertible, Importable {
 	public List<String> getImportsType() {
 		List<String> imports = new ArrayList<String>();
 		imports.add(this.getCanonicalTypeName());
+		for(JavaAnnotation ja: this.getAnnotations()){
+			imports.addAll(ja.getImportsType());
+		}
 		return imports;
+	}
+
+	public void addAnnotation(String canonicalName) {
+		this.getAnnotations().add(new JavaAnnotation(canonicalName));
 	}
 }

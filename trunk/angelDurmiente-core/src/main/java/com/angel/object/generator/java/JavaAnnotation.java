@@ -3,9 +3,12 @@
  */
 package com.angel.object.generator.java;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.types.CodeConvertible;
+import com.angel.object.generator.types.Importable;
 
 
 
@@ -14,14 +17,18 @@ import com.angel.object.generator.types.CodeConvertible;
  * @since 26/Noviembre/2009.
  *
  */
-public class JavaAnnotation implements CodeConvertible {
+public class JavaAnnotation implements CodeConvertible, Importable {
 	
 	private String name;
 	private List<JavaProperty> properties;
+	private List<String> importsType;
 	
-	public JavaAnnotation(String name){
+	public JavaAnnotation(String annotationClass){
 		super();
-		this.setName("@" + name);
+		this.setName("@" + PackageHelper.getClassSimpleName(annotationClass) + "\n");
+		this.setImportsType(new ArrayList<String>());
+		this.setProperties(new ArrayList<JavaProperty>());
+		this.getImportsType().add(annotationClass);
 	}
 
 	/**
@@ -69,6 +76,20 @@ public class JavaAnnotation implements CodeConvertible {
 			codeConverter += cc.convert();			
 		}
 		return codeConverter;
+	}
+
+	/**
+	 * @return the importsType
+	 */
+	public List<String> getImportsType() {
+		return importsType;
+	}
+
+	/**
+	 * @param importsType the importsType to set
+	 */
+	public void setImportsType(List<String> importsType) {
+		this.importsType = importsType;
 	}
 	
 /*

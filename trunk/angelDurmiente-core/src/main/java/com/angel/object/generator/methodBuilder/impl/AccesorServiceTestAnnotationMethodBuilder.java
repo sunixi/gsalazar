@@ -6,10 +6,13 @@ package com.angel.object.generator.methodBuilder.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.annotations.Accesor;
+import com.angel.object.generator.java.JavaBlockCode;
+import com.angel.object.generator.java.JavaLineCode;
 import com.angel.object.generator.java.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
 
@@ -26,20 +29,41 @@ public class AccesorServiceTestAnnotationMethodBuilder implements MethodBuilder 
 		return new ArrayList<JavaParameter>();
 	}
 
-	public <T> String buildMethodContent(Class<T> domainClass, Field property) {
+	@SuppressWarnings("unchecked")
+	public <T> JavaBlockCode buildMethodContent(Class<T> domainClass, Field property) {
 		String domainObjectSimpleName = domainClass.getSimpleName();
-		String contentMethod = property.getType().getSimpleName() + " " + property.getName() + " = null;\n\t\t";
+		JavaBlockCode javaBlockCode = new JavaBlockCode();
+		javaBlockCode.addLineCodeCommented("TODO Must set a value to " + property.getName() + " property.");
+		javaBlockCode.addLineCodeNullAssigment(property.getType().getCanonicalName(), property.getName());
 		
+		List<String> parameters = new ArrayList<String>();
+		parameters.add(property.getName());
+		String methodName = "this.get" + domainObjectSimpleName + "Service().";
+		methodName +=  this.buildContentMethodName(domainClass, property);
+		JavaLineCode calledMethodLine = javaBlockCode.getLineCodeCalledMethod(methodName, parameters);
+
 		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
 		if(!accesor.unique()){
-			contentMethod += "List<" + domainClass.getSimpleName() + "> result";
+			javaBlockCode
+				.addLineCodeCollectionVariableAssigment(
+						(Class<? extends Collection<?>>) List.class, domainClass.getSimpleName(), "result", calledMethodLine);
+
 		} else {
-			contentMethod += domainObjectSimpleName + " " + property.getName();
+			javaBlockCode.addLineCodeAssigmentTypedVariable(property.getType().getCanonicalName(),
+					property.getName(), calledMethodLine);
 		}
-		contentMethod += " = this.get" + domainObjectSimpleName + "Service().";
-		contentMethod += this.buildContentMethodName(domainClass, property);
-		contentMethod += "(" + property.getName() + ");\n";
-		return contentMethod;
+		
+		List<String> notNullAssertParameters = new ArrayList<String>();
+		notNullAssertParameters.add("\"Result collection mustn't be null.\"");
+		notNullAssertParameters.add("result");
+		javaBlockCode.addLineCodeCallMethodWithParameters("assertNotNull", notNullAssertParameters);
+		
+		List<String> assertParameters = new ArrayList<String>();
+		assertParameters.add("\"Result collection size must be more than one.\"");
+		assertParameters.add("result.size() > 0");
+		javaBlockCode.addLineCodeCallMethodWithParameters("assertTrue", assertParameters);
+
+		return javaBlockCode;
 	}
 
 	public <T> String buildContentMethodName(Class<T> domainClass, Field property) {

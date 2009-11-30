@@ -6,12 +6,16 @@ package com.angel.object.generator.classGenerator.impl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ar.com.angelDurmiente.AngelDurmienteBaseTestCase;
 
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
+import com.angel.object.generator.java.JavaBlockCode;
+import com.angel.object.generator.java.JavaProperty;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
@@ -48,14 +52,10 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
 				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
-
 				String methodName = methodBuilder.buildMethodName(domainClass, f);
-				String contentMethod = methodBuilder.buildMethodContent(domainClass, f);
-				Accesor accesor = (Accesor) methodBuilder.getAnnotation(domainClass, f);
-				if(!accesor.unique()){
-					super.getJavaType().addImport("java.util.List");
-				}
-				super.getJavaType().addTypeMethodPublicVoidWithoutParametersImplemented(methodName, contentMethod);
+				JavaBlockCode contentMethod = methodBuilder.buildMethodContent(domainClass, f);
+				JavaBlockCode methodBlockCode = super.getJavaType().addTypeMethodPublicVoidWithoutParametersImplemented(methodName);
+				methodBlockCode.replaceBlockCode(contentMethod);
 			}
 		}
 	}
@@ -63,7 +63,8 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	protected void buildServiceProperty(ClassesGenerator generator, Class<?> domainClass) {
 		String propertyName = domainClass.getSimpleName() + "Service";
 		String propertyType = generator.getImportForClassName(propertyName);
-		super.createJavaProperty(propertyName, propertyType);
+		JavaProperty javaProperty = super.createJavaProperty(propertyName, propertyType);
+		javaProperty.addAnnotation(Autowired.class.getCanonicalName());
 	}
 
 	@Override

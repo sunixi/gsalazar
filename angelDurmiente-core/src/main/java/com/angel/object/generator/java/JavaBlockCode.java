@@ -62,7 +62,7 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		return this.importsType;
 	}
 	
-	protected void addJavaLineCode(JavaLineCode javaLineCode){
+	public void addJavaLineCode(JavaLineCode javaLineCode){
 		this.getImportsType().addAll(javaLineCode.getImportsType());
 		this.getLinesCode().add(javaLineCode);
 	}
@@ -392,5 +392,89 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		JavaLineCode exceptionLineCode = this.buildJavaLineCode(content);
 		exceptionLineCode.addImport(canonicalExceptionType);
 		this.addJavaLineCode(exceptionLineCode);
+	}
+	
+	public JavaLineCode getLineCodethrowNewException(String canonicalExceptionType, String exceptionMessage) {
+		String simpleExceptionType = PackageHelper.getClassSimpleName(canonicalExceptionType);
+		String content = "throw new " + simpleExceptionType + "( \"" + exceptionMessage + "\")";
+		JavaLineCode exceptionLineCode = this.buildJavaLineCode(content);
+		exceptionLineCode.addImport(canonicalExceptionType);
+		return exceptionLineCode;
+	}
+
+	/**
+	 * Add a line code with a return sentence calling to a java line code.
+	 *	<pre>
+	 *		return javaLineCode
+	 *	</pre>
+	 * @param newImportFileAnnotationProcessorRunner
+	 */
+	public void addLineCodeReturn(JavaLineCode newImportFileAnnotationProcessorRunner) {
+		String content = "return " + newImportFileAnnotationProcessorRunner.convert();
+		this.addJavaLineCode(this.buildJavaLineCode(content));
+		this.getImportsType().addAll(newImportFileAnnotationProcessorRunner.getImportsType());
+	}
+
+	/**
+	 * Add a line code with a create instance without constructor parameters.
+	 * 
+	 *	<pre>
+	 *	Type variableName = new Type()
+	 *	</pre>
+	 * 
+	 * @param variableName to assigns the new object instance.
+	 * @param canonicalTypeName to create its instance.
+	 * @return a java line code with a variable assined a new instance object.
+	 */
+	public JavaLineCode getLineCodeCreateObject(String variableName, String canonicalTypeName) {
+		String simpleTypeName = PackageHelper.getClassSimpleName(canonicalTypeName);
+		String content = simpleTypeName + " " + variableName + " = new " + simpleTypeName + "()";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImport(canonicalTypeName);
+		return javaLineCode;
+	}
+
+	public JavaLineCode getLineCodeNewInstanceObject(
+			String newInstanceObjectType, List<String> parametersNames) {
+		String simpleTypeName = PackageHelper.getClassSimpleName(newInstanceObjectType);
+		String content = " new " + simpleTypeName + "(" + StringHelper.convertToPlainString(parametersNames.toArray(), ", ") + ")";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImport(newInstanceObjectType);
+		return javaLineCode;
+	}
+
+	public void addLineCodeTryCatch(JavaLineCode tryJavaLineCode,
+			String canonicalExceptionType, JavaLineCode catchJavaLineCode) {
+		String exceptionSimpleName = PackageHelper.getClassSimpleName(canonicalExceptionType);
+		String content = "\ttry {\n\t\t";
+		content += "\t\t\t\t" + tryJavaLineCode.convert();
+		content += "} catch ( " + exceptionSimpleName + " e) {\n";
+		content += "\t\t\t\t" + catchJavaLineCode.convert();
+		content += "}";
+		this.addJavaLineCode(this.buildJavaLineCode(content));
+		this.getImportsType().add(canonicalExceptionType);
+		this.getImportsType().addAll(tryJavaLineCode.getImportsType());
+		this.getImportsType().addAll(catchJavaLineCode.getImportsType());
+	}
+
+	/**
+	 * Add a line code returning a calling to a static method with parameters. Parameters list must be 
+	 * basic java types, because they aren't imported.
+	 *	<pre>
+	 *		return StaticType.methodName(parametersList)
+	 *	</pre> 
+	 * 
+	 * @param canonicalStaticTypeName
+	 * @param methodName
+	 * @param parametersNames
+	 * @return
+	 */
+	public JavaLineCode getLineCodeReturnCalledStaticMethod(String canonicalStaticTypeName, String methodName, List<String> parametersNames) {
+		String simpleStaticTypeName = PackageHelper.getClassSimpleName(canonicalStaticTypeName);
+		String parametersPlain = StringHelper.convertToPlainString(parametersNames.toArray(), ",");
+		String content = "return " + simpleStaticTypeName + "." + methodName + "(" + parametersPlain + ")";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImport(canonicalStaticTypeName);
+		return javaLineCode;
 	}
 }

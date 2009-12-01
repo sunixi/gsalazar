@@ -10,13 +10,17 @@ import java.util.List;
 
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.data.generator.annotations.Inject;
+import com.angel.io.annotations.ColumnRow;
+import com.angel.io.annotations.RowProcessorCommand;
 import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
+import com.angel.object.generator.java.JavaAnnotation;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaLineCode;
-import com.angel.object.generator.java.JavaParameter;
-import com.angel.object.generator.java.JavaProperty;
+import com.angel.object.generator.java.properties.JavaAnnotationProperty;
+import com.angel.object.generator.java.properties.JavaParameter;
+import com.angel.object.generator.java.properties.JavaProperty;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.impl.AccesorServiceImplAnnotationMethodBuilder;
@@ -40,19 +44,33 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	
 	@Override
 	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
-		/*
-		List<JavaProperty> rowProcessorAnnotationProperties = new ArrayList<JavaProperty>();
-		JavaProperty columnsRowJavaProperty = new JavaProperty("", "columnsRow");
-		rowProcessorAnnotationProperties.add(columnsRowJavaProperty);
-		this.getJavaType().addAnnotation(RowProcessorCommand.class.getCanonicalName(), rowProcessorAnnotationProperties);
-		*/
+		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
+
+		JavaAnnotationProperty columnsRowJavaProperty = new JavaAnnotationProperty("columnsRow");
+		List<JavaAnnotationProperty> columnsRowProperties = new ArrayList<JavaAnnotationProperty>();
+		for(Field f : fields){
+			if(f.getModifiers() < Modifier.STATIC){
+				//columnName = UsuarioAnnotationRowProcessorCommand.NOMBRE_COLUMN, aliases = {"Nombre del Usuario"}
+				JavaAnnotationProperty columnsRowValue = new JavaAnnotationProperty("columnName");
+				columnsRowValue.addPropertyValueCode(domainClass.getSimpleName() + "AnnotationRowProcessorCommand."
+						+ buildStaticPropertyName(f.getName()) + "_COLUMN");
+				columnsRowProperties.add(columnsRowValue);
+			}
+		}
+		columnsRowJavaProperty.addPropertyValueAnnotation(ColumnRow.class.getCanonicalName(), columnsRowProperties);
+
+		JavaAnnotation javaAnnotation = this.getJavaType().createJavaAnnotation(RowProcessorCommand.class.getCanonicalName());
+		javaAnnotation.addAnnotationProperty(columnsRowJavaProperty);
+		
+		//this.getJavaType().createaddAnnotation(RowProcessorCommand.class.getCanonicalName(), rowProcessorAnnotationProperties);
+
 
 		this.buildServiceProperty(generator, domainClass);
 		List<JavaParameter> processRowDataParameters = new ArrayList<JavaParameter>();
 		processRowDataParameters.add(new JavaParameter(domainClass.getSimpleName(), domainClass.getCanonicalName()));
 
 		List<JavaParameter> checkRowDataParameters = new ArrayList<JavaParameter>();
-		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
+		
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
 				checkRowDataParameters.add(new JavaParameter(f.getName(), String.class.getCanonicalName()));
@@ -86,10 +104,8 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	
 	private void createStaticJavaPropertyFor(Field f) {
 		String propertyName = buildStaticPropertyName(f.getName());
-		JavaProperty javaProperty = super.createJavaProperty();
-		javaProperty.setParameterName(propertyName + "_COLUMN");
+		JavaProperty javaProperty = super.createJavaProperty(propertyName + "_COLUMN", String.class.getCanonicalName());
 		javaProperty.setPropertyValue("\"" + f.getName() + "\"");
-		javaProperty.setParameterType(String.class.getCanonicalName());
 		javaProperty.setPublicVisibility();
 		javaProperty.setFinalStaticTypeModifier();		
 	}

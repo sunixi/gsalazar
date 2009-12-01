@@ -18,18 +18,25 @@ import com.angel.object.generator.types.Importable;
  */
 public class JavaLineCode implements Importable, CodeConvertible {
 
-	private static final String JAVA_END_OF_LINE = ";";
+	public static final String JAVA_END_OF_LINE = ";";
 
 	private String content;
+	private String lineSeparator;
 	private List<String> importsType;
 
 	public JavaLineCode(String content){
 		super();
-		if(!content.trim().endsWith(JAVA_END_OF_LINE)){
-			content += JAVA_END_OF_LINE;
+		this.setLineSeparator(JAVA_END_OF_LINE);
+		if(!content.trim().endsWith(this.getLineSeparator())){
+			content += this.getLineSeparator();
 		}
 		this.setContent(content);
 		this.setImportsType(new ArrayList<String>());
+	}
+	
+	public JavaLineCode(String content, String importType, String lineSeparator){
+		this(content, importType);
+		this.setLineSeparator(lineSeparator);
 	}
 	
 	public JavaLineCode(String content, String importType){
@@ -37,6 +44,11 @@ public class JavaLineCode implements Importable, CodeConvertible {
 		List<String> importsType = new ArrayList<String>();
 		importsType.add(importType);
 		this.setImportsType(importsType);
+	}
+	
+	public JavaLineCode(String content, List<String> importsTypes, String lineSeparator){
+		this(content, importsTypes);
+		this.setLineSeparator(lineSeparator);
 	}
 	
 	public JavaLineCode(String content, List<String> importsTypes){
@@ -78,5 +90,19 @@ public class JavaLineCode implements Importable, CodeConvertible {
 
 	public String convert() {
 		return "\t\t" + this.getContent() + "\n";
-	}	
+	}
+
+	/**
+	 * @return the lineSeparator
+	 */
+	public String getLineSeparator() {
+		return lineSeparator;
+	}
+
+	/**
+	 * @param lineSeparator the lineSeparator to set
+	 */
+	public void setLineSeparator(String lineSeparator) {
+		this.lineSeparator = lineSeparator;
+	}
 }

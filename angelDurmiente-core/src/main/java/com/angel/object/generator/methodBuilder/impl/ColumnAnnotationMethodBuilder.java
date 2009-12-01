@@ -12,7 +12,7 @@ import javax.persistence.Column;
 
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaParameter;
+import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
 
 

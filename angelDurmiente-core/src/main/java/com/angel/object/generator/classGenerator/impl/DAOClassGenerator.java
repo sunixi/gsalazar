@@ -15,7 +15,7 @@ import com.angel.dao.generic.interfaces.GenericDAO;
 import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
-import com.angel.object.generator.java.JavaParameter;
+import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.java.types.JavaInterface;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;

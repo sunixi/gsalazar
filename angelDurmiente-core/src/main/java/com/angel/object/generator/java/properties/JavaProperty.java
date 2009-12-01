@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.angel.object.generator.java;
+package com.angel.object.generator.java.properties;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.common.util.StringHelper;
-
+import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.helper.PackageHelper;
+import com.angel.object.generator.java.JavaAnnotation;
 import com.angel.object.generator.java.enums.TypeModifier;
 import com.angel.object.generator.java.enums.Visibility;
 import com.angel.object.generator.types.CodeConvertible;
@@ -21,27 +21,24 @@ import com.angel.object.generator.types.Importable;
  * @since 26/Noviembre/2009.
  *
  */
-public class JavaProperty implements CodeConvertible, Importable {
+public class JavaProperty extends JavaParameter implements CodeConvertible, Importable {
 
 	private Visibility visibility;
 	private TypeModifier typeModifier;
-	//TODO Cambiar parameter por property.
-	private String parameterType;
-	private String parameterName;
 	private String propertyValue;
 	private List<JavaAnnotation> annotations;
 	
-	public JavaProperty(){
-		super();
+	public JavaProperty(String propertyName){
+		super(StringHelper.EMPTY_STRING);
+		super.setParameterName(propertyName);
 		this.setVisibility(Visibility.PRIVATE);
 		this.setTypeModifier(TypeModifier.NONE);
 		this.setAnnotations(new ArrayList<JavaAnnotation>());
 	}
 	
-	public JavaProperty(String parameterType, String parameterName){
-		this();
-		this.setParameterType(parameterType);
-		this.setParameterName(parameterName);
+	public JavaProperty(String propertyName, String propertyType){
+		this(propertyName);
+		this.setParameterType(propertyType);
 	}
 
 	/**
@@ -56,34 +53,6 @@ public class JavaProperty implements CodeConvertible, Importable {
 	 */
 	public void setVisibility(Visibility visibility) {
 		this.visibility = visibility;
-	}
-
-	/**
-	 * @return the parameterType
-	 */
-	public String getParameterType() {
-		return parameterType;
-	}
-
-	/**
-	 * @param parameterType the parameterType to set
-	 */
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
-	}
-
-	/**
-	 * @return the parameterName
-	 */
-	public String getParameterName() {
-		return parameterName;
-	}
-
-	/**
-	 * @param parameterName the parameterName to set
-	 */
-	public void setParameterName(String parameterName) {
-		this.parameterName = parameterName;
 	}
 	
 	public String getSimpleTypeName(){

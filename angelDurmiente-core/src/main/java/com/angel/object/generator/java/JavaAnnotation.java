@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.object.generator.helper.PackageHelper;
+import com.angel.object.generator.java.properties.JavaAnnotationProperty;
 import com.angel.object.generator.types.CodeConvertible;
 import com.angel.object.generator.types.Importable;
 
@@ -20,18 +21,19 @@ import com.angel.object.generator.types.Importable;
 public class JavaAnnotation implements CodeConvertible, Importable {
 	
 	private String name;
-	private List<JavaProperty> properties;
+	private List<JavaAnnotationProperty> properties;
 	private List<String> importsType;
 	
 	public JavaAnnotation(String annotationClass){
 		super();
 		this.setName("@" + PackageHelper.getClassSimpleName(annotationClass) + "\n");
 		this.setImportsType(new ArrayList<String>());
-		this.setProperties(new ArrayList<JavaProperty>());
+		this.getImportsType().add(annotationClass);
+		this.setProperties(new ArrayList<JavaAnnotationProperty>());
 		this.getImportsType().add(annotationClass);
 	}
 	
-	public JavaAnnotation(String annotationClass, List<JavaProperty> properties){
+	public JavaAnnotation(String annotationClass, List<JavaAnnotationProperty> properties){
 		this(annotationClass);
 		this.getProperties().addAll(properties);
 	}
@@ -53,14 +55,14 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 	/**
 	 * @return the properties
 	 */
-	public List<JavaProperty> getProperties() {
+	public List<JavaAnnotationProperty> getProperties() {
 		return properties;
 	}
 
 	/**
 	 * @param properties the properties to set
 	 */
-	public void setProperties(List<JavaProperty> properties) {
+	public void setProperties(List<JavaAnnotationProperty> properties) {
 		this.properties = properties;
 	}
 
@@ -95,6 +97,10 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 	 */
 	public void setImportsType(List<String> importsType) {
 		this.importsType = importsType;
+	}
+
+	public void addAnnotationProperty(JavaAnnotationProperty javaAnnotationProperty) {
+		this.getProperties().add(javaAnnotationProperty);
 	}
 	
 /*

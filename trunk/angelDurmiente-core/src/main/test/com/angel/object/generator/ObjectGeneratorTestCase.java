@@ -48,6 +48,7 @@ public class ObjectGeneratorTestCase {
 		generator.addDomain(BeanDemo.class);
 		generator.addRelativeImport("daos", "BeanDemoDAO");
 		generator.addRelativeImport("services", "BeanDemoService");
+		generator.addRelativeImport("rowProcessors", "BeanDemoAnnotationRowProcessorCommand");
 		generator.generateClasses();		
 	}
 }

@@ -4,6 +4,7 @@
 package com.angel.object.generator.classesGeneratorFactory.impl;
 
 import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.classGenerator.impl.AnnotationDataGeneratorClassGenerator;
 import com.angel.object.generator.classGenerator.impl.AnnotationRowProcessorCommandClassGenerator;
 import com.angel.object.generator.classGenerator.impl.DAOClassGenerator;
 import com.angel.object.generator.classGenerator.impl.DAOImplClassGenerator;
@@ -26,6 +27,7 @@ public class ClassesGeneratorFactoryImpl implements ClassesGeneratorFactory {
 		classesGenerator.addClassGenerator(new DAOImplClassGenerator("daos.impl", new DAOClassGenerator("daos")));
 		classesGenerator.addClassGenerator(new ServiceTestClassGenerator("services"));
 		classesGenerator.addClassGenerator(new AnnotationRowProcessorCommandClassGenerator("rowProcessors"));
+		classesGenerator.addClassGenerator(new AnnotationDataGeneratorClassGenerator("dataGenerators"));
 		return classesGenerator;
 	}
 	

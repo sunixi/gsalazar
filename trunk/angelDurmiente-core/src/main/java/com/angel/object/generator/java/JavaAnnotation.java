@@ -6,6 +6,7 @@ package com.angel.object.generator.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.java.properties.JavaAnnotationMultiValueProperty;
 import com.angel.object.generator.java.properties.JavaAnnotationProperty;
@@ -110,7 +111,11 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 		List<String> importsType = new ArrayList<String>();
 		importsType.add(this.getAnnotationType());
 		for(Importable i: this.getProperties()){
-			importsType.addAll(i.getImportsType());
+			for(String imp: i.getImportsType()){
+				if(StringHelper.isNotEmpty(imp)){
+					importsType.add(imp);
+				}
+			}
 		}
 		return importsType;
 	}
@@ -161,6 +166,13 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 		JavaAnnotationProperty javaAnnotationProperty = new JavaAnnotationProperty(propertyname);
 		javaAnnotationProperty.addPropertyValue(booleanValue.toString());
 		javaAnnotationProperty.setParameterType(Boolean.class.getCanonicalName());
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
+
+	public JavaAnnotationProperty createJavaAnnotationPropertyString(String propertyName, String stringValue) {
+		JavaAnnotationProperty javaAnnotationProperty = new JavaAnnotationProperty(propertyName);
+		javaAnnotationProperty.addPropertyValueString(stringValue);
 		this.addAnnotationProperty(javaAnnotationProperty);
 		return javaAnnotationProperty;
 	}

@@ -34,10 +34,12 @@ public class TypeMethod implements CodeConvertible, Importable{
 	private boolean implemented = true;
 	private Visibility visibility;
 	private JavaTypeComment comment;
+	private List<JavaAnnotation> annotations;
 
 	public TypeMethod(String methodName){
 		super();
 		this.setContent(new JavaBlockCode());
+		this.setAnnotations(new ArrayList<JavaAnnotation>());
 		this.setMethodName(methodName);
 		this.setVisibility(Visibility.PUBLIC);
 		this.setComment(new JavaTypeComment("TODO Comentar método " + methodName + "."));
@@ -248,8 +250,18 @@ public class TypeMethod implements CodeConvertible, Importable{
 	protected String convertComment(){
 		return this.getComment().convert();
 	}
+
+	protected String convertAnnotations(){
+		String codeConverted = "";
+		for(CodeConvertible cc: this.getAnnotations()){
+			codeConverted += cc.convert();
+		}
+		return codeConverted;
+	}
+	
 	public String convert() {
 		String method = this.convertComment();
+		method += "\t" + this.convertAnnotations();
 		method += "\t" + this.getVisibility().getVisibility();
 		method += this.hasReturnType() ? " " + this.convertReturnType() + " ": " void ";
 		method += this.getMethodName() + "(";
@@ -281,6 +293,11 @@ public class TypeMethod implements CodeConvertible, Importable{
 		for(String i: this.getContent().getImportsType()){
 			this.addImport(imports, i);
 		}
+		for(Importable i: this.getAnnotations()){
+			for(String importClass: i.getImportsType()){
+				this.addImport(imports, importClass);
+			}
+		}
 		return imports;
 	}
 
@@ -296,5 +313,29 @@ public class TypeMethod implements CodeConvertible, Importable{
 	 */
 	public void setComment(JavaTypeComment comment) {
 		this.comment = comment;
+	}
+
+	/**
+	 * @return the annotations
+	 */
+	public List<JavaAnnotation> getAnnotations() {
+		return annotations;
+	}
+
+	/**
+	 * @param annotations the annotations to set
+	 */
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
+	}
+	
+	protected void addJavaAnnotation(JavaAnnotation javaAnnotation){
+		this.getAnnotations().add(javaAnnotation);
+	}
+	
+	public JavaAnnotation addJavaAnnotation(String canonicalAnnotationClass){
+		JavaAnnotation javaAnnotation = new JavaAnnotation(canonicalAnnotationClass);
+		this.addJavaAnnotation(javaAnnotation);
+		return javaAnnotation;
 	}
 }

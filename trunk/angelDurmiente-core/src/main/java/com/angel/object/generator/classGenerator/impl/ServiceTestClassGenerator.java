@@ -15,6 +15,7 @@ import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
+import com.angel.object.generator.java.TypeMethod;
 import com.angel.object.generator.java.properties.JavaProperty;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaType;
@@ -54,8 +55,8 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
 				String methodName = methodBuilder.buildMethodName(domainClass, f);
 				JavaBlockCode contentMethod = methodBuilder.buildMethodContent(domainClass, f);
-				JavaBlockCode methodBlockCode = super.getJavaType().addTypeMethodPublicVoidWithoutParametersImplemented(methodName);
-				methodBlockCode.replaceBlockCode(contentMethod);
+				TypeMethod typeMethod = super.getJavaType().addTypeMethodPublicVoidWithoutParametersImplemented(methodName);
+				typeMethod.getContent().replaceBlockCode(contentMethod);
 			}
 		}
 	}

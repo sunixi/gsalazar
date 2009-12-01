@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.object.generator.helper.PackageHelper;
+import com.angel.object.generator.java.properties.JavaAnnotationMultiValueProperty;
 import com.angel.object.generator.java.properties.JavaAnnotationProperty;
+import com.angel.object.generator.java.properties.JavaAnnotationPropertyAnnotation;
 import com.angel.object.generator.types.CodeConvertible;
 import com.angel.object.generator.types.Importable;
 
@@ -21,16 +23,14 @@ import com.angel.object.generator.types.Importable;
 public class JavaAnnotation implements CodeConvertible, Importable {
 	
 	private String name;
+	private String annotationType;
 	private List<JavaAnnotationProperty> properties;
-	private List<String> importsType;
 	
 	public JavaAnnotation(String annotationClass){
 		super();
 		this.setName("@" + PackageHelper.getClassSimpleName(annotationClass) + "\n");
-		this.setImportsType(new ArrayList<String>());
-		this.getImportsType().add(annotationClass);
+		this.setAnnotationType(annotationClass);
 		this.setProperties(new ArrayList<JavaAnnotationProperty>());
-		this.getImportsType().add(annotationClass);
 	}
 	
 	public JavaAnnotation(String annotationClass, List<JavaAnnotationProperty> properties){
@@ -60,6 +60,20 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 	}
 
 	/**
+	 * @return the annotationType
+	 */
+	public String getAnnotationType() {
+		return annotationType;
+	}
+
+	/**
+	 * @param annotationType the annotationType to set
+	 */
+	public void setAnnotationType(String annotationType) {
+		this.annotationType = annotationType;
+	}
+
+	/**
 	 * @param properties the properties to set
 	 */
 	public void setProperties(List<JavaAnnotationProperty> properties) {
@@ -80,7 +94,11 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 	public String convertProperties() {
 		String codeConverter = "";
 		for(CodeConvertible cc: this.getProperties()){
-			codeConverter += cc.convert();			
+			if(this.getProperties().indexOf(cc) == 0){
+				codeConverter += cc.convert();	
+			} else {
+				codeConverter += "," + cc.convert();
+			}
 		}
 		return codeConverter;
 	}
@@ -89,33 +107,46 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 	 * @return the importsType
 	 */
 	public List<String> getImportsType() {
+		List<String> importsType = new ArrayList<String>();
+		importsType.add(this.getAnnotationType());
+		for(Importable i: this.getProperties()){
+			importsType.addAll(i.getImportsType());
+		}
 		return importsType;
-	}
-
-	/**
-	 * @param importsType the importsType to set
-	 */
-	public void setImportsType(List<String> importsType) {
-		this.importsType = importsType;
 	}
 
 	public void addAnnotationProperty(JavaAnnotationProperty javaAnnotationProperty) {
 		this.getProperties().add(javaAnnotationProperty);
 	}
 	
-/*
-@RowProcessorCommand
-	(
-		columnsRow = {
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.NOMBRE_COLUMN, aliases = {"Nombre del Usuario"} ),
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.APELLIDO_COLUMN, aliases = {"Apellido del Usuario"} ),
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.NOMBRE_USUARIO_COLUMN, aliases = {"Usuario"} ),
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.PASSWORD_COLUMN, aliases = {"Password"} ),
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.EMAIL_COLUMN, aliases = {"Email"} ),
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.IMAGEN_PERFIL_COLUMN, aliases = {"Imagen de perfil"} ),
-			@ColumnRow( columnName = UsuarioAnnotationRowProcessorCommand.FECHA_NACIMIENTO_COLUMN, aliases = {"Fecha de Nacimiento"} )
-		}
-	)
- */
+	public JavaAnnotationProperty createJavaAnnotationProperty(String propertyName){
+		JavaAnnotationProperty javaAnnotationProperty = new JavaAnnotationProperty(propertyName);
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
+
+	public JavaAnnotationProperty createJavaAnnotationProperty(String propertyName, String propertyValue){
+		JavaAnnotationProperty javaAnnotationProperty = this.createJavaAnnotationProperty(propertyName);
+		javaAnnotationProperty.setPropertyValue(propertyValue);
+		return javaAnnotationProperty;
+	}
 	
+	public JavaAnnotationMultiValueProperty createJavaAnnotationMultiValueProperty(String propertyName){
+		JavaAnnotationMultiValueProperty javaAnnotationProperty = new JavaAnnotationMultiValueProperty(propertyName);
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
+	
+	public JavaAnnotationPropertyAnnotation createJavaAnnotationPropertyAnnotation(String canonicalAnnotationType){
+		JavaAnnotation javaAnnotation = new JavaAnnotation(canonicalAnnotationType);
+		JavaAnnotationPropertyAnnotation javaAnnotationProperty = new JavaAnnotationPropertyAnnotation(javaAnnotation);
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
+	
+	public JavaAnnotationMultiValueProperty createJavaAnnotationMultiValuePropertyEmpty(String propertyName){
+		JavaAnnotationMultiValueProperty javaAnnotationProperty = new JavaAnnotationMultiValueProperty(propertyName);
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
 }

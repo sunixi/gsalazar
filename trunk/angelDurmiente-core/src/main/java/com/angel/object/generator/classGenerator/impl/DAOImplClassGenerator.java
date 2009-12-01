@@ -15,6 +15,7 @@ import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
+import com.angel.object.generator.java.TypeMethod;
 import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaInterface;
@@ -61,7 +62,8 @@ public class DAOImplClassGenerator extends ClassGenerator {
 				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
 				JavaBlockCode blockCode = methodBuilder.buildMethodContent(domainClass, f);
 
-				JavaBlockCode blockCodeCreated = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
+				TypeMethod typeMethod = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
+				JavaBlockCode blockCodeCreated = typeMethod.getContent();
 				blockCodeCreated.replaceBlockCode(blockCode);
 			}
 		}

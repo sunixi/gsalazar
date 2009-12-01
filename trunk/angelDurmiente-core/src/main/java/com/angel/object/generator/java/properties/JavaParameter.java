@@ -103,5 +103,5 @@ public class JavaParameter {
 	
 	public void importType() {
 		this.setImportType(true);
-	}
+	}	
 }

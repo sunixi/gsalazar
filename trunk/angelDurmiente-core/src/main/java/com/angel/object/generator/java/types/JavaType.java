@@ -12,11 +12,11 @@ import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.java.JavaAnnotation;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
-import com.angel.object.generator.java.JavaParameter;
-import com.angel.object.generator.java.JavaProperty;
 import com.angel.object.generator.java.JavaTypeComment;
 import com.angel.object.generator.java.TypeMethod;
 import com.angel.object.generator.java.enums.Visibility;
+import com.angel.object.generator.java.properties.JavaParameter;
+import com.angel.object.generator.java.properties.JavaProperty;
 import com.angel.object.generator.types.CodeConvertible;
 import com.angel.object.generator.types.Importable;
 
@@ -248,6 +248,12 @@ public abstract class JavaType implements CodeConvertible {
 				this.addImport(typesImports, it);
 			}
 		}
+		for(Importable i: this.getAnnotations()){
+			for(String it: i.getImportsType()){
+				this.addImport(typesImports, it);
+			}
+		}
+		
 		for(String gi: this.getGlobalImports()){
 			this.addImport(typesImports, gi);
 		}
@@ -545,8 +551,8 @@ public abstract class JavaType implements CodeConvertible {
 	 * @param propertyType to be created.
 	 * @return a java property with its getter and setter method.
 	 */
-	public JavaProperty createJavaProperty(String propertyName, String propertyType){
-		JavaProperty javaProperty = this.createJavaProperty();
+	public JavaProperty createJavaPropertyWithGetterAndSetter(String propertyName, String propertyType){
+		JavaProperty javaProperty = this.createJavaProperty(propertyName, propertyType);
 		javaProperty.setParameterName(propertyName);
 		javaProperty.setParameterType(propertyType);
 		this.createGetterFor(javaProperty);
@@ -570,8 +576,8 @@ public abstract class JavaType implements CodeConvertible {
 		javaBlockCode.addLineCodeThisAssigment(javaProperty.getParameterName());
 	}
 	
-	public JavaProperty createJavaProperty(){
-		JavaProperty javaProperty = new JavaProperty();
+	public JavaProperty createJavaProperty(String propertyName, String propertyType){
+		JavaProperty javaProperty = new JavaProperty(propertyName, propertyType);
 		this.addJavaProperty(javaProperty);
 		return javaProperty;
 	}
@@ -632,7 +638,13 @@ public abstract class JavaType implements CodeConvertible {
 		this.getAnnotations().add(new JavaAnnotation(canonicalName));
 	}
 	
-	public void addAnnotation(String canonicalName, List<JavaProperty> properties){
-		this.getAnnotations().add(new JavaAnnotation(canonicalName, properties));
+	protected void addAnnotation(JavaAnnotation javaAnnotation){
+		this.getAnnotations().add(javaAnnotation);
+	}
+
+	public JavaAnnotation createJavaAnnotation(String canonicalName) {
+		JavaAnnotation javaAnnotation = new JavaAnnotation(canonicalName);
+		this.addAnnotation(javaAnnotation);
+		return javaAnnotation;
 	}
 }

@@ -15,7 +15,7 @@ import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaProperty;
+import com.angel.object.generator.java.properties.JavaProperty;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
@@ -63,7 +63,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	protected void buildServiceProperty(ClassesGenerator generator, Class<?> domainClass) {
 		String propertyName = domainClass.getSimpleName() + "Service";
 		String propertyType = generator.getImportForClassName(propertyName);
-		JavaProperty javaProperty = super.createJavaProperty(propertyName, propertyType);
+		JavaProperty javaProperty = super.createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
 		javaProperty.addAnnotation(Autowired.class.getCanonicalName());
 	}
 

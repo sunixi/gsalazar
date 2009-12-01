@@ -21,7 +21,7 @@ import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.java.JavaConstructor;
-import com.angel.object.generator.java.JavaProperty;
+import com.angel.object.generator.java.properties.JavaProperty;
 import com.angel.object.generator.java.types.JavaInterface;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
@@ -272,9 +272,9 @@ public abstract class ClassGenerator {
 	protected JavaProperty createJavaProperty(String propertyName, String propertyType){
 		return this.getJavaType().createJavaProperty(propertyName, propertyType);
 	}
-
-	protected JavaProperty createJavaProperty(){
-		return this.getJavaType().createJavaProperty();
+	
+	protected JavaProperty createJavaPropertyWithGetterAndSetter(String propertyName, String propertyType){
+		return this.getJavaType().createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
 	}
 	
 	protected void addMethodBuilderStrategies(Class<? extends Annotation> annotation, MethodBuilder methodBuilder){

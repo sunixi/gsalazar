@@ -15,7 +15,7 @@ import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
-import com.angel.object.generator.java.JavaParameter;
+import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaInterface;
 import com.angel.object.generator.java.types.JavaType;

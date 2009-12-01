@@ -10,6 +10,7 @@ import java.util.List;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.java.enums.Visibility;
+import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.types.CodeConvertible;
 import com.angel.object.generator.types.Importable;

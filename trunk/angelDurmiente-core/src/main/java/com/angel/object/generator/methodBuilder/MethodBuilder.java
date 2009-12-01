@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaParameter;
+import com.angel.object.generator.java.properties.JavaParameter;
 
 /**
  * @author Guillermo D. Salazar

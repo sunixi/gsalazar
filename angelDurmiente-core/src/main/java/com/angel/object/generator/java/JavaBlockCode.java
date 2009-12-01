@@ -351,7 +351,7 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 	public void addLineCodeIf(String condition, JavaBlockCode ifJavaBlockCode) {
 		String content = "if(" + condition + ") {";
 		content += "\n\t\t" + ifJavaBlockCode.convert();
-		content += "\n\t}";
+		content += "\n\t\t}";
 		this.addJavaLineCode(this.buildJavaLineCode(content));
 		this.getImportsType().addAll(ifJavaBlockCode.getImportsType());
 	}
@@ -362,9 +362,28 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		}
 	}
 	
+	/**
+	 * Add a line code with an if condition, and a java block code to the true and if condition.
+	 *	<pre>
+	 *	if(condition){
+	 *		ifBlockCode
+	 *	} else {
+	 *		elseBlockCode
+	 *	}
+	 *	</pre>
+	 * @param condition to add in the if sentence.
+	 * @param ifJavaBlockCode to add in the true condition.
+	 * @param elseJavaBlockCode to add in the else condition.
+	 */
 	public void addLineCodeIfElse(String condition, JavaBlockCode ifJavaBlockCode, JavaBlockCode elseJavaBlockCode) {
-		// TODO Auto-generated method stub
-		
+		String content = "if(" + condition + ") {\n";
+		content += "\t\t" + ifJavaBlockCode.convert();
+		content += "\n\t\t} else {\n";
+		content += "\t\t" + elseJavaBlockCode.convert();
+		content += "\n\t\t}\n";
+		this.addJavaLineCode(this.buildJavaLineCode(content));
+		this.getImportsType().addAll(ifJavaBlockCode.getImportsType());
+		this.getImportsType().addAll(elseJavaBlockCode.getImportsType());
 	}
 
 	public void throwNewException(String canonicalExceptionType, String exceptionMessage) {

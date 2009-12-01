@@ -13,6 +13,7 @@ import com.angel.common.helpers.StringHelper;
 import com.angel.data.generator.annotations.Inject;
 import com.angel.io.annotations.ColumnRow;
 import com.angel.io.annotations.RowChecker;
+import com.angel.io.annotations.RowProcessor;
 import com.angel.io.annotations.RowProcessorCommand;
 import com.angel.io.exceptions.InvalidRowDataException;
 import com.angel.object.generator.ClassesGenerator;
@@ -94,12 +95,9 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	}
 	
 	protected void processCheckRowDataMethod(List<JavaParameter> parameters){
-		//@RowChecker(columnsParameters = {})
-		//public void checkRowData(String nombre, String apellido, String nombreUsuario, String password, String email, String imagenPerfil, String fechaNacimiento) throws InvalidRowDataException {
 		TypeMethod checkRodDataTypeMethod = super.getJavaType().addTypeMethodPublicVoid("checkRowData", parameters, true);
 		JavaBlockCode javaBlockCode = checkRodDataTypeMethod.getContent();
 
-		//boolean areAllNotEmpty = StringHelper.areAllNotEmpty(nombre, apellido, nombreUsuario, password, email, imagenPerfil, fechaNacimiento);
 		List<String> parametersNames = new ArrayList<String>();
 		for(JavaParameter jp: parameters){
 			parametersNames.add(jp.getParameterName());
@@ -111,10 +109,17 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		
 		JavaBlockCode ifJavaBlockCode = new JavaBlockCode();
 		
-		String exceptionMessage = "Some row data are NULL - ";
+		String exceptionMessage = "Some row data are NULL - \" + \n";
+		for(JavaParameter jp: parameters){
+			if(parameters.indexOf(jp) == parameters.size() - 1){
+				exceptionMessage += "\t\t\t\t\t\"" + jp.getParameterName() + ": [\" + " +  jp.getParameterName() + " + \"].";
+			} else {
+				exceptionMessage += "\t\t\t\t\t\"" + jp.getParameterName() + ": [\" + " +  jp.getParameterName() + " + \"] - \"+ \n";
+			}
+		}
 		ifJavaBlockCode.throwNewException(InvalidRowDataException.class.getCanonicalName(), exceptionMessage);
 		
-		javaBlockCode.addLineCodeIf("areAllNotEmpty", ifJavaBlockCode);
+		javaBlockCode.addLineCodeIf("!areAllNotEmpty", ifJavaBlockCode);
 
 
 		JavaAnnotation rowCheckerAnnotation = checkRodDataTypeMethod.addJavaAnnotation(RowChecker.class.getCanonicalName());
@@ -127,6 +132,11 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		TypeMethod processRowMethodTypeMethod = super.getJavaType().addTypeMethodPublicImplemented("processRow", parameters, new JavaParameter(domainClass.getSimpleName(), domainClass.getCanonicalName()));
 		JavaBlockCode javaBlockCode = processRowMethodTypeMethod.getContent();
 		javaBlockCode.addLineCodeReturnNull();
+		//@RowProcessor(columnsParameters = {}, object = Usuario.class, inject = true).
+		JavaAnnotation rowProcessorAnnotation = processRowMethodTypeMethod.addJavaAnnotation(RowProcessor.class.getCanonicalName());
+		rowProcessorAnnotation.createJavaAnnotationMultiValuePropertyEmpty("columnsParameters");
+		rowProcessorAnnotation.createJavaAnnotationPropertyClass("object", domainClass.getCanonicalName());
+		rowProcessorAnnotation.createjavaAnnotationPropertyBoolean("inject", Boolean.TRUE);
 	}
 	
 	private void createStaticJavaPropertyFor(Field f) {

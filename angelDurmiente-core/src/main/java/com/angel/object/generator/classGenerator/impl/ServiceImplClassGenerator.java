@@ -13,6 +13,7 @@ import com.angel.object.generator.ClassesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
+import com.angel.object.generator.java.TypeMethod;
 import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaInterface;
@@ -63,8 +64,8 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
 				JavaBlockCode javaBlockCode = methodBuilder.buildMethodContent(domainClass, f);
 
-				JavaBlockCode javaBlockCodeGenerated = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
-				javaBlockCodeGenerated.replaceBlockCode(javaBlockCode);
+				TypeMethod typeMethod = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
+				typeMethod.getContent().replaceBlockCode(javaBlockCode);
 			}
 		}
 	}
@@ -75,12 +76,10 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		String methodName = ReflectionHelper.getGetMethodName(domainClassDAO);
 		JavaParameter returnParameter = super.getJavaType().buildReturnJavaParameter(domainClassDAO);
 		returnParameter.notImportType();
-
-		JavaBlockCode javaBlockCode = super.getJavaType()
-					.addTypeMethodProtectedImplementedWithoutParameters(methodName, returnParameter);
-		
+		TypeMethod typeMethod = super.getJavaType()
+				.addTypeMethodProtectedImplementedWithoutParameters(methodName, returnParameter);
+		JavaBlockCode javaBlockCode = typeMethod.getContent();
 		javaBlockCode.addLineCodeReturnVariable("(" + domainClassDAO + ") super.getGenericDAO()");
-		
 		String importClassName = generator.getImportForClassName(domainClassDAO);
 		super.getJavaType().addImport(importClassName);
 	}

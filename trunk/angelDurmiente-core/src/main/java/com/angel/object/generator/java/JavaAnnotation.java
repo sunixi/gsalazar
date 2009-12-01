@@ -149,4 +149,19 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 		this.addAnnotationProperty(javaAnnotationProperty);
 		return javaAnnotationProperty;
 	}
+
+	public JavaAnnotationProperty createJavaAnnotationPropertyClass(String propertyname, String classCanonicalName) {
+		JavaAnnotationProperty javaAnnotationProperty = new JavaAnnotationProperty(propertyname);
+		javaAnnotationProperty.addPropertyValueClass(classCanonicalName);
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
+
+	public JavaAnnotationProperty createjavaAnnotationPropertyBoolean(String propertyname, Boolean booleanValue) {
+		JavaAnnotationProperty javaAnnotationProperty = new JavaAnnotationProperty(propertyname);
+		javaAnnotationProperty.addPropertyValue(booleanValue.toString());
+		javaAnnotationProperty.setParameterType(Boolean.class.getCanonicalName());
+		this.addAnnotationProperty(javaAnnotationProperty);
+		return javaAnnotationProperty;
+	}
 }

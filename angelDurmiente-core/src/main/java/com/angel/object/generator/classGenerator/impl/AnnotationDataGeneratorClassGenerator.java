@@ -73,13 +73,15 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 		JavaBlockCode prepareInputStreamMethodConent = prepareImportFileTypeMethod.getContent();
 		prepareInputStreamMethodConent.addLineCodeCommented("TODO Change file name.");
 		prepareInputStreamMethodConent.addLineCodeCommented("TODO You can create a static class with files names.");
+		
+		String initialDataFile = "\"/initialData/" + domainClass.getSimpleName() + ".xls\"";
 		List<String> parametersNames = new ArrayList<String>();
-		parametersNames.add("\"/initialData/" + domainClass.getSimpleName() + ".xls\"");
+		parametersNames.add(initialDataFile);
 		JavaLineCode returnPrepareInputStream = 
 			prepareInputStreamMethodConent
 				.getLineCodeReturnCalledStaticMethod(FileHelper.class.getCanonicalName(), "findInputStreamInClasspath", parametersNames);
 		
-		String exceptionMessage =" ";
+		String exceptionMessage ="File not found [\" + " + initialDataFile + "+ \"].";
 		JavaLineCode throwDataGeneratorException = prepareInputStreamMethodConent
 			.getLineCodethrowNewException(DataGeneratorException.class.getCanonicalName(), exceptionMessage);
 		

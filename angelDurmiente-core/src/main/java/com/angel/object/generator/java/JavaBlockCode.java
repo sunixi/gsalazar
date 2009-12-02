@@ -192,6 +192,15 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		return javaLineCode;
 	}
 	
+	public JavaLineCode getLineCodeCalledStaticMethod(String canonicalStaticTypeName, String methodName, Object[] parametersValues){
+		String simpleStaticTypeName = PackageHelper.getClassSimpleName(canonicalStaticTypeName);
+		String parametersPlain = StringHelper.convertToPlainString(parametersValues, ",");
+		String content = simpleStaticTypeName + "." + methodName + "(" + parametersPlain + ")";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImport(canonicalStaticTypeName);
+		return javaLineCode;
+	}
+	
 	/**
 	 * Add a line code with a variable assigment calling to a method in this object.
 	 *  
@@ -289,7 +298,9 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 	
 	public void addLineCodeCommented(String comment){
 		String content = "/** " + comment + ". */";
-		this.addJavaLineCode(this.buildJavaLineCode(content));
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.removeEndTag();
+		this.addJavaLineCode(javaLineCode);
 	}
 
 	public int quantityLineCodes(){
@@ -446,12 +457,14 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 	public void addLineCodeTryCatch(JavaLineCode tryJavaLineCode,
 			String canonicalExceptionType, JavaLineCode catchJavaLineCode) {
 		String exceptionSimpleName = PackageHelper.getClassSimpleName(canonicalExceptionType);
-		String content = "\ttry {\n\t\t";
-		content += "\t\t\t\t" + tryJavaLineCode.convert();
-		content += "} catch ( " + exceptionSimpleName + " e) {\n";
-		content += "\t\t\t\t" + catchJavaLineCode.convert();
-		content += "}";
-		this.addJavaLineCode(this.buildJavaLineCode(content));
+		String content = "try {\n\t\t";
+		content += "\t\t\t" + tryJavaLineCode.convert();
+		content += "\t\t} catch ( " + exceptionSimpleName + " e) {\n";
+		content += "\t" + catchJavaLineCode.convert();
+		content += "\t\t}";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.removeEndTag();
+		this.addJavaLineCode(javaLineCode);
 		this.getImportsType().add(canonicalExceptionType);
 		this.getImportsType().addAll(tryJavaLineCode.getImportsType());
 		this.getImportsType().addAll(catchJavaLineCode.getImportsType());
@@ -476,5 +489,86 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
 		javaLineCode.addImport(canonicalStaticTypeName);
 		return javaLineCode;
+	}
+
+	/**
+	 * Add a line code calling to a variable method with parameters. Parameters list must be basic java types, because they
+	 * aren't imported.
+	 *	<pre>
+	 *		variableName.methodName(parametersNames)
+	 *	</pre>
+	 * @param variableName
+	 * @param methodName
+	 * @param parametersNames
+	 * @return
+	 */
+	public JavaLineCode getLineCodeCalledVariableMethod(String variableName, String methodName, List<String> parametersNames) {
+		String parametersPlain = StringHelper.convertToPlainString(parametersNames.toArray(), ",");
+		String content = variableName + "." + methodName + "(" + parametersPlain + ")";
+		return this.buildJavaLineCode(content);
+	}
+
+	public void addLineCodeVariableSetValue(String variableName, String setterMethodName, JavaLineCode javaLineCode) {
+		javaLineCode.removeEndTag();
+		String content = variableName + "." + setterMethodName;
+		content += "(" + javaLineCode.convert() + ")";
+		JavaLineCode lineCode = this.buildJavaLineCode(content);
+		this.addJavaLineCode(lineCode);
+		this.getImportsType().addAll(javaLineCode.getImportsType());		
+	}
+
+	public JavaLineCode getLineCodeNull() {
+		return this.buildJavaLineCode("null");
+	}
+
+	public void addLineCodeWithFor(String forCondition, JavaLineCode forContent) {
+		String content = "for(" + forCondition + "){\n";
+		content += forContent.convert();
+		content += "}\n";
+		JavaLineCode lineCode = this.buildJavaLineCode(content);
+		this.addJavaLineCode(lineCode);
+		this.getImportsType().addAll(forContent.getImportsType());
+	}
+
+	/**
+	 * Add a line code with a creation collection type with generics.
+	 * 
+	 *	<pre>
+	 *		new CollectionType<TypeGeneric>
+	 *	</pre>
+	 * @param canonicalName
+	 * @param canonicalName2
+	 * @return
+	 */
+	public JavaLineCode getLineCodeCreateCollectionTyped(String canonicalCollectionType, String canonicalTypeGeneric) {
+		List<String> importsTypes = new ArrayList<String>();
+		importsTypes.add(canonicalCollectionType);
+		importsTypes.add(canonicalTypeGeneric);
+		String simpleCollectionType = PackageHelper.getClassSimpleName(canonicalCollectionType);
+		String simpleGenericType = PackageHelper.getClassSimpleName(canonicalTypeGeneric);
+		String content = "new " + simpleCollectionType + "<" + simpleGenericType + ">()";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImportsTypes(importsTypes);
+		return javaLineCode;
+	}
+
+	/**
+	 * Add a line code with a assigment to a collection generic typed.
+	 *	<pre>
+	 *	CollectionType<Type> variableName = assigmenteLineCode
+	 *	</pre>
+	 * @param collectionCanonicalName
+	 * @param genericCanonicalType
+	 * @param variableName
+	 * @param collectionTypedAssigment
+	 */
+	public void addLineCodeAssigmentCollectionTypedVariable(String collectionCanonicalName, String genericCanonicalType, String variableName,
+			JavaLineCode collectionTypedAssigment) {
+		String singleCollectionType = PackageHelper.getClassSimpleName(collectionCanonicalName);
+		String singleGenericType = PackageHelper.getClassSimpleName(genericCanonicalType);
+		String content = singleCollectionType + "<" + singleGenericType + "> " + variableName + " = " + collectionTypedAssigment.convert();
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImportsTypes(collectionTypedAssigment.getImportsType());
+		this.addJavaLineCode(javaLineCode);
 	}
 }

@@ -27,6 +27,7 @@ public class JavaConstructor implements CodeConvertible {
 	public JavaConstructor(String name){
 		super();
 		this.setName(name);
+		this.setContent("super();");
 		this.setVisibility(Visibility.PUBLIC);
 		this.setParameters(new ArrayList<JavaParameter>());
 	}
@@ -149,5 +150,17 @@ public class JavaConstructor implements CodeConvertible {
 			return packages[packages.length - 1];
 		}
 		return classType;
+	}
+
+	public void setPrivateVisibility() {
+		this.setVisibility(Visibility.PRIVATE);
+	}
+	
+	public void setProtectedVisibility() {
+		this.setVisibility(Visibility.PROTECTED);
+	}
+	
+	public void setPublicVisibility() {
+		this.setVisibility(Visibility.PUBLIC);
 	}
 }

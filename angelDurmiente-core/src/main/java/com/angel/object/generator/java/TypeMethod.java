@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
+import com.angel.object.generator.java.enums.TypeModifier;
 import com.angel.object.generator.java.enums.Visibility;
 import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.java.types.JavaType;
@@ -32,6 +33,7 @@ public class TypeMethod implements CodeConvertible, Importable{
 	private JavaParameter returnType;
 	private JavaBlockCode content;
 	private boolean implemented = true;
+	private TypeModifier typeModifier;
 	private Visibility visibility;
 	private JavaTypeComment comment;
 	private List<JavaAnnotation> annotations;
@@ -42,6 +44,7 @@ public class TypeMethod implements CodeConvertible, Importable{
 		this.setAnnotations(new ArrayList<JavaAnnotation>());
 		this.setMethodName(methodName);
 		this.setVisibility(Visibility.PUBLIC);
+		this.setTypeModifier(TypeModifier.NONE);
 		this.setComment(new JavaTypeComment("TODO Comentar método " + methodName + "."));
 		this.getComment().clearTags();
 	}
@@ -259,10 +262,18 @@ public class TypeMethod implements CodeConvertible, Importable{
 		return codeConverted;
 	}
 	
+	protected String convertVisibility(){
+		return this.getVisibility().getVisibility();
+	}
+	
+	protected String convertTypeModifier(){
+		return this.getTypeModifier().getTypeModifier();
+	}
+	
 	public String convert() {
 		String method = this.convertComment();
 		method += "\t" + this.convertAnnotations();
-		method += "\t" + this.getVisibility().getVisibility();
+		method += "\t" + this.convertVisibility() + " " + this.convertTypeModifier();
 		method += this.hasReturnType() ? " " + this.convertReturnType() + " ": " void ";
 		method += this.getMethodName() + "(";
 		method += this.hasJavaParameters() ? this.getPlainJavaParametersNames() : "";
@@ -329,6 +340,20 @@ public class TypeMethod implements CodeConvertible, Importable{
 		this.annotations = annotations;
 	}
 	
+	/**
+	 * @return the typeModifier
+	 */
+	public TypeModifier getTypeModifier() {
+		return typeModifier;
+	}
+
+	/**
+	 * @param typeModifier the typeModifier to set
+	 */
+	public void setTypeModifier(TypeModifier typeModifier) {
+		this.typeModifier = typeModifier;
+	}
+
 	protected void addJavaAnnotation(JavaAnnotation javaAnnotation){
 		this.getAnnotations().add(javaAnnotation);
 	}
@@ -337,5 +362,21 @@ public class TypeMethod implements CodeConvertible, Importable{
 		JavaAnnotation javaAnnotation = new JavaAnnotation(canonicalAnnotationClass);
 		this.addJavaAnnotation(javaAnnotation);
 		return javaAnnotation;
+	}
+	
+	public void setStaticTypeModifier(){
+		this.setTypeModifier(TypeModifier.STATIC);
+	}
+	
+	public void setFinalStaticTypeModifier(){
+		this.setTypeModifier(TypeModifier.FINAL_STATIC);
+	}
+
+	public void setNoneModifier(){
+		this.setTypeModifier(TypeModifier.NONE);
+	}
+
+	public void setFinalTypeModifier(){
+		this.setTypeModifier(TypeModifier.FINAL);
 	}
 }

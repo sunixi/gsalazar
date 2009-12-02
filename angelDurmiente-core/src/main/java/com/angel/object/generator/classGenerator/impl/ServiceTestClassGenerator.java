@@ -30,8 +30,11 @@ import com.angel.object.generator.methodBuilder.impl.AccesorServiceTestAnnotatio
  */
 public class ServiceTestClassGenerator extends ClassGenerator {
 
+	protected final static String DEFAULT_BASE_TEST_SOURCE_DIRECTORY = "\\src\\main\\test\\";
+
 	public ServiceTestClassGenerator(String basePackage) {
 		super(basePackage);
+		super.setBaseJavaSourcesDirectory(DEFAULT_BASE_TEST_SOURCE_DIRECTORY);
 		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorServiceTestAnnotationMethodBuilder());
 	}
 

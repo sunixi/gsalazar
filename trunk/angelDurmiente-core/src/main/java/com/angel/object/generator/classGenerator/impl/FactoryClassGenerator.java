@@ -11,7 +11,7 @@ import java.util.List;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.JavaConstructor;
@@ -39,7 +39,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 
 
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.processPrivateConstructor();
 		this.processCreateDomainObjectEmpty(generator, domainClass);
 		this.processCreateDomainObject(generator, domainClass);
@@ -72,7 +72,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 	 * @param generator classes with all class generator to use.
 	 * @param domainClass to add this static factory method.
 	 */
-	protected void processCreateDomainObjectEmpty(ClassesGenerator generator,
+	protected void processCreateDomainObjectEmpty(CodesGenerator generator,
 			Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName() + "Empty";
 		JavaParameter returnParameter = new JavaParameter(domainClass.getCanonicalName());
@@ -83,7 +83,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		javaBlockCode.addLineCodeReturn(createReturnLineCode);
 	}
 	
-	protected void processCreateDomainObjectFor(ClassesGenerator generator, Class<?> domainClass) {
+	protected void processCreateDomainObjectFor(CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName();
 		
 		List<JavaParameter> parameters = new ArrayList<JavaParameter>();
@@ -103,7 +103,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		javaBlockCode.addLineCodeReturnVariable("instances");
 	}
 	
-	protected void processCreateDomainObject(ClassesGenerator generator, Class<?> domainClass) {
+	protected void processCreateDomainObject(CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName();
 		JavaParameter returnParameter = new JavaParameter(domainClass.getCanonicalName());
 		TypeMethod createDomainObjectEmptyTypeMethod = super.getJavaType().addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
@@ -121,7 +121,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		javaBlockCode.addLineCodeReturnVariable("bean");
 	}
 	
-	protected void processFieldForCreateDomainObject(Field field, ClassesGenerator generator, Class<?> domainClass, TypeMethod method){
+	protected void processFieldForCreateDomainObject(Field field, CodesGenerator generator, Class<?> domainClass, TypeMethod method){
 		Class<?> classField = field.getType();
 		String setterMethodName = ReflectionHelper.getSetMethodName(field.getName());
 		boolean isBasicClass = ReflectionHelper.isABasicJavaClass(classField);
@@ -145,7 +145,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// Do nothing. 
 	}
 

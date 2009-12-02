@@ -12,7 +12,7 @@ import javax.persistence.Column;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.dao.generic.interfaces.GenericDAO;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.properties.JavaParameter;
@@ -62,7 +62,7 @@ public class DAOClassGenerator extends ClassGenerator {
 
 
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
@@ -77,7 +77,7 @@ public class DAOClassGenerator extends ClassGenerator {
 
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// TODO Auto-generated method stub
 		
 	}

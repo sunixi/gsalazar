@@ -16,7 +16,7 @@ import com.angel.io.annotations.RowChecker;
 import com.angel.io.annotations.RowProcessor;
 import com.angel.io.annotations.RowProcessorCommand;
 import com.angel.io.exceptions.InvalidRowDataException;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaAnnotation;
@@ -60,7 +60,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		)
 	 */
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 
 		JavaAnnotation rowProcessorCommandAnnotation = this.getJavaType().createJavaAnnotation(RowProcessorCommand.class.getCanonicalName());		
@@ -164,7 +164,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		return stringBuffer.toString();
 	}
 
-	protected void buildServiceProperty(ClassesGenerator generator, Class<?> domainClass) {
+	protected void buildServiceProperty(CodesGenerator generator, Class<?> domainClass) {
 		String propertyName = domainClass.getSimpleName() + "DAO";
 		String propertyType = generator.getImportForClassName(propertyName);
 		JavaProperty javaProperty = super.createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
@@ -177,7 +177,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	}
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// Do nothing. 
 	}
 

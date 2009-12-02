@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +16,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.angel.common.helpers.FileHelper;
-import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.java.JavaConstructor;
 import com.angel.object.generator.java.properties.JavaProperty;
 import com.angel.object.generator.java.types.JavaInterface;
@@ -31,28 +29,27 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  * @since 26/Noviembre/2009.
  *
  */
-public abstract class ClassGenerator {
+public abstract class ClassGenerator extends CodeGenerator {
 	
-	private static final Logger LOGGER = Logger.getLogger(ClassesGenerator.class);
-	private static final String DEFAULT_BASE_SOURCS_DIRECTORY = "\\src\\main\\java\\";
-	private String basePackage = "";
-	private List<Class<?>> excludesDomains;
+	private static final Logger LOGGER = Logger.getLogger(CodesGenerator.class);
 	private JavaType javaType;
-	private String baseJavaSourcesDirectory;
 	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
 	private ClassGenerator interfaceClassGenerator;
 
 	protected abstract JavaType buildJavaType();
+
+	protected abstract void buildInterfacesClasses();
 	
+	protected abstract String buildClassName(Class<?> domainClass);
+	
+	protected abstract void generateContentClass(CodesGenerator generator, Class<?> domainClass);
+
 	public ClassGenerator(){
 		super();
-		this.setExcludesDomains(new ArrayList<Class<?>>());
 		this.setMethodBuilderStrategies(new HashMap<Class<? extends Annotation>, MethodBuilder>());
-		this.setBaseJavaSourcesDirectory(DEFAULT_BASE_SOURCS_DIRECTORY);
 		this.setJavaType(this.buildJavaType());
 	}
-	
-	
+
 	public ClassGenerator(String basePackage){
 		this();
 		this.setBasePackage(basePackage);
@@ -63,68 +60,51 @@ public abstract class ClassGenerator {
 		this.setInterfaceClassGenerator(interfaceClassGenerator);
 	}
 	
-	/**
-	 * @return the basePackage
-	 */
-	public String getBasePackage() {
-		return basePackage;
-	}
-
-	/**
-	 * @param basePackage the basePackage to set
-	 */
-	public void setBasePackage(String basePackage) {
-		this.basePackage = basePackage;
-	}
-
-	public void excludeDomain(String domainClassName) {
-		Class<?> domainClass = ReflectionHelper.getClassFrom(domainClassName);
-		if(domainClass != null){
-			this.getExcludesDomains().add(domainClass);
+	public void initializeCodeGenerator(CodesGenerator generator, List<Class<?>> domainClasses){
+		if(this.hasInterfaceClassGenerator()){
+			LOGGER.debug("Initializing interface code generator [" + this.getInterfaceClassGenerator().getClass().getCanonicalName() + "] at implementation class generator type [" + this.getClass().getCanonicalName() + "].");			
+			this.getInterfaceClassGenerator().initializeCodeGenerator(generator, domainClasses);
 		}
-	}
-
-	public <T> void excludeDomain(Class<T> domainClass) {
-		this.getExcludesDomains().add(domainClass);
-	}
-
-	/**
-	 * @return the excludesDomains
-	 */
-	protected List<Class<?>> getExcludesDomains() {
-		return excludesDomains;
-	}
-
-	/**
-	 * @param excludesDomains the excludesDomains to set
-	 */
-	protected void setExcludesDomains(List<Class<?>> excludesDomains) {
-		this.excludesDomains = excludesDomains;
-	}
-
-	public boolean isExcludeDomainClass(Class<?> domainClass) {
-		return this.getExcludesDomains().contains(domainClass);
-	}
-	
-	public void initializeClassGeneratorImport(ClassesGenerator generator, List<Class<?>> domainClasses){
+		this.initializeTagsComments(generator, domainClasses);
 		for(Class<?> domainClass: domainClasses){
 			String simpleClassGeneratorType = this.buildClassName(domainClass);
 			generator.addRelativeImport(this.getBasePackage(), simpleClassGeneratorType);
 		}
-		this.initializeClassesImports(generator);
 	}
 	
-	protected void initializeClassesImports(ClassesGenerator generator){
-		//Do Nothing.
+	@Override
+	public void generateCode(CodesGenerator generator, List<Class<?>> domainClasses) {
+		if(this.hasInterfaceClassGenerator()){
+			this.getInterfaceClassGenerator().generateCode(generator, domainClasses);
+		}
+		super.generateCode(generator, domainClasses);
+	}
+	
+	/**
+	 * Initialize all tags comments in codes generator global configuration.
+	 * 
+	 * @param generator which was used to configure domain classes.
+	 * @param domainClasses list with all domain object classes added (by user or reflection).
+	 */
+	protected void initializeTagsComments(CodesGenerator generator, List<Class<?>> domainClasses){
+		if(this.hasInterfaceClassGenerator()){
+			this.getInterfaceClassGenerator().initializeCodeGenerator(generator, domainClasses);
+		}
+		LOGGER.info("Adding tags comments for class generator type [" + this.getClass().getCanonicalName() + "].");
+		for(String tag: generator.getTagCommentsNames()){
+			String valueTag = generator.getTagCommentValue(tag);
+			LOGGER.info("Adding tag comment [" + tag + " = " + valueTag + " ] for class generator type [" + this.getClass().getCanonicalName() + "].");
+			this.addTagComment(tag, valueTag);
+		}
 	}
 
-	public void generateClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateCodeFor(CodesGenerator generator, Class<?> domainClass) {
 		this.updateJavaType(generator, domainClass);
 		this.generateContentClass(generator, domainClass);
 		this.createJavaClassFile(generator);
 	}
 	
-	protected void updateJavaType(ClassesGenerator generator, Class<?> domainClass){
+	protected void updateJavaType(CodesGenerator generator, Class<?> domainClass){
 		String classGeneratorName = this.buildClassName(domainClass);
 		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
 		this.getJavaType().setTypeName(className);
@@ -135,14 +115,14 @@ public abstract class ClassGenerator {
 		this.updateCurrentJavaType(generator, domainClass);
 	}
 	
-	protected void processGlobalTypesImportsClassGenerator(ClassesGenerator generator){
+	protected void processGlobalTypesImportsClassGenerator(CodesGenerator generator){
 		if(this.hasInterfaceClassGenerator()){
 			String classCanonicalNameGenerator = this.getInterfaceClassGenerator().getCanonicalClassNameGenerator(generator);
 			this.getJavaType().addImport(classCanonicalNameGenerator);
 		}
 	}
 	
-	public String getCanonicalClassNameGenerator(ClassesGenerator generator){
+	public String getCanonicalClassNameGenerator(CodesGenerator generator){
 		String classGeneratorName = this.buildClassName(this.getJavaType().getDomainObject());
 		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
 		return className;
@@ -160,7 +140,7 @@ public abstract class ClassGenerator {
 		}
 	}
 	
-	protected abstract void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass);
+	protected abstract void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass);
 	
 	public void addTagComment(String tag, String comment){
 		this.getJavaType().addTagComment(tag, comment);
@@ -170,17 +150,16 @@ public abstract class ClassGenerator {
 		this.getJavaType().addAuthorTagComment(author);
 	}
 
-	protected void createJavaClassFile(ClassesGenerator generator) {
+	protected void createJavaClassFile(CodesGenerator generator) {
 		String javaFileContent = this.getJavaType().convert();
 		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "\\";
 		LOGGER.info("Creating java class file [" + this.getJavaType().getTypeName() + "] at package [" + packageName + "].");
-		String directory = System.getProperty("user.dir") + this.getBaseJavaSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
+		String directory = System.getProperty("user.dir") + super.getBaseSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
 		File directories = new File(directory);
 		boolean directoriesCreated = directories.mkdirs();
 		LOGGER.info("Directories [" + directory + "] was created: [" + directoriesCreated + "].");
 		String fileName = this.getJavaType().getName();
 		File javaClassFile = FileHelper.createFile(directory, fileName);
-		
 		try {
 			Writer writer = new FileWriter(javaClassFile);
 			writer.write(javaFileContent);
@@ -191,13 +170,6 @@ public abstract class ClassGenerator {
 	protected void getInterfacesClasses(){
 		this.buildInterfacesClasses();
 	}
-	
-	protected abstract void buildInterfacesClasses();
-	
-	protected abstract String buildClassName(Class<?> domainClass);
-	
-	protected abstract void generateContentClass(ClassesGenerator generator, Class<?> domainClass);
-
 
 	/**
 	 * @return the methodBuilderStrategies
@@ -254,20 +226,6 @@ public abstract class ClassGenerator {
 	 */
 	protected void setJavaType(JavaType javaType) {
 		this.javaType = javaType;
-	}
-
-	/**
-	 * @return the baseJavaSourcesDirectory
-	 */
-	public String getBaseJavaSourcesDirectory() {
-		return baseJavaSourcesDirectory;
-	}
-
-	/**
-	 * @param baseJavaSourcesDirectory the baseJavaSourcesDirectory to set
-	 */
-	public void setBaseJavaSourcesDirectory(String baseJavaSourcesDirectory) {
-		this.baseJavaSourcesDirectory = baseJavaSourcesDirectory;
 	}
 
 	public String getDomainObjectCanonicalName(){

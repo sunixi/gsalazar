@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.angel.architecture.services.impl.GenericServiceImpl;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
@@ -51,7 +51,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 	}
 	
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.buildGenericDAOGetter(generator, domainClass);
 		
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
@@ -70,7 +70,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		}
 	}
 
-	protected void buildGenericDAOGetter(ClassesGenerator generator, Class<?> domainClass) {
+	protected void buildGenericDAOGetter(CodesGenerator generator, Class<?> domainClass) {
 		String domainClassDAO = domainClass.getSimpleName() + "DAO";
 
 		String methodName = ReflectionHelper.getGetMethodName(domainClassDAO);
@@ -90,7 +90,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// TODO 
 	}
 

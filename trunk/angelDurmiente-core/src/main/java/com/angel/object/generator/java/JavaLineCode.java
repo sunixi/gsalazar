@@ -87,4 +87,10 @@ public class JavaLineCode implements Importable, CodeConvertible {
 	public void addImportsType(JavaLineCode otherJavaLineCode) {
 		this.getImportsType().addAll(otherJavaLineCode.getImportsType());
 	}
+
+	public void removeEndTag() {
+		if(this.getContent().endsWith(JAVA_END_OF_LINE)){
+			this.setContent(this.getContent().substring(0, this.getContent().length() - 1));
+		}
+	}
 }

@@ -162,8 +162,17 @@ public abstract class ClassGenerator {
 		String javaFileContent = this.getJavaType().convert();
 		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "\\";
 		String directory = System.getProperty("user.dir") + this.getBaseJavaSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
+
 		String fileName = this.getJavaType().getName();
 		File javaClassFile = FileHelper.createFile(directory, fileName);
+		if(javaClassFile.exists()){
+			try {
+				javaClassFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		try {
 			Writer writer = new FileWriter(javaClassFile);
 			writer.write(javaFileContent);

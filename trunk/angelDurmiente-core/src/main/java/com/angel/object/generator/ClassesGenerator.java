@@ -3,11 +3,16 @@
  */
 package com.angel.object.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import com.angel.common.helpers.ReflectionHelper;
+import com.angel.common.helpers.StringHelper;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 
 /**
@@ -16,17 +21,20 @@ import com.angel.object.generator.classGenerator.ClassGenerator;
  */
 public class ClassesGenerator {
 
+	private final static Logger LOGGER = Logger.getLogger(ClassesGenerator.class);
 	private String baseProjectPackage;
 	private List<Class<?>> domainClasses;
 	private List<ClassGenerator> classesGenerators;
 	private Map<String, String> globalImports;
 	private Map<String, String> tagsComment;
+	private String beanPackageName;
 
 	/**
 	 * 
 	 */
 	public ClassesGenerator() {
 		super();
+		this.setBaseProjectPackage(StringHelper.EMPTY_STRING);
 		this.setClassesGenerators(new ArrayList<ClassGenerator>());
 		this.setDomainClasses(new ArrayList<Class<?>>());
 		this.setGlobalImports(new HashMap<String, String>());
@@ -61,6 +69,36 @@ public class ClassesGenerator {
 	}
 
 	public void generateClasses() {
+		this.initializeReflectionDomainObjects();
+		this.initializeGlobalImports();
+		this.generateClassesGeneratorClasses();
+	}
+	
+	protected void initializeReflectionDomainObjects(){
+		if(this.hasBeanPackageName()){
+			String canonicalBeanPackageName = this.getBaseProjectPackage() + "." + this.getBeanPackageName();
+			String sourcesDirectory = System.getProperty("user.dir") + "\\src\\main\\java\\";
+			String beanDirectory =	sourcesDirectory + 
+									StringHelper.replaceAll(canonicalBeanPackageName, ".", "\\");
+			LOGGER.debug("The project directory built is [" + sourcesDirectory + "].");
+			LOGGER.debug("Finding java classes in package [" + canonicalBeanPackageName + "]."); 
+			File directory = new File(beanDirectory);
+			for(String name: directory.list()){
+				if(name.endsWith(".java")){
+					String simpleClassName = name.replace(".java", "");
+					String canonicalBeanClass = canonicalBeanPackageName + "." + simpleClassName;
+					Class<?> beanClass = ReflectionHelper.getClassFrom(canonicalBeanClass);
+					LOGGER.info("Java class found [" + beanClass.getSimpleName() + "].");
+				}
+			}
+		}
+	}
+	
+	public boolean hasBeanPackageName(){
+		return StringHelper.isNotEmpty(this.getBeanPackageName());
+	}
+	
+	protected void generateClassesGeneratorClasses(){
 		for(ClassGenerator classGenerator : this.getClassesGenerators()){
 			for(Class<?> domainClass : this.getDomainClasses()){
 				if(!classGenerator.isExcludeDomainClass(domainClass)){
@@ -75,13 +113,28 @@ public class ClassesGenerator {
 		}
 	}
 	
+	protected void initializeGlobalImports(){
+		for(ClassGenerator classGenerator : this.getClassesGenerators()){
+			if(classGenerator.hasInterfaceClassGenerator()){
+				LOGGER.info("Initializing class generator type [" + classGenerator.getInterfaceClassGenerator().getClass().getCanonicalName() + "] import.");
+				classGenerator.getInterfaceClassGenerator().initializeClassGeneratorImport(this, this.getDomainClasses());	
+			}
+			LOGGER.info("Initializing class generator type [" + classGenerator.getClass().getCanonicalName() + "] import.");
+			classGenerator.initializeClassGeneratorImport(this, this.getDomainClasses());
+		}
+	}
+	
 	protected void addTagComments(ClassGenerator classGenerator){
+		LOGGER.info("Adding tags comments for class generator type [" + classGenerator.getClass().getCanonicalName() + "].");
 		for(String tag: this.getTagsComment().keySet()){
-			classGenerator.addTagComment(tag, this.getTagsComment().get(tag));
+			String valueTag = this.getTagsComment().get(tag);
+			LOGGER.info("Adding tag comment [" + tag + " = " + valueTag + " ] for class generator type [" + classGenerator.getClass().getCanonicalName() + "].");
+			classGenerator.addTagComment(tag, valueTag);
 		}
 	}
 	
 	protected void processDomainClass(Class<?> domainClass, ClassGenerator classGenerator){
+		LOGGER.info("Processing domain class [" + domainClass.getCanonicalName() + "] with class generator type [" + classGenerator.getClass().getCanonicalName() + "].");
 		classGenerator.generateClass(this, domainClass);
 	}
 
@@ -177,5 +230,19 @@ public class ClassesGenerator {
 	
 	public void addAuthorTag(String comment){
 		this.getTagsComment().put("@author", comment);
+	}
+
+	/**
+	 * @return the beanPackageName
+	 */
+	public String getBeanPackageName() {
+		return beanPackageName;
+	}
+
+	/**
+	 * @param beanPackageName the beanPackageName to set
+	 */
+	public void setBeanPackageName(String beanPackageName) {
+		this.beanPackageName = beanPackageName;
 	}
 }

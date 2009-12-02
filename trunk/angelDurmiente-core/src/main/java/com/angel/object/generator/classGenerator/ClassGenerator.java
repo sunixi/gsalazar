@@ -105,6 +105,18 @@ public abstract class ClassGenerator {
 	public boolean isExcludeDomainClass(Class<?> domainClass) {
 		return this.getExcludesDomains().contains(domainClass);
 	}
+	
+	public void initializeClassGeneratorImport(ClassesGenerator generator, List<Class<?>> domainClasses){
+		for(Class<?> domainClass: domainClasses){
+			String simpleClassGeneratorType = this.buildClassName(domainClass);
+			generator.addRelativeImport(this.getBasePackage(), simpleClassGeneratorType);
+		}
+		this.initializeClassesImports(generator);
+	}
+	
+	protected void initializeClassesImports(ClassesGenerator generator){
+		//Do Nothing.
+	}
 
 	public void generateClass(ClassesGenerator generator, Class<?> domainClass) {
 		this.updateJavaType(generator, domainClass);

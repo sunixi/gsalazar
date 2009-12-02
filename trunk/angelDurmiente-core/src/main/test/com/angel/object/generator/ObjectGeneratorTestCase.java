@@ -44,11 +44,14 @@ public class ObjectGeneratorTestCase {
 		/** Objeto generador principal de clases. */
 		ClassesGeneratorFactory classesGeneratorFactory = new ClassesGeneratorFactoryImpl();
 		ClassesGenerator generator = classesGeneratorFactory.createClassesGenerator("ar.com.angelDurmiente");//new ClassesGenerator("ar.com.angelDurmiente");
+		generator.setBeanPackageName("beans");
 		generator.addAuthorTag("Guillermo Daniel Salazar");
 		generator.addDomain(BeanDemo.class);
+		/*
 		generator.addRelativeImport("daos", "BeanDemoDAO");
 		generator.addRelativeImport("services", "BeanDemoService");
 		generator.addRelativeImport("rowProcessors", "BeanDemoAnnotationRowProcessorCommand");
+		*/
 		generator.generateClasses();		
 	}
 }

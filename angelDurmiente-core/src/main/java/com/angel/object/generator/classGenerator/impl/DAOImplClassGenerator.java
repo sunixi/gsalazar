@@ -10,7 +10,7 @@ import java.util.List;
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
@@ -50,7 +50,7 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.buildJavaTypeConstructor(generator, domainClass);
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 		for(Field f : fields){
@@ -69,7 +69,7 @@ public class DAOImplClassGenerator extends ClassGenerator {
 		}
 	}
 	
-	protected void buildJavaTypeConstructor(ClassesGenerator generator, Class<?> domainClass){
+	protected void buildJavaTypeConstructor(CodesGenerator generator, Class<?> domainClass){
 		JavaConstructor javaConstructor = super.createJavaConstructor();
 		String content = "super(" + domainClass.getSimpleName() + ".class, " + ObjectId.class.getSimpleName() + ".class);";
 		javaConstructor.setContent(content);
@@ -81,7 +81,7 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// TODO 
 	}
 

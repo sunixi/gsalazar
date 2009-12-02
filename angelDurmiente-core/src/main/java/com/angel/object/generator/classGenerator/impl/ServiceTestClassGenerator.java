@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ar.com.angelDurmiente.AngelDurmienteBaseTestCase;
 
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaBlockCode;
@@ -34,7 +34,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 
 	public ServiceTestClassGenerator(String basePackage) {
 		super(basePackage);
-		super.setBaseJavaSourcesDirectory(DEFAULT_BASE_TEST_SOURCE_DIRECTORY);
+		super.setBaseSourcesDirectory(DEFAULT_BASE_TEST_SOURCE_DIRECTORY);
 		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorServiceTestAnnotationMethodBuilder());
 	}
 
@@ -49,7 +49,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	}
 	
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.buildServiceProperty(generator, domainClass);
 		
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
@@ -64,7 +64,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 		}
 	}
 
-	protected void buildServiceProperty(ClassesGenerator generator, Class<?> domainClass) {
+	protected void buildServiceProperty(CodesGenerator generator, Class<?> domainClass) {
 		String propertyName = domainClass.getSimpleName() + "Service";
 		String propertyType = generator.getImportForClassName(propertyName);
 		JavaProperty javaProperty = super.createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
@@ -77,7 +77,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// TODO 
 	}
 

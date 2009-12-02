@@ -8,44 +8,76 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.classGenerator.ClassGenerator;
+import com.angel.object.generator.classGenerator.CodeGenerator;
 
 /**
  * @author Guillermo D. Salazar
  *
  */
-public class ClassesGenerator {
+public class CodesGenerator {
 
-	private final static Logger LOGGER = Logger.getLogger(ClassesGenerator.class);
+	private final static Logger LOGGER = Logger.getLogger(CodesGenerator.class);
 	private String baseProjectPackage;
 	private List<Class<?>> domainClasses;
-	private List<ClassGenerator> classesGenerators;
+	private List<CodeGenerator> codesGenerators;
 	private Map<String, String> globalImports;
 	private Map<String, String> tagsComment;
+	private List<Class<?>> excludesDomains;
 	private String beanPackageName;
 
 	/**
 	 * 
 	 */
-	public ClassesGenerator() {
+	public CodesGenerator() {
 		super();
 		this.setBaseProjectPackage(StringHelper.EMPTY_STRING);
-		this.setClassesGenerators(new ArrayList<ClassGenerator>());
+		this.setCodesGenerators(new ArrayList<CodeGenerator>());
 		this.setDomainClasses(new ArrayList<Class<?>>());
+		this.setExcludesDomains(new ArrayList<Class<?>>());
 		this.setGlobalImports(new HashMap<String, String>());
 		this.setTagsComment(new HashMap<String, String>());
 	}
 
-	public ClassesGenerator(String baseProjectPackage) {
+	public CodesGenerator(String baseProjectPackage) {
 		this();
 		this.setBaseProjectPackage(baseProjectPackage);
 	}
 
+	/**
+	 * @return the excludesDomains
+	 */
+	protected List<Class<?>> getExcludesDomains() {
+		return excludesDomains;
+	}
+
+	/**
+	 * @param excludesDomains the excludesDomains to set
+	 */
+	protected void setExcludesDomains(List<Class<?>> excludesDomains) {
+		this.excludesDomains = excludesDomains;
+	}
+	
+	public void excludeDomain(String domainClassName) {
+		Class<?> domainClass = ReflectionHelper.getClassFrom(domainClassName);
+		if(domainClass != null){
+			this.getExcludesDomains().add(domainClass);
+		}
+	}
+
+	public <T> void excludeDomain(Class<T> domainClass) {
+		this.getExcludesDomains().add(domainClass);
+	}
+	
+	protected boolean isExcludeDomainClass(Class<?> domainClass) {
+		return this.getExcludesDomains().contains(domainClass);
+	}
+	
 	/**
 	 * @return the baseProjectPackage
 	 */
@@ -60,18 +92,22 @@ public class ClassesGenerator {
 		this.baseProjectPackage = baseProjectPackage;
 	}
 
-	public void addClassGenerator(ClassGenerator classGenerator) {
-		this.getClassesGenerators().add(classGenerator);
+	public void addCodeGenerator(CodeGenerator codeGenerator) {
+		this.getCodesGenerators().add(codeGenerator);
 	}
 
 	public <T> void addDomain(Class<T> domainClass) {
 		this.getDomainClasses().add(domainClass);
 	}
 
-	public void generateClasses() {
+	/**
+	 * Generate code for all domain object classed added (by user or reflection). Code will create 
+	 * depending on the generator class configuration used.
+	 */
+	public void generateCode() {
 		this.initializeReflectionDomainObjects();
-		this.initializeGlobalImports();
-		this.generateClassesGeneratorClasses();
+		this.initializeCodeGenerators();
+		this.generateCodeForDomainClasses();
 	}
 	
 	protected void initializeReflectionDomainObjects(){
@@ -98,44 +134,46 @@ public class ClassesGenerator {
 		return StringHelper.isNotEmpty(this.getBeanPackageName());
 	}
 	
-	protected void generateClassesGeneratorClasses(){
-		for(ClassGenerator classGenerator : this.getClassesGenerators()){
-			for(Class<?> domainClass : this.getDomainClasses()){
-				if(!classGenerator.isExcludeDomainClass(domainClass)){
-					if(classGenerator.hasInterfaceClassGenerator()){
-						this.addTagComments(classGenerator.getInterfaceClassGenerator());
-						this.processDomainClass(domainClass, classGenerator.getInterfaceClassGenerator());	
-					}
-					this.addTagComments(classGenerator);
-					this.processDomainClass(domainClass, classGenerator);
-				}
+	protected void generateCodeForDomainClasses(){
+		List<Class<?>> domainClassesFiltered = this.filterDomainObjectClasses();
+		for(CodeGenerator codeGenerator : this.getCodesGenerators()){
+			LOGGER.info("Generating code for domain object classes [" + domainClassesFiltered.size() + "].");
+			codeGenerator.generateCode(this, domainClassesFiltered);
+		}
+	}
+	
+	protected List<Class<?>> filterDomainObjectClasses(){
+		LOGGER.info("Filtering domain object classes.");
+		List<Class<?>> domainClassesFiltered = new ArrayList<Class<?>>();
+		for(Class<?> domainClass: domainClasses){
+			boolean notAppliesFilter = !this.appliesFilterFor(domainClass);
+			LOGGER.info("Domain object class [" + domainClass.getSimpleName() + "] was " + 
+					(notAppliesFilter ? "added to generate code." : "exclude to generate code."));
+			if(notAppliesFilter){
+				domainClassesFiltered.add(domainClass);
 			}
 		}
+		return domainClassesFiltered;
 	}
 	
-	protected void initializeGlobalImports(){
-		for(ClassGenerator classGenerator : this.getClassesGenerators()){
-			if(classGenerator.hasInterfaceClassGenerator()){
-				LOGGER.info("Initializing class generator type [" + classGenerator.getInterfaceClassGenerator().getClass().getCanonicalName() + "] import.");
-				classGenerator.getInterfaceClassGenerator().initializeClassGeneratorImport(this, this.getDomainClasses());	
-			}
-			LOGGER.info("Initializing class generator type [" + classGenerator.getClass().getCanonicalName() + "] import.");
-			classGenerator.initializeClassGeneratorImport(this, this.getDomainClasses());
+	/**
+	 * Test if domain class is in exclude domain classes. 
+	 * 
+	 * @param domainClass to test if it applies filter.
+	 * @return true if domain class is in exclude domain classes. Otherwise it returns false.
+	 */
+	protected boolean appliesFilterFor(Class<?> domainClass){
+		return this.isExcludeDomainClass(domainClass);
+	}
+
+	/**
+	 * Initialize code generators. It is called before generate domain object classes.
+	 */
+	protected void initializeCodeGenerators(){
+		for(CodeGenerator codeGenerator : this.getCodesGenerators()){
+			LOGGER.info("Initializing code generator type [" + codeGenerator.getClass().getCanonicalName() + "].");
+			codeGenerator.initializeCodeGenerator(this, this.getDomainClasses());
 		}
-	}
-	
-	protected void addTagComments(ClassGenerator classGenerator){
-		LOGGER.info("Adding tags comments for class generator type [" + classGenerator.getClass().getCanonicalName() + "].");
-		for(String tag: this.getTagsComment().keySet()){
-			String valueTag = this.getTagsComment().get(tag);
-			LOGGER.info("Adding tag comment [" + tag + " = " + valueTag + " ] for class generator type [" + classGenerator.getClass().getCanonicalName() + "].");
-			classGenerator.addTagComment(tag, valueTag);
-		}
-	}
-	
-	protected void processDomainClass(Class<?> domainClass, ClassGenerator classGenerator){
-		LOGGER.info("Processing domain class [" + domainClass.getCanonicalName() + "] with class generator type [" + classGenerator.getClass().getCanonicalName() + "].");
-		classGenerator.generateClass(this, domainClass);
 	}
 
 	/**
@@ -152,19 +190,6 @@ public class ClassesGenerator {
 		this.domainClasses = domainClasses;
 	}
 
-	/**
-	 * @return the classesGenerators
-	 */
-	protected List<ClassGenerator> getClassesGenerators() {
-		return classesGenerators;
-	}
-
-	/**
-	 * @param classesGenerators the classesGenerators to set
-	 */
-	protected void setClassesGenerators(List<ClassGenerator> classesGenerators) {
-		this.classesGenerators = classesGenerators;
-	}
 	
 	public void addRelativeImport(String basePackage, String beanClassName){
 		String packageName = this.getBaseProjectPackage() + "." + basePackage + "." + beanClassName;
@@ -244,5 +269,27 @@ public class ClassesGenerator {
 	 */
 	public void setBeanPackageName(String beanPackageName) {
 		this.beanPackageName = beanPackageName;
+	}
+
+	/**
+	 * @return the codesGenerators
+	 */
+	public List<CodeGenerator> getCodesGenerators() {
+		return codesGenerators;
+	}
+
+	/**
+	 * @param codesGenerators the codesGenerators to set
+	 */
+	public void setCodesGenerators(List<CodeGenerator> codesGenerators) {
+		this.codesGenerators = codesGenerators;
+	}
+	
+	public Set<String> getTagCommentsNames(){
+		return this.getTagsComment().keySet();
+	}
+
+	public String getTagCommentValue(String tag) {
+		return this.getTagsComment().get(tag);
 	}
 }

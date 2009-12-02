@@ -17,7 +17,7 @@ import com.angel.io.descriptor.FileProcessorDescriptor;
 import com.angel.io.processors.commands.impl.ExcelFileProcessorCommand;
 import com.angel.io.processors.runners.imports.impl.ImportFileAnnotationProcessorRunner;
 import com.angel.io.processors.runners.imports.impl.ImportFileProcessorRunner;
-import com.angel.object.generator.ClassesGenerator;
+import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.classGenerator.ClassGenerator;
 import com.angel.object.generator.java.JavaAnnotation;
@@ -48,7 +48,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 
 
 	@Override
-	protected void generateContentClass(ClassesGenerator generator, Class<?> domainClass) {
+	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.processGeneratorAnnotation(generator, domainClass);
 		this.processPrepareImportFileProcessorRunnerTypeMethod(generator, domainClass);
 		this.processPrepareInputStream(generator, domainClass);
@@ -63,7 +63,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
         }
     }
 	 */
-	protected void processPrepareInputStream(ClassesGenerator generator,
+	protected void processPrepareInputStream(CodesGenerator generator,
 			Class<?> domainClass) {
 		String methodName = "prepareInputStream";
 		JavaParameter returnParameter = new JavaParameter(InputStream.class.getCanonicalName());
@@ -101,7 +101,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
     }
  */
 	protected void processPrepareImportFileProcessorRunnerTypeMethod(
-			ClassesGenerator generator, Class<?> domainClass) {
+			CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "prepareImportFileProcessorRunner";
 		JavaParameter returnParameter = new JavaParameter(ImportFileProcessorRunner.class.getCanonicalName());
 		List<JavaParameter> methodParameters = new ArrayList<JavaParameter>();
@@ -132,7 +132,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 		prepareImportFileContent.addLineCodeReturn(newImportFileAnnotationProcessorRunner);
 	}
 
-	protected void processGeneratorAnnotation(ClassesGenerator generator, Class<?> domainClass) {
+	protected void processGeneratorAnnotation(CodesGenerator generator, Class<?> domainClass) {
 		JavaAnnotation generatorAnnotation = super.getJavaType().createJavaAnnotation(Generator.class.getCanonicalName());
 		generatorAnnotation.createJavaAnnotationPropertyClass("objectClass", domainClass.getCanonicalName());
 		generatorAnnotation.createJavaAnnotationMultiValuePropertyEmpty("dependencies");
@@ -146,7 +146,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void updateCurrentJavaType(ClassesGenerator generator, Class<?> domainClass) {
+	protected void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass) {
 		// Do nothing. 
 	}
 

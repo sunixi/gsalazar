@@ -31,6 +31,7 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 		super(basePackage);
 	}
 
+	@Override
 	protected void processJavaTypeInterfaces(CodesGenerator generator){
 		JavaInterface serviceInterface = super.createJavaInterface();
 		serviceInterface.setTypeName(Executable.class.getCanonicalName());
@@ -56,13 +57,6 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 		DataGeneratorAnnotationRunnerBuilder builder = new DataGeneratorAnnotationRunnerBuilder();
 		builder.addDataGeneratorClass(UsuarioAnnotationDataGenerator.class);
 		builder.addDataGeneratorClass(AlbumAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(ArtistaAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(ArtistaAlbumAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(CancionAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(AlbumCancionAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(TextoAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(DedicatoriaAnnotationDataGenerator.class);
-		builder.addDataGeneratorClass(AcordeAnnotationDataGenerator.class);
 		DataGeneratorRunner runner = builder.buildDataGeneratorRunner();
 		runner.generateData();
 		runner.finalizeGenerator();

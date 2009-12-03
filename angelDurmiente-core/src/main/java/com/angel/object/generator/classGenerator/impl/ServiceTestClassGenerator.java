@@ -8,8 +8,6 @@ import java.lang.reflect.Modifier;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.com.angelDurmiente.AngelDurmienteBaseTestCase;
-
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.annotations.Accesor;
@@ -21,6 +19,7 @@ import com.angel.object.generator.java.types.JavaClass;
 import com.angel.object.generator.java.types.JavaType;
 import com.angel.object.generator.methodBuilder.MethodBuilder;
 import com.angel.object.generator.methodBuilder.impl.AccesorServiceTestAnnotationMethodBuilder;
+import com.angel.test.GenericSpringTestCase;
 
 
 /**
@@ -40,7 +39,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 
 	@Override
 	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
-		subjavaType.setTypeName(AngelDurmienteBaseTestCase.class.getCanonicalName());
+		subjavaType.setTypeName(GenericSpringTestCase.class.getCanonicalName());
 		return subjavaType;
 	}
 	

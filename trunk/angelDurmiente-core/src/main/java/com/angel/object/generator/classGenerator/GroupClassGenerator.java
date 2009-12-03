@@ -29,33 +29,29 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
  * @since 26/Noviembre/2009.
  *
  */
-public abstract class ClassGenerator extends CodeGenerator {
+public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(CodesGenerator.class);
 	private JavaType javaType;
 	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
-	private ClassGenerator interfaceClassGenerator;
+	private GroupClassGenerator interfaceClassGenerator;
 
 	protected abstract JavaType buildJavaType();
-
-	//protected abstract void buildInterfacesClasses();
 	
-	protected abstract String buildClassName(Class<?> domainClass);
-	
-	protected abstract void generateContentClass(CodesGenerator generator, Class<?> domainClass);
+	protected abstract String buildClassName(List<Class<?>> domainClass);
 
-	public ClassGenerator(){
+	public GroupClassGenerator(){
 		super();
 		this.setMethodBuilderStrategies(new HashMap<Class<? extends Annotation>, MethodBuilder>());
 		this.setJavaType(this.buildJavaType());
 	}
 
-	public ClassGenerator(String basePackage){
+	public GroupClassGenerator(String basePackage){
 		this();
 		this.setBasePackage(basePackage);
 	}
 
-	public ClassGenerator(String basePackage, ClassGenerator interfaceClassGenerator){
+	public GroupClassGenerator(String basePackage, GroupClassGenerator interfaceClassGenerator){
 		this(basePackage);
 		this.setInterfaceClassGenerator(interfaceClassGenerator);
 	}
@@ -66,10 +62,8 @@ public abstract class ClassGenerator extends CodeGenerator {
 			this.getInterfaceClassGenerator().initializeCodeGenerator(generator, domainClasses);
 		}
 		this.initializeTagsComments(generator, domainClasses);
-		for(Class<?> domainClass: domainClasses){
-			String simpleClassGeneratorType = this.buildClassName(domainClass);
-			generator.addRelativeImport(this.getBasePackage(), simpleClassGeneratorType);
-		}
+		String simpleClassGeneratorType = this.buildClassName(domainClasses);
+		generator.addRelativeImport(this.getBasePackage(), simpleClassGeneratorType);
 	}
 	
 	@Override
@@ -104,36 +98,38 @@ public abstract class ClassGenerator extends CodeGenerator {
 		}
 	}
 
-	protected void generateCodeFor(CodesGenerator generator, Class<?> domainClass) {
-		this.updateJavaType(generator, domainClass);
-		this.generateContentClass(generator, domainClass);
+	protected abstract void generateContentClass(CodesGenerator generator, List<Class<?>> domainClasses);
+	
+	protected void generateCodeFor(CodesGenerator generator, List<Class<?>> domainClasses) {
+		this.updateJavaType(generator, domainClasses);
+		this.generateContentClass(generator, domainClasses);
 		this.createJavaClassFile(generator);
 	}
 	
-	protected void updateJavaType(CodesGenerator generator, Class<?> domainClass){
-		String classGeneratorName = this.buildClassName(domainClass);
+	protected void updateJavaType(CodesGenerator generator,  List<Class<?>> domainClasses){
+		String classGeneratorName = this.buildClassName(domainClasses);
 		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
 		this.getJavaType().setTypeName(className);
-		this.getJavaType().setDomainObject(domainClass);
-		this.processGlobalTypesImportsClassGenerator(generator, domainClass);
+		//this.getJavaType().setDomainObject(domainClass);
+		this.processGlobalTypesImportsClassGenerator(generator, domainClasses);
 		this.processJavaTypeInterfaces(generator);
 		this.processSubClassForClassGenerator();
-		this.updateCurrentJavaType(generator, domainClass);
+		this.updateCurrentJavaType(generator, domainClasses);
 	}
 	
-	protected void processGlobalTypesImportsClassGenerator(CodesGenerator generator, Class<?> domainClass){
+	protected void processGlobalTypesImportsClassGenerator(CodesGenerator generator, List<Class<?>> domainClasses){
 		if(this.hasInterfaceClassGenerator()){
-			String classGeneratorName = this.getInterfaceClassGenerator().buildClassName(domainClass);
+			String classGeneratorName = this.getInterfaceClassGenerator().buildClassName(domainClasses);
 			String className = generator.getBaseProjectPackage() + "." + this.getInterfaceClassGenerator().getBasePackage() + "." + classGeneratorName;
 			this.getInterfaceClassGenerator().getJavaType().setTypeName(className);
-			this.getInterfaceClassGenerator().getJavaType().setDomainObject(domainClass);
-			String classCanonicalNameGenerator = this.getInterfaceClassGenerator().getCanonicalClassNameGenerator(generator);
-			this.getJavaType().addImport(classCanonicalNameGenerator);
+			//this.getInterfaceClassGenerator().getJavaType().setDomainObject(domainClass);
+			//String classCanonicalNameGenerator = this.getInterfaceClassGenerator().getCanonicalClassNameGenerator(generator);
+//			this.getJavaType().addImport(classCanonicalNameGenerator);
 		}
 	}
 	
-	public String getCanonicalClassNameGenerator(CodesGenerator generator){
-		String classGeneratorName = this.buildClassName(this.getJavaType().getDomainObject());
+	public String getCanonicalClassNameGenerator(CodesGenerator generator, List<Class<?>> domainClasses){
+		String classGeneratorName = this.buildClassName(domainClasses);
 		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
 		return className;
 	}
@@ -150,7 +146,7 @@ public abstract class ClassGenerator extends CodeGenerator {
 		}
 	}
 	
-	protected abstract void updateCurrentJavaType(CodesGenerator generator, Class<?> domainClass);
+	protected abstract void updateCurrentJavaType(CodesGenerator generator, List<Class<?>> domainClasses);
 	
 	public void addTagComment(String tag, String comment){
 		this.getJavaType().addTagComment(tag, comment);
@@ -233,14 +229,6 @@ public abstract class ClassGenerator extends CodeGenerator {
 	protected void setJavaType(JavaType javaType) {
 		this.javaType = javaType;
 	}
-
-	public String getDomainObjectCanonicalName(){
-		return this.getJavaType().getDomainObjectCanonicalName();
-	}
-	
-	public String getDomainObjectSimpleName(){
-		return this.getJavaType().getDomainObjectSimpleName();
-	}
 	
 	protected JavaInterface createJavaInterface(){
 		return this.getJavaType().createJavaInterface();
@@ -269,14 +257,14 @@ public abstract class ClassGenerator extends CodeGenerator {
 	/**
 	 * @return the interfaceClassGenerator
 	 */
-	public ClassGenerator getInterfaceClassGenerator() {
+	public GroupClassGenerator getInterfaceClassGenerator() {
 		return interfaceClassGenerator;
 	}
 
 	/**
 	 * @param interfaceClassGenerator the interfaceClassGenerator to set
 	 */
-	public void setInterfaceClassGenerator(ClassGenerator interfaceClassGenerator) {
+	public void setInterfaceClassGenerator(GroupClassGenerator interfaceClassGenerator) {
 		this.interfaceClassGenerator = interfaceClassGenerator;
 	}
 	

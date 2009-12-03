@@ -44,9 +44,6 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorServiceImplAnnotationMethodBuilder());
 	}
 
-	protected void buildInterfacesClasses(){
-		//Do Nothing.
-	}
 
 	/*
 	@RowProcessorCommand

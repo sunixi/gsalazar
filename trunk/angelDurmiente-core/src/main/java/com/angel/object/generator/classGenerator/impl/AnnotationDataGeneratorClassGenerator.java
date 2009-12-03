@@ -42,10 +42,6 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorServiceImplAnnotationMethodBuilder());
 	}
 
-	protected void buildInterfacesClasses(){
-		//Do Nothing.
-	}
-
 
 	@Override
 	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {

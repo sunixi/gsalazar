@@ -444,6 +444,15 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		javaLineCode.addImport(canonicalTypeName);
 		return javaLineCode;
 	}
+	
+	public JavaLineCode getLineCodeCreateInstanceObject(String canonicalTypeName) {
+		String simpleTypeName = PackageHelper.getClassSimpleName(canonicalTypeName);
+		String content = " new " + simpleTypeName + "()";
+		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
+		javaLineCode.addImport(canonicalTypeName);
+		javaLineCode.removeEndTag();
+		return javaLineCode;
+	}
 
 	public JavaLineCode getLineCodeNewInstanceObject(
 			String newInstanceObjectType, List<String> parametersNames) {
@@ -570,5 +579,20 @@ public class JavaBlockCode implements CodeConvertible, Importable {
 		JavaLineCode javaLineCode = this.buildJavaLineCode(content);
 		javaLineCode.addImportsTypes(collectionTypedAssigment.getImportsType());
 		this.addJavaLineCode(javaLineCode);
+	}
+
+	public JavaLineCode getLineCodeCalledVariableMethodWithTypeParameters(String variableName, String methodName, JavaLineCode javaLineCode) {
+		String content = variableName + "." + methodName + "(" + javaLineCode.convert() + ")";
+		JavaLineCode resultJavaLineCode = this.buildJavaLineCode(content);
+		resultJavaLineCode.addImportsTypes(javaLineCode.getImportsType());
+		return resultJavaLineCode;
+	}
+
+	public JavaLineCode getLineCodeCalledStaticClassMethod(String classCanonicalType) {
+		String content = PackageHelper.getClassSimpleName(classCanonicalType) + ".class";
+		JavaLineCode resultJavaLineCode = this.buildJavaLineCode(content);
+		resultJavaLineCode.removeEndTag();
+		resultJavaLineCode.addImport(classCanonicalType);
+		return resultJavaLineCode;
 	}
 }

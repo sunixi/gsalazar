@@ -44,10 +44,12 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		subjavaType.setTypeName(GenericServiceImpl.class.getCanonicalName());
 		return subjavaType;
 	}
-
-	protected void buildInterfacesClasses(){
+	
+	@Override
+	protected void processJavaTypeInterfaces(CodesGenerator generator){
 		JavaInterface serviceInterface = super.createJavaInterface();
-		serviceInterface.setTypeName(super.getDomainObjectSimpleName() + "Service");
+		String canonicalInterfaceType = generator.getImportForClassName(super.getDomainObjectSimpleName() + "Service");
+		serviceInterface.setTypeName(canonicalInterfaceType);
 	}
 	
 	@Override

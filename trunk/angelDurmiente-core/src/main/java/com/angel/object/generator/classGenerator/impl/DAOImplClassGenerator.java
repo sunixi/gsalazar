@@ -91,9 +91,9 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected void buildInterfacesClasses() {
-		JavaInterface javaInterface = super.createJavaInterface();
-		javaInterface.setTypeName(super.getDomainObjectSimpleName() + "DAO");
-		
+	protected void processJavaTypeInterfaces(CodesGenerator generator) {
+		JavaInterface serviceInterface = super.createJavaInterface();
+		String canonicalInterfaceType = generator.getImportForClassName(super.getDomainObjectSimpleName() + "DAO");
+		serviceInterface.setTypeName(canonicalInterfaceType);		
 	}	
 }

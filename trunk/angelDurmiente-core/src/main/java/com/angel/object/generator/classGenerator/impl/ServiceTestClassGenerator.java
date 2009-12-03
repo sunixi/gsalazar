@@ -43,10 +43,6 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 		subjavaType.setTypeName(AngelDurmienteBaseTestCase.class.getCanonicalName());
 		return subjavaType;
 	}
-
-	protected void buildInterfacesClasses(){
-		//Do nothing.
-	}
 	
 	@Override
 	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {

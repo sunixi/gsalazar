@@ -48,4 +48,11 @@ public class JavaInterface extends JavaType {
 	public JavaConstructor createJavaConstructor(){
 		return null;
 	}
+
+	@Override
+	public List<String> getImportsType() {
+		List<String> importsTypes = super.getImportsType();
+		super.addImport(importsTypes, this.getTypeName());
+		return importsTypes;
+	}
 }

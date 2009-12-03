@@ -41,7 +41,7 @@ public class DAOsSpringXMLGenerator extends GroupXMLGenerator {
 		for(Class<?> domainClass: domainClasses){
 			String serviceImplCanonicalType = generator.getImportForClassName(
 					domainClass.getSimpleName() + "SpringHibernateDAO");
-			String lowerServiceSimpleType = domainClass.getSimpleName().substring(0, 1).toLowerCase() + domainClass.getSimpleName().substring(1, domainClass.getSimpleName().length() - 1); 
+			String lowerServiceSimpleType = domainClass.getSimpleName().substring(0, 1).toLowerCase() + domainClass.getSimpleName().substring(1, domainClass.getSimpleName().length()); 
 			String serviceSimpleType = lowerServiceSimpleType + "DAO";
 			XMLBean serviceBean = new XMLBean(serviceSimpleType, serviceImplCanonicalType, "true");
 			serviceBean.addProperty(new XMLPropertyRef("sessionFactory", "sessionFactory"));

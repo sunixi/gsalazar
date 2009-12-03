@@ -270,13 +270,29 @@ public abstract class JavaType implements CodeConvertible, Importable {
 	}
 	
 	protected void addImport(List<String> imports, String typeClass){
-		String className = typeClass;
-		if(!typeClass.startsWith(IMPORT_PREFIX)){
-			className = IMPORT_PREFIX + typeClass + JAVA_END_OF_LINE;
+		if(!isPrimitiveImport(typeClass)){
+			String className = typeClass;
+			if(!typeClass.startsWith(IMPORT_PREFIX)){
+				className = IMPORT_PREFIX + typeClass + JAVA_END_OF_LINE;
+			}
+			if(!imports.contains(className)){
+				imports.add(className);
+			}
 		}
-		if(!imports.contains(className)){
-			imports.add(className);
-		}
+	}
+	
+	private static boolean isPrimitiveImport(String typeClass){
+		List<String> primitivesClasses = new ArrayList<String>();
+		primitivesClasses.add("byte");
+		primitivesClasses.add("short");
+		primitivesClasses.add("int");
+		primitivesClasses.add("long");
+		primitivesClasses.add("float");
+		primitivesClasses.add("double");
+		primitivesClasses.add("boolean");
+		primitivesClasses.add("char");
+		String cleanTypeClass = typeClass.trim().replaceAll("import", "").replaceAll(";", "").trim();
+		return primitivesClasses.contains(cleanTypeClass);
 	}
 	
 	protected String getTypesImportPlain(){

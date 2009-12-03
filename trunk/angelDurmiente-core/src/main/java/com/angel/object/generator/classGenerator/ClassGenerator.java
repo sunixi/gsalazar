@@ -38,8 +38,6 @@ public abstract class ClassGenerator extends CodeGenerator {
 
 	protected abstract JavaType buildJavaType();
 
-	//protected abstract void buildInterfacesClasses();
-	
 	protected abstract String buildClassName(Class<?> domainClass);
 	
 	protected abstract void generateContentClass(CodesGenerator generator, Class<?> domainClass);

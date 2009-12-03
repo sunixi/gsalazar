@@ -40,6 +40,14 @@ public abstract class CodeGenerator {
 	 */
 	public abstract void initializeCodeGenerator(CodesGenerator generator, List<Class<?>> domainClasses);
 	
+	/**
+	 * Finalize code generator for domain class.
+	 * 
+	 * @param generator which was used to configure domain classes.
+	 * @param domainClass which code was generated.
+	 */
+	protected abstract void finalizeCodeGenerator(CodesGenerator generator, Class<?> domainClass);
+
 	public CodeGenerator(){
 		super();
 		this.setBaseSourcesDirectory(DEFAULT_BASE_SOURCES_DIRECTORY);
@@ -101,11 +109,13 @@ public abstract class CodeGenerator {
 	 * @param domainClasses all list added.
 	 */
 	public void generateCode(CodesGenerator generator, List<Class<?>> domainClasses) {
-		LOGGER.info("Begin process to generate code in [" + domainClasses.size() + "] domain classes.");
+		LOGGER.info("Begin process to generate code in [" + domainClasses.size() + "] domain classes with generator [" + this.getClass().getCanonicalName() + "].");
 		List<Class<?>> domainObjectFiltered = this.filterDomainObjectClasses(domainClasses);
 		for(Class<?> domainClass: domainObjectFiltered){
 			LOGGER.info("Generating code for domain class [" + domainClass.getCanonicalName() + "].");
 			this.generateCodeFor(generator, domainClass);
+			LOGGER.info("Finishing genereting code for domain class [" + domainClass.getCanonicalName() + "].");
+			this.finalizeCodeGenerator(generator, domainClass);
 		}
 	}
 

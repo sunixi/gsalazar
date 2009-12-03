@@ -119,13 +119,19 @@ public class CodesGenerator {
 			LOGGER.debug("The project directory built is [" + sourcesDirectory + "].");
 			LOGGER.debug("Finding java classes in package [" + canonicalBeanPackageName + "]."); 
 			File directory = new File(beanDirectory);
-			for(String name: directory.list()){
-				if(name.endsWith(".java")){
-					String simpleClassName = name.replace(".java", "");
-					String canonicalBeanClass = canonicalBeanPackageName + "." + simpleClassName;
-					Class<?> beanClass = ReflectionHelper.getClassFrom(canonicalBeanClass);
-					LOGGER.info("Java class found [" + beanClass.getSimpleName() + "].");
+			String[] fileNames = directory.list();
+			if(fileNames != null){
+				for(String name: fileNames){
+					if(name.endsWith(".java")){
+						String simpleClassName = name.replace(".java", "");
+						String canonicalBeanClass = canonicalBeanPackageName + "." + simpleClassName;
+						Class<?> beanClass = ReflectionHelper.getClassFrom(canonicalBeanClass);
+						LOGGER.info("Java class found [" + beanClass.getSimpleName() + "].");
+					}
 				}
+			} else {
+				throw new RuntimeException("Beans directory [" + beanDirectory + "] wasn't found. Please check base directory [" 
+						+ sourcesDirectory + "] and package source [" + StringHelper.replaceAll(canonicalBeanPackageName, ".", "\\") + "].");
 			}
 		}
 	}

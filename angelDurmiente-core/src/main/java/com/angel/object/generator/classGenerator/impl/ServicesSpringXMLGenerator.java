@@ -49,7 +49,7 @@ public class ServicesSpringXMLGenerator extends GroupXMLGenerator {
 		for(Class<?> domainClass: domainClasses){
 			String serviceImplCanonicalType = generator.getImportForClassName(
 					domainClass.getSimpleName() + "ServiceImpl");
-			String lowerServiceSimpleType = domainClass.getSimpleName().substring(0, 1).toLowerCase() + domainClass.getSimpleName().substring(1, domainClass.getSimpleName().length() - 1); 
+			String lowerServiceSimpleType = domainClass.getSimpleName().substring(0, 1).toLowerCase() + domainClass.getSimpleName().substring(1, domainClass.getSimpleName().length()); 
 			String serviceSimpleType = lowerServiceSimpleType + "Service";
 			String daoSimpleType = lowerServiceSimpleType + "DAO";
 			

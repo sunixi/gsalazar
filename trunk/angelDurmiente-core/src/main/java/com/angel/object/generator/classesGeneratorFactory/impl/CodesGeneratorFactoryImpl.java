@@ -9,10 +9,12 @@ import com.angel.object.generator.classGenerator.impl.AnnotationRowProcessorComm
 import com.angel.object.generator.classGenerator.impl.ApplicationAnnotationGeneratorExecutableClassGenerator;
 import com.angel.object.generator.classGenerator.impl.DAOClassGenerator;
 import com.angel.object.generator.classGenerator.impl.DAOImplClassGenerator;
+import com.angel.object.generator.classGenerator.impl.DAOsSpringXMLGenerator;
 import com.angel.object.generator.classGenerator.impl.FactoryClassGenerator;
 import com.angel.object.generator.classGenerator.impl.ServiceClassGenerator;
 import com.angel.object.generator.classGenerator.impl.ServiceImplClassGenerator;
 import com.angel.object.generator.classGenerator.impl.ServiceTestClassGenerator;
+import com.angel.object.generator.classGenerator.impl.ServicesSpringXMLGenerator;
 import com.angel.object.generator.classesGeneratorFactory.CodesGeneratorFactory;
 
 
@@ -32,6 +34,8 @@ public class CodesGeneratorFactoryImpl implements CodesGeneratorFactory {
 		classesGenerator.addCodeGenerator(new AnnotationDataGeneratorClassGenerator("dataGenerators"));
 		classesGenerator.addCodeGenerator(new FactoryClassGenerator("factories"));
 		classesGenerator.addCodeGenerator(new ApplicationAnnotationGeneratorExecutableClassGenerator("executables"));
+		classesGenerator.addCodeGenerator(new ServicesSpringXMLGenerator());
+		classesGenerator.addCodeGenerator(new DAOsSpringXMLGenerator());
 		return classesGenerator;
 	}
 	

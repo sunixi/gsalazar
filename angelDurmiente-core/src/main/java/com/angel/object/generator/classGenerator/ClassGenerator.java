@@ -77,7 +77,13 @@ public abstract class ClassGenerator extends CodeGenerator {
 		if(this.hasInterfaceClassGenerator()){
 			this.getInterfaceClassGenerator().generateCode(generator, domainClasses);
 		}
+		LOGGER.info("Genereting domain object codes [" + domainClasses.size() + 
+				"] with generator [" + generator.getClass().getCanonicalName() + "].");
 		super.generateCode(generator, domainClasses);
+	}
+
+	protected void finalizeCodeGenerator(CodesGenerator generator, Class<?> domainClass){
+		this.setJavaType(this.buildJavaType());
 	}
 	
 	/**
@@ -109,14 +115,18 @@ public abstract class ClassGenerator extends CodeGenerator {
 		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
 		this.getJavaType().setTypeName(className);
 		this.getJavaType().setDomainObject(domainClass);
-		this.processGlobalTypesImportsClassGenerator(generator);
+		this.processGlobalTypesImportsClassGenerator(generator, domainClass);
 		this.processJavaTypeInterfaces();
 		this.processSubClassForClassGenerator();
 		this.updateCurrentJavaType(generator, domainClass);
 	}
 	
-	protected void processGlobalTypesImportsClassGenerator(CodesGenerator generator){
+	protected void processGlobalTypesImportsClassGenerator(CodesGenerator generator, Class<?> domainClass){
 		if(this.hasInterfaceClassGenerator()){
+			String classGeneratorName = this.getInterfaceClassGenerator().buildClassName(domainClass);
+			String className = generator.getBaseProjectPackage() + "." + this.getInterfaceClassGenerator().getBasePackage() + "." + classGeneratorName;
+			this.getInterfaceClassGenerator().getJavaType().setTypeName(className);
+			this.getInterfaceClassGenerator().getJavaType().setDomainObject(domainClass);
 			String classCanonicalNameGenerator = this.getInterfaceClassGenerator().getCanonicalClassNameGenerator(generator);
 			this.getJavaType().addImport(classCanonicalNameGenerator);
 		}

@@ -6,6 +6,7 @@ package com.angel.object.generator.classesGeneratorFactory.impl;
 import com.angel.object.generator.CodesGenerator;
 import com.angel.object.generator.classGenerator.impl.AnnotationDataGeneratorClassGenerator;
 import com.angel.object.generator.classGenerator.impl.AnnotationRowProcessorCommandClassGenerator;
+import com.angel.object.generator.classGenerator.impl.ApplicationAnnotationGeneratorExecutableClassGenerator;
 import com.angel.object.generator.classGenerator.impl.DAOClassGenerator;
 import com.angel.object.generator.classGenerator.impl.DAOImplClassGenerator;
 import com.angel.object.generator.classGenerator.impl.FactoryClassGenerator;
@@ -30,6 +31,7 @@ public class CodesGeneratorFactoryImpl implements CodesGeneratorFactory {
 		classesGenerator.addCodeGenerator(new AnnotationRowProcessorCommandClassGenerator("rowProcessors"));
 		classesGenerator.addCodeGenerator(new AnnotationDataGeneratorClassGenerator("dataGenerators"));
 		classesGenerator.addCodeGenerator(new FactoryClassGenerator("factories"));
+		classesGenerator.addCodeGenerator(new ApplicationAnnotationGeneratorExecutableClassGenerator("executables"));
 		return classesGenerator;
 	}
 	

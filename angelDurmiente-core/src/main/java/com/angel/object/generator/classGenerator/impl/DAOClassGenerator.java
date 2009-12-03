@@ -43,10 +43,6 @@ public class DAOClassGenerator extends ClassGenerator {
 		this(basePackage);
 		this.setInterfaceClassGenerator(interfaceClassGenerator);
 	}
-
-	protected void buildInterfacesClasses(){
-		//Do Nothing.
-	}
 	
 	@Override
 	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){

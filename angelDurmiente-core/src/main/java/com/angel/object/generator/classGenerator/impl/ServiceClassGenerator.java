@@ -78,9 +78,4 @@ public class ServiceClassGenerator extends ClassGenerator {
 	protected JavaType buildJavaType() {
 		return new JavaInterface();
 	}
-
-	@Override
-	protected void buildInterfacesClasses() {
-		//Do Nothing.
-	}	
 }

@@ -27,7 +27,7 @@ import com.angel.object.generator.types.Importable;
  * @since 26/Noviembre/2009.
  *
  */
-public abstract class JavaType implements CodeConvertible {
+public abstract class JavaType implements CodeConvertible, Importable {
 
 	private static final String IMPORT_PREFIX = "import ";
 	private static final String JAVA_END_OF_LINE = ";";
@@ -220,9 +220,11 @@ public abstract class JavaType implements CodeConvertible {
 	 * 
 	 * @return all java imports for this types.
 	 */
-	public List<String> getTypesImports(){
+	public List<String> getImportsType(){
 		List<String> typesImports = new ArrayList<String>();
-		this.addImport(typesImports, this.getDomainObject().getCanonicalName());
+		if(this.getDomainObject() != null){
+			this.addImport(typesImports, this.getDomainObject().getCanonicalName());
+		}
 		if(this.hasLeftGeneric()){
 			this.addImport(typesImports, this.getLeftGeneric());
 		}
@@ -254,6 +256,12 @@ public abstract class JavaType implements CodeConvertible {
 			}
 		}
 		
+		for(Importable i: this.getInterfaces()){
+			for(String it: i.getImportsType()){
+				this.addImport(typesImports, it);
+			}
+		}
+		
 		for(String gi: this.getGlobalImports()){
 			this.addImport(typesImports, gi);
 		}
@@ -272,7 +280,7 @@ public abstract class JavaType implements CodeConvertible {
 	}
 	
 	protected String getTypesImportPlain(){
-		return StringHelper.convertToPlainString(this.getTypesImports().toArray(), "\n");
+		return StringHelper.convertToPlainString(this.getImportsType().toArray(), "\n");
 	}
 	
 	public String getBasePackage(){

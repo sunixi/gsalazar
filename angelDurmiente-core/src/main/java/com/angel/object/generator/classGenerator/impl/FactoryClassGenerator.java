@@ -33,11 +33,6 @@ public class FactoryClassGenerator extends ClassGenerator {
 		super(basePackage);
 	}
 
-	protected void buildInterfacesClasses(){
-		//Do Nothing.
-	}
-
-
 	@Override
 	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.processPrivateConstructor();

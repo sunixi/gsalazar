@@ -127,6 +127,7 @@ public class CodesGenerator {
 						String canonicalBeanClass = canonicalBeanPackageName + "." + simpleClassName;
 						Class<?> beanClass = ReflectionHelper.getClassFrom(canonicalBeanClass);
 						LOGGER.info("Java class found [" + beanClass.getSimpleName() + "].");
+						this.addDomain(beanClass);
 					}
 				}
 			} else {

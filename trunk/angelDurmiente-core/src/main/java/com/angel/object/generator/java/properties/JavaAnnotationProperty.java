@@ -6,10 +6,10 @@ package com.angel.object.generator.java.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.data.types.CodeConvertible;
+import com.angel.code.generator.data.types.Importable;
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.helper.PackageHelper;
-import com.angel.object.generator.types.CodeConvertible;
-import com.angel.object.generator.types.Importable;
 
 
 
@@ -30,7 +30,7 @@ public class JavaAnnotationProperty extends JavaParameter implements CodeConvert
 		this(propertyName);
 	}
 	
-	public String convert() {
+	public String convertCode() {
 		return this.getParameterName() + " = " + this.getPropertyValue();
 	}
 	

@@ -8,9 +8,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.annotations.Accesor;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.annotations.Accesor;
 import com.angel.object.generator.java.JavaBlockCode;
 import com.angel.object.generator.java.properties.JavaParameter;
 import com.angel.object.generator.methodBuilder.MethodBuilder;

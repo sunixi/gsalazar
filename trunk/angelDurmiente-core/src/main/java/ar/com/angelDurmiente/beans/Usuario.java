@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 
 import com.angel.architecture.persistence.beans.User;
-import com.angel.object.generator.annotations.Accesor;
+import com.angel.code.generator.annotations.Accesor;
 
 /**
  * @author Guillermo Salazar

@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.angel.code.generator.data.types.CodeConvertible;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.types.CodeConvertible;
 
 
 /**
@@ -72,7 +72,7 @@ public class JavaTypeComment implements CodeConvertible {
 		}
 	}
 
-	public String convert() {
+	public String convertCode() {
 		String fullCommentClass = "/**\n";
 		fullCommentClass += " *\n";
 		fullCommentClass += " * " + (this.hasComments() ? this.getComment() + "\n" : "TODO Comentar clase.\n");

@@ -6,13 +6,13 @@ package com.angel.object.generator.java.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.data.enums.TypeModifier;
+import com.angel.code.generator.data.enums.Visibility;
+import com.angel.code.generator.data.types.CodeConvertible;
+import com.angel.code.generator.data.types.Importable;
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.java.JavaAnnotation;
-import com.angel.object.generator.java.enums.TypeModifier;
-import com.angel.object.generator.java.enums.Visibility;
-import com.angel.object.generator.types.CodeConvertible;
-import com.angel.object.generator.types.Importable;
 
 
 
@@ -91,7 +91,7 @@ public class JavaProperty extends JavaParameter implements CodeConvertible, Impo
 		this.annotations = annotations;
 	}
 
-	public String convert() {
+	public String convertCode() {
 		String codeConverter = "\t";
 		codeConverter += this.convertAnnotations();
 		codeConverter += "\t" + this.getVisibility().getVisibility() + " "; 
@@ -112,7 +112,7 @@ public class JavaProperty extends JavaParameter implements CodeConvertible, Impo
 	protected String convertAnnotations(){
 		String codeConverter = "";
 		for(CodeConvertible ja: this.getAnnotations()){
-			codeConverter += ja.convert();
+			codeConverter += ja.convertCode();
 		}
 		return codeConverter;
 	}

@@ -13,12 +13,13 @@ import org.junit.Test;
 import ar.com.angelDurmiente.beans.BeanDemo;
 import ar.com.angelDurmiente.beans.BeanDemo2;
 
-import com.angel.object.generator.classesGeneratorFactory.CodesGeneratorFactory;
-import com.angel.object.generator.classesGeneratorFactory.impl.CodesGeneratorFactoryImpl;
-import com.angel.object.generator.xml.types.XMLBean;
-import com.angel.object.generator.xml.types.XMLBeans;
-import com.angel.object.generator.xml.types.XMLPropertyRef;
-import com.angel.object.generator.xml.types.XMLPropertyValue;
+import com.angel.code.generator.CodesGenerator;
+import com.angel.code.generator.data.impl.xml.XMLBean;
+import com.angel.code.generator.data.impl.xml.XMLBeans;
+import com.angel.code.generator.data.impl.xml.XMLPropertyRef;
+import com.angel.code.generator.data.impl.xml.XMLPropertyValue;
+import com.angel.code.generator.factories.codesGenerators.CodesGeneratorFactory;
+import com.angel.code.generator.factories.codesGenerators.impl.CodesGeneratorFactoryImpl;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 

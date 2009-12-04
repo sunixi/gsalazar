@@ -6,10 +6,10 @@ package com.angel.object.generator.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.data.enums.Visibility;
+import com.angel.code.generator.data.types.CodeConvertible;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.java.enums.Visibility;
 import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.types.CodeConvertible;
 
 
 /**
@@ -121,7 +121,7 @@ public class JavaConstructor implements CodeConvertible {
 		}
 	}
 
-	public String convert() {
+	public String convertCode() {
 		String method = "\t";
 		method += this.getVisibility().getVisibility() + " ";
 		method += this.getSimpleName() + "(";

@@ -37,8 +37,8 @@ public class JavaAnnotationPropertyAnnotation extends JavaAnnotationProperty {
 	}
 	
 	@Override
-	public String convert() {
-		return this.getJavaAnnotation().convert();
+	public String convertCode() {
+		return this.getJavaAnnotation().convertCode();
 	}
 	
 	@Override
@@ -68,6 +68,6 @@ public class JavaAnnotationPropertyAnnotation extends JavaAnnotationProperty {
 	
 	@Override
 	public String getPropertyValue(){
-		return this.getJavaAnnotation().convert();
+		return this.getJavaAnnotation().convertCode();
 	}
 }

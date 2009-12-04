@@ -6,8 +6,8 @@ package com.angel.object.generator.java;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.angel.object.generator.types.CodeConvertible;
-import com.angel.object.generator.types.Importable;
+import com.angel.code.generator.data.types.CodeConvertible;
+import com.angel.code.generator.data.types.Importable;
 
 
 
@@ -80,7 +80,7 @@ public class JavaLineCode implements Importable, CodeConvertible {
 		this.importsType = importsType;
 	}
 
-	public String convert() {
+	public String convertCode() {
 		return "\t\t" + this.getContent() + "\n";
 	}
 

@@ -3,8 +3,8 @@
  */
 package com.angel.object.generator.java.properties;
 
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.helper.PackageHelper;
 
 
 

@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.angel.code.generator.data.enums.TypeModifier;
+import com.angel.code.generator.data.enums.Visibility;
+import com.angel.code.generator.data.types.CodeConvertible;
+import com.angel.code.generator.data.types.Importable;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.java.enums.TypeModifier;
-import com.angel.object.generator.java.enums.Visibility;
 import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.java.types.JavaType;
-import com.angel.object.generator.types.CodeConvertible;
-import com.angel.object.generator.types.Importable;
 
 
 /**
@@ -142,7 +141,7 @@ public class TypeMethod implements CodeConvertible, Importable{
 	}
 	
 	protected String convertContent(){
-		return this.getContent().convert();
+		return this.getContent().convertCode();
 	}
 	
 	protected String convertCastReturnType(){
@@ -251,13 +250,13 @@ public class TypeMethod implements CodeConvertible, Importable{
 	}
 
 	protected String convertComment(){
-		return this.getComment().convert();
+		return this.getComment().convertCode();
 	}
 
 	protected String convertAnnotations(){
 		String codeConverted = "";
 		for(CodeConvertible cc: this.getAnnotations()){
-			codeConverted += cc.convert();
+			codeConverted += cc.convertCode();
 		}
 		return codeConverted;
 	}
@@ -270,7 +269,7 @@ public class TypeMethod implements CodeConvertible, Importable{
 		return this.getTypeModifier().getTypeModifier();
 	}
 	
-	public String convert() {
+	public String convertCode() {
 		String method = this.convertComment();
 		method += "\t" + this.convertAnnotations();
 		method += "\t" + this.convertVisibility() + " " + this.convertTypeModifier();

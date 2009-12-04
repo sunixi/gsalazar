@@ -6,13 +6,13 @@ package com.angel.object.generator.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.data.types.CodeConvertible;
+import com.angel.code.generator.data.types.Importable;
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.java.properties.JavaAnnotationMultiValueProperty;
 import com.angel.object.generator.java.properties.JavaAnnotationProperty;
 import com.angel.object.generator.java.properties.JavaAnnotationPropertyAnnotation;
-import com.angel.object.generator.types.CodeConvertible;
-import com.angel.object.generator.types.Importable;
 
 
 
@@ -85,7 +85,7 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 		return this.getProperties().size() > 0;
 	}
 
-	public String convert() {
+	public String convertCode() {
 		String codeConverter = "";
 		codeConverter += this.getName();
 		codeConverter += this.hasProperties() ? "(\n\t" + this.convertProperties() + "\n)\n" : "";
@@ -96,9 +96,9 @@ public class JavaAnnotation implements CodeConvertible, Importable {
 		String codeConverter = "";
 		for(CodeConvertible cc: this.getProperties()){
 			if(this.getProperties().indexOf(cc) == 0){
-				codeConverter += cc.convert();	
+				codeConverter += cc.convertCode();	
 			} else {
-				codeConverter += "," + cc.convert();
+				codeConverter += "," + cc.convertCode();
 			}
 		}
 		return codeConverter;

@@ -6,8 +6,8 @@ package com.angel.object.generator.java.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.helper.PackageHelper;
 import com.angel.object.generator.java.JavaAnnotation;
 
 
@@ -49,7 +49,7 @@ public class JavaAnnotationMultiValueProperty extends JavaAnnotationProperty {
 	}
 
 	@Override
-	public String convert() {
+	public String convertCode() {
 		return this.getParameterName() + " = {" + this.convertPropertiesValues() + "}";
 	}
 	

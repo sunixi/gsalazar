@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+<!-- Domain Object DAOs. -->
+	<bean id="cancionAcordeDAO" class="ar.com.angelDurmiente.daos.impl.CancionAcordeSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.CancionAcorde"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+	<bean id="acordeDAO" class="ar.com.angelDurmiente.daos.impl.AcordeSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Acorde"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+	<bean id="textoDAO" class="ar.com.angelDurmiente.daos.impl.TextoSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Texto"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+	<bean id="dedicatoriaDAO" class="ar.com.angelDurmiente.daos.impl.DedicatoriaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Dedicatoria"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+	<bean id="albumDAO" class="ar.com.angelDurmiente.daos.impl.AlbumSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Album"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+ 	<bean id="artistaDAO" class="ar.com.angelDurmiente.daos.impl.ArtistaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Artista"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+ 	<bean id="discografiaDAO" class="ar.com.angelDurmiente.daos.impl.DiscografiaSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Discografia"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+ 	<bean id="usuarioDAO" class="ar.com.angelDurmiente.daos.impl.UsuarioSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Usuario"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean>
+
+	<bean id="cancionDAO" class="ar.com.angelDurmiente.daos.impl.CancionSpringHibernateDAO" singleton="true">
+        <property name="sessionFactory"     ref="sessionFactory"/>
+		<property name="persistentClass"    value="ar.com.angelDurmiente.beans.Cancion"/>
+        <property name="codeClass"          value="com.angel.architecture.persistence.ids.impl.ObjectIdImpl"/>
+    </bean> 
+</beans>

@@ -16,13 +16,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.angel.code.generator.CodesGenerator;
-import com.angel.code.generator.data.impl.java.InterfaceDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.builders.method.MethodBuilder;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.java.JavaConstructor;
-import com.angel.object.generator.java.properties.JavaProperty;
-import com.angel.object.generator.methodBuilder.MethodBuilder;
 
 /**
  * @author Guillermo D. Salazar
@@ -32,18 +30,21 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
 public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(CodesGenerator.class);
-	private JavaType javaType;
+	private DataType dataType;
 	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
 	private GroupClassGenerator interfaceClassGenerator;
+	//private DataTypeComponentsFactory componentsFactory;
 
-	protected abstract JavaType buildJavaType();
+	protected abstract DataType buildDataType();
 	
 	protected abstract String buildClassName(List<Class<?>> domainClass);
+	
+	//protected abstract DataTypeComponentsFactory createDataTypeComponentsFactory();
 
 	public GroupClassGenerator(){
 		super();
 		this.setMethodBuilderStrategies(new HashMap<Class<? extends Annotation>, MethodBuilder>());
-		this.setJavaType(this.buildJavaType());
+		this.setDataType(this.buildDataType());
 	}
 
 	public GroupClassGenerator(String basePackage){
@@ -57,6 +58,7 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	}
 	
 	public void initializeCodeGenerator(CodesGenerator generator, List<Class<?>> domainClasses){
+		this.initializeDataTypeComponentsFactory();
 		if(this.hasInterfaceClassGenerator()){
 			LOGGER.debug("Initializing interface code generator [" + this.getInterfaceClassGenerator().getClass().getCanonicalName() + "] at implementation class generator type [" + this.getClass().getCanonicalName() + "].");			
 			this.getInterfaceClassGenerator().initializeCodeGenerator(generator, domainClasses);
@@ -64,6 +66,21 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 		this.initializeTagsComments(generator, domainClasses);
 		String simpleClassGeneratorType = this.buildClassName(domainClasses);
 		generator.addRelativeImport(this.getBasePackage(), simpleClassGeneratorType);
+	}
+
+
+	/**
+	 * Initialize data type components factory instances. Test if instance is valid one.
+	 * 
+	 * @throws @{@link CodeGeneratorException} when data type components factory is a null object. 
+	 */
+	protected void initializeDataTypeComponentsFactory() {
+		/*TODO Sacar
+		DataTypeComponentsFactory dataTypeComponentsFactory = this.createDataTypeComponentsFactory();
+		if(dataTypeComponentsFactory == null){
+			throw new CodeGeneratorException("Creation of data type components factory instance cannot be null.");
+		}
+		this.componentsFactory = dataTypeComponentsFactory;*/
 	}
 	
 	@Override
@@ -77,7 +94,7 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	}
 
 	protected void finalizeCodeGenerator(CodesGenerator generator, Class<?> domainClass){
-		this.setJavaType(this.buildJavaType());
+		this.setDataType(this.buildDataType());
 	}
 	
 	/**
@@ -109,7 +126,7 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	protected void updateJavaType(CodesGenerator generator,  List<Class<?>> domainClasses){
 		String classGeneratorName = this.buildClassName(domainClasses);
 		String className = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "." + classGeneratorName;
-		this.getJavaType().setTypeName(className);
+		this.getDataType().setCanonicalName(className);
 		//this.getJavaType().setDomainObject(domainClass);
 		this.processGlobalTypesImportsClassGenerator(generator, domainClasses);
 		this.processJavaTypeInterfaces(generator);
@@ -121,7 +138,7 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 		if(this.hasInterfaceClassGenerator()){
 			String classGeneratorName = this.getInterfaceClassGenerator().buildClassName(domainClasses);
 			String className = generator.getBaseProjectPackage() + "." + this.getInterfaceClassGenerator().getBasePackage() + "." + classGeneratorName;
-			this.getInterfaceClassGenerator().getJavaType().setTypeName(className);
+			this.getInterfaceClassGenerator().getDataType().setCanonicalName(className);
 			//this.getInterfaceClassGenerator().getJavaType().setDomainObject(domainClass);
 			//String classCanonicalNameGenerator = this.getInterfaceClassGenerator().getCanonicalClassNameGenerator(generator);
 //			this.getJavaType().addImport(classCanonicalNameGenerator);
@@ -139,32 +156,32 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	}
 
 	protected void processSubClassForClassGenerator(){
-		JavaType subJavaType = this.buildJavaType();
-		subJavaType = this.buildSubClassForClassGenerator(subJavaType);
-		if(subJavaType != null){
-			this.getJavaType().setSubJavaType(subJavaType);
+		DataType subDataType = this.buildDataType();
+		subDataType = this.buildSubClassForClassGenerator(subDataType);
+		if(subDataType != null){
+			this.getDataType().setSubDataType(subDataType);
 		}
 	}
 	
 	protected abstract void updateCurrentJavaType(CodesGenerator generator, List<Class<?>> domainClasses);
 	
 	public void addTagComment(String tag, String comment){
-		this.getJavaType().addTagComment(tag, comment);
+		this.getDataType().addTagComment(tag, comment);
 	}
 
 	public void addTagAuthor(String author){
-		this.getJavaType().addAuthorTagComment(author);
+		this.getDataType().addTagCommentAuthor(author);
 	}
 
 	protected void createJavaClassFile(CodesGenerator generator) {
-		String javaFileContent = this.getJavaType().convertCode();
+		String javaFileContent = this.getDataType().convertCode();
 		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "\\";
-		LOGGER.info("Creating java class file [" + this.getJavaType().getTypeName() + "] at package [" + packageName + "].");
+		LOGGER.info("Creating java class file [" + this.getDataType().getSimpleName() + "] at package [" + packageName + "].");
 		String directory = System.getProperty("user.dir") + super.getBaseSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
 		File directories = new File(directory);
 		boolean directoriesCreated = directories.mkdirs();
 		LOGGER.info("Directories [" + directory + "] was created: [" + directoriesCreated + "].");
-		String fileName = this.getJavaType().getName();
+		String fileName = this.getDataType().getDataTypeFileName();
 		File javaClassFile = FileHelper.createFile(directory, fileName);
 		try {
 			Writer writer = new FileWriter(javaClassFile);
@@ -212,38 +229,22 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	 * 
 	 * @return a sub class class.
 	 */
-	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
+	public DataType buildSubClassForClassGenerator(DataType subjavaType){
 		return null;
 	}
 
 	/**
 	 * @return the javaType
 	 */
-	protected JavaType getJavaType() {
-		return javaType;
+	protected DataType getDataType() {
+		return dataType;
 	}
 
 	/**
 	 * @param javaType the javaType to set
 	 */
-	protected void setJavaType(JavaType javaType) {
-		this.javaType = javaType;
-	}
-	
-	protected InterfaceDataType createJavaInterface(){
-		return this.getJavaType().createJavaInterface();
-	}
-
-	protected JavaConstructor createJavaConstructor() {
-		return this.getJavaType().createJavaConstructor();
-	}
-	
-	protected JavaProperty createJavaProperty(String propertyName, String propertyType){
-		return this.getJavaType().createJavaProperty(propertyName, propertyType);
-	}
-	
-	protected JavaProperty createJavaPropertyWithGetterAndSetter(String propertyName, String propertyType){
-		return this.getJavaType().createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
+	protected void setDataType(DataType dataType) {
+		this.dataType = dataType;
 	}
 	
 	protected void addMethodBuilderStrategies(Class<? extends Annotation> annotation, MethodBuilder methodBuilder){
@@ -251,7 +252,7 @@ public abstract class GroupClassGenerator extends GroupCodeGenerator {
 	}
 	
 	protected boolean isAnImplementationClassGenerator(){
-		return this.getJavaType() != null ? this.getJavaType().isAnImplementationType() : false;
+		return this.getDataType() != null ? this.getDataType().isAnImplementationType() : false;
 	}
 
 	/**

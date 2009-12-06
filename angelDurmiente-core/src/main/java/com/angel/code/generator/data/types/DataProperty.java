@@ -23,6 +23,10 @@ public interface DataProperty extends CodeConvertible, Importable {
 	public String getCanonicalType();
 	
 	public String getSimpleType();
+
+	public boolean hasName(String name);
+
+	public boolean isPrivate();
 	
 	
 }

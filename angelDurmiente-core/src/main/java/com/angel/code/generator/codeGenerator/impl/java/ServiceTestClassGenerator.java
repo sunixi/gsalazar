@@ -10,15 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.MethodBuilder;
+import com.angel.code.generator.builders.method.impl.AccesorServiceTestAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.properties.JavaProperty;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.TypeMethod;
-import com.angel.object.generator.java.properties.JavaProperty;
-import com.angel.object.generator.methodBuilder.MethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.AccesorServiceTestAnnotationMethodBuilder;
 import com.angel.test.GenericSpringTestCase;
 
 
@@ -38,9 +36,9 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
-		subjavaType.setTypeName(GenericSpringTestCase.class.getCanonicalName());
-		return subjavaType;
+	public DataType buildSubClassForClassGenerator(DataType subDataType){
+		subDataType.setCanonicalName(GenericSpringTestCase.class.getCanonicalName());
+		return subDataType;
 	}
 	
 	@Override
@@ -51,10 +49,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
 				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
-				String methodName = methodBuilder.buildMethodName(domainClass, f);
-				JavaBlockCode contentMethod = methodBuilder.buildMethodContent(domainClass, f);
-				TypeMethod typeMethod = super.getJavaType().addTypeMethodPublicVoidWithoutParametersImplemented(methodName);
-				typeMethod.getContent().replaceBlockCode(contentMethod);
+				methodBuilder.buildDataMethod(generator, super.getDataType(), domainClass, f);
 			}
 		}
 	}
@@ -62,7 +57,9 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	protected void buildServiceProperty(CodesGenerator generator, Class<?> domainClass) {
 		String propertyName = domainClass.getSimpleName() + "Service";
 		String propertyType = generator.getImportForClassName(propertyName);
-		JavaProperty javaProperty = super.createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
+		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName);
+		javaProperty.setCanonicalType(propertyType);
+		super.getDataType().createDataMethodGetterSetter(javaProperty);
 		javaProperty.addAnnotation(Autowired.class.getCanonicalName());
 	}
 
@@ -77,7 +74,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}	
 }

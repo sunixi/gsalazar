@@ -5,23 +5,20 @@ package com.angel.code.generator.codeGenerator.impl.java;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 import com.angel.architecture.persistence.ids.ObjectId;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.MethodBuilder;
+import com.angel.code.generator.builders.method.impl.AccesorDAOImplAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.InterfaceDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.types.CodeBlock;
+import com.angel.code.generator.data.types.CodeLine;
+import com.angel.code.generator.data.types.DataConstructor;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaConstructor;
-import com.angel.object.generator.java.TypeMethod;
-import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.methodBuilder.MethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.AccesorDAOImplAnnotationMethodBuilder;
 
 
 /**
@@ -42,11 +39,12 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
-		subjavaType.setTypeName(GenericSpringHibernateDAO.class.getCanonicalName());
-		subjavaType.setLeftGeneric(super.getDomainObjectCanonicalName());
-		subjavaType.setRightGeneric(ObjectId.class.getCanonicalName());
-		return subjavaType;
+	public DataType buildSubClassForClassGenerator(DataType subDataType){
+		JavaClassDataType javaClassDataType = (JavaClassDataType) subDataType;
+		javaClassDataType.setCanonicalName(GenericSpringHibernateDAO.class.getCanonicalName());
+		javaClassDataType.setLeftGeneric(super.getDomainObjectCanonicalName());
+		javaClassDataType.setRightGeneric(ObjectId.class.getCanonicalName());
+		return subDataType;
 	}
 
 	@Override
@@ -57,22 +55,17 @@ public class DAOImplClassGenerator extends ClassGenerator {
 			if(f.getModifiers() < Modifier.STATIC){
 				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
 
-				String methodName = methodBuilder.buildMethodName(domainClass, f);
-				List<JavaParameter> javaParameters = methodBuilder.buildJavaParameters(domainClass, f);
-				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
-				JavaBlockCode blockCode = methodBuilder.buildMethodContent(domainClass, f);
-
-				TypeMethod typeMethod = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
-				JavaBlockCode blockCodeCreated = typeMethod.getContent();
-				blockCodeCreated.replaceBlockCode(blockCode);
+				methodBuilder.buildDataMethod(generator, this.getDataType(), domainClass, f);
 			}
 		}
 	}
 	
 	protected void buildJavaTypeConstructor(CodesGenerator generator, Class<?> domainClass){
-		JavaConstructor javaConstructor = super.createJavaConstructor();
-		String content = "super(" + domainClass.getSimpleName() + ".class, " + ObjectId.class.getSimpleName() + ".class);";
-		javaConstructor.setContent(content);
+		DataConstructor dataConstructor = ((JavaClassDataType)super.getDataType()).createDataConstructor();
+		String content = "super(" + domainClass.getSimpleName() + ".class, " + ObjectId.class.getSimpleName() + ".class)";
+		CodeBlock codeBlock = dataConstructor.getContent();
+		CodeLine codeLine = codeBlock.createCodeLine();
+		codeLine.setCode(content);
 	}
 
 	@Override
@@ -86,14 +79,13 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}
 
 	@Override
 	protected void processJavaTypeInterfaces(CodesGenerator generator) {
-		InterfaceDataType serviceInterface = super.createJavaInterface();
 		String canonicalInterfaceType = generator.getImportForClassName(super.getDomainObjectSimpleName() + "DAO");
-		serviceInterface.setTypeName(canonicalInterfaceType);		
+		super.getDataType().createDataInterface(canonicalInterfaceType);
 	}	
 }

@@ -6,54 +6,67 @@ package com.angel.code.generator.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.data.impl.java.JavaDataComment;
 import com.angel.code.generator.data.types.CodeConvertible;
+import com.angel.code.generator.data.types.CodeLine;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataComment;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
+import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
 import com.angel.code.generator.data.types.Importable;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.ImportsHelper;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
 
-
-
 /**
  * @author Guillermo D. Salazar
  * @since 26/Noviembre/2009.
- *
+ * 
  */
 public abstract class DataType implements CodeConvertible, Importable {
 
 	private String canonicalName;
-	
+
 	private DataType subDataType;
-	
+
 	private List<DataMethod> methods;
 
 	private List<DataInterface> interfaces;
 
 	private DataComment comment;
-	
+
 	private Class<?> domainObject;
-	
+
 	private List<String> globalImports;
-	
+
 	private List<DataProperty> properties;
-	
+
 	private List<DataAnnotation> annotations;
 
-	public DataType(){
+	public abstract <T extends DataMethod> T createDataMethod(String name);
+	
+	public abstract <T extends DataMethod> T createDataMethod(String methodName, List<DataParameter> methodParameters);
+
+	public abstract <T extends DataInterface> T createDataInterface(String canonicalType);
+
+	public abstract <T extends DataProperty> T createDataProperty(String name);
+
+	public abstract <T extends DataAnnotation> T createDataAnnotation(String canonicalType);
+
+	public DataType() {
 		super();
 		this.setMethods(new ArrayList<DataMethod>());
 		this.setInterfaces(new ArrayList<DataInterface>());
 		this.setGlobalImports(new ArrayList<String>());
 		this.setProperties(new ArrayList<DataProperty>());
 		this.setAnnotations(new ArrayList<DataAnnotation>());
+		this.setComment(new JavaDataComment());
 	}
-	
-	public DataType(String canonicalDataType){
+
+	public DataType(String canonicalDataType) {
 		this();
 		this.setCanonicalName(canonicalDataType);
 	}
@@ -61,13 +74,14 @@ public abstract class DataType implements CodeConvertible, Importable {
 	/**
 	 * Define if it is an interfaces or a class implementation.
 	 * 
-	 * @return true if it is a concrete class implementation. Otherwise it returns false.
+	 * @return true if it is a concrete class implementation. Otherwise it
+	 *         returns false.
 	 */
 	public abstract boolean isAnImplementationType();
 
 	/**
 	 * Get data type identifier name. It returns class, interfaces, annotations.
-	 *  
+	 * 
 	 * @return java type identifier name.
 	 */
 	public abstract String getDataTypeIdentifierName();
@@ -78,41 +92,51 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * @return a data type file name.
 	 */
 	public abstract String getDataTypeFileName();
-	
+
 	/**
-	 * Add others type imports which this data type needs.
-	 * This method is called at the end of {@link DataType#getImportsType()} method invocation.
+	 * Add others type imports which this data type needs. This method is called
+	 * at the end of {@link DataType#getImportsType()} method invocation.
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
 	 * 
-	 * @param typesImports where all imports are added.
+	 * @param typesImports
+	 *            where all imports are added.
 	 */
-	protected void addTypeImports(List<String> typesImports){
-		//Do nothing.
+	protected void addTypeImports(List<String> typesImports) {
+		// Do nothing.
 	}
-	
+
 	/**
 	 * Add domain object type imports.
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
-	 * @param typesImports where imports must be added.
+	 * @param typesImports
+	 *            where imports must be added.
 	 */
-	protected void addDomainObjectImportsType(List<String> typesImports){
-		this.addImport(typesImports, this.getDomainObject().getCanonicalName());
+	protected void addDomainObjectImportsType(List<String> typesImports) {
+		if(this.hasDomainObject()){
+			this.addImport(typesImports, this.getDomainObject().getCanonicalName());
+		}
 	}
-	
-	protected void addSubDataTypeImportsType(List<String> typesImports){
-		if(this.hasSubDataType()){
-			this.addImport(typesImports, this.getSubDataType().getCanonicalName());
-			/*
-			if(this.getSubDataType().hasLeftGeneric()){
-				this.addImport(typesImports, this.getSubDataType().getLeftGeneric());
-			}
-			if(this.getSubDataType().hasRigthGeneric()){
-				this.addImport(typesImports, this.getSubDataType().getRightGeneric());
-			}*/
+
+	protected boolean hasDomainObject(){
+		return this.getDomainObject() != null;
+	}
+
+	/**
+	 * Add all sub data type import types.
+	 * 
+	 * @see {@link DataType#addImport(List, List)} add a list imports types.
+	 * @see {@link DataType#addImport(List, String)} add a import type.
+	 * @param typesImports
+	 *            where imports must be added.
+	 */
+	protected void addSubDataTypeImportsType(List<String> typesImports) {
+		if (this.hasSubDataType()) {
+			this.addImport(typesImports, this.getSubDataType()
+					.getCanonicalName());
 		}
 	}
 
@@ -121,11 +145,12 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
-	 * @param typesImports where imports must be added.
+	 * @param typesImports
+	 *            where imports must be added.
 	 */
-	protected void addMethodsImportsType(List<String> typesImports){
-		for(DataMethod dataMethod: this.getMethods()){
-			this.addImport(typesImports, dataMethod.getImportsType());			
+	protected void addMethodsImportsType(List<String> typesImports) {
+		for (DataMethod dataMethod : this.getMethods()) {
+			this.addImport(typesImports, dataMethod.getImportsType());
 		}
 	}
 
@@ -134,11 +159,12 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
-	 * @param typesImports where imports must be added.
+	 * @param typesImports
+	 *            where imports must be added.
 	 */
-	protected void addPropertiesImportsType(List<String> typesImports){
-		for(DataProperty dataProperty: this.getProperties()){
-			this.addImport(typesImports, dataProperty.getImportsType());			
+	protected void addPropertiesImportsType(List<String> typesImports) {
+		for (DataProperty dataProperty : this.getProperties()) {
+			this.addImport(typesImports, dataProperty.getImportsType());
 		}
 	}
 
@@ -147,11 +173,12 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
-	 * @param typesImports where imports must be added.
+	 * @param typesImports
+	 *            where imports must be added.
 	 */
-	protected void addAnnotationsImportsType(List<String> typesImports){
-		for(DataAnnotation dataAnnotation: this.getAnnotations()){
-			this.addImport(typesImports, dataAnnotation.getImportsType());			
+	protected void addAnnotationsImportsType(List<String> typesImports) {
+		for (DataAnnotation dataAnnotation : this.getAnnotations()) {
+			this.addImport(typesImports, dataAnnotation.getImportsType());
 		}
 	}
 
@@ -160,11 +187,12 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
-	 * @param typesImports where imports must be added.
+	 * @param typesImports
+	 *            where imports must be added.
 	 */
-	protected void addInterfacesImportsType(List<String> typesImports){
-		for(DataInterface dataInterface: this.getInterfaces()){
-			this.addImport(typesImports, dataInterface.getImportsType());			
+	protected void addInterfacesImportsType(List<String> typesImports) {
+		for (DataInterface dataInterface : this.getInterfaces()) {
+			this.addImport(typesImports, dataInterface.getImportsType());
 		}
 	}
 
@@ -173,59 +201,85 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @see {@link DataType#addImport(List, List)} add a list imports types.
 	 * @see {@link DataType#addImport(List, String)} add a import type.
-	 * @param typesImports where imports must be added.
+	 * @param typesImports
+	 *            where imports must be added.
 	 */
-	protected void addGlobalImportsType(List<String> typesImports){
-		for(String globalImport: this.getGlobalImports()){
-			this.addImport(typesImports, globalImport);			
+	protected void addGlobalImportsType(List<String> typesImports) {
+		for (String globalImport : this.getGlobalImports()) {
+			this.addImport(typesImports, globalImport);
 		}
 	}
 
-	public List<String> getImportsType(){
+	public List<String> getImportsType() {
 		List<String> typesImports = new ArrayList<String>();
-		/** Add domain object type import.*/
+		/** Add domain object type import. */
 		this.addDomainObjectImportsType(typesImports);
 
-		/** Add sub data type import.*/
+		/** Add sub data type import. */
 		this.addSubDataTypeImportsType(typesImports);
 
-		/** Add methods data type imports.*/
+		/** Add methods data type imports. */
 		this.addMethodsImportsType(typesImports);
-		
-		/** Add properties data type imports.*/
+
+		/** Add properties data type imports. */
 		this.addPropertiesImportsType(typesImports);
 
-		/** Add annotations data type imports.*/
+		/** Add interfaces data type imports. */
+		this.addInterfacesImportsType(typesImports);
+
+		/** Add annotations data type imports. */
 		this.addAnnotationsImportsType(typesImports);
 
-		/** Add global data type imports.*/
+		/** Add global data type imports. */
 		this.addGlobalImportsType(typesImports);
 
-		/** Add specifics data types imports.*/
+		/** Add specifics data types imports. */
 		this.addTypeImports(typesImports);
 		return typesImports;
 	}
-	
+
 	/**
-	 * Add a canonical type in a imports list. It tests if canonical type contains import prefix, 
-	 * end of line, and if imports list contains this canonical type.
+	 * Add a canonical type in a imports list. It tests if canonical type
+	 * contains import prefix, end of line, and if imports list contains this
+	 * canonical type.
 	 * 
-	 * @param imports list which contains all imports added. 
-	 * @param canonicalType to add.
+	 * @param imports
+	 *            list which contains all imports added.
+	 * @param canonicalType
+	 *            to add.
 	 */
-	protected void addImport(List<String> imports, String canonicalType){
+	protected void addImport(List<String> imports, String canonicalType) {
 		ImportsHelper.addImport(imports, canonicalType);
+	}
+
+	public void addGlobalImport(String canonicalGlobalType) {
+		this.getGlobalImports().add(canonicalGlobalType);
+	}
+
+	public void addGlobalImports(List<String> canonicalGlobalTypes) {
+		this.getGlobalImports().addAll(canonicalGlobalTypes);
+	}
+
+	public void addGlobalImports(String... canonicalGlobalTypes) {
+		if (canonicalGlobalTypes != null && canonicalGlobalTypes.length > 0) {
+			for (String canonicalType : canonicalGlobalTypes) {
+				this.getGlobalImports().add(canonicalType);
+			}
+		}
 	}
 
 	/**
 	 * Add a canonical types in an import list.
 	 * 
-	 * @see {@link DataType#addImport(List, String)} this method is called for each canonical type.
-	 * @param imports list which contains all imports added.
-	 * @param canonicalTypes to add.
+	 * @see {@link DataType#addImport(List, String)} this method is called for
+	 *      each canonical type.
+	 * @param imports
+	 *            list which contains all imports added.
+	 * @param canonicalTypes
+	 *            to add.
 	 */
-	protected void addImport(List<String> imports, List<String> canonicalTypes){
-		for(String canonicalType: canonicalTypes){
+	protected void addImport(List<String> imports, List<String> canonicalTypes) {
+		for (String canonicalType : canonicalTypes) {
 			this.addImport(imports, canonicalType);
 		}
 	}
@@ -235,56 +289,62 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @return true if it has more than one method. Otherwise it returns false.
 	 */
-	public boolean hasMethods(){
+	public boolean hasMethods() {
 		return this.getMethods().size() > 0;
 	}
 
 	/**
 	 * Test if this data type has annotations added.
 	 * 
-	 * @return true if it has more than one annotation. Otherwise it returns false.
+	 * @return true if it has more than one annotation. Otherwise it returns
+	 *         false.
 	 */
-	public boolean hasAnnotations(){
+	public boolean hasAnnotations() {
 		return this.getAnnotations().size() > 0;
 	}
 
 	/**
 	 * Test if this data type has properties added.
 	 * 
-	 * @return true if it has more than one property. Otherwise it returns false.
+	 * @return true if it has more than one property. Otherwise it returns
+	 *         false.
 	 */
-	public boolean hasProperties(){
+	public boolean hasProperties() {
 		return this.getProperties().size() > 0;
 	}
 
 	/**
 	 * Test if this data type has interfaces added.
 	 * 
-	 * @return true if it has more than one interface. Otherwise it returns false.
+	 * @return true if it has more than one interface. Otherwise it returns
+	 *         false.
 	 */
-	public boolean hasInterfaces(){
+	public boolean hasInterfaces() {
 		return this.getInterfaces().size() > 0;
 	}
 
 	/**
 	 * Test if this data type has a sub type setted.
 	 * 
-	 * @return true if it has a sub data type setted. Otherwise it returns false.
+	 * @return true if it has a sub data type setted. Otherwise it returns
+	 *         false.
 	 */
-	public boolean hasSubDataType(){
+	public boolean hasSubDataType() {
 		return this.getSubDataType() != null;
 	}
 
 	/**
-	 * Get base package of this data type. It is without the simple data type name.
+	 * Get base package of this data type. It is without the simple data type
+	 * name.
 	 * 
-	 * @return base package name of this data type without simple data type name.
+	 * @return base package name of this data type without simple data type
+	 *         name.
 	 */
-	public String getBasePackage(){
+	public String getBasePackage() {
 		return PackageHelper.getPackageOf(this.getCanonicalName());
 	}
-	
-	public String convertCode(){
+
+	public String convertCode() {
 		String codeConverted = "";
 		codeConverted += this.convertCodePackage();
 		codeConverted += this.convertCodeImportsType();
@@ -302,7 +362,7 @@ public abstract class DataType implements CodeConvertible, Importable {
 
 	/**
 	 * Convert end of data type file to a representation code.
-	 *  
+	 * 
 	 * @return a code representation of end of data type file.
 	 */
 	protected String convertCodeEndOfDataType() {
@@ -316,8 +376,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 */
 	protected String convertCodeDataMethods() {
 		String codeConverted = "";
-		if(this.hasMethods()){
-			for(DataMethod dataMethod: this.getMethods()){
+		if (this.hasMethods()) {
+			for (DataMethod dataMethod : this.getMethods()) {
 				codeConverted += dataMethod.convertCode();
 			}
 		}
@@ -325,8 +385,9 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * Convert data type content to a representation code. It can be overwritten by others sub classes.
-	 * This implementation return an empty string with two enters.
+	 * Convert data type content to a representation code. It can be overwritten
+	 * by others sub classes. This implementation return an empty string with
+	 * two enters.
 	 * 
 	 * @return a code representation of data type content.
 	 */
@@ -341,8 +402,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 */
 	protected String convertCodeDataProperties() {
 		String codeConverted = "";
-		if(this.hasProperties()){
-			for(DataProperty dataProperty: this.getProperties()){
+		if (this.hasProperties()) {
+			for (DataProperty dataProperty : this.getProperties()) {
 				codeConverted += dataProperty.convertCode();
 			}
 		}
@@ -356,10 +417,10 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 */
 	protected String convertCodeImplementsInterfaces() {
 		String codeConverted = "";
-		if(this.hasInterfaces()){
+		if (this.hasInterfaces()) {
 			codeConverted += " implements ";
-			for(DataInterface dataInterface: this.getInterfaces()){
-				if(this.getInterfaces().indexOf(dataInterface) == 0){
+			for (DataInterface dataInterface : this.getInterfaces()) {
+				if (this.getInterfaces().indexOf(dataInterface) == 0) {
 					codeConverted += dataInterface.getSign();
 				} else {
 					codeConverted += ", " + dataInterface.getSign();
@@ -376,8 +437,9 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 */
 	protected String convertCodeInheritSubDataType() {
 		String codeConverted = "";
-		if(this.hasSubDataType()){
-			codeConverted += " extends " + this.getSubDataType().getDataTypeSign();
+		if (this.hasSubDataType()) {
+			codeConverted += " extends "
+					+ this.getSubDataType().getSimpleName();
 		}
 		return codeConverted;
 	}
@@ -392,11 +454,12 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * Get the sign of this data type. It is the simple data type name (without the base package name).
+	 * Get the sign of this data type. It is the simple data type name (without
+	 * the base package name).
 	 * 
 	 * @return a data type name without its base package name.
 	 */
-	protected String getDataTypeSign() {
+	public String getDataTypeSign() {
 		return this.getSimpleName();
 	}
 
@@ -405,7 +468,7 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * 
 	 * @return a simple name of this data type.
 	 */
-	public String getSimpleName(){
+	public String getSimpleName() {
 		return PackageHelper.getClassSimpleName(this.getCanonicalName());
 	}
 
@@ -416,7 +479,7 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 */
 	protected String convertCodeDataAnnotations() {
 		String codeConverted = "";
-		for(DataAnnotation dataAnnotation: this.getAnnotations()){
+		for (DataAnnotation dataAnnotation : this.getAnnotations()) {
 			codeConverted += dataAnnotation.convertCode();
 		}
 		return codeConverted;
@@ -437,12 +500,14 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * @return a code representation of imports data types.
 	 */
 	protected String convertCodeImportsType() {
-		return StringHelper.convertToPlainString(this.getImportsType().toArray(), "\n");
+		String convertedCode = StringHelper.convertToPlainString(this.getImportsType()
+				.toArray(), "\n");
+		return convertedCode + "\n\n";
 	}
 
 	/**
 	 * Convert package data type to a code representation.
-	 *  
+	 * 
 	 * @return a code representation of this data type package.
 	 */
 	protected String convertCodePackage() {
@@ -457,23 +522,19 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param domainObject the domainObject to set
+	 * @param domainObject
+	 *            the domainObject to set
 	 */
 	public void setDomainObject(Class<?> domainObject) {
 		this.domainObject = domainObject;
-	}	
-	
-	public String getDomainObjectSimpleName(){
+	}
+
+	public String getDomainObjectSimpleName() {
 		return this.getDomainObject().getSimpleName();
 	}
 
 	public String getDomainObjectCanonicalName() {
 		return this.getDomainObject().getCanonicalName();
-	}
-
-
-	public void addGlobalImport(String classNameImport) {
-		this.getGlobalImports().add(classNameImport);		
 	}
 
 	/**
@@ -484,7 +545,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param globalImports the globalImports to set
+	 * @param globalImports
+	 *            the globalImports to set
 	 */
 	protected void setGlobalImports(List<String> globalImports) {
 		this.globalImports = globalImports;
@@ -498,7 +560,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param canonicalName the canonicalName to set
+	 * @param canonicalName
+	 *            the canonicalName to set
 	 */
 	public void setCanonicalName(String canonicalName) {
 		this.canonicalName = canonicalName;
@@ -512,7 +575,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param subDataType the subDataType to set
+	 * @param subDataType
+	 *            the subDataType to set
 	 */
 	public void setSubDataType(DataType subDataType) {
 		this.subDataType = subDataType;
@@ -526,7 +590,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param methods the methods to set
+	 * @param methods
+	 *            the methods to set
 	 */
 	public void setMethods(List<DataMethod> methods) {
 		this.methods = methods;
@@ -540,7 +605,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param interfaces the interfaces to set
+	 * @param interfaces
+	 *            the interfaces to set
 	 */
 	public void setInterfaces(List<DataInterface> interfaces) {
 		this.interfaces = interfaces;
@@ -554,7 +620,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param comment the comment to set
+	 * @param comment
+	 *            the comment to set
 	 */
 	public void setComment(DataComment comment) {
 		this.comment = comment;
@@ -568,7 +635,8 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param properties the properties to set
+	 * @param properties
+	 *            the properties to set
 	 */
 	public void setProperties(List<DataProperty> properties) {
 		this.properties = properties;
@@ -582,9 +650,184 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	/**
-	 * @param annotations the annotations to set
+	 * @param annotations
+	 *            the annotations to set
 	 */
 	public void setAnnotations(List<DataAnnotation> annotations) {
 		this.annotations = annotations;
+	}
+
+	public void addComment(String comment) {
+		this.getComment().addComment(comment);
+	}
+
+	public void addTODOComment(String comment) {
+		this.getComment().addTODOComment(comment);
+	}
+
+	public void addTagComment(String tag, String value) {
+		this.getComment().addTag(tag, value);
+	}
+
+	public void addTagCommentAuthor(String value) {
+		this.getComment().addTag("@author", value);
+	}
+
+	public void addInterface(DataInterface dataInterface) {
+		if (this.hasInterface(dataInterface)) {
+			throw new CodeGeneratorException("Data interface ["
+					+ dataInterface.getCanonicalName()
+					+ "] is used by this data type [" + this.getCanonicalName()
+					+ "].");
+		}
+		this.getInterfaces().add(dataInterface);
+	}
+
+	public boolean hasInterface(DataInterface dataInterface) {
+		boolean hasInterface = false;
+		for (DataInterface di : this.getInterfaces()) {
+			if (di.hasCanonicalName(dataInterface.getCanonicalName())) {
+				return true;
+			}
+		}
+		return hasInterface;
+	}
+
+	public DataInterface getInterface(String name){
+		//TODO verificar cuando una interface tiene el mismo nombre pero distinto paquete
+		for (DataInterface di: this.getInterfaces()) {
+			if (di.hasName(name)) {
+				return di;
+			}
+		}
+		return null;
+	}
+
+	public void addMethod(DataMethod method) {
+		if (this.hasMethod(method.getName(), method
+				.getParametersCanonicalTypes())) {
+			throw new CodeGeneratorException("Method with name ["
+					+ method.getName()
+					+ "] and canonical parameters types ["
+					+ StringHelper.convertToPlainString(method
+							.getParametersCanonicalTypes().toArray(), ", ")
+					+ "] exist in data type.");
+		}
+		method.setOwnerType(this);
+		this.getMethods().add(method);
+	}
+
+	public DataMethod getMethod(String methodName,
+			List<String> canonicalParametersTypes) {
+		for (DataMethod dataMethod : this.getMethods()) {
+			if (dataMethod.matchSign(methodName, canonicalParametersTypes)) {
+				return dataMethod;
+			}
+		}
+		return null;
+	}
+
+	public boolean hasMethod(String methodName, List<String> canonicalParametersTypes) {
+		for (DataMethod dataMethod : this.getMethods()) {
+			if (dataMethod.matchSign(methodName, canonicalParametersTypes)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public DataMethod getMethod(String methodName) {
+		List<DataMethod> methods = new ArrayList<DataMethod>();
+		for (DataMethod dataMethod : this.getMethods()) {
+			if (dataMethod.hasName(methodName)) {
+				methods.add(dataMethod);
+			}
+		}
+		if (methods.size() > 1) {
+			throw new CodeGeneratorException(
+					"There are more than one data method with name ["
+							+ methodName + "] in data type ["
+							+ this.getCanonicalName() + "].");
+		}
+		return !methods.isEmpty() ? methods.get(0) : null;
+	}
+
+	public List<String> getMethodsSign() {
+		List<String> methodsSigns = new ArrayList<String>();
+		for (DataMethod dataMethod : this.getMethods()) {
+			methodsSigns.add(dataMethod.getSign());
+		}
+		return methodsSigns;
+	}
+
+	public String getName() {
+		return this.getSimpleName();
+	}
+
+	public DataMethod getMethod(String name, int totalParameters) throws CodeGeneratorException {
+		DataMethod dataMethod = this.getMethod(name);
+		if(dataMethod != null && dataMethod.hasParameters(totalParameters)){
+			return dataMethod;
+		}
+		return null;
+	}
+
+	public void addAnnotation(DataAnnotation dataAnnotation){
+		if(this.hasAnnotation(dataAnnotation)){
+			throw new CodeGeneratorException("Data type [" + this.getSimpleName() + "] has a data annotation with name [" + dataAnnotation.getName() + "].");
+		}
+		this.getAnnotations().add(dataAnnotation);
+	}
+
+	public boolean hasAnnotation(DataAnnotation dataAnnotation) {
+		return this.getAnnotation(dataAnnotation.getName()) != null;
+	}
+
+	public DataAnnotation getAnnotation(String name){
+		for (DataAnnotation da: this.getAnnotations()) {
+			if (da.hasName(name)) {
+				return da;
+			}
+		}
+		return null;
+	}
+
+	public void addProperty(DataProperty dataProperty){
+		if(this.hasProperty(dataProperty)){
+			throw new CodeGeneratorException("Data type [" + this.getSimpleName() + "] has a data property with name [" + dataProperty.getName() + "].");
+		}
+		this.getProperties().add(dataProperty);
+	}
+
+	public boolean hasProperty(DataProperty dataProperty) {
+		return this.getProperty(dataProperty.getName()) != null;
+	}
+
+	public DataProperty getProperty(String name){
+		for (DataProperty dp: this.getProperties()) {
+			if (dp.hasName(name)) {
+				return dp;
+			}
+		}
+		return null;
+	}
+
+	public void createDataMethodGetterSetter(DataProperty dataProperty) {
+		this.createDataMethodGetter(dataProperty);
+		this.createDataMethodSetter(dataProperty);
+	}
+
+	public void createDataMethodGetter(DataProperty dataProperty) {
+		DataMethod dataMethod = this.createDataMethod(dataProperty.getName());
+		dataMethod.createReturnParameter(dataProperty.getCanonicalType());
+		
+		CodeLine codeLine = dataMethod.getContent().createCodeLine();
+		
+		codeLine.setCode("return this." + dataProperty.getName() + ";");
+		
+	}
+
+	public void createDataMethodSetter(DataProperty dataProperty) {
+		
 	}
 }

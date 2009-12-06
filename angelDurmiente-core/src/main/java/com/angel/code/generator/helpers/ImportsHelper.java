@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ImportsHelper {
 
-	public static final String IMPORT_PREFIX = "import";
+	public static final String IMPORT_PREFIX = "import ";
 
 	public static final String END_OF_LINE = ";";
 	
@@ -32,17 +32,19 @@ public class ImportsHelper {
 	
 	
 	public static void addImport(List<String> imports, String typeClass){
-		String className = typeClass;
-		if(!typeClass.startsWith(IMPORT_PREFIX)){
-			className = IMPORT_PREFIX + typeClass + END_OF_LINE;
-		}
-		if(!imports.contains(className)){
-			imports.add(className);
+		if(!isJavaPrimitiveType(typeClass)){
+			String className = typeClass;
+			if(!typeClass.startsWith(IMPORT_PREFIX)){
+				className = IMPORT_PREFIX + typeClass + END_OF_LINE;
+			}
+			if(!imports.contains(className)){
+				imports.add(className);
+			}
 		}
 	}
 	
 	public static boolean isJavaPrimitiveType(String typeClass){
-		String cleanTypeClass = typeClass.trim().replaceAll("import", "").replaceAll(";", "").trim();
+		String cleanTypeClass = typeClass.trim().replaceAll(IMPORT_PREFIX, "").replaceAll(END_OF_LINE, "").trim();
 		return JAVA_PRIMITIVES_CLASSES.contains(cleanTypeClass);
 	}
 

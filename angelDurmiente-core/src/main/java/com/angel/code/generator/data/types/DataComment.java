@@ -26,5 +26,5 @@ public interface DataComment extends CodeConvertible, Importable {
 	
 	public String getTagValue(String tag);
 	
-	public List<String> getTagsValue();
+	public List<String> getTagsValues();
 }

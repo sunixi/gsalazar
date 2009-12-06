@@ -1,19 +1,24 @@
 /**
  * 
  */
-package com.angel.object.generator.methodBuilder.impl;
+package com.angel.code.generator.builders.method.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.MethodBuilder;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaCodeBlock;
+import com.angel.code.generator.data.impl.java.properties.JavaParameter;
+import com.angel.code.generator.data.types.CodeBlock;
+import com.angel.code.generator.data.types.DataMethod;
+import com.angel.code.generator.data.types.DataParameter;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.methodBuilder.MethodBuilder;
 
 
 /**
@@ -24,15 +29,15 @@ import com.angel.object.generator.methodBuilder.MethodBuilder;
 public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder {
 
 
-	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property) {
-		List<JavaParameter> parameters = new ArrayList<JavaParameter>();
+	public <T> List<DataParameter> buildDataParameters(Class<T> domainClass, Field property) {
+		List<DataParameter> parameters = new ArrayList<DataParameter>();
 		JavaParameter javaParameter = new JavaParameter(property.getName(), property.getType().getCanonicalName());
 		parameters.add(javaParameter);
 		return parameters;
 	}
 
-	public <T> JavaBlockCode buildMethodContent(Class<T> domainClass, Field property) {
-		JavaBlockCode javaBlockCode = new JavaBlockCode();
+	public <T> JavaCodeBlock buildMethodContent(Class<T> domainClass, Field property) {
+		JavaCodeBlock javaBlockCode = new JavaCodeBlock();
 		
 		List<String> parameters = new ArrayList<String>();
 		parameters.add(property.getName());
@@ -72,4 +77,15 @@ public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder 
 		return property.getAnnotation(Accesor.class);
 	}	
 
+	public void buildDataMethod(CodesGenerator generator, DataType dataType, Class<?> domainClass, Object owner) {
+		String methodName = this.buildMethodName(domainClass, (Field) owner);
+		CodeBlock codeBlock = this.buildMethodContent(domainClass, (Field) owner);
+		List<DataParameter> methodParameters = this.buildDataParameters(domainClass, (Field) owner);
+		DataParameter returnParamter = this.buildReturnParameter(domainClass, (Field) owner);
+
+		DataMethod dataMethod = dataType.createDataMethod(methodName);
+		dataMethod.setParameters(methodParameters);
+		dataMethod.setContent(codeBlock);
+		dataMethod.setReturnType(returnParamter);		
+	}
 }

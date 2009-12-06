@@ -10,9 +10,16 @@ import java.util.List;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.impl.AccesorServiceImplAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaCodeBlock;
+import com.angel.code.generator.data.impl.java.JavaCodeLine;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
+import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
+import com.angel.code.generator.data.impl.java.properties.JavaParameter;
+import com.angel.code.generator.data.types.DataParameter;
 import com.angel.common.helpers.FileHelper;
 import com.angel.data.generator.annotations.Generator;
 import com.angel.data.generator.annotations.importFileProcessorRunner.ImportFileProcessorRunnerBuilder;
@@ -22,12 +29,6 @@ import com.angel.io.descriptor.FileProcessorDescriptor;
 import com.angel.io.processors.commands.impl.ExcelFileProcessorCommand;
 import com.angel.io.processors.runners.imports.impl.ImportFileAnnotationProcessorRunner;
 import com.angel.io.processors.runners.imports.impl.ImportFileProcessorRunner;
-import com.angel.object.generator.java.JavaAnnotation;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaLineCode;
-import com.angel.object.generator.java.TypeMethod;
-import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.methodBuilder.impl.AccesorServiceImplAnnotationMethodBuilder;
 
 
 /**
@@ -59,26 +60,25 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
         }
     }
 	 */
-	protected void processPrepareInputStream(CodesGenerator generator,
-			Class<?> domainClass) {
-		String methodName = "prepareInputStream";
-		JavaParameter returnParameter = new JavaParameter(InputStream.class.getCanonicalName());
-		TypeMethod prepareImportFileTypeMethod = super.getJavaType().addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
-		prepareImportFileTypeMethod.addJavaAnnotation(InputStreamBuilder.class.getCanonicalName());
+	protected void processPrepareInputStream(CodesGenerator generator, Class<?> domainClass) {	
+		JavaDataMethod prepareImportFileTypeMethod = super.getDataType().createDataMethod("prepareInputStream");
+		prepareImportFileTypeMethod.createReturnParameter(InputStream.class.getCanonicalName());
 		
-		JavaBlockCode prepareInputStreamMethodConent = prepareImportFileTypeMethod.getContent();
+		prepareImportFileTypeMethod.createAnnotation(InputStreamBuilder.class.getCanonicalName());
+
+		JavaCodeBlock prepareInputStreamMethodConent = (JavaCodeBlock) prepareImportFileTypeMethod.createCodeBlock();
 		prepareInputStreamMethodConent.addLineCodeCommented("TODO Change file name.");
 		prepareInputStreamMethodConent.addLineCodeCommented("TODO You can create a static class with files names.");
 		
 		String initialDataFile = "\"/initialData/" + domainClass.getSimpleName() + ".xls\"";
 		List<String> parametersNames = new ArrayList<String>();
 		parametersNames.add(initialDataFile);
-		JavaLineCode returnPrepareInputStream = 
+		JavaCodeLine returnPrepareInputStream = 
 			prepareInputStreamMethodConent
 				.getLineCodeReturnCalledStaticMethod(FileHelper.class.getCanonicalName(), "findInputStreamInClasspath", parametersNames);
 		
 		String exceptionMessage ="File not found [\" + " + initialDataFile + "+ \"].";
-		JavaLineCode throwDataGeneratorException = prepareInputStreamMethodConent
+		JavaCodeLine throwDataGeneratorException = prepareInputStreamMethodConent
 			.getLineCodethrowNewException(DataGeneratorException.class.getCanonicalName(), exceptionMessage);
 		
 		prepareInputStreamMethodConent.addLineCodeTryCatch(
@@ -96,40 +96,43 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
         return a;
     }
  */
-	protected void processPrepareImportFileProcessorRunnerTypeMethod(
-			CodesGenerator generator, Class<?> domainClass) {
-		String methodName = "prepareImportFileProcessorRunner";
+	protected void processPrepareImportFileProcessorRunnerTypeMethod(CodesGenerator generator, Class<?> domainClass) {
 		JavaParameter returnParameter = new JavaParameter(ImportFileProcessorRunner.class.getCanonicalName());
-		List<JavaParameter> methodParameters = new ArrayList<JavaParameter>();
-		methodParameters.add(new JavaParameter("fileProcessorDescriptor", FileProcessorDescriptor.class.getCanonicalName()));
 		
-		TypeMethod prepareImportFileTypeMethod = super.getJavaType()
-				.addTypeMethodPublicImplemented(methodName, methodParameters, returnParameter);
-		JavaAnnotation importFileProcessorBuilderAnnotation = prepareImportFileTypeMethod.addJavaAnnotation(ImportFileProcessorRunnerBuilder.class.getCanonicalName());
+		List<DataParameter> methodParameters = new ArrayList<DataParameter>();
+		methodParameters.add(new JavaParameter("fileProcessorDescriptor", FileProcessorDescriptor.class.getCanonicalName()));
+
+		JavaDataMethod prepareImportFileTypeMethod = super.getDataType().createDataMethod("prepareImportFileProcessorRunner");
+		prepareImportFileTypeMethod.setImplemented();
+		prepareImportFileTypeMethod.setParameters(methodParameters);
+		prepareImportFileTypeMethod.setReturnType(returnParameter);
+
+		JavaAnnotation importFileProcessorBuilderAnnotation = prepareImportFileTypeMethod.createAnnotation(ImportFileProcessorRunnerBuilder.class.getCanonicalName());
 		importFileProcessorBuilderAnnotation.createJavaAnnotationPropertyClass("fileProcessorDescriptor", FileProcessorDescriptor.class.getCanonicalName());
 		importFileProcessorBuilderAnnotation.createJavaAnnotationPropertyString("name", "Importación de " + domainClass.getSimpleName());
 		
 		String newInstanceObjectType = ImportFileAnnotationProcessorRunner.class.getCanonicalName();
-		JavaBlockCode prepareImportFileContent = prepareImportFileTypeMethod.getContent();
-		JavaLineCode createExcelVariable = prepareImportFileContent.getLineCodeCreateObject("excelFileProcessorCommand", ExcelFileProcessorCommand.class.getCanonicalName() );
+		JavaCodeBlock prepareImportFileContent = (JavaCodeBlock) prepareImportFileTypeMethod.getContent();
+		JavaCodeLine createExcelVariable = prepareImportFileContent.getLineCodeCreateObject("excelFileProcessorCommand", ExcelFileProcessorCommand.class.getCanonicalName() );
 
 		String domainObjectRowProcessorCanonicalType = generator.getImportForClassName( domainClass.getSimpleName() + "AnnotationRowProcessorCommand");
-		JavaLineCode createDomainObjectRowProcessorVariable = prepareImportFileContent.getLineCodeCreateObject("domainObjectRowProcessor", domainObjectRowProcessorCanonicalType );
+		JavaCodeLine createDomainObjectRowProcessorVariable = prepareImportFileContent.
+					getLineCodeCreateObject("domainObjectRowProcessor", domainObjectRowProcessorCanonicalType );
 		
-		prepareImportFileContent.addJavaLineCode(createExcelVariable);
-		prepareImportFileContent.addJavaLineCode(createDomainObjectRowProcessorVariable);
+		prepareImportFileContent.addCodeLine(createExcelVariable);
+		prepareImportFileContent.addCodeLine(createDomainObjectRowProcessorVariable);
 		
 		List<String> parametersNames = new ArrayList<String>();
 		parametersNames.add("fileProcessorDescriptor");
 		parametersNames.add("excelFileProcessorCommand");
 		parametersNames.add("domainObjectRowProcessor");
-		JavaLineCode newImportFileAnnotationProcessorRunner = 
+		JavaCodeLine newImportFileAnnotationProcessorRunner = 
 				prepareImportFileContent.getLineCodeNewInstanceObject(newInstanceObjectType, parametersNames);
 		prepareImportFileContent.addLineCodeReturn(newImportFileAnnotationProcessorRunner);
 	}
 
 	protected void processGeneratorAnnotation(CodesGenerator generator, Class<?> domainClass) {
-		JavaAnnotation generatorAnnotation = super.getJavaType().createJavaAnnotation(Generator.class.getCanonicalName());
+		JavaAnnotation generatorAnnotation = super.getDataType().createDataAnnotation(Generator.class.getCanonicalName());
 		generatorAnnotation.createJavaAnnotationPropertyClass("objectClass", domainClass.getCanonicalName());
 		generatorAnnotation.createJavaAnnotationMultiValuePropertyEmpty("dependencies");
 		generatorAnnotation.createJavaAnnotationPropertyString("daoName", domainClass.getSimpleName() + "DAO");
@@ -147,7 +150,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}	
 }

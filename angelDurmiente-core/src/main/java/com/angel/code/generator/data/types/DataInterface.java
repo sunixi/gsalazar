@@ -22,6 +22,8 @@ public interface DataInterface extends CodeConvertible, Importable {
 	public List<DataMethod> getMethods();
 	
 	public List<String> getMethodsSign();
+	
+	public String getCanonicalName();
 
 	/**
 	 * 
@@ -56,5 +58,9 @@ public interface DataInterface extends CodeConvertible, Importable {
 	 * @return interface sign. It is a simple interface name.
 	 */
 	public String getSign();
+
+	public boolean hasCanonicalName(String canonicalName);
+
+	public boolean hasName(String name);
 
 }

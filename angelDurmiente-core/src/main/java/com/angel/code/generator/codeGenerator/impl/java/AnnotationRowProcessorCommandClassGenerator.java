@@ -10,9 +10,19 @@ import java.util.List;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.impl.AccesorServiceImplAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaCodeBlock;
+import com.angel.code.generator.data.impl.java.JavaCodeLine;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
+import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
+import com.angel.code.generator.data.impl.java.annotations.JavaAnnotationMultiValueProperty;
+import com.angel.code.generator.data.impl.java.annotations.JavaAnnotationPropertyAnnotation;
+import com.angel.code.generator.data.impl.java.properties.JavaParameter;
+import com.angel.code.generator.data.impl.java.properties.JavaProperty;
+import com.angel.code.generator.data.types.DataParameter;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.data.generator.annotations.Inject;
@@ -21,15 +31,6 @@ import com.angel.io.annotations.RowChecker;
 import com.angel.io.annotations.RowProcessor;
 import com.angel.io.annotations.RowProcessorCommand;
 import com.angel.io.exceptions.InvalidRowDataException;
-import com.angel.object.generator.java.JavaAnnotation;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaLineCode;
-import com.angel.object.generator.java.TypeMethod;
-import com.angel.object.generator.java.properties.JavaAnnotationMultiValueProperty;
-import com.angel.object.generator.java.properties.JavaAnnotationPropertyAnnotation;
-import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.java.properties.JavaProperty;
-import com.angel.object.generator.methodBuilder.impl.AccesorServiceImplAnnotationMethodBuilder;
 
 
 /**
@@ -60,7 +61,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 
-		JavaAnnotation rowProcessorCommandAnnotation = this.getJavaType().createJavaAnnotation(RowProcessorCommand.class.getCanonicalName());		
+		JavaAnnotation rowProcessorCommandAnnotation = this.getDataType().createDataAnnotation(RowProcessorCommand.class.getCanonicalName());
 		JavaAnnotationMultiValueProperty columnsRowValues = rowProcessorCommandAnnotation.createJavaAnnotationMultiValueProperty("columnsRow");
 
 		for(Field f : fields){
@@ -74,10 +75,10 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		}
 
 		this.buildServiceProperty(generator, domainClass);
-		List<JavaParameter> processRowDataParameters = new ArrayList<JavaParameter>();
+		List<DataParameter> processRowDataParameters = new ArrayList<DataParameter>();
 		processRowDataParameters.add(new JavaParameter(domainClass.getSimpleName(), domainClass.getCanonicalName()));
 
-		List<JavaParameter> checkRowDataParameters = new ArrayList<JavaParameter>();
+		List<DataParameter> checkRowDataParameters = new ArrayList<DataParameter>();
 		
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
@@ -91,46 +92,52 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		this.processProcessRowMethod(processRowDataParameters, domainClass);
 	}
 	
-	protected void processCheckRowDataMethod(List<JavaParameter> parameters){
-		TypeMethod checkRodDataTypeMethod = super.getJavaType().addTypeMethodPublicVoid("checkRowData", parameters, true);
-		JavaBlockCode javaBlockCode = checkRodDataTypeMethod.getContent();
+	protected void processCheckRowDataMethod(List<DataParameter> parameters){
+		JavaDataMethod checkRodDataTypeMethod = super.getDataType().createDataMethod("checkRowData");
+		checkRodDataTypeMethod.setImplemented();
+		checkRodDataTypeMethod.setParameters(parameters);
+		
+		JavaCodeBlock javaBlockCode = checkRodDataTypeMethod.createCodeBlock();
 
 		List<String> parametersNames = new ArrayList<String>();
-		for(JavaParameter jp: parameters){
-			parametersNames.add(jp.getParameterName());
+		for(DataParameter jp: parameters){
+			parametersNames.add(jp.getName());
 		}
-		JavaLineCode javaLineCode = javaBlockCode.getLineCodeCalledStaticMethod(
+		JavaCodeLine javaLineCode = javaBlockCode.getLineCodeCalledStaticMethod(
 				StringHelper.class.getCanonicalName(), "areAllNotEmpty", parametersNames);
 		javaBlockCode.addLineCodeAssigmentTypedVariable(
 				Boolean.class.getCanonicalName(), "areAllNotEmpty", javaLineCode);
 		
-		JavaBlockCode ifJavaBlockCode = new JavaBlockCode();
+		JavaCodeBlock ifJavaBlockCode = new JavaCodeBlock();
 		
 		String exceptionMessage = "Some row data are NULL - \" + \n";
-		for(JavaParameter jp: parameters){
+		for(DataParameter jp: parameters){
 			if(parameters.indexOf(jp) == parameters.size() - 1){
-				exceptionMessage += "\t\t\t\t\t\"" + jp.getParameterName() + ": [\" + " +  jp.getParameterName() + " + \"].";
+				exceptionMessage += "\t\t\t\t\t\"" + jp.getName() + ": [\" + " +  jp.getName() + " + \"].";
 			} else {
-				exceptionMessage += "\t\t\t\t\t\"" + jp.getParameterName() + ": [\" + " +  jp.getParameterName() + " + \"] - \"+ \n";
+				exceptionMessage += "\t\t\t\t\t\"" + jp.getName() + ": [\" + " +  jp.getName() + " + \"] - \"+ \n";
 			}
 		}
 		ifJavaBlockCode.throwNewException(InvalidRowDataException.class.getCanonicalName(), exceptionMessage);
 		
 		javaBlockCode.addLineCodeIf("!areAllNotEmpty", ifJavaBlockCode);
 
-
-		JavaAnnotation rowCheckerAnnotation = checkRodDataTypeMethod.addJavaAnnotation(RowChecker.class.getCanonicalName());
+		JavaAnnotation rowCheckerAnnotation = checkRodDataTypeMethod.createAnnotation(RowChecker.class.getCanonicalName());
 		rowCheckerAnnotation.createJavaAnnotationMultiValuePropertyEmpty("columnsParameters");
 		
 	}
 	
-	protected void processProcessRowMethod(List<JavaParameter> parameters, Class<?> domainClass){
+	protected void processProcessRowMethod(List<DataParameter> parameters, Class<?> domainClass){
 		//public Usuario processRow(Usuario usuario, String nombre, String apellido, String nombreUsuario, String password, String email, String imagenPerfil, String fechaNacimiento) {
-		TypeMethod processRowMethodTypeMethod = super.getJavaType().addTypeMethodPublicImplemented("processRow", parameters, new JavaParameter(domainClass.getSimpleName(), domainClass.getCanonicalName()));
-		JavaBlockCode javaBlockCode = processRowMethodTypeMethod.getContent();
+		JavaDataMethod processRowMethodTypeMethod = super.getDataType().createDataMethod("processRow");
+		processRowMethodTypeMethod.setParameters(parameters);
+		
+		processRowMethodTypeMethod.createReturnParameter(domainClass.getCanonicalName());
+		
+		JavaCodeBlock javaBlockCode = processRowMethodTypeMethod.createCodeBlock();
 		javaBlockCode.addLineCodeReturnNull();
 		//@RowProcessor(columnsParameters = {}, object = Usuario.class, inject = true).
-		JavaAnnotation rowProcessorAnnotation = processRowMethodTypeMethod.addJavaAnnotation(RowProcessor.class.getCanonicalName());
+		JavaAnnotation rowProcessorAnnotation = processRowMethodTypeMethod.createAnnotation(RowProcessor.class.getCanonicalName());
 		rowProcessorAnnotation.createJavaAnnotationMultiValuePropertyEmpty("columnsParameters");
 		rowProcessorAnnotation.createJavaAnnotationPropertyClass("object", domainClass.getCanonicalName());
 		rowProcessorAnnotation.createjavaAnnotationPropertyBoolean("inject", Boolean.TRUE);
@@ -138,7 +145,8 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	
 	private void createStaticJavaPropertyFor(Field f) {
 		String propertyName = buildStaticPropertyName(f.getName());
-		JavaProperty javaProperty = super.createJavaProperty(propertyName + "_COLUMN", String.class.getCanonicalName());
+		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName + "_COLUMN");
+		javaProperty.setCanonicalType(String.class.getCanonicalName());
 		javaProperty.setPropertyValue("\"" + f.getName() + "\"");
 		javaProperty.setPublicVisibility();
 		javaProperty.setFinalStaticTypeModifier();		
@@ -164,8 +172,12 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	protected void buildServiceProperty(CodesGenerator generator, Class<?> domainClass) {
 		String propertyName = domainClass.getSimpleName() + "DAO";
 		String propertyType = generator.getImportForClassName(propertyName);
-		JavaProperty javaProperty = super.createJavaPropertyWithGetterAndSetter(propertyName, propertyType);
+
+		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName);
+		javaProperty.setCanonicalType(propertyType);
 		javaProperty.addAnnotation(Inject.class.getCanonicalName());
+
+		super.getDataType().createDataMethodGetterSetter(javaProperty);
 	}
 
 	@Override
@@ -179,7 +191,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}	
 }

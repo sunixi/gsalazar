@@ -43,8 +43,10 @@ public class CodesGeneratorFactoryImpl implements CodesGeneratorFactory {
 
 	public CodesGenerator createClassesGenerator(String baseProjectPackage) {
 		CodesGenerator classesGenerator = new CodesGenerator(baseProjectPackage);
-		classesGenerator.addCodeGenerator(new ServiceImplClassGenerator("services.impl", new ServiceClassGenerator("services")));
-		classesGenerator.addCodeGenerator(new DAOImplClassGenerator("daos.impl", new DAOClassGenerator("daos")));
+		classesGenerator.addCodeGenerator(new ServiceClassGenerator("services"));
+		classesGenerator.addCodeGenerator(new DAOClassGenerator("daos"));
+		classesGenerator.addCodeGenerator(new ServiceImplClassGenerator("services.impl"));
+		classesGenerator.addCodeGenerator(new DAOImplClassGenerator("daos.impl"));
 		classesGenerator.addCodeGenerator(new ServiceTestClassGenerator("services"));
 		classesGenerator.addCodeGenerator(new AnnotationRowProcessorCommandClassGenerator("rowProcessors"));
 		classesGenerator.addCodeGenerator(new AnnotationDataGeneratorClassGenerator("dataGenerators"));

@@ -12,14 +12,15 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaCodeBlock;
+import com.angel.code.generator.data.impl.java.JavaCodeLine;
+import com.angel.code.generator.data.impl.java.JavaConstructor;
+import com.angel.code.generator.data.impl.java.properties.JavaParameter;
+import com.angel.code.generator.data.types.DataMethod;
+import com.angel.code.generator.data.types.DataParameter;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaConstructor;
-import com.angel.object.generator.java.JavaLineCode;
-import com.angel.object.generator.java.TypeMethod;
-import com.angel.object.generator.java.properties.JavaParameter;
 
 
 /**
@@ -50,7 +51,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 	 * </pre>
 	 */
 	protected void processPrivateConstructor() {
-		JavaConstructor privateConstructor = super.createJavaConstructor();
+		JavaConstructor privateConstructor = (JavaConstructor) ((JavaClassDataType)super.getDataType()).createDataConstructor();
 		privateConstructor.setPrivateVisibility();
 	}
 
@@ -71,40 +72,47 @@ public class FactoryClassGenerator extends ClassGenerator {
 			Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName() + "Empty";
 		JavaParameter returnParameter = new JavaParameter(domainClass.getCanonicalName());
-		TypeMethod createDomainObjectEmptyTypeMethod = super.getJavaType().addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
+		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
+		createDomainObjectEmptyTypeMethod.setMethodName(methodName);
+		createDomainObjectEmptyTypeMethod.setReturnType(returnParameter);
+		//addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
-		JavaBlockCode javaBlockCode = createDomainObjectEmptyTypeMethod.getContent();		
-		JavaLineCode createReturnLineCode = javaBlockCode.getLineCodeNewInstanceObject(domainClass.getCanonicalName(), new ArrayList<String>());
-		javaBlockCode.addLineCodeReturn(createReturnLineCode);
+		JavaCodeBlock blockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();		
+		JavaCodeLine createReturnLineCode = blockCode.getLineCodeNewInstanceObject(domainClass.getCanonicalName(), new ArrayList<String>());
+		blockCode.addLineCodeReturn(createReturnLineCode);
 	}
 	
 	protected void processCreateDomainObjectFor(CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName();
 		
-		List<JavaParameter> parameters = new ArrayList<JavaParameter>();
+		List<DataParameter> parameters = new ArrayList<DataParameter>();
 		parameters.add(new JavaParameter("quantity", Integer.class.getCanonicalName()));
-		TypeMethod createDomainObjectForTypeMethod = super.getJavaType().addTypeMethodPublicImplemented(methodName, parameters, new JavaParameter(List.class.getCanonicalName()));
+		DataMethod createDomainObjectForTypeMethod = super.getDataType().createDataMethod(methodName, parameters);
+		createDomainObjectForTypeMethod.setMethodName(methodName);
+		createDomainObjectForTypeMethod.setReturnType(new JavaParameter(List.class.getCanonicalName()));
 		createDomainObjectForTypeMethod.setStaticTypeModifier();
-		JavaBlockCode javaBlockCode = createDomainObjectForTypeMethod.getContent();
+
+		JavaCodeBlock javaBlockCode = createDomainObjectForTypeMethod.createCodeBlock();
 		
-		JavaLineCode collectionTypedCreate = javaBlockCode.getLineCodeCreateCollectionTyped(ArrayList.class.getCanonicalName(), domainClass.getCanonicalName());
+		JavaCodeLine collectionTypedCreate = javaBlockCode.getLineCodeCreateCollectionTyped(ArrayList.class.getCanonicalName(), domainClass.getCanonicalName());
 		javaBlockCode.addLineCodeAssigmentCollectionTypedVariable(List.class.getCanonicalName(), domainClass.getCanonicalName(), "instances", collectionTypedCreate);
 		
 		
 		List<String> parametersNames = new ArrayList<String>();
 		parametersNames.add("create" + domainClass.getSimpleName() + "()");
-		JavaLineCode addInstancesToCollection = javaBlockCode.getLineCodeCalledVariableMethod("instances", "add", parametersNames);
+		JavaCodeLine addInstancesToCollection = javaBlockCode.getLineCodeCalledVariableMethod("instances", "add", parametersNames);
 		javaBlockCode.addLineCodeWithFor("int i = 0; i < quantity; i++", addInstancesToCollection);
 		javaBlockCode.addLineCodeReturnVariable("instances");
 	}
 	
 	protected void processCreateDomainObject(CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName();
-		JavaParameter returnParameter = new JavaParameter(domainClass.getCanonicalName());
-		TypeMethod createDomainObjectEmptyTypeMethod = super.getJavaType().addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
+
+		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
-		JavaBlockCode javaBlockCode = createDomainObjectEmptyTypeMethod.getContent();
-		JavaLineCode createBeanEmptyLine = javaBlockCode.getLineCodeCalledMethod(methodName + "Empty", new ArrayList<String>());
+		createDomainObjectEmptyTypeMethod.setReturnType(new JavaParameter(domainClass.getCanonicalName()));
+		JavaCodeBlock javaBlockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();
+		JavaCodeLine createBeanEmptyLine = javaBlockCode.getLineCodeCalledMethod(methodName + "Empty", new ArrayList<String>());
 		javaBlockCode.addLineCodeAssigmentTypedVariable(domainClass.getCanonicalName(), "bean", createBeanEmptyLine);
 		
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
@@ -116,20 +124,20 @@ public class FactoryClassGenerator extends ClassGenerator {
 		javaBlockCode.addLineCodeReturnVariable("bean");
 	}
 	
-	protected void processFieldForCreateDomainObject(Field field, CodesGenerator generator, Class<?> domainClass, TypeMethod method){
+	protected void processFieldForCreateDomainObject(Field field, CodesGenerator generator, Class<?> domainClass, DataMethod method){
 		Class<?> classField = field.getType();
 		String setterMethodName = ReflectionHelper.getSetMethodName(field.getName());
 		boolean isBasicClass = ReflectionHelper.isABasicJavaClass(classField);
-		JavaBlockCode javaBlockCode = method.getContent();
+		JavaCodeBlock javaBlockCode = (JavaCodeBlock) method.getContent();
 		if(isBasicClass){
 			List<Object> parametersValues = new ArrayList<Object>();
 			if(String.class.equals(classField)){
 				parametersValues.add(10);
-				JavaLineCode javaLineCode = javaBlockCode.getLineCodeCalledStaticMethod(RandomStringUtils.class.getCanonicalName(), "randomAlphanumeric", parametersValues.toArray());
+				JavaCodeLine javaLineCode = javaBlockCode.getLineCodeCalledStaticMethod(RandomStringUtils.class.getCanonicalName(), "randomAlphanumeric", parametersValues.toArray());
 				javaBlockCode.addLineCodeVariableSetValue("bean", setterMethodName, javaLineCode);
 			}
 		} else {
-			JavaLineCode javaLineCode = javaBlockCode.getLineCodeNull();
+			JavaCodeLine javaLineCode = javaBlockCode.getLineCodeNull();
 			javaBlockCode.addLineCodeVariableSetValue("bean", setterMethodName, javaLineCode);
 		}
 	}
@@ -145,7 +153,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}	
 }

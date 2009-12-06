@@ -15,4 +15,6 @@ public interface CodeBlock extends CodeConvertible, Importable{
 
 	public List<CodeLine> getLines();
 
+	public CodeLine createCodeLine();
+
 }

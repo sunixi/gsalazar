@@ -5,21 +5,20 @@ package com.angel.code.generator.codeGenerator.impl.java;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 import com.angel.architecture.services.impl.GenericServiceImpl;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.MethodBuilder;
+import com.angel.code.generator.builders.method.impl.AccesorServiceImplAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.InterfaceDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.enums.Visibility;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaCodeBlock;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
+import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.TypeMethod;
-import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.methodBuilder.MethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.AccesorServiceImplAnnotationMethodBuilder;
 
 
 /**
@@ -40,16 +39,15 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
-		subjavaType.setTypeName(GenericServiceImpl.class.getCanonicalName());
-		return subjavaType;
+	public DataType buildSubClassForClassGenerator(DataType subDataType){
+		subDataType.setCanonicalName(GenericServiceImpl.class.getCanonicalName());
+		return subDataType;
 	}
 	
 	@Override
 	protected void processJavaTypeInterfaces(CodesGenerator generator){
-		InterfaceDataType serviceInterface = super.createJavaInterface();
 		String canonicalInterfaceType = generator.getImportForClassName(super.getDomainObjectSimpleName() + "Service");
-		serviceInterface.setTypeName(canonicalInterfaceType);
+		super.getDataType().createDataInterface(canonicalInterfaceType);
 	}
 	
 	@Override
@@ -60,30 +58,26 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
 				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
-
-				String methodName = methodBuilder.buildMethodName(domainClass, f);
-				List<JavaParameter> javaParameters = methodBuilder.buildJavaParameters(domainClass, f);
-				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
-				JavaBlockCode javaBlockCode = methodBuilder.buildMethodContent(domainClass, f);
-
-				TypeMethod typeMethod = super.getJavaType().addTypeMethodPublicImplemented(methodName, javaParameters, returnParameter);
-				typeMethod.getContent().replaceBlockCode(javaBlockCode);
+				methodBuilder.buildDataMethod(generator, this.getDataType(), domainClass, f);
 			}
 		}
 	}
 
 	protected void buildGenericDAOGetter(CodesGenerator generator, Class<?> domainClass) {
 		String domainClassDAO = domainClass.getSimpleName() + "DAO";
+		String importClassName = generator.getImportForClassName(domainClassDAO);
 
 		String methodName = ReflectionHelper.getGetMethodName(domainClassDAO);
-		JavaParameter returnParameter = super.getJavaType().buildReturnJavaParameter(domainClassDAO);
-		returnParameter.notImportType();
-		TypeMethod typeMethod = super.getJavaType()
-				.addTypeMethodProtectedImplementedWithoutParameters(methodName, returnParameter);
-		JavaBlockCode javaBlockCode = typeMethod.getContent();
+		JavaDataMethod typeMethod = super.getDataType().createDataMethod(methodName);
+		typeMethod.setMethodName(methodName);
+		JavaParameter returnParameter = typeMethod.createParameter(importClassName);
+		//returnParameter.notImportType();
+		typeMethod.setVisibility(Visibility.PROTECTED);
+		typeMethod.setReturnType(returnParameter);
+
+		JavaCodeBlock javaBlockCode = typeMethod.createCodeBlock();
 		javaBlockCode.addLineCodeReturnVariable("(" + domainClassDAO + ") super.getGenericDAO()");
-		String importClassName = generator.getImportForClassName(domainClassDAO);
-		super.getJavaType().addImport(importClassName);
+		super.getDataType().addGlobalImport(importClassName);
 	}
 
 	@Override
@@ -97,7 +91,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}	
 }

@@ -5,22 +5,16 @@ package com.angel.code.generator.codeGenerator.impl.java;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
-
-import javax.persistence.Column;
 
 import com.angel.architecture.services.interfaces.GenericService;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.builders.method.MethodBuilder;
+import com.angel.code.generator.builders.method.impl.AccesorJavaAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
-import com.angel.code.generator.data.impl.java.InterfaceDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaInterfaceDataType;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.object.generator.java.properties.JavaParameter;
-import com.angel.object.generator.methodBuilder.MethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.AccesorAnnotationMethodBuilder;
-import com.angel.object.generator.methodBuilder.impl.ColumnAnnotationMethodBuilder;
-
 
 /**
  * @author Guillermo Salazar.
@@ -31,8 +25,8 @@ public class ServiceClassGenerator extends ClassGenerator {
 
 	public ServiceClassGenerator(String basePackage) {
 		super(basePackage);
-		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorAnnotationMethodBuilder());
-		this.getMethodBuilderStrategies().put(Column.class, new ColumnAnnotationMethodBuilder());
+		//TODO Hacer algun applies method builder.
+		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorJavaAnnotationMethodBuilder());
 	}
 
 	public ServiceClassGenerator(String basePackage, ClassGenerator interfaceClassGenerator) {
@@ -41,9 +35,9 @@ public class ServiceClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public JavaType buildSubClassForClassGenerator(JavaType subjavaType){
-		subjavaType.setTypeName(GenericService.class.getCanonicalName());
-		return subjavaType;
+	public DataType buildSubClassForClassGenerator(DataType subDataType){
+		subDataType.setCanonicalName(GenericService.class.getCanonicalName());
+		return subDataType;
 	}
 
 
@@ -53,12 +47,7 @@ public class ServiceClassGenerator extends ClassGenerator {
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
 				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
-
-				String methodName = methodBuilder.buildMethodName(domainClass, f);
-				List<JavaParameter> javaParameters = methodBuilder.buildJavaParameters(domainClass, f);
-				JavaParameter returnParameter = methodBuilder.buildReturnParameter(domainClass, f);
-
-				super.getJavaType().addTypeMethodPublicNotImplemented(methodName, javaParameters, returnParameter);
+				methodBuilder.buildDataMethod(generator, this.getDataType(), domainClass, f);
 			}
 		}
 	}
@@ -75,7 +64,7 @@ public class ServiceClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new InterfaceDataType();
+	protected DataType buildDataType() {
+		return new JavaInterfaceDataType();
 	}
 }

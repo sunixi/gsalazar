@@ -8,16 +8,15 @@ import java.util.List;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.GroupClassGenerator;
-import com.angel.code.generator.data.impl.java.ClassDataType;
-import com.angel.code.generator.data.impl.java.InterfaceDataType;
-import com.angel.code.generator.data.impl.java.JavaType;
+import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaCodeBlock;
+import com.angel.code.generator.data.impl.java.JavaCodeLine;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.interfaces.Executable;
 import com.angel.data.generator.base.DataGeneratorRunner;
 import com.angel.data.generator.builders.impl.DataGeneratorAnnotationRunnerBuilder;
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.JavaLineCode;
-import com.angel.object.generator.java.TypeMethod;
 
 
 /**
@@ -33,8 +32,7 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 
 	@Override
 	protected void processJavaTypeInterfaces(CodesGenerator generator){
-		InterfaceDataType serviceInterface = super.createJavaInterface();
-		serviceInterface.setTypeName(Executable.class.getCanonicalName());
+		super.getDataType().createDataInterface(Executable.class.getCanonicalName());
 	}
 	
 
@@ -49,8 +47,8 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 	}
 
 	@Override
-	protected JavaType buildJavaType() {
-		return new ClassDataType();
+	protected DataType buildDataType() {
+		return new JavaClassDataType();
 	}
 
 	/*
@@ -63,32 +61,33 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 	 */
 	@Override
 	protected void generateContentClass(CodesGenerator generator, List<Class<?>> domainClasses) {
-		TypeMethod executeMethod = super.getJavaType().addTypeMethodPublicVoidWithoutParametersImplemented("execute");
-		JavaBlockCode executeMethodContent = executeMethod.getContent();
+		JavaDataMethod executeMethod = super.getDataType().createDataMethod("execute");
 
-		JavaLineCode builderCreationJavaLine = executeMethodContent
+		JavaCodeBlock executeMethodContent = executeMethod.createCodeBlock();
+
+		JavaCodeLine builderCreationJavaLine = executeMethodContent
 				.getLineCodeCreateObject("builder", DataGeneratorAnnotationRunnerBuilder.class.getCanonicalName());
-		executeMethodContent.addJavaLineCode(builderCreationJavaLine);
+		executeMethodContent.addCodeLine(builderCreationJavaLine);
 		
 		for(Class<?> domainClass: domainClasses){
 			String domainObjectDataGeneratorCanonicalType = generator.getImportForClassName(domainClass.getSimpleName() + "AnnotationDataGenerator");
 			
 			List<String> parametersValues = new ArrayList<String>();
 			parametersValues.add(PackageHelper.getClassSimpleName(domainObjectDataGeneratorCanonicalType) + ".class");
-			JavaLineCode createInstanceAnnotationGeneratorJavaLine = executeMethodContent
+			JavaCodeLine createInstanceAnnotationGeneratorJavaLine = executeMethodContent
 				.getLineCodeCalledStaticClassMethod(domainObjectDataGeneratorCanonicalType);
 
-			JavaLineCode addGeneratorJavaLine = executeMethodContent.getLineCodeCalledVariableMethodWithTypeParameters(
+			JavaCodeLine addGeneratorJavaLine = executeMethodContent.getLineCodeCalledVariableMethodWithTypeParameters(
 					"builder", "addDataGeneratorClass", createInstanceAnnotationGeneratorJavaLine);
-			executeMethodContent.addJavaLineCode(addGeneratorJavaLine);
+			executeMethodContent.addCodeLine(addGeneratorJavaLine);
 		}
 		
-		JavaLineCode callBuilderMethod = executeMethodContent.getLineCodeCalledVariableMethod("builder", "buildDataGeneratorRunner", new ArrayList<String>());
+		JavaCodeLine callBuilderMethod = executeMethodContent.getLineCodeCalledVariableMethod("builder", "buildDataGeneratorRunner", new ArrayList<String>());
 		executeMethodContent.addLineCodeAssigmentTypedVariable(DataGeneratorRunner.class.getCanonicalName(),
 				"runner", callBuilderMethod);
-		JavaLineCode generateDataJavaLineCode = executeMethodContent.getLineCodeCalledVariableMethod("runner", "generateData", new ArrayList<String>());
-		JavaLineCode finalizeGeneratorJavaLineCode = executeMethodContent.getLineCodeCalledVariableMethod("runner", "finalizeGenerator", new ArrayList<String>());
-		executeMethodContent.addJavaLineCode(generateDataJavaLineCode);
-		executeMethodContent.addJavaLineCode(finalizeGeneratorJavaLineCode);
+		JavaCodeLine generateDataJavaLineCode = executeMethodContent.getLineCodeCalledVariableMethod("runner", "generateData", new ArrayList<String>());
+		JavaCodeLine finalizeGeneratorJavaLineCode = executeMethodContent.getLineCodeCalledVariableMethod("runner", "finalizeGenerator", new ArrayList<String>());
+		executeMethodContent.addCodeLine(generateDataJavaLineCode);
+		executeMethodContent.addCodeLine(finalizeGeneratorJavaLineCode);
 	}	
 }

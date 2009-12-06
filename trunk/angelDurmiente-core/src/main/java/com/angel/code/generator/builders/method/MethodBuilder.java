@@ -1,14 +1,10 @@
 /**
  * 
  */
-package com.angel.object.generator.methodBuilder;
+package com.angel.code.generator.builders.method;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.List;
-
-import com.angel.object.generator.java.JavaBlockCode;
-import com.angel.object.generator.java.properties.JavaParameter;
+import com.angel.code.generator.CodesGenerator;
+import com.angel.code.generator.data.DataType;
 
 /**
  * @author Guillermo D. Salazar
@@ -16,14 +12,16 @@ import com.angel.object.generator.java.properties.JavaParameter;
  *
  */
 public interface MethodBuilder {
-
+/*
 	public <T> String buildMethodName(Class<T> domainClass, Field property);
 	
-	public <T> JavaBlockCode buildMethodContent(Class<T> domainClass, Field property);
+	public <T, H extends CodeBlock> H buildMethodContent(Class<T> domainClass, Field property);
 	
 	public <T> List<JavaParameter> buildJavaParameters(Class<T> domainClass, Field property);
 	
 	public <T> JavaParameter buildReturnParameter(Class<T> domainClass, Field property);
 
 	public <T> Annotation getAnnotation(Class<T> domainClass, Field property);
+*/
+	public void buildDataMethod(CodesGenerator generator, DataType dataType, Class<?> domainClass, Object owner);
 }

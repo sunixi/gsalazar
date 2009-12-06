@@ -18,8 +18,6 @@ import org.apache.log4j.Logger;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.builders.method.MethodBuilder;
 import com.angel.code.generator.data.DataType;
-import com.angel.code.generator.exceptions.CodeGeneratorException;
-import com.angel.code.generator.factories.dataTypes.DataTypeComponentsFactory;
 import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.StringHelper;
 
@@ -34,11 +32,8 @@ public abstract class ClassGenerator extends CodeGenerator {
 	private DataType dataType;
 	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
 	private ClassGenerator interfaceClassGenerator;
-	private DataTypeComponentsFactory componentsFactory;
 
 	protected abstract DataType buildDataType();
-	
-	//TODO protected abstract DataTypeComponentsFactory createDataTypeComponentsFactory();
 
 	protected abstract String buildClassName(Class<?> domainClass);
 	
@@ -61,7 +56,6 @@ public abstract class ClassGenerator extends CodeGenerator {
 	}
 	
 	public void initializeCodeGenerator(CodesGenerator generator, List<Class<?>> domainClasses){
-		this.initializeDataTypeComponentsFactory();
 		if(this.hasInterfaceClassGenerator()){
 			LOGGER.debug("Initializing interface code generator [" + this.getInterfaceClassGenerator().getClass().getCanonicalName() + "] at implementation class generator type [" + this.getClass().getCanonicalName() + "].");			
 			this.getInterfaceClassGenerator().initializeCodeGenerator(generator, domainClasses);
@@ -71,20 +65,6 @@ public abstract class ClassGenerator extends CodeGenerator {
 			String simpleClassGeneratorType = this.buildClassName(domainClass);
 			generator.addRelativeImport(this.getBasePackage(), simpleClassGeneratorType);
 		}
-	}
-
-	/**
-	 * Initialize data type components factory instances. Test if instance is valid one.
-	 * 
-	 * @throws @{@link CodeGeneratorException} when data type components factory is a null object. 
-	 */
-	protected void initializeDataTypeComponentsFactory() {
-		/*TODO
-		DataTypeComponentsFactory dataTypeComponentsFactory = this.createDataTypeComponentsFactory();
-		if(dataTypeComponentsFactory == null){
-			throw new CodeGeneratorException("Creation of data type components factory instance cannot be null.");
-		}
-		this.componentsFactory = dataTypeComponentsFactory;*/
 	}
 
 	@Override
@@ -281,19 +261,5 @@ public abstract class ClassGenerator extends CodeGenerator {
 	
 	public boolean hasInterfaceClassGenerator(){
 		return this.getInterfaceClassGenerator() != null;
-	}
-
-	/**
-	 * @return the componentsFactory
-	 */
-	protected DataTypeComponentsFactory getComponentsFactory() {
-		return componentsFactory;
-	}
-
-	/**
-	 * @param componentsFactory the componentsFactory to set
-	 */
-	protected void setComponentsFactory(DataTypeComponentsFactory componentsFactory) {
-		this.componentsFactory = componentsFactory;
 	}
 }

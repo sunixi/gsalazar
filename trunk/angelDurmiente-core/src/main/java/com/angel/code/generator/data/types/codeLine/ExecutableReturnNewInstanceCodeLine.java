@@ -15,7 +15,7 @@ public class ExecutableReturnNewInstanceCodeLine extends ExecutableReturnCodeLin
 	/**
 	 * Create an executable return new code line instance.
 	 * <pre>
-	 * 	... = new SimpleReturnName()
+	 * 	... new SimpleReturnName()
 	 * </pre>
 	 * @param returnCanonicalName to be created.
 	 */
@@ -36,11 +36,4 @@ public class ExecutableReturnNewInstanceCodeLine extends ExecutableReturnCodeLin
 		convertedCode += this.hasCollectionCanonicalName() ? ">":"";
 		return convertedCode;
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public ExecutableReturnNewInstanceCodeLine addParameterName(String parameterName) {
-		return super.addParameterName(parameterName);
-	}
-	
 }

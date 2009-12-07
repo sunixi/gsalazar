@@ -134,4 +134,17 @@ public class ExecutableCodeLine extends CodeLine {
 	protected void completeImportsType(List<String> importsType) {
 		//Do nothing.		
 	}
+
+	public ExecutableCodeLine addParameterName(String parameterName) {
+		this.getParametersNames().add(parameterName);
+		return this;
+	}
+
+	public ExecutableCodeLine addParameterNameString(String stringParameter) {
+		return this.addParameterName("\"" + stringParameter + "\"");
+	}
+
+	public ExecutableCodeLine addParameterNameClass(String className) {
+		return this.addParameterName(className + ".class");	
+	}
 }

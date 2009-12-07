@@ -19,6 +19,44 @@ public class AssignableCodeLine extends CodeLine {
 	private String returnCollectionCanonicalName;
 	private String variableName;
 	private ExecutableReturnCodeLine executableReturnCodeLine;
+
+	/**
+	 * Create a null assignable code line with a variable type, and a variable name with de simple variable type.
+	 * <pre>
+	 * 	Type type = null
+	 * </pre>
+	 * @param variableCanonicalName to be assignable type.
+	 */
+	public AssignableCodeLine(String variableCanonicalName){
+		this(PackageHelper.getClassSimpleVariableName(variableCanonicalName), variableCanonicalName);
+	}
+
+	/**
+	 * Create a assingable code line with a variable type, and a variable name with a simple variable type.
+	 * <pre>
+	 * 	Type type = executableReturnCodeLine
+	 * </pre>
+	 * @param variableCanonicalName to be assignable.
+	 * @param executableReturnCodeLine to assign variable name.
+	 */
+	public AssignableCodeLine(String variableCanonicalName, ExecutableReturnCodeLine executableReturnCodeLine){
+		this(PackageHelper.getClassSimpleVariableName(variableCanonicalName), executableReturnCodeLine, variableCanonicalName);
+	}
+	
+	/**
+	 * Create a null assignable code line with a variable type.
+	 * <pre>
+	 * 	Type variableName = null
+	 * </pre>
+	 * @param variableName to be assignable.
+	 * @param variableCanonicalName type to be create to variable.
+	 */
+	public AssignableCodeLine(String variableName, String variableCanonicalName){
+		super();
+		this.setVariableName(variableName);
+		this.setReturnCanonicalName(variableCanonicalName);
+		this.setExecutableReturnCodeLine(executableReturnCodeLine);
+	}
 	
 	public AssignableCodeLine(String variableName, ExecutableReturnCodeLine executableReturnCodeLine, String variableCanonicalName){
 		super();
@@ -85,6 +123,7 @@ public class AssignableCodeLine extends CodeLine {
 		} else {
 			convertedCode += this.getSimpleReturnCanonicalName();
 		}
+		convertedCode += " " + this.getVariableName();
 		return convertedCode;
 	}
 
@@ -156,6 +195,12 @@ public class AssignableCodeLine extends CodeLine {
 	protected void completeImportsType(List<String> importsType) {
 		this.addImportType(importsType, this.getReturnCanonicalName());
 		this.addImportType(importsType, this.getReturnCollectionCanonicalName());
-		this.addImportsType(importsType, this.getExecutableReturnCodeLine().getImportsType());		
+		this.completeImportsTypeExecutableReturnCodeLine(importsType);
+	}
+	
+	protected void completeImportsTypeExecutableReturnCodeLine(List<String> importsType){
+		if(this.hasExecutableReturnCodeLine()){
+			this.addImportsType(importsType, this.getExecutableReturnCodeLine().getImportsType());
+		}		
 	}
 }

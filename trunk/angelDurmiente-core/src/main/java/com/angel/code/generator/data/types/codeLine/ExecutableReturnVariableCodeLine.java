@@ -27,7 +27,6 @@ public class ExecutableReturnVariableCodeLine extends ExecutableReturnCodeLine {
 		return this.getVariableName();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ExecutableReturnVariableCodeLine addParameterName(String parameterName) {
 		return this;

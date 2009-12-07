@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.angel.code.generator.data.types.CodeConvertible;
 import com.angel.code.generator.data.types.Importable;
+import com.angel.common.helpers.StringHelper;
 
 
 /**
@@ -17,10 +18,13 @@ import com.angel.code.generator.data.types.Importable;
  */
 public abstract class CodeLine implements CodeConvertible, Importable{
 
+	private List<String> globalImports;
+
 	protected abstract void completeImportsType(List<String> importsType);
 
 	public CodeLine(){
 		super();
+		this.setGlobalImports(new ArrayList<String>());
 	}
 
 	/**
@@ -28,15 +32,18 @@ public abstract class CodeLine implements CodeConvertible, Importable{
 	 */
 	public List<String> getImportsType() {
 		List<String> importsType = new ArrayList<String>();
+		this.addImportsType(importsType, this.getGlobalImports());
 		this.completeImportsType(importsType);
 		return importsType;
 	}
 
-	public void addImportType(List<String> importsType, String importType){
-		importsType.add(importType);
+	protected void addImportType(List<String> importsType, String importType){
+		if(StringHelper.isNotEmpty(importType)){
+			importsType.add(importType);
+		}
 	}
 
-	public void addImportsType(List<String> importsType, List<String> importsTypeToAdd){
+	protected void addImportsType(List<String> importsType, List<String> importsTypeToAdd){
 		for(String importType: importsTypeToAdd){
 			this.addImportType(importsType, importType);
 		}
@@ -61,6 +68,24 @@ public abstract class CodeLine implements CodeConvertible, Importable{
 	 */
 	public boolean hasEndOfLine(){
 		return true;
+	}
+
+	/**
+	 * @return the globalImports
+	 */
+	protected List<String> getGlobalImports() {
+		return globalImports;
+	}
+
+	/**
+	 * @param globalImports the globalImports to set
+	 */
+	protected void setGlobalImports(List<String> globalImports) {
+		this.globalImports = globalImports;
+	}
+
+	public void addGlobalImport(String canonicalImportType){
+		this.getGlobalImports().add(canonicalImportType);
 	}
 	/*
 	public String convertCode(){

@@ -6,6 +6,7 @@ package com.angel.code.generator.builders.method.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.angel.code.generator.CodesGenerator;
@@ -43,16 +44,17 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 		DataParameter returnDataParameter = this.buildReturnParameter(domainClass, property);
 		if(accesor.unique()){
 			if(accesor.optional()){
-				executableReturnCodeLine = new ExecutableReturnCodeLine("super.findUniqueOrNull", returnDataParameter.getCanonicalType());
+				executableReturnCodeLine = new ExecutableReturnCodeLine("findUniqueOrNull", returnDataParameter.getCanonicalType());
 				returnable = new ReturnableCodeLine(returnDataParameter.getCanonicalType(), executableReturnCodeLine);
 			} else {
-				executableReturnCodeLine = new ExecutableReturnCodeLine("super.findUnique", returnDataParameter.getCanonicalType());
+				executableReturnCodeLine = new ExecutableReturnCodeLine("findUnique", returnDataParameter.getCanonicalType());
 				returnable = new ReturnableCodeLine(returnDataParameter.getCanonicalType(), executableReturnCodeLine);
 			}
 		} else {
-			executableReturnCodeLine = new ExecutableReturnCodeLine("super.findAll", returnDataParameter.getCanonicalType(), List.class.getCanonicalName());
-			returnable = new ReturnableCodeLine(returnDataParameter.getCanonicalType(), List.class.getCanonicalName(), executableReturnCodeLine);
+			executableReturnCodeLine = new ExecutableReturnCodeLine("findAll", returnDataParameter.getCanonicalType(), Collection.class.getCanonicalName());
+			returnable = new ReturnableCodeLine(domainClass.getCanonicalName(), List.class.getCanonicalName(), executableReturnCodeLine);
 		}
+		executableReturnCodeLine.setVariableName("super");
 		executableReturnCodeLine.addParameterName("\"" + property.getName() + "\"").addParameterName(property.getName());
 		codeBlock.addCodeLine(returnable);
 	}
@@ -83,15 +85,15 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 	}
 	
 	public void buildDataMethod(CodesGenerator generator, DataType dataType, Class<?> domainClass, Object owner) {
+		Field property = (Field) owner;
 		String methodName = this.buildMethodName(domainClass, (Field) owner);
-		DataMethod dataMethod = dataType.createDataMethod(methodName);
-		CodeBlock codeBlock = dataMethod.getContent();
-
 		List<DataParameter> methodParameters = this.buildDataParameters(domainClass, (Field) owner);
 		DataParameter returnParamter = this.buildReturnParameter(domainClass, (Field) owner);
+		DataMethod dataMethod = dataType.createDataMethod(methodName);
+		dataMethod.setReturnType(returnParamter);
+		dataMethod.addParameters(methodParameters);
 
-		dataMethod.setParameters(methodParameters);
-		dataMethod.setContent(codeBlock);
-		dataMethod.setReturnType(returnParamter);		
+		CodeBlock codeBlock = dataMethod.getContent();
+		this.buildMethodContent(domainClass, codeBlock, property);
 	}
 }

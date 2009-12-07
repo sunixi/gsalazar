@@ -35,12 +35,12 @@ public class CommentCodeLine extends CodeLine {
 	}
 
 	public CommentCodeLine addNewLine(){
-		this.comment += "\n";
+		this.comment += "\n\t";
 		return this;
 	}
 	
 	public CommentCodeLine setTODOComment(String comment){
-		this.comment += "\n\tTODO " + comment;
+		this.comment += "\tTODO " + comment;
 		return this;
 	}
 
@@ -58,5 +58,10 @@ public class CommentCodeLine extends CodeLine {
 	@Override
 	protected void completeImportsType(List<String> importsType) {
 		//Do nothing.
+	}
+	
+	@Override
+	public boolean hasEndOfLine(){
+		return false;
 	}
 }

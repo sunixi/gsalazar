@@ -482,6 +482,19 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 		this.getParameters().add(dataParameter);
 	}
 
+	
+	public void addParameters(DataParameter ...dataParameters){
+		if(dataParameters != null && dataParameters.length > 0){
+			for(DataParameter dataParameter: dataParameters){
+				this.addParameter(dataParameter);
+			}
+		}
+	}
+
+	public void addParameters(List<DataParameter> dataParameters){
+		this.addParameters(dataParameters.toArray(new DataParameter[dataParameters.size()]));
+	}
+
 	public boolean hasParameter(DataParameter dataParameter) {
 		return this.getParameter(dataParameter.getName()) != null;
 	}

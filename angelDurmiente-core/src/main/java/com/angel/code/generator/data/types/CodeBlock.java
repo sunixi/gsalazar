@@ -12,7 +12,6 @@ import com.angel.code.generator.data.types.codeLine.CommentCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
 import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
-import com.angel.code.generator.exceptions.CodeGeneratorException;
 
 
 /**
@@ -53,6 +52,18 @@ public class CodeBlock implements CodeConvertible, Importable{
 	public <T extends CommentCodeLine> T createCommentCodeLine(){
 		return (T) this.addCodeLine(new CommentCodeLine());
 	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends CommentCodeLine> T createCommentCodeLine(String comment){
+		return (T) this.addCodeLine(new CommentCodeLine(comment));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends CommentCodeLine> T createCommentCodeLineTODO(String todoComment){
+		CommentCodeLine commentCodeLine = new CommentCodeLine();
+		commentCodeLine.setTODOComment(todoComment);
+		return (T) this.addCodeLine(commentCodeLine);
+	}
 	
 	/**
 	 * Add a line code to this code block.
@@ -61,10 +72,11 @@ public class CodeBlock implements CodeConvertible, Importable{
 	 * @return code line added.
 	 */
 	public CodeLine addCodeLine(CodeLine codeLine){
+		/*
 		CodeLine lastCodeLine = this.getLastCodeLine();
-		if(lastCodeLine != null && lastCodeLine.isReturn()){
+		TODO ver con los catch if(lastCodeLine != null && lastCodeLine.isReturn()){
 			throw new CodeGeneratorException("Cannot add a code line after a return code line [" + lastCodeLine.convertCode() + "].");
-		}
+		}*/
 		this.getCodeLines().add(codeLine);
 		return codeLine;
 	}
@@ -86,9 +98,9 @@ public class CodeBlock implements CodeConvertible, Importable{
 		String codeConverted = "";
 		for(CodeLine codeLine: this.getCodeLines()){
 			if(codeLine.hasEndOfLine()){
-				codeConverted += codeLine.convertCode() + ";";
+				codeConverted += codeLine.convertCode() + ";\n";
 			} else {
-				codeConverted += codeLine.convertCode();				
+				codeConverted += codeLine.convertCode() + "\n";				
 			}
 		}
 		return codeConverted;

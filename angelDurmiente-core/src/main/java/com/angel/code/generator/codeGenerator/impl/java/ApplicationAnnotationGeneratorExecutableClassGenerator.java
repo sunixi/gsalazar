@@ -3,16 +3,18 @@
  */
 package com.angel.code.generator.codeGenerator.impl.java;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.GroupClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaCodeLine;
 import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.data.types.CodeBlock;
+import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnNewInstanceCodeLine;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.interfaces.Executable;
 import com.angel.data.generator.base.DataGeneratorRunner;
@@ -62,32 +64,29 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 	@Override
 	protected void generateContentClass(CodesGenerator generator, List<Class<?>> domainClasses) {
 		JavaDataMethod executeMethod = super.getDataType().createDataMethod("execute");
-
-		CodeBlock executeMethodContent = executeMethod.createCodeBlock();
-
-		JavaCodeLine builderCreationJavaLine = executeMethodContent
-				.getLineCodeCreateObject("builder", DataGeneratorAnnotationRunnerBuilder.class.getCanonicalName());
-		executeMethodContent.addCodeLine(builderCreationJavaLine);
+		CodeBlock executeCodeBlock = executeMethod.createCodeBlock();
 		
+		AssignableCodeLine builderAssignable = new AssignableCodeLine(
+				DataGeneratorAnnotationRunnerBuilder.class.getCanonicalName(),
+				new ExecutableReturnNewInstanceCodeLine(DataGeneratorAnnotationRunnerBuilder.class.getCanonicalName()));
+		executeCodeBlock.addCodeLine(builderAssignable);
+
 		for(Class<?> domainClass: domainClasses){
-			String domainObjectDataGeneratorCanonicalType = generator.getImportForClassName(domainClass.getSimpleName() + "AnnotationDataGenerator");
-			
-			List<String> parametersValues = new ArrayList<String>();
-			parametersValues.add(PackageHelper.getClassSimpleName(domainObjectDataGeneratorCanonicalType) + ".class");
-			JavaCodeLine createInstanceAnnotationGeneratorJavaLine = executeMethodContent
-				.getLineCodeCalledStaticClassMethod(domainObjectDataGeneratorCanonicalType);
-
-			JavaCodeLine addGeneratorJavaLine = executeMethodContent.getLineCodeCalledVariableMethodWithTypeParameters(
-					"builder", "addDataGeneratorClass", createInstanceAnnotationGeneratorJavaLine);
-			executeMethodContent.addCodeLine(addGeneratorJavaLine);
+			ExecutableCodeLine addDataGeneratorClassCodeLine = new ExecutableCodeLine("addDataGeneratorClass", "dataGeneratorAnnotationRunnerBuilder");
+			String annotationDataGeneratorCanonicalName = generator.getImportForClassName(domainClass.getSimpleName() + "AnnotationDataGenerator");
+			addDataGeneratorClassCodeLine.addParameterNameClass(PackageHelper.getClassSimpleName(annotationDataGeneratorCanonicalName));
+			addDataGeneratorClassCodeLine.addGlobalImport(annotationDataGeneratorCanonicalName);
+			executeCodeBlock.addCodeLine(addDataGeneratorClassCodeLine);
 		}
+
+		ExecutableReturnCodeLine executableBuildDataGeneratorRunner = new ExecutableReturnCodeLine("buildDataGeneratorRunner", DataGeneratorRunner.class.getCanonicalName());
+		executableBuildDataGeneratorRunner.setVariableName("dataGeneratorAnnotationRunnerBuilder");
+		AssignableCodeLine runnerAssignable = new AssignableCodeLine(
+				DataGeneratorRunner.class.getCanonicalName(), executableBuildDataGeneratorRunner );
 		
-		JavaCodeLine callBuilderMethod = executeMethodContent.getLineCodeCalledVariableMethod("builder", "buildDataGeneratorRunner", new ArrayList<String>());
-		executeMethodContent.addLineCodeAssigmentTypedVariable(DataGeneratorRunner.class.getCanonicalName(),
-				"runner", callBuilderMethod);
-		JavaCodeLine generateDataJavaLineCode = executeMethodContent.getLineCodeCalledVariableMethod("runner", "generateData", new ArrayList<String>());
-		JavaCodeLine finalizeGeneratorJavaLineCode = executeMethodContent.getLineCodeCalledVariableMethod("runner", "finalizeGenerator", new ArrayList<String>());
-		executeMethodContent.addCodeLine(generateDataJavaLineCode);
-		executeMethodContent.addCodeLine(finalizeGeneratorJavaLineCode);
+		executeCodeBlock.addCodeLine(runnerAssignable);
+		
+		executeCodeBlock.addCodeLine(new ExecutableCodeLine("generateData", "dataGeneratorRunner"));
+		executeCodeBlock.addCodeLine(new ExecutableCodeLine("finalizeGenerator", "dataGeneratorRunner"));
 	}	
 }

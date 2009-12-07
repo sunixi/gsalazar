@@ -14,12 +14,19 @@ import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaCodeLine;
 import com.angel.code.generator.data.impl.java.JavaConstructor;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
-import com.angel.code.generator.data.types.CodeBlock;
+import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ControlStructureCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnNewInstanceCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.ReflectionHelper;
 
 
@@ -75,13 +82,11 @@ public class FactoryClassGenerator extends ClassGenerator {
 		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
 		createDomainObjectEmptyTypeMethod.setMethodName(methodName);
 		createDomainObjectEmptyTypeMethod.setReturnType(returnParameter);
-		//addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
-		CodeBlock blockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();		
-		JavaCodeLine createReturnLineCode = blockCode.getLineCodeNewInstanceObject(domainClass.getCanonicalName(), new ArrayList<String>());
-		blockCode.addLineCodeReturn(createReturnLineCode);
+		CodeBlock blockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();
+		blockCode.addCodeLine(new ReturnableCodeLine(domainClass.getCanonicalName(), new ExecutableReturnNewInstanceCodeLine(domainClass.getCanonicalName())));
 	}
-	
+
 	protected void processCreateDomainObjectFor(CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName();
 		
@@ -92,17 +97,32 @@ public class FactoryClassGenerator extends ClassGenerator {
 		createDomainObjectForTypeMethod.setReturnType(new JavaParameter(List.class.getCanonicalName()));
 		createDomainObjectForTypeMethod.setStaticTypeModifier();
 
-		CodeBlock javaBlockCode = createDomainObjectForTypeMethod.createCodeBlock();
+		CodeBlock codeBlock = createDomainObjectForTypeMethod.createCodeBlock();
+
+		AssignableCodeLine instancesVariable = 
+			new AssignableCodeLine("instances", new ExecutableReturnNewInstanceCodeLine(domainClass.getCanonicalName(), ArrayList.class.getCanonicalName()),
+					domainClass.getCanonicalName(), ArrayList.class.getCanonicalName());
+		codeBlock.addCodeLine(instancesVariable);
+		ControlStructureCodeLine forControlStructure = new ControlStructureCodeLine("for", "int i = 0; i < quantity; i++");
 		
-		JavaCodeLine collectionTypedCreate = javaBlockCode.getLineCodeCreateCollectionTyped(ArrayList.class.getCanonicalName(), domainClass.getCanonicalName());
-		javaBlockCode.addLineCodeAssigmentCollectionTypedVariable(List.class.getCanonicalName(), domainClass.getCanonicalName(), "instances", collectionTypedCreate);
+		ExecutableCodeLine addToCollectionDomainObject = new ExecutableReturnCodeLine("add", "");
+		addToCollectionDomainObject.setVariableName("instances");
+		addToCollectionDomainObject.addParameterName("create" + domainClass.getSimpleName() + "()");
+		forControlStructure.addCodeLines(addToCollectionDomainObject);
+		codeBlock.addCodeLine(forControlStructure);
 		
+		codeBlock.addCodeLine(
+				new ReturnableCodeLine(
+						domainClass.getCanonicalName(),
+						List.class.getCanonicalName(),
+						new ExecutableReturnVariableCodeLine(
+								"instances",
+								domainClass.getCanonicalName(), List.class.getCanonicalName()
+								)
+						)
+						
+				);
 		
-		List<String> parametersNames = new ArrayList<String>();
-		parametersNames.add("create" + domainClass.getSimpleName() + "()");
-		JavaCodeLine addInstancesToCollection = javaBlockCode.getLineCodeCalledVariableMethod("instances", "add", parametersNames);
-		javaBlockCode.addLineCodeWithFor("int i = 0; i < quantity; i++", addInstancesToCollection);
-		javaBlockCode.addLineCodeReturnVariable("instances");
 	}
 	
 	protected void processCreateDomainObject(CodesGenerator generator, Class<?> domainClass) {
@@ -111,9 +131,11 @@ public class FactoryClassGenerator extends ClassGenerator {
 		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
 		createDomainObjectEmptyTypeMethod.setReturnType(new JavaParameter(domainClass.getCanonicalName()));
-		CodeBlock javaBlockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();
-		JavaCodeLine createBeanEmptyLine = javaBlockCode.getLineCodeCalledMethod(methodName + "Empty", new ArrayList<String>());
-		javaBlockCode.addLineCodeAssigmentTypedVariable(domainClass.getCanonicalName(), "bean", createBeanEmptyLine);
+		CodeBlock codeBlock = createDomainObjectEmptyTypeMethod.createCodeBlock();
+		
+		AssignableCodeLine assignableCodeLine = new AssignableCodeLine(domainClass.getCanonicalName(), 
+				new ExecutableReturnNewInstanceCodeLine(domainClass.getCanonicalName()));
+		codeBlock.addCodeLine(assignableCodeLine);
 		
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 		for(Field field: fields){
@@ -121,25 +143,43 @@ public class FactoryClassGenerator extends ClassGenerator {
 				this.processFieldForCreateDomainObject(field, generator, domainClass, createDomainObjectEmptyTypeMethod);
 			}
 		}
-		javaBlockCode.addLineCodeReturnVariable("bean");
+
+		codeBlock.addCodeLine(
+				new ReturnableCodeLine(domainClass.getCanonicalName(), 
+				new ExecutableReturnVariableCodeLine(
+						PackageHelper.getClassSimpleVariableName(domainClass.getCanonicalName()), 
+						domainClass.getCanonicalName())
+				)
+		);
 	}
-	
+
 	protected void processFieldForCreateDomainObject(Field field, CodesGenerator generator, Class<?> domainClass, DataMethod method){
 		Class<?> classField = field.getType();
+		//String simpleClassField = PackageHelper.getClassSimpleName(classField.getCanonicalName());
 		String setterMethodName = ReflectionHelper.getSetMethodName(field.getName());
-		boolean isBasicClass = ReflectionHelper.isABasicJavaClass(classField);
-		CodeBlock javaBlockCode = (CodeBlock) method.getContent();
-		if(isBasicClass){
-			List<Object> parametersValues = new ArrayList<Object>();
-			if(String.class.equals(classField)){
-				parametersValues.add(10);
-				JavaCodeLine javaLineCode = javaBlockCode.getLineCodeCalledStaticMethod(RandomStringUtils.class.getCanonicalName(), "randomAlphanumeric", parametersValues.toArray());
-				javaBlockCode.addLineCodeVariableSetValue("bean", setterMethodName, javaLineCode);
-			}
+		//boolean isBasicClass = ReflectionHelper.isABasicJavaClass(classField);
+		//boolean isPrimitive = ImportsHelper.isJavaPrimitiveType(field.getType().getCanonicalName());
+		CodeBlock codeBlock = method.getContent();
+		ExecutableCodeLine executableCodeLine = null;
+		if(String.class.equals(classField)){
+			executableCodeLine = new ExecutableCodeLine(setterMethodName, PackageHelper.getClassSimpleVariableName(domainClass.getSimpleName()));  
+			executableCodeLine.addParameterName("RandomStringUtils.randomAlphabetic(10)")
+				.addGlobalImport(RandomStringUtils.class.getCanonicalName());
+		} else if(Integer.class.equals(classField) || int.class.equals(classField)
+				|| Double.class.equals(classField) || double.class.equals(classField)
+				|| Float.class.equals(classField) || float.class.equals(classField)){
+			executableCodeLine = new ExecutableCodeLine(setterMethodName, PackageHelper.getClassSimpleVariableName(domainClass.getSimpleName()));  
+			executableCodeLine.addParameterName(
+					"Integer.valueOf(RandomStringUtils.randomNumeric(5))")
+					.addGlobalImport(RandomStringUtils.class.getCanonicalName());				
+		} else if(Character.class.equals(classField) || char.class.equals(classField)) {
+			executableCodeLine = new ExecutableCodeLine(setterMethodName, PackageHelper.getClassSimpleVariableName(domainClass.getSimpleName()));
+			executableCodeLine.addParameterName("(char) RandomStringUtils.randomNumeric(1)");
 		} else {
-			JavaCodeLine javaLineCode = javaBlockCode.getLineCodeNull();
-			javaBlockCode.addLineCodeVariableSetValue("bean", setterMethodName, javaLineCode);
+			executableCodeLine = new ExecutableCodeLine(setterMethodName, PackageHelper.getClassSimpleVariableName(domainClass.getSimpleName()));
+			executableCodeLine.addParameterName("null");
 		}
+		codeBlock.addCodeLine(executableCodeLine);
 	}
 
 	@Override

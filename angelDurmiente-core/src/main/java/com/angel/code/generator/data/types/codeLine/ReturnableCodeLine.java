@@ -20,6 +20,29 @@ public class ReturnableCodeLine extends CodeLine {
 	private ExecutableReturnCodeLine executableReturnCodeLine;
 
 	/**
+	 * Crea a null returnable code line for a canonical name (not collection with generic type).
+	 *  <pre>
+	 *  	return null;
+	 *  </pre>
+	 * @param returnCanonicalName to be returned.
+	 */
+	public ReturnableCodeLine(String returnCanonicalName){
+		this(returnCanonicalName, (ExecutableReturnCodeLine) null);
+		this.setReturnCanonicalName(returnCanonicalName);
+	}
+
+	/**
+	 * Create a null returnable code line for a collection canonical name with generics with a canonical name. 
+	 * @param returnCanonicalName
+	 * @param returnCollectionCanonicalName
+	 */
+	public ReturnableCodeLine(String returnCanonicalName, String returnCollectionCanonicalName){
+		this(returnCanonicalName);
+		this.setReturnCanonicalName(returnCanonicalName);
+		this.setReturnCollectionCanonicalName(returnCollectionCanonicalName);
+	}
+	
+	/**
 	 * Create a returnable code line with an executable return code line. This return canonical name must be equals
 	 * to content code return canonical name. 
 	 * <pre>
@@ -45,12 +68,16 @@ public class ReturnableCodeLine extends CodeLine {
 	}
 	
 	public String convertCode() {
-		boolean needsCast = this.getExecutableReturnCodeLine().needsCast(this.getReturnCanonicalName(), this.getReturnCollectionCanonicalName());
 		String convertedCode = "return ";
-		if(needsCast){
-			convertedCode += this.convertCodeCast();	
+		if(this.hasExecutableReturnCodeLine()){
+			boolean needsCast = this.getExecutableReturnCodeLine().needsCast(this.getReturnCanonicalName(), this.getReturnCollectionCanonicalName());
+			if(needsCast){
+				convertedCode += this.convertCodeCast();	
+			}
+			convertedCode += this.getExecutableReturnCodeLine().convertCode();
+		} else {
+			convertedCode += "null";
 		}
-		convertedCode += this.getExecutableReturnCodeLine().convertCode();
 		return convertedCode;
 	}
 
@@ -134,6 +161,16 @@ public class ReturnableCodeLine extends CodeLine {
 	protected void completeImportsType(List<String> importsType) {
 		super.addImportType(importsType, this.getReturnCanonicalName());
 		super.addImportType(importsType, this.getReturnCollectionCanonicalName());
-		super.addImportsType(importsType, this.getExecutableReturnCodeLine().getImportsType());
+		this.completeImportsTypeExecutableReturnCodeLine(importsType);
+	}
+	
+	protected boolean hasExecutableReturnCodeLine(){
+		return this.getExecutableReturnCodeLine() != null;
+	}
+	
+	protected void completeImportsTypeExecutableReturnCodeLine(List<String> importsType){
+		if(this.hasExecutableReturnCodeLine()){
+			this.addImportsType(importsType, this.getExecutableReturnCodeLine().getImportsType());
+		}		
 	}
 }

@@ -102,7 +102,22 @@ public class ExecutableReturnCodeLine extends ExecutableCodeLine {
 	}
 
 	protected boolean isSameReturnCollectionCanonicalName(String collectionCanonicalName){
-		return StringHelper.isNotEmpty(collectionCanonicalName) && this.getReturnCollectionCanonicalName().equalsIgnoreCase(collectionCanonicalName);
+		if(StringHelper.isEmpty(collectionCanonicalName) &&
+				StringHelper.isEmpty(this.getReturnCollectionCanonicalName())){
+			return true;
+		} else {
+			if(	(	StringHelper.isEmpty(collectionCanonicalName) 
+					&& StringHelper.isNotEmpty(this.getReturnCollectionCanonicalName())
+				) ||
+				(	StringHelper.isNotEmpty(collectionCanonicalName)
+					&& StringHelper.isEmpty(this.getReturnCollectionCanonicalName()))
+				){
+				return false;
+			}
+		}
+		return	StringHelper.isNotEmpty(collectionCanonicalName) &&
+				StringHelper.isNotEmpty(this.getReturnCollectionCanonicalName()) &&
+				this.getReturnCollectionCanonicalName().equalsIgnoreCase(collectionCanonicalName);
 	}
 
 	protected String getSimpleReturnCollectionCanonicalName() {
@@ -111,12 +126,6 @@ public class ExecutableReturnCodeLine extends ExecutableCodeLine {
 
 	protected String getSimpleReturnCanonicalName() {
 		return PackageHelper.getClassSimpleName(this.getReturnCanonicalName());
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends ExecutableReturnCodeLine> T addParameterName(String parameterName) {
-		this.getParametersNames().add(parameterName);
-		return (T) this;
 	}
 
 	@Override

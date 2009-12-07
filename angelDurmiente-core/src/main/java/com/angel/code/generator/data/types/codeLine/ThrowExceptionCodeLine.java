@@ -17,7 +17,7 @@ public class ThrowExceptionCodeLine extends ReturnableCodeLine {
 	private String catchExceptionVariableName;
 
 	public ThrowExceptionCodeLine(String returnCanonicalName, String message){
-		super(returnCanonicalName, null);
+		super(returnCanonicalName, (String) null);
 		this.setMessage(message);
 	}
 
@@ -30,7 +30,7 @@ public class ThrowExceptionCodeLine extends ReturnableCodeLine {
 	public String convertCode() {
 		String convertedCode = "throw new " + this.getSimpleReturnCanonicalName();
 		convertedCode += "(\"" + this.getMessage() + "\"" ;
-		convertedCode += this.hasCatchExceptionvariableName() ? ", " + this.getCatchExceptionVariableName() : "" ;
+		convertedCode += this.hasCatchExceptionvariableName() ? ", " + this.getCatchExceptionVariableName() + ")": ")" ;
 		return convertedCode;
 	}
 	

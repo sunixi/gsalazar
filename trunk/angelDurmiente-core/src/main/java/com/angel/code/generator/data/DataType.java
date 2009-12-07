@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.code.generator.data.impl.java.JavaDataComment;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.CodeConvertible;
-import com.angel.code.generator.data.types.CodeLine;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataComment;
 import com.angel.code.generator.data.types.DataInterface;
@@ -16,6 +16,10 @@ import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
 import com.angel.code.generator.data.types.Importable;
+import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.ImportsHelper;
 import com.angel.code.generator.helpers.PackageHelper;
@@ -820,14 +824,23 @@ public abstract class DataType implements CodeConvertible, Importable {
 	public void createDataMethodGetter(DataProperty dataProperty) {
 		DataMethod dataMethod = this.createDataMethod(dataProperty.getName());
 		dataMethod.createReturnParameter(dataProperty.getCanonicalType());
-		
-		CodeLine codeLine = dataMethod.getContent().createCodeLine();
-		
-		codeLine.setCode("return this." + dataProperty.getName() + ";");
-		
+		CodeBlock getterCodeBlock = dataMethod.getContent();
+		ExecutableReturnCodeLine thisVariableName = new ExecutableReturnVariableCodeLine("this." + dataProperty.getName(), dataProperty.getCanonicalType());
+		ReturnableCodeLine getterReturnable = new ReturnableCodeLine(dataProperty.getCanonicalType(), thisVariableName); 
+		getterCodeBlock.addCodeLine(getterReturnable);
 	}
 
 	public void createDataMethodSetter(DataProperty dataProperty) {
+		DataMethod dataMethod = this.createDataMethod(dataProperty.getName());
+		DataParameter dataParameter = dataMethod.createParameter(dataProperty.getName());
+		dataParameter.setCanonicalType(dataProperty.getCanonicalType());
 		
+		CodeBlock getterCodeBlock = dataMethod.getContent();
+		ExecutableReturnCodeLine executableReturnCodeLine = new ExecutableReturnVariableCodeLine(dataProperty.getName(), dataProperty.getCanonicalType());
+
+		AssignableCodeLine assignableCodeLine = new AssignableCodeLine("this." + dataProperty.getName(),
+				executableReturnCodeLine, dataProperty.getCanonicalType());
+
+		getterCodeBlock.addCodeLine(assignableCodeLine);
 	}
 }

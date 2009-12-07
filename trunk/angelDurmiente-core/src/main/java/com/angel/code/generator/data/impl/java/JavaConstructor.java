@@ -32,7 +32,7 @@ public class JavaConstructor implements DataConstructor {
 		this.setName(name);
 		this.setVisibility(Visibility.PUBLIC);
 		this.setParameters(new ArrayList<DataParameter>());
-		this.setContent(new JavaCodeBlock());
+		this.setContent(new CodeBlock());
 		this.setComment(new JavaDataComment());
 	}
 

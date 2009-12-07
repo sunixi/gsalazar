@@ -15,8 +15,8 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
 import com.angel.code.generator.data.types.CodeBlock;
-import com.angel.code.generator.data.types.CodeLine;
 import com.angel.code.generator.data.types.DataConstructor;
+import com.angel.code.generator.data.types.codeLine.CodeLine;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 

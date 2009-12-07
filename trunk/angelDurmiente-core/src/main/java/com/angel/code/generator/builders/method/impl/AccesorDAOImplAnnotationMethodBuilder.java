@@ -6,19 +6,18 @@ package com.angel.code.generator.builders.method.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
 import com.angel.code.generator.builders.method.MethodBuilder;
 import com.angel.code.generator.data.DataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
-import com.angel.code.generator.data.impl.java.JavaCodeLine;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.common.helpers.StringHelper;
 
 
@@ -37,27 +36,25 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 		return parameters;
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> JavaCodeBlock buildMethodContent(Class<T> domainClass, Field property) {
+	public <T> void buildMethodContent(Class<T> domainClass, CodeBlock codeBlock, Field property) {
 		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
-		JavaCodeBlock contentMethod = new JavaCodeBlock();
-		String methodName = "";
-		List<String> parametersNames = new ArrayList<String>();
-		parametersNames.add("\"" + property.getName() + "\"");
-		parametersNames.add(property.getName());
+		ExecutableReturnCodeLine executableReturnCodeLine = null;
+		ReturnableCodeLine returnable = null;
+		DataParameter returnDataParameter = this.buildReturnParameter(domainClass, property);
 		if(accesor.unique()){
 			if(accesor.optional()){
-				methodName = "super.findUniqueOrNull";
+				executableReturnCodeLine = new ExecutableReturnCodeLine("super.findUniqueOrNull", returnDataParameter.getCanonicalType());
+				returnable = new ReturnableCodeLine(returnDataParameter.getCanonicalType(), executableReturnCodeLine);
 			} else {
-				methodName = "super.findUnique";
+				executableReturnCodeLine = new ExecutableReturnCodeLine("super.findUnique", returnDataParameter.getCanonicalType());
+				returnable = new ReturnableCodeLine(returnDataParameter.getCanonicalType(), executableReturnCodeLine);
 			}
 		} else {
-			methodName = "super.findAll";
+			executableReturnCodeLine = new ExecutableReturnCodeLine("super.findAll", returnDataParameter.getCanonicalType(), List.class.getCanonicalName());
+			returnable = new ReturnableCodeLine(returnDataParameter.getCanonicalType(), List.class.getCanonicalName(), executableReturnCodeLine);
 		}
-		JavaCodeLine lineCode = contentMethod.getLineCodeCalledMethod(methodName, parametersNames);
-		contentMethod.addLineCodeReturnVariableCollectionTypeCasted((Class<? extends Collection<?>>) List.class,
-				domainClass.getCanonicalName(), lineCode);
-		return contentMethod;
+		executableReturnCodeLine.addParameterName("\"" + property.getName() + "\"").addParameterName(property.getName());
+		codeBlock.addCodeLine(returnable);
 	}
 
 	public <T> String buildMethodName(Class<T> domainClass, Field property) {
@@ -87,11 +84,12 @@ public class AccesorDAOImplAnnotationMethodBuilder implements MethodBuilder {
 	
 	public void buildDataMethod(CodesGenerator generator, DataType dataType, Class<?> domainClass, Object owner) {
 		String methodName = this.buildMethodName(domainClass, (Field) owner);
-		CodeBlock codeBlock = this.buildMethodContent(domainClass, (Field) owner);
+		DataMethod dataMethod = dataType.createDataMethod(methodName);
+		CodeBlock codeBlock = dataMethod.getContent();
+
 		List<DataParameter> methodParameters = this.buildDataParameters(domainClass, (Field) owner);
 		DataParameter returnParamter = this.buildReturnParameter(domainClass, (Field) owner);
 
-		DataMethod dataMethod = dataType.createDataMethod(methodName);
 		dataMethod.setParameters(methodParameters);
 		dataMethod.setContent(codeBlock);
 		dataMethod.setReturnType(returnParamter);		

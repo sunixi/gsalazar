@@ -14,7 +14,6 @@ import com.angel.code.generator.builders.method.impl.AccesorServiceImplAnnotatio
 import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
 import com.angel.code.generator.data.impl.java.JavaCodeLine;
 import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
@@ -23,6 +22,7 @@ import com.angel.code.generator.data.impl.java.annotations.JavaAnnotationPropert
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
 import com.angel.code.generator.data.types.DataParameter;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 import com.angel.data.generator.annotations.Inject;
@@ -97,7 +97,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		checkRodDataTypeMethod.setImplemented();
 		checkRodDataTypeMethod.setParameters(parameters);
 		
-		JavaCodeBlock javaBlockCode = checkRodDataTypeMethod.createCodeBlock();
+		CodeBlock javaBlockCode = checkRodDataTypeMethod.createCodeBlock();
 
 		List<String> parametersNames = new ArrayList<String>();
 		for(DataParameter jp: parameters){
@@ -108,7 +108,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		javaBlockCode.addLineCodeAssigmentTypedVariable(
 				Boolean.class.getCanonicalName(), "areAllNotEmpty", javaLineCode);
 		
-		JavaCodeBlock ifJavaBlockCode = new JavaCodeBlock();
+		CodeBlock ifJavaBlockCode = new CodeBlock();
 		
 		String exceptionMessage = "Some row data are NULL - \" + \n";
 		for(DataParameter jp: parameters){
@@ -134,7 +134,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		
 		processRowMethodTypeMethod.createReturnParameter(domainClass.getCanonicalName());
 		
-		JavaCodeBlock javaBlockCode = processRowMethodTypeMethod.createCodeBlock();
+		CodeBlock javaBlockCode = processRowMethodTypeMethod.createCodeBlock();
 		javaBlockCode.addLineCodeReturnNull();
 		//@RowProcessor(columnsParameters = {}, object = Usuario.class, inject = true).
 		JavaAnnotation rowProcessorAnnotation = processRowMethodTypeMethod.createAnnotation(RowProcessor.class.getCanonicalName());

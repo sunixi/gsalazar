@@ -15,9 +15,9 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
 import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.common.helpers.ReflectionHelper;
 
 
@@ -75,7 +75,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		typeMethod.setVisibility(Visibility.PROTECTED);
 		typeMethod.setReturnType(returnParameter);
 
-		JavaCodeBlock javaBlockCode = typeMethod.createCodeBlock();
+		CodeBlock javaBlockCode = typeMethod.createCodeBlock();
 		javaBlockCode.addLineCodeReturnVariable("(" + domainClassDAO + ") super.getGenericDAO()");
 		super.getDataType().addGlobalImport(importClassName);
 	}

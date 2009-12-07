@@ -12,11 +12,11 @@ import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
 import com.angel.code.generator.builders.method.MethodBuilder;
 import com.angel.code.generator.data.DataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 
@@ -36,20 +36,20 @@ public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder 
 		return parameters;
 	}
 
-	public <T> JavaCodeBlock buildMethodContent(Class<T> domainClass, Field property) {
-		JavaCodeBlock javaBlockCode = new JavaCodeBlock();
-		
+	public <T> void buildMethodContent(Class<T> domainClass,CodeBlock codeBlock, Field property) {
+
 		List<String> parameters = new ArrayList<String>();
 		parameters.add(property.getName());
-		String daoMethodName = this.buildMethodName(domainClass, property);//"get" + PackageHelper.getClassSimpleName(domainClass.getClass().getCanonicalName())+ "Service().";
+		String daoMethodName = this.buildMethodName(domainClass, property);
 		
 		String contentMethod = "this." + 
 		ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO") + "()." +
 		daoMethodName + "(" + StringHelper.convertToPlainString(parameters.toArray(), ",") + ")";
 
-		javaBlockCode.addLineCodeReturnVariable(contentMethod);
-
-		return javaBlockCode;
+		JavaParameter returnDataParameter = this.buildReturnParameter(domainClass, property);
+		
+		ExecutableReturnCodeLine executableReturnCodeLine = new ExecutableReturnCodeLine(contentMethod, returnDataParameter.getCanonicalType());
+		codeBlock.createReturnableCodeLine(returnDataParameter.getCanonicalType(), executableReturnCodeLine);
 	}
 
 	public <T> String buildMethodName(Class<T> domainClass, Field property) {
@@ -79,13 +79,7 @@ public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder 
 
 	public void buildDataMethod(CodesGenerator generator, DataType dataType, Class<?> domainClass, Object owner) {
 		String methodName = this.buildMethodName(domainClass, (Field) owner);
-		CodeBlock codeBlock = this.buildMethodContent(domainClass, (Field) owner);
-		List<DataParameter> methodParameters = this.buildDataParameters(domainClass, (Field) owner);
-		DataParameter returnParamter = this.buildReturnParameter(domainClass, (Field) owner);
-
 		DataMethod dataMethod = dataType.createDataMethod(methodName);
-		dataMethod.setParameters(methodParameters);
-		dataMethod.setContent(codeBlock);
-		dataMethod.setReturnType(returnParamter);		
+		this.buildMethodContent(domainClass, dataMethod.getContent(), (Field) owner);	
 	}
 }

@@ -22,7 +22,7 @@ public class JavaDataMethod extends DataMethod {
 
 	public JavaDataMethod(){
 		super();
-		this.setContent(new JavaCodeBlock());
+		this.setContent(new CodeBlock());
 		this.setComment(new JavaDataComment());
 	}
 
@@ -37,7 +37,7 @@ public class JavaDataMethod extends DataMethod {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends CodeBlock> T createCodeBlock() {
-		CodeBlock codeBlock = new JavaCodeBlock();
+		CodeBlock codeBlock = new CodeBlock();
 		super.setContent(codeBlock);
 		return (T) codeBlock;
 	}

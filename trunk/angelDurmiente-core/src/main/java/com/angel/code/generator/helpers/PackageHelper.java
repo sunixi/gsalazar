@@ -3,6 +3,8 @@
  */
 package com.angel.code.generator.helpers;
 
+import com.angel.common.helpers.StringHelper;
+
 
 
 /**
@@ -44,5 +46,21 @@ public class PackageHelper {
 			basePackage = canonicalName.substring(0, lastIndex);
 		}
 		return basePackage;
+	}
+
+	/**
+	 * Create a variable with a canonical name. If canonical name is my.package.beans.Bean, the
+	 * variable name will be bean. 
+	 *  
+	 * @param variableCanonicalName to create its variable name.
+	 * @return a variable name from a canonical name.
+	 */
+	public static String getClassSimpleVariableName(String canonicalName) {
+		if(StringHelper.isNotEmpty(canonicalName) && canonicalName.length() > 2){
+			String simpleName = getClassSimpleName(canonicalName);
+			String variableName = simpleName.substring(0, 1).toLowerCase().concat(simpleName.substring(1, simpleName.length()));
+			return variableName;
+		}
+		return canonicalName;
 	}
 }

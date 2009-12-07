@@ -15,9 +15,9 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaDataMethod;
-import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.CodeBlock;
+import com.angel.code.generator.data.types.DataMethod;
+import com.angel.code.generator.data.types.codeLine.HarcodedCodeLine;
 import com.angel.common.helpers.ReflectionHelper;
 
 
@@ -68,15 +68,15 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		String importClassName = generator.getImportForClassName(domainClassDAO);
 
 		String methodName = ReflectionHelper.getGetMethodName(domainClassDAO);
-		JavaDataMethod typeMethod = super.getDataType().createDataMethod(methodName);
+		DataMethod typeMethod = super.getDataType().createDataMethod(methodName);
 		typeMethod.setMethodName(methodName);
-		JavaParameter returnParameter = typeMethod.createParameter(importClassName);
-		//returnParameter.notImportType();
+		typeMethod.createReturnParameter(importClassName);
 		typeMethod.setVisibility(Visibility.PROTECTED);
-		typeMethod.setReturnType(returnParameter);
 
-		CodeBlock javaBlockCode = typeMethod.createCodeBlock();
-		javaBlockCode.addLineCodeReturnVariable("(" + domainClassDAO + ") super.getGenericDAO()");
+		CodeBlock codeBlock = typeMethod.createCodeBlock();
+		HarcodedCodeLine harcodedCodeLine = new HarcodedCodeLine();
+		harcodedCodeLine.setCode("return (" + domainClassDAO + ") super.getGenericDAO()");
+		codeBlock.addCodeLine(harcodedCodeLine);
 		super.getDataType().addGlobalImport(importClassName);
 	}
 

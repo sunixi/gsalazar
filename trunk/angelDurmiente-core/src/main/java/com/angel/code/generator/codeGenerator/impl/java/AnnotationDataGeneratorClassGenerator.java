@@ -3,6 +3,7 @@
  */
 package com.angel.code.generator.codeGenerator.impl.java;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,10 @@ import com.angel.code.generator.data.types.codeLine.CommentCodeLine;
 import com.angel.code.generator.data.types.codeLine.ControlStructureCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnNewInstanceCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.code.generator.data.types.codeLine.ThrowExceptionCodeLine;
+import com.angel.common.helpers.FileHelper;
 import com.angel.data.generator.annotations.Generator;
 import com.angel.data.generator.annotations.importFileProcessorRunner.ImportFileProcessorRunnerBuilder;
 import com.angel.data.generator.annotations.inputStream.InputStreamBuilder;
@@ -77,18 +81,22 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 		String initialDataFile = "\"/initialData/" + domainClass.getSimpleName() + ".xls\"";
 		List<String> parametersNames = new ArrayList<String>();
 		parametersNames.add(initialDataFile);
-		
-		ExecutableReturnCodeLine executableReturnCodeLine = prepareInputStreamMethodConent.createExecutableReturnCodeLine("findInputStreamInClasspath", InputStream.class.getCanonicalName());
+		//prepareInputStreamMethodConent.createExecutableReturnCodeLine("findInputStreamInClasspath", InputStream.class.getCanonicalName());
+		ExecutableReturnCodeLine executableReturnCodeLine = new ExecutableReturnCodeLine("findInputStreamInClasspath", InputStream.class.getCanonicalName());
+		executableReturnCodeLine.setVariableName("FileHelper");
+		executableReturnCodeLine.addGlobalImport(FileHelper.class.getCanonicalName());
 		executableReturnCodeLine.setParametersNames(parametersNames);
-		prepareInputStreamMethodConent.createReturnableCodeLine(InputStream.class.getCanonicalName(), executableReturnCodeLine);
+
+		ReturnableCodeLine returnableCodeLine = new ReturnableCodeLine(InputStream.class.getCanonicalName(), executableReturnCodeLine);
 
 		ControlStructureCodeLine tryCodeLine = new ControlStructureCodeLine("try");
-		tryCodeLine.addCodeLines(executableReturnCodeLine);
+		tryCodeLine.addCodeLines(returnableCodeLine);
 
 		ThrowExceptionCodeLine throwDataGeneratorException = new ThrowExceptionCodeLine(DataGeneratorException.class.getCanonicalName(),
 				"File not found [\" + " + initialDataFile + "+ \"].", "e");
 		
 		ControlStructureCodeLine catchCodeLine = new ControlStructureCodeLine("catch", "FileNotFoundException e");
+		catchCodeLine.addGlobalImport(FileNotFoundException.class.getCanonicalName());
 		catchCodeLine.addCodeLines(throwDataGeneratorException);
 
 		prepareInputStreamMethodConent.addCodeLine(tryCodeLine);
@@ -126,7 +134,7 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 		prepareImportFileContent.addCodeLine(excelFileProcessorCommandCodeLine);
 
 		String domainObjectRowProcessorCanonicalType = generator.getImportForClassName( domainClass.getSimpleName() + "AnnotationRowProcessorCommand");
-		ExecutableReturnNewInstanceCodeLine domainObjectRowProcessorInstance = new ExecutableReturnNewInstanceCodeLine(ExcelFileProcessorCommand.class.getCanonicalName());		
+		ExecutableReturnNewInstanceCodeLine domainObjectRowProcessorInstance = new ExecutableReturnNewInstanceCodeLine(domainObjectRowProcessorCanonicalType);		
 		AssignableCodeLine domainObjectRowProcessorInstanceCodeLine = new AssignableCodeLine("domainObjectRowProcessor", domainObjectRowProcessorInstance, domainObjectRowProcessorCanonicalType);
 		prepareImportFileContent.addCodeLine(domainObjectRowProcessorInstanceCodeLine);
 		
@@ -135,6 +143,16 @@ public class AnnotationDataGeneratorClassGenerator extends ClassGenerator {
 		AssignableCodeLine assignableCodeLine = new AssignableCodeLine("importFile", createImportFileAnnotationProcessorRunner, ImportFileAnnotationProcessorRunner.class.getCanonicalName());
 
 		prepareImportFileContent.addCodeLine(assignableCodeLine);
+		
+		prepareImportFileContent.addCodeLine(
+				new ReturnableCodeLine(
+						ImportFileAnnotationProcessorRunner.class.getCanonicalName(),
+						new ExecutableReturnVariableCodeLine(
+								"importFile",
+								ImportFileAnnotationProcessorRunner.class.getCanonicalName()
+								)
+						)
+				);
 	}
 
 	protected void processGeneratorAnnotation(CodesGenerator generator, Class<?> domainClass) {

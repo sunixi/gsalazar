@@ -17,12 +17,14 @@ import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
 import com.angel.code.generator.data.types.Importable;
 import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
+import com.angel.code.generator.data.types.codeLine.AssignableInstanceVariableCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
 import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.ImportsHelper;
 import com.angel.code.generator.helpers.PackageHelper;
+import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 
 /**
@@ -822,7 +824,7 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	public void createDataMethodGetter(DataProperty dataProperty) {
-		DataMethod dataMethod = this.createDataMethod(dataProperty.getName());
+		DataMethod dataMethod = this.createDataMethod(ReflectionHelper.getGetMethodName(dataProperty.getName()));
 		dataMethod.createReturnParameter(dataProperty.getCanonicalType());
 		CodeBlock getterCodeBlock = dataMethod.getContent();
 		ExecutableReturnCodeLine thisVariableName = new ExecutableReturnVariableCodeLine("this." + dataProperty.getName(), dataProperty.getCanonicalType());
@@ -831,15 +833,18 @@ public abstract class DataType implements CodeConvertible, Importable {
 	}
 
 	public void createDataMethodSetter(DataProperty dataProperty) {
-		DataMethod dataMethod = this.createDataMethod(dataProperty.getName());
+		DataMethod dataMethod = this.createDataMethod(ReflectionHelper.getSetMethodName(dataProperty.getName()));
 		DataParameter dataParameter = dataMethod.createParameter(dataProperty.getName());
 		dataParameter.setCanonicalType(dataProperty.getCanonicalType());
 		
 		CodeBlock getterCodeBlock = dataMethod.getContent();
 		ExecutableReturnCodeLine executableReturnCodeLine = new ExecutableReturnVariableCodeLine(dataProperty.getName(), dataProperty.getCanonicalType());
 
-		AssignableCodeLine assignableCodeLine = new AssignableCodeLine("this." + dataProperty.getName(),
-				executableReturnCodeLine, dataProperty.getCanonicalType());
+		AssignableCodeLine assignableCodeLine = new AssignableInstanceVariableCodeLine(
+				dataProperty.getName(),
+				dataProperty.getCanonicalType(),
+				executableReturnCodeLine);
+		
 
 		getterCodeBlock.addCodeLine(assignableCodeLine);
 	}

@@ -16,7 +16,7 @@ import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataConstructor;
-import com.angel.code.generator.data.types.codeLine.CodeLine;
+import com.angel.code.generator.data.types.codeLine.HarcodedCodeLine;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.dao.generic.impl.GenericSpringHibernateDAO;
 
@@ -62,10 +62,11 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	
 	protected void buildJavaTypeConstructor(CodesGenerator generator, Class<?> domainClass){
 		DataConstructor dataConstructor = ((JavaClassDataType)super.getDataType()).createDataConstructor();
-		String content = "super(" + domainClass.getSimpleName() + ".class, " + ObjectId.class.getSimpleName() + ".class)";
 		CodeBlock codeBlock = dataConstructor.getContent();
-		CodeLine codeLine = codeBlock.createCodeLine();
-		codeLine.setCode(content);
+		HarcodedCodeLine codeLine = new HarcodedCodeLine("super(" + domainClass.getSimpleName() + ".class, " + ObjectId.class.getSimpleName() + ".class)");
+		codeLine.addGlobalImport(domainClass.getCanonicalName());
+		codeLine.addGlobalImport(ObjectId.class.getCanonicalName());
+		codeBlock.addCodeLine(codeLine);
 	}
 
 	@Override

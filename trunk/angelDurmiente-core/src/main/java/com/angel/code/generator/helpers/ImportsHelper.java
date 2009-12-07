@@ -6,6 +6,8 @@ package com.angel.code.generator.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.angel.common.helpers.StringHelper;
+
 
 
 /**
@@ -44,8 +46,16 @@ public class ImportsHelper {
 	}
 	
 	public static boolean isJavaPrimitiveType(String typeClass){
-		String cleanTypeClass = typeClass.trim().replaceAll(IMPORT_PREFIX, "").replaceAll(END_OF_LINE, "").trim();
-		return JAVA_PRIMITIVES_CLASSES.contains(cleanTypeClass);
+		System.out.println("IsJavaPrimitiveType: [" + typeClass + "].");
+		String cleanTypeClass = "";
+		if(StringHelper.isNotEmpty(typeClass)){
+			cleanTypeClass = typeClass.trim().replaceAll(IMPORT_PREFIX, "");
+			cleanTypeClass = cleanTypeClass.replaceAll(END_OF_LINE, "");
+			cleanTypeClass = cleanTypeClass.trim();
+			return JAVA_PRIMITIVES_CLASSES.contains(cleanTypeClass);
+		} else {
+			return true;
+		}
 	}
 
 	private ImportsHelper(){

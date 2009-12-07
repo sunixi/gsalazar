@@ -12,7 +12,6 @@ import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
 import com.angel.code.generator.builders.method.MethodBuilder;
 import com.angel.code.generator.data.DataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataMethod;
@@ -35,7 +34,7 @@ public class AccesorJavaAnnotationMethodBuilder implements MethodBuilder {
 		return parameters;
 	}
 
-	public <T> JavaCodeBlock buildMethodContent(Class<T> domainClass, Field property) {
+	public <T> CodeBlock buildMethodContent(Class<T> domainClass, Field property) {
 		// TODO Auto-generated method stub
 		return null;
 	}

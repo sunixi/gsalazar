@@ -14,12 +14,12 @@ import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
 import com.angel.code.generator.data.impl.java.JavaCodeLine;
 import com.angel.code.generator.data.impl.java.JavaConstructor;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.common.helpers.ReflectionHelper;
 
 
@@ -77,7 +77,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		createDomainObjectEmptyTypeMethod.setReturnType(returnParameter);
 		//addTypeMethodPublicWithoutParametersImplemented(methodName, returnParameter);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
-		JavaCodeBlock blockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();		
+		CodeBlock blockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();		
 		JavaCodeLine createReturnLineCode = blockCode.getLineCodeNewInstanceObject(domainClass.getCanonicalName(), new ArrayList<String>());
 		blockCode.addLineCodeReturn(createReturnLineCode);
 	}
@@ -92,7 +92,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		createDomainObjectForTypeMethod.setReturnType(new JavaParameter(List.class.getCanonicalName()));
 		createDomainObjectForTypeMethod.setStaticTypeModifier();
 
-		JavaCodeBlock javaBlockCode = createDomainObjectForTypeMethod.createCodeBlock();
+		CodeBlock javaBlockCode = createDomainObjectForTypeMethod.createCodeBlock();
 		
 		JavaCodeLine collectionTypedCreate = javaBlockCode.getLineCodeCreateCollectionTyped(ArrayList.class.getCanonicalName(), domainClass.getCanonicalName());
 		javaBlockCode.addLineCodeAssigmentCollectionTypedVariable(List.class.getCanonicalName(), domainClass.getCanonicalName(), "instances", collectionTypedCreate);
@@ -111,7 +111,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
 		createDomainObjectEmptyTypeMethod.setReturnType(new JavaParameter(domainClass.getCanonicalName()));
-		JavaCodeBlock javaBlockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();
+		CodeBlock javaBlockCode = createDomainObjectEmptyTypeMethod.createCodeBlock();
 		JavaCodeLine createBeanEmptyLine = javaBlockCode.getLineCodeCalledMethod(methodName + "Empty", new ArrayList<String>());
 		javaBlockCode.addLineCodeAssigmentTypedVariable(domainClass.getCanonicalName(), "bean", createBeanEmptyLine);
 		
@@ -128,7 +128,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		Class<?> classField = field.getType();
 		String setterMethodName = ReflectionHelper.getSetMethodName(field.getName());
 		boolean isBasicClass = ReflectionHelper.isABasicJavaClass(classField);
-		JavaCodeBlock javaBlockCode = (JavaCodeBlock) method.getContent();
+		CodeBlock javaBlockCode = (CodeBlock) method.getContent();
 		if(isBasicClass){
 			List<Object> parametersValues = new ArrayList<Object>();
 			if(String.class.equals(classField)){

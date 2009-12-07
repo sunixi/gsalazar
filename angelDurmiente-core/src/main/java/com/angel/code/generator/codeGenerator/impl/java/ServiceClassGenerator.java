@@ -29,11 +29,6 @@ public class ServiceClassGenerator extends ClassGenerator {
 		this.getMethodBuilderStrategies().put(Accesor.class, new AccesorJavaAnnotationMethodBuilder());
 	}
 
-	public ServiceClassGenerator(String basePackage, ClassGenerator interfaceClassGenerator) {
-		this(basePackage);
-		this.setInterfaceClassGenerator(interfaceClassGenerator);
-	}
-
 	@Override
 	public DataType buildSubClassForClassGenerator(DataType subDataType){
 		subDataType.setCanonicalName(GenericService.class.getCanonicalName());

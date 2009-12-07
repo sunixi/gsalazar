@@ -31,6 +31,7 @@ public abstract class ClassGenerator extends CodeGenerator {
 	private static final Logger LOGGER = Logger.getLogger(CodesGenerator.class);
 	private DataType dataType;
 	private Map<Class<? extends Annotation>, MethodBuilder> methodBuilderStrategies;
+	//TODO Eliminar.
 	private ClassGenerator interfaceClassGenerator;
 
 	protected abstract DataType buildDataType();

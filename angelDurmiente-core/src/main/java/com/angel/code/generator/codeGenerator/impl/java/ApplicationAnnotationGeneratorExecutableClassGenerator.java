@@ -10,9 +10,9 @@ import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.GroupClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaCodeBlock;
 import com.angel.code.generator.data.impl.java.JavaCodeLine;
 import com.angel.code.generator.data.impl.java.JavaDataMethod;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.interfaces.Executable;
 import com.angel.data.generator.base.DataGeneratorRunner;
@@ -63,7 +63,7 @@ public class ApplicationAnnotationGeneratorExecutableClassGenerator extends Grou
 	protected void generateContentClass(CodesGenerator generator, List<Class<?>> domainClasses) {
 		JavaDataMethod executeMethod = super.getDataType().createDataMethod("execute");
 
-		JavaCodeBlock executeMethodContent = executeMethod.createCodeBlock();
+		CodeBlock executeMethodContent = executeMethod.createCodeBlock();
 
 		JavaCodeLine builderCreationJavaLine = executeMethodContent
 				.getLineCodeCreateObject("builder", DataGeneratorAnnotationRunnerBuilder.class.getCanonicalName());

@@ -39,7 +39,7 @@ public class DAOImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public DataType buildSubClassForClassGenerator(DataType subDataType){
+	public DataType buildSubClassForClassGenerator(CodesGenerator generator, DataType subDataType){
 		JavaClassDataType javaClassDataType = (JavaClassDataType) subDataType;
 		javaClassDataType.setCanonicalName(GenericSpringHibernateDAO.class.getCanonicalName());
 		javaClassDataType.setLeftGeneric(super.getDomainObjectCanonicalName());

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.common.util.StringHelper;
 
 import com.angel.code.generator.CodesGenerator;
 import com.angel.common.helpers.ReflectionHelper;
@@ -161,5 +162,9 @@ public abstract class CodeGenerator {
 	 */
 	public void setBaseSourcesDirectory(String baseSourcesDirectory) {
 		this.baseSourcesDirectory = baseSourcesDirectory;
+	}
+	
+	public boolean hasBasePackage(){
+		return StringHelper.isNotEmpty(this.getBasePackage());
 	}
 }

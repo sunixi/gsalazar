@@ -214,7 +214,11 @@ public class CodesGenerator {
 
 	
 	public void addRelativeImport(String basePackage, String beanClassName){
-		String packageName = this.getBaseProjectPackage() + "." + basePackage + "." + beanClassName;
+		String packageName = this.getBaseProjectPackage() + "."; 
+		if(StringHelper.isNotEmpty(basePackage)){
+			packageName += basePackage + ".";
+		}
+		packageName += beanClassName;
 		this.getGlobalImports().put(packageName, beanClassName);
 	}
 	
@@ -327,5 +331,24 @@ public class CodesGenerator {
 	 */
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public String getApplicationInitials() {
+		String[] projectWords = this.getProjectName().split(" ");
+		String applicationInitial = "";
+		if(projectWords != null && projectWords.length > 1){
+			int words = 0;
+			for(String projectWord: projectWords){
+				if(projectWord.length() > 3){
+					if(words < 2){
+						applicationInitial += projectWord.substring(0, 1).toUpperCase();
+					}
+					words++;
+				}
+			}
+		} else {
+			applicationInitial = "ap";
+		}
+		return applicationInitial;
 	}
 }

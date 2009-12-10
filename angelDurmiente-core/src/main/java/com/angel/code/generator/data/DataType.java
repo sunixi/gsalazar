@@ -517,7 +517,15 @@ public abstract class DataType implements CodeConvertible, Importable {
 	 * @return a code representation of this data type package.
 	 */
 	protected String convertCodePackage() {
-		return "package " + this.getBasePackage() + ";\n\n";
+		String basePackage = "";
+		if(this.hasBasePackage()){
+			 basePackage = this.getBasePackage().endsWith(".") ? this.getBasePackage().substring(0, this.getBasePackage().length() - 1) : this.getBasePackage(); 
+		}
+		return "package " + basePackage + ";\n\n";
+	}
+
+	protected boolean hasBasePackage(){
+		return StringHelper.isNotEmpty(this.getBasePackage());
 	}
 
 	/**

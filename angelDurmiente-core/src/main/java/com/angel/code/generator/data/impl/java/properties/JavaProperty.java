@@ -25,7 +25,8 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 	private Visibility visibility;
 	private TypeModifier typeModifier;
 	private String propertyValue;
-	
+	private String[] propertyValueArray;
+
 	public JavaProperty(String name){
 		super(StringHelper.EMPTY_STRING);
 		super.setName(name);
@@ -79,7 +80,6 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 		String codeConverter = "";
 		codeConverter += this.convertCodeDataAnnotations();
 		codeConverter += this.convertCodeDataProperty();
-		
 		return codeConverter;
 	}
 	
@@ -87,13 +87,19 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 		String codeConverter = "";
 		codeConverter += "\t" + this.getVisibility().getVisibility() + " "; 
 		codeConverter += this.hasTypeModifier() ? this.getTypeModifier().getTypeModifier() + " " : "";
-		codeConverter += this.getSimpleTypeName() + " " + this.getName();
-		codeConverter += this.hasPropertyValue() ? " = " + this.getPropertyValue() + ";\n": ";\n";
+		codeConverter += this.convertCodeDataParameter();
+		//TODO Mejorar.
+		codeConverter += this.hasPropertyValue() ? " = " + 
+				(this.isArray() ? "new " + this.getSimpleType() + "[] {\n" +
+						StringHelper.convertToPlainString(this.getPropertyValueArray(), ",\n") +
+						"\n};\n\n"
+						: this.getPropertyValue() + ";\n"): ";\n";
 		return codeConverter;
 	}
 
 	public boolean hasPropertyValue(){
-		return StringHelper.isNotEmpty(this.getPropertyValue());
+		return StringHelper.isNotEmpty(this.getPropertyValue()) || 
+				this.getPropertyValueArray() != null;
 	}
 	
 	public boolean hasTypeModifier(){
@@ -137,6 +143,10 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 		this.propertyValue = propertyValue;
 	}
 
+	public void setPropertyValueArray(String[] propertyValueArray) {
+		this.propertyValueArray = propertyValueArray;
+	}
+
 	public void setPublicVisibility() {
 		this.setVisibility(Visibility.PUBLIC);
 	}
@@ -175,5 +185,13 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 
 	public boolean isStatic() {
 		return this.isTypeModifier(TypeModifier.STATIC);
+	}
+	
+
+	/**
+	 * @return the propertyValueArray
+	 */
+	public String[] getPropertyValueArray() {
+		return propertyValueArray;
 	}
 }

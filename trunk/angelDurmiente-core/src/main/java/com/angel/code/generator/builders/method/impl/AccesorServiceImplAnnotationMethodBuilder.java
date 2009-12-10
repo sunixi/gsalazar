@@ -18,6 +18,7 @@ import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.codeLine.ExecutableMultipleReturnCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
 
@@ -54,22 +55,29 @@ public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder 
 					daoMethodName,
 					returnDataParameter.getCanonicalType()
 			);
-		executableBuscarTodosReturnCodeLine.addParameterNameString(property.getName());
+		//executableBuscarTodosReturnCodeLine.addParameterNameString(property.getName());
 		executableBuscarTodosReturnCodeLine.addParameterName(property.getName());
-		ExecutableMultipleReturnCodeLine executableMultipleReturnCodeLine = new ExecutableMultipleReturnCodeLine(executableGetServiceReturnCodeLine);
+		ExecutableMultipleReturnCodeLine executableMultipleReturnCodeLine =
+			new ExecutableMultipleReturnCodeLine(executableGetServiceReturnCodeLine);
 		executableMultipleReturnCodeLine.addExecutableReturnCodeLine(executableBuscarTodosReturnCodeLine);
 
-		
-		
-		
-		
-		String contentMethod = 
-			ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO") + "()." +
-			daoMethodName + "(" + StringHelper.convertToPlainString(parameters.toArray(), ",") + ")";
+//		String contentMethod = 
+//			ReflectionHelper.getGetMethodName(domainClass.getSimpleName() + "DAO") + "()." +
+//			daoMethodName + "(" + StringHelper.convertToPlainString(parameters.toArray(), ",") + ")";
 
+		Accesor accesor = (Accesor) this.getAnnotation(domainClass, property);
+		ReturnableCodeLine returnableCodeLine = null;
+		if(accesor.unique()){
+			returnableCodeLine = new ReturnableCodeLine(domainClass.getCanonicalName(),
+					executableMultipleReturnCodeLine);
+		} else {
+			returnableCodeLine = new ReturnableCodeLine(
+					domainClass.getCanonicalName(),
+					List.class.getCanonicalName(),
+					executableMultipleReturnCodeLine);
+		}
 		
-		ExecutableReturnCodeLine executableReturnCodeLine = new ExecutableReturnCodeLine(contentMethod, returnDataParameter.getCanonicalType());
-		codeBlock.createReturnableCodeLine(returnDataParameter.getCanonicalType(), executableReturnCodeLine);
+		codeBlock.addCodeLine(returnableCodeLine);
 	}
 
 	public <T> String buildMethodName(Class<T> domainClass, Field property) {
@@ -98,8 +106,15 @@ public class AccesorServiceImplAnnotationMethodBuilder implements MethodBuilder 
 	}	
 
 	public void buildDataMethod(CodesGenerator generator, DataType dataType, Class<?> domainClass, Object owner) {
+		Field property = (Field) owner;
 		String methodName = this.buildMethodName(domainClass, (Field) owner);
 		DataMethod dataMethod = dataType.createDataMethod(methodName);
+
+		DataParameter returnParamter = this.buildReturnParameter(domainClass, property);
+		dataMethod.setReturnType(returnParamter);
+		
+		List<DataParameter> dataMethodParameters = this.buildDataParameters(domainClass, property);
+		dataMethod.addParameters(dataMethodParameters);
 		this.buildMethodContent(domainClass, dataMethod.getContent(), (Field) owner);	
 	}
 }

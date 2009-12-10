@@ -7,8 +7,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import ar.com.angelDurmiente.beans.BeanDemo;
-
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
 import com.angel.code.generator.builders.method.MethodBuilder;
@@ -63,10 +61,10 @@ public class AccesorServiceTestAnnotationMethodBuilder implements MethodBuilder 
 		CodeBlock codeBlock = dataMethod.getContent();
 
 		String domainObjectSimpleName = domainClass.getSimpleName();
-		codeBlock.createCommentCodeLine("Must set a value to " + property.getName() + " property.");
+		codeBlock.createCommentCodeLineTODO("Must set a value to " + property.getName() + " property.");
 
 		/** Create a line like: Type propertyName = null; */
-		codeBlock.createAssignableCodeLine(property.getName(), null, property.getType().getCanonicalName());
+		codeBlock.createAssignableCodeLine(property.getName(), null, property.getType().getCanonicalName());			
 		
 		String simpleServiceName = domainObjectSimpleName + "Service";
 		String canonicaLServiceName = generator.getImportForClassName(simpleServiceName);
@@ -77,7 +75,7 @@ public class AccesorServiceTestAnnotationMethodBuilder implements MethodBuilder 
 		
 		String methodDAOContentName = this.buildContentMethodName(domainClass, property);
 		ExecutableReturnCodeLine executableBuscarReturnCodeLine = new ExecutableReturnCodeLine(methodDAOContentName, dataType.getDomainObjectCanonicalName());
-		executableBuscarReturnCodeLine.addParameterNameString(property.getName());
+
 		executableBuscarReturnCodeLine.addParameterName(property.getName());
 		if(!accesor.unique()){
 			executableBuscarReturnCodeLine.setReturnCollectionCanonicalName(List.class.getCanonicalName());
@@ -86,19 +84,31 @@ public class AccesorServiceTestAnnotationMethodBuilder implements MethodBuilder 
 		ExecutableMultipleReturnCodeLine executableMultipleReturnCodeLine = new ExecutableMultipleReturnCodeLine(executableGetServiceReturnCodeLine);
 		executableMultipleReturnCodeLine.addExecutableReturnCodeLine(executableBuscarReturnCodeLine);
 
-		AssignableCodeLine assignableBeanDemoVariable = new AssignableCodeLine(BeanDemo.class.getCanonicalName(), executableMultipleReturnCodeLine);
-		codeBlock.addCodeLine(assignableBeanDemoVariable);
+		AssignableCodeLine assignableVariable = null;
+		
+		if(accesor.unique()) {
+			assignableVariable = new AssignableCodeLine(domainClass.getCanonicalName(), executableMultipleReturnCodeLine);
+		} else {
+			assignableVariable = new AssignableCodeLine(
+					"result",
+					executableMultipleReturnCodeLine,
+					domainClass.getCanonicalName(),
+					List.class.getCanonicalName());
+		}
+		codeBlock.addCodeLine(assignableVariable);
 		
 		ExecutableCodeLine assertNotNulExecutableCodeLine = new ExecutableCodeLine("assertNotNull");
 		assertNotNulExecutableCodeLine
 			.addParameterNameString("Result collection mustn't be null.")
 			.addParameterName("result");
+		assertNotNulExecutableCodeLine.setStaticMethod();
 		codeBlock.addCodeLine(assertNotNulExecutableCodeLine);
 		
-		ExecutableCodeLine assertTrueExecutableCodeLine = new ExecutableCodeLine("assertNotNull");
+		ExecutableCodeLine assertTrueExecutableCodeLine = new ExecutableCodeLine("assertTrue");
 		assertTrueExecutableCodeLine
 			.addParameterNameString("Result collection size must be more than one.")
 			.addParameterName("result.size() > 0");
+		assertTrueExecutableCodeLine.setStaticMethod();
 		codeBlock.addCodeLine(assertTrueExecutableCodeLine);
 		
 	}

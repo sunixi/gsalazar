@@ -20,6 +20,7 @@ import com.angel.code.generator.data.impl.xml.spring.XMLPropertyRef;
 import com.angel.code.generator.data.impl.xml.spring.XMLPropertyValue;
 import com.angel.code.generator.data.impl.xml.web.XMLContextParameter;
 import com.angel.code.generator.data.impl.xml.web.XMLListener;
+import com.angel.code.generator.data.impl.xml.web.XMLSertvletInitParameter;
 import com.angel.code.generator.data.impl.xml.web.XMLWebapp;
 import com.angel.code.generator.factories.codesGenerators.CodesGeneratorFactory;
 import com.angel.code.generator.factories.codesGenerators.impl.CodesGeneratorFactoryImpl;
@@ -133,8 +134,12 @@ public class ObjectGeneratorTestCase {
 		xmlWebapp.addListener(new XMLListener("org.springframework.web.context.ContextLoaderListener"));
 		xmlWebapp.addListener(new XMLListener("org.springframework.web.context.request.RequestContextListener"));
 		xmlWebapp.addFilter("lazyLoadingFilter", "org.springframework.orm.hibernate3.support.OpenSessionInViewFilter", "/*");
-		xmlWebapp.addServlet("MessageBrokerServlet", "flex.messaging.MessageBrokerServlet", "/messagebroker/*");
-
+		xmlWebapp.addServlet(
+				"MessageBrokerServlet",
+				"flex.messaging.MessageBrokerServlet",
+				"/messagebroker/*",
+				new XMLSertvletInitParameter("services.configuration.file","/WEB-INF/flex/services-config.xml")
+				);
 		XStream xstream = new XStream(new DomDriver());
 		xstream.autodetectAnnotations(true);
 		String xml = xstream.toXML(xmlWebapp);

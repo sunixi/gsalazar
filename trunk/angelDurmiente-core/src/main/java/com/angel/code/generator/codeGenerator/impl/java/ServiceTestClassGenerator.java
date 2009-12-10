@@ -18,7 +18,6 @@ import com.angel.code.generator.data.impl.java.JavaClassDataType;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.ReflectionHelper;
-import com.angel.test.GenericSpringTestCase;
 
 
 /**
@@ -37,8 +36,9 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public DataType buildSubClassForClassGenerator(DataType subDataType){
-		subDataType.setCanonicalName(GenericSpringTestCase.class.getCanonicalName());
+	public DataType buildSubClassForClassGenerator(CodesGenerator generator, DataType subDataType){
+		String canonicalApplicationTestName = generator.getImportForClassName("ApplicationBaseTestCase");
+		subDataType.setCanonicalName(canonicalApplicationTestName);
 		return subDataType;
 	}
 	

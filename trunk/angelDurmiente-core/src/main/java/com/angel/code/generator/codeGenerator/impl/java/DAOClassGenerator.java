@@ -34,7 +34,7 @@ public class DAOClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public DataType buildSubClassForClassGenerator(DataType subDataType){
+	public DataType buildSubClassForClassGenerator(CodesGenerator generator, DataType subDataType){
 		JavaInterfaceDataType javaInterfaceDataType = (JavaInterfaceDataType) subDataType;
 		javaInterfaceDataType.setCanonicalName(GenericDAO.class.getCanonicalName());
 		javaInterfaceDataType.setLeftGeneric(super.getDomainObjectCanonicalName());

@@ -39,7 +39,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 	}
 
 	@Override
-	public DataType buildSubClassForClassGenerator(DataType subDataType){
+	public DataType buildSubClassForClassGenerator(CodesGenerator generator, DataType subDataType){
 		subDataType.setCanonicalName(GenericServiceImpl.class.getCanonicalName());
 		return subDataType;
 	}

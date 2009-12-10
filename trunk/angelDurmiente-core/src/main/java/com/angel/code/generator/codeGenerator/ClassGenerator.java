@@ -113,7 +113,7 @@ public abstract class ClassGenerator extends CodeGenerator {
 		this.getDataType().setDomainObject(domainClass);
 		this.processGlobalTypesImportsClassGenerator(generator, domainClass);
 		this.processJavaTypeInterfaces(generator);
-		this.processSubClassForClassGenerator();
+		this.processSubClassForClassGenerator(generator);
 		this.updateCurrentJavaType(generator, domainClass);
 	}
 	
@@ -138,9 +138,9 @@ public abstract class ClassGenerator extends CodeGenerator {
 		//Do nothing.
 	}
 
-	protected void processSubClassForClassGenerator(){
+	protected void processSubClassForClassGenerator(CodesGenerator generator){
 		DataType subDataType = this.buildDataType();
-		subDataType = this.buildSubClassForClassGenerator(subDataType);
+		subDataType = this.buildSubClassForClassGenerator(generator, subDataType);
 		if(subDataType != null){
 			this.getDataType().setSubDataType(subDataType);
 		}
@@ -158,7 +158,7 @@ public abstract class ClassGenerator extends CodeGenerator {
 
 	protected void createJavaClassFile(CodesGenerator generator) {
 		String javaFileContent = this.getDataType().convertCode();
-		String packageName = generator.getBaseProjectPackage() + "." + this.getBasePackage() + "\\";
+		String packageName = generator.getBaseProjectPackage() + (this.hasBasePackage() ? "." + this.getBasePackage() + "\\": "");
 		LOGGER.info("Creating java class file [" + this.getDataType().getSimpleName() + "] at package [" + packageName + "].");
 		String directory = System.getProperty("user.dir") + super.getBaseSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
 		File directories = new File(directory);
@@ -212,7 +212,7 @@ public abstract class ClassGenerator extends CodeGenerator {
 	 * 
 	 * @return a sub class class.
 	 */
-	public DataType buildSubClassForClassGenerator(DataType dataType){
+	public DataType buildSubClassForClassGenerator(CodesGenerator generator, DataType dataType){
 		return null;
 	}
 

@@ -61,7 +61,7 @@ public class ServicesSpringXMLGenerator extends GroupXMLGenerator {
 			targetPropertyBean.addProperty(new XMLPropertyRef("genericDAO", daoSimpleType));
 			
 			XMLPropertyBeanValue targetPropertyBeanValue = 
-				new XMLPropertyBeanValue("sessionFactory", targetPropertyBean);
+				new XMLPropertyBeanValue("target", targetPropertyBean);
 
 			serviceBean.addProperty(targetPropertyBeanValue);
 			LOGGER.info("Adding xml service configuration for class [" + serviceImplCanonicalType + "].");

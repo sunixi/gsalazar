@@ -22,6 +22,7 @@ import com.angel.common.helpers.StringHelper;
  */
 public class CodesGenerator {
 
+	private final static String DEFAULT_PROJECT_NAME = "Application";
 	private final static Logger LOGGER = Logger.getLogger(CodesGenerator.class);
 	private String baseProjectPackage;
 	private List<Class<?>> domainClasses;
@@ -30,6 +31,7 @@ public class CodesGenerator {
 	private Map<String, String> tagsComment;
 	private List<Class<?>> excludesDomains;
 	private String beanPackageName;
+	private String projectName;
 
 	/**
 	 * 
@@ -42,11 +44,24 @@ public class CodesGenerator {
 		this.setExcludesDomains(new ArrayList<Class<?>>());
 		this.setGlobalImports(new HashMap<String, String>());
 		this.setTagsComment(new HashMap<String, String>());
+		this.setProjectName(DEFAULT_PROJECT_NAME);
 	}
 
 	public CodesGenerator(String baseProjectPackage) {
 		this();
 		this.setBaseProjectPackage(baseProjectPackage);
+	}
+
+	/**
+	 * Create a codes generator instance with a base project package, and current project name.
+	 * 
+	 * @param baseProjectPackage name where resources will create. 
+	 * @param projectName current project name.
+	 */
+	public CodesGenerator(String baseProjectPackage, String projectName) {
+		this();
+		this.setBaseProjectPackage(baseProjectPackage);
+		this.setProjectName(projectName);
 	}
 
 	/**
@@ -298,5 +313,19 @@ public class CodesGenerator {
 
 	public String getTagCommentValue(String tag) {
 		return this.getTagsComment().get(tag);
+	}
+
+	/**
+	 * @return the projectName
+	 */
+	public String getProjectName() {
+		return projectName;
+	}
+
+	/**
+	 * @param projectName the projectName to set
+	 */
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

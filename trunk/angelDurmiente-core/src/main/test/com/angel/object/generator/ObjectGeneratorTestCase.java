@@ -14,10 +14,13 @@ import ar.com.angelDurmiente.beans.BeanDemo;
 import ar.com.angelDurmiente.beans.BeanDemo2;
 
 import com.angel.code.generator.CodesGenerator;
-import com.angel.code.generator.data.impl.xml.XMLBean;
-import com.angel.code.generator.data.impl.xml.XMLBeans;
-import com.angel.code.generator.data.impl.xml.XMLPropertyRef;
-import com.angel.code.generator.data.impl.xml.XMLPropertyValue;
+import com.angel.code.generator.data.impl.xml.spring.XMLBean;
+import com.angel.code.generator.data.impl.xml.spring.XMLBeans;
+import com.angel.code.generator.data.impl.xml.spring.XMLPropertyRef;
+import com.angel.code.generator.data.impl.xml.spring.XMLPropertyValue;
+import com.angel.code.generator.data.impl.xml.web.XMLContextParameter;
+import com.angel.code.generator.data.impl.xml.web.XMLListener;
+import com.angel.code.generator.data.impl.xml.web.XMLWebapp;
 import com.angel.code.generator.factories.codesGenerators.CodesGeneratorFactory;
 import com.angel.code.generator.factories.codesGenerators.impl.CodesGeneratorFactoryImpl;
 import com.thoughtworks.xstream.XStream;
@@ -118,6 +121,23 @@ public class ObjectGeneratorTestCase {
 		 */
 
 		String xml = xstream.toXML(beans);
+		System.out.println(xml);
+	}
+
+	@Test
+	public void testGenerateWebappXML(){	
+		XMLWebapp xmlWebapp = new XMLWebapp();
+		xmlWebapp.setDisplayName("Elangeldurmiente. Sitio solo para personas romanticas.");
+		xmlWebapp.addContextParam(new XMLContextParameter("flex.class.path", "/WEB-INF/flex/hotfixes,/WEB-INF/flex/jars"));
+		xmlWebapp.addListener(new XMLListener("flex.messaging.HttpFlexSession"));
+		xmlWebapp.addListener(new XMLListener("org.springframework.web.context.ContextLoaderListener"));
+		xmlWebapp.addListener(new XMLListener("org.springframework.web.context.request.RequestContextListener"));
+		xmlWebapp.addFilter("lazyLoadingFilter", "org.springframework.orm.hibernate3.support.OpenSessionInViewFilter", "/*");
+		xmlWebapp.addServlet("MessageBrokerServlet", "flex.messaging.MessageBrokerServlet", "/messagebroker/*");
+
+		XStream xstream = new XStream(new DomDriver());
+		xstream.autodetectAnnotations(true);
+		String xml = xstream.toXML(xmlWebapp);
 		System.out.println(xml);
 	}
 }

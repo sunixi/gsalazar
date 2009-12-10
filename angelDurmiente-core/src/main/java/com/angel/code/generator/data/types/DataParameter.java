@@ -22,6 +22,7 @@ public abstract class DataParameter implements CodeConvertible, Importable {
 	private String name;
 	private String canonicalType;
 	private List<DataAnnotation> annotations;
+	private boolean isArray;
 	
 	public abstract <T extends DataAnnotation> T createAnnotation();
 
@@ -111,7 +112,8 @@ public abstract class DataParameter implements CodeConvertible, Importable {
 	 * @return a code representation of data types annotations.
 	 */
 	protected String convertCodeDataParameter() {
-		return this.getSimpleType() + " " + this.getName();
+		//return this.getSimpleType() + " " + this.getName();
+		return this.getSimpleType() + (this.isArray() ? "[]" : "") + " " + this.getName();
 	}
 
 	/**
@@ -180,5 +182,24 @@ public abstract class DataParameter implements CodeConvertible, Importable {
 	 */
 	public void setAnnotations(List<DataAnnotation> annotations) {
 		this.annotations = annotations;
+	}
+
+
+	/**
+	 * @return the isArray
+	 */
+	public boolean isArray() {
+		return isArray;
+	}
+
+	/**
+	 * @param isArray the isArray to set
+	 */
+	public void setArray(boolean isArray) {
+		this.isArray = isArray;
+	}
+
+	public void setArrayType() {
+		this.setArray(true);
 	}
 }

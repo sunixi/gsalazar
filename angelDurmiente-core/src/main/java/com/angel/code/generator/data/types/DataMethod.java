@@ -70,7 +70,11 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 		if(this.isReturnACollection()){
 			convertReturnType = this.getReturnType().getSimpleType() + "<" + this.getSimpleOwnerType() + ">";
 		} else {
-			convertReturnType = this.getReturnType().getSimpleType();
+			if(this.getReturnParameter().isArray()){
+				convertReturnType = this.getReturnParameter().getSimpleType() + "[] " + this.getReturnParameter().getName();
+			} else {
+				convertReturnType = this.getReturnType().getSimpleType();
+			}
 		}
 		return convertReturnType;
 	}

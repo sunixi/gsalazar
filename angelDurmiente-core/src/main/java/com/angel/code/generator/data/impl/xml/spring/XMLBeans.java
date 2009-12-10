@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.angel.code.generator.data.impl.xml;
+package com.angel.code.generator.data.impl.xml.spring;
 
 import java.util.ArrayList;
 import java.util.List;

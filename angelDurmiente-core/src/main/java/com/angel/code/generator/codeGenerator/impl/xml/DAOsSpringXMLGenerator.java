@@ -10,10 +10,10 @@ import org.apache.log4j.Logger;
 import com.angel.architecture.persistence.ids.impl.ObjectIdImpl;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.codeGenerator.GroupXMLGenerator;
-import com.angel.code.generator.data.impl.xml.XMLBean;
-import com.angel.code.generator.data.impl.xml.XMLBeans;
-import com.angel.code.generator.data.impl.xml.XMLPropertyRef;
-import com.angel.code.generator.data.impl.xml.XMLPropertyValue;
+import com.angel.code.generator.data.impl.xml.spring.XMLBean;
+import com.angel.code.generator.data.impl.xml.spring.XMLBeans;
+import com.angel.code.generator.data.impl.xml.spring.XMLPropertyRef;
+import com.angel.code.generator.data.impl.xml.spring.XMLPropertyValue;
 
 /**
  * @author Guillermo D. Salazar

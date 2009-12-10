@@ -75,13 +75,21 @@ public class ExecutableCodeLine extends CodeLine {
 
 	public String convertCode() {
 		String convertedCode = "";
-		convertedCode += this.getVariableName() + "." + this.getMethodName();
+		if(this.hasVariableName()){
+			convertedCode += this.getVariableName() + ".";
+		} 
+		convertedCode += this.getMethodName();
+
 		if(this.hasParameters()){			
 			convertedCode += "(" + StringHelper.convertToPlainString(this.getParametersNames().toArray(), ", ") + ")";
 		} else {
 			convertedCode += "()"; 
 		}
 		return convertedCode;
+	}
+	
+	public boolean hasVariableName(){
+		return StringHelper.isNotEmpty(this.getVariableName());
 	}
 	
 	public boolean hasParameters(){
@@ -146,5 +154,9 @@ public class ExecutableCodeLine extends CodeLine {
 
 	public ExecutableCodeLine addParameterNameClass(String className) {
 		return this.addParameterName(className + ".class");	
+	}
+
+	public void setStaticMethod() {
+		this.setVariableName(StringHelper.EMPTY_STRING);
 	}
 }

@@ -16,6 +16,7 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
+import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.test.GenericSpringTestCase;
 
@@ -44,7 +45,6 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	@Override
 	protected void generateContentClass(CodesGenerator generator, Class<?> domainClass) {
 		this.buildServiceProperty(generator, domainClass);
-		
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
@@ -55,7 +55,7 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	}
 
 	protected void buildServiceProperty(CodesGenerator generator, Class<?> domainClass) {
-		String propertyName = domainClass.getSimpleName() + "Service";
+		String propertyName = PackageHelper.getClassSimpleVariableName(domainClass.getSimpleName() + "Service");
 		String propertyType = generator.getImportForClassName(propertyName);
 		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName);
 		javaProperty.setCanonicalType(propertyType);

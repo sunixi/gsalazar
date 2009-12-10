@@ -37,6 +37,10 @@ public class XMLWebapp {
 	
 	@XStreamImplicit
 	private List<XMLServletMapping> servletMappings;
+
+	@XStreamImplicit
+	@XStreamAlias("welcome-file")
+	private List<String> welcomeFilesList;
 	
 	@XStreamAlias("xmlns")
 	@XStreamAsAttribute
@@ -53,14 +57,6 @@ public class XMLWebapp {
 	@XStreamAsAttribute
 	private String version;
 
-	/*
-xmlns="http://java.sun.com/xml/ns/javaee"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-           version="2.5"
-	 */
-
 	/**
 	 * 
 	 */
@@ -71,6 +67,7 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 		this.setFilters(new ArrayList<XMLFilter>());
 		this.setFilterMappings(new ArrayList<XMLFilterMapping>());
 		this.setServletMappings(new ArrayList<XMLServletMapping>());
+		this.setWelcomeFilesList(new ArrayList<String>());
 		this.setServlets(new ArrayList<XMLServlet>());
 		this.setXmlns("http://java.sun.com/xml/ns/javaee");
 		this.setXmlnsXsi("http://www.w3.org/2001/XMLSchema-instance");
@@ -194,8 +191,36 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 	}
 	
 	public void addServlet(String servletName, String servletClass, String urlPattern){
-		this.getServlets().add(new XMLServlet(servletName, servletClass));
-		this.getServletMappings().add(new XMLServletMapping(servletName, urlPattern));
+		this.addServlet(new XMLServlet(servletName, servletClass));
+		this.addServletMapping(new XMLServletMapping(servletName, urlPattern));
+	}
+
+	public void addServlet(String servletName, String servletClass, String urlPattern, String loadOnStartup){
+		this.addServlet(new XMLServlet(servletName, servletClass, loadOnStartup));
+		this.addServletMapping(new XMLServletMapping(servletName, urlPattern));
+	}
+
+	public void addServlet(String servletName, String servletClass, String urlPattern, XMLSertvletInitParameter ...servletParameters){
+		this.addServlet(servletName, servletClass, urlPattern, null, servletParameters);
+	}
+	
+	public void addServlet(String servletName, String servletClass, String urlPattern, String onLoadStartup, XMLSertvletInitParameter ...servletParameters){
+		XMLServlet servlet = new XMLServlet(servletName, servletClass, onLoadStartup);
+		if(servletParameters != null && servletParameters.length > 0){
+			for(XMLSertvletInitParameter initParam: servletParameters){
+				servlet.addInitParameter(initParam);
+			}
+		}
+		this.addServlet(servlet);
+		this.addServletMapping(new XMLServletMapping(servletName, urlPattern));
+	}
+
+	public void addServlet(XMLServlet servlet){
+		this.getServlets().add(servlet);
+	}
+
+	public void addServletMapping(XMLServletMapping servletMapping){
+		this.getServletMappings().add(servletMapping);
 	}
 
 	/**
@@ -252,5 +277,23 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 	 */
 	public void setServletMappings(List<XMLServletMapping> servletMappings) {
 		this.servletMappings = servletMappings;
+	}
+
+	/**
+	 * @return the welcomeFilesList
+	 */
+	public List<String> getWelcomeFilesList() {
+		return welcomeFilesList;
+	}
+
+	/**
+	 * @param welcomeFilesList the welcomeFilesList to set
+	 */
+	public void setWelcomeFilesList(List<String> welcomeFilesList) {
+		this.welcomeFilesList = welcomeFilesList;
+	}
+
+	public void addWelcomeFile(String welcomeFile){
+		this.getWelcomeFilesList().add(welcomeFile);
 	}
 }

@@ -4,6 +4,7 @@
 package com.angel.code.generator.factories.codesGenerators.impl;
 
 import com.angel.code.generator.CodesGenerator;
+import com.angel.code.generator.codeGenerator.impl.as3.AS3ClassGenerator;
 import com.angel.code.generator.codeGenerator.impl.java.AnnotationDataGeneratorClassGenerator;
 import com.angel.code.generator.codeGenerator.impl.java.AnnotationRowProcessorCommandClassGenerator;
 import com.angel.code.generator.codeGenerator.impl.java.ApplicationAnnotationGeneratorExecutableClassGenerator;
@@ -58,6 +59,7 @@ public class CodesGeneratorFactoryImpl implements CodesGeneratorFactory {
 		classesGenerator.addCodeGenerator(new DAOsSpringXMLGenerator());
 		classesGenerator.addCodeGenerator(new WebXMLGenerator());
 		classesGenerator.addCodeGenerator(new ApplicationBaseTestClassGenerator(""));
+		classesGenerator.addCodeGenerator(new AS3ClassGenerator("flex"));
 		return classesGenerator;
 	}
 	

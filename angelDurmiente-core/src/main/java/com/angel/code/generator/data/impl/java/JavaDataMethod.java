@@ -3,6 +3,8 @@
  */
 package com.angel.code.generator.data.impl.java;
 
+import com.angel.code.generator.data.enums.TypeModifier;
+import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.CodeBlock;
@@ -21,10 +23,79 @@ import com.angel.common.helpers.StringHelper;
  */
 public class JavaDataMethod extends DataMethod {
 
+	private TypeModifier typeModifier;
+	private Visibility visibility;
+
 	public JavaDataMethod(){
 		super();
+		this.setTypeModifier(TypeModifier.NONE);
+		this.setVisibility(Visibility.PUBLIC);
 		this.setContent(new CodeBlock());
 		this.setComment(new DataCommentImpl());
+	}
+	
+	/**
+	 * @return the visibility
+	 */
+	public Visibility getVisibility() {
+		return visibility;
+	}
+
+	/**
+	 * @param visibility the visibility to set
+	 */
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+
+	/**
+	 * @return the typeModifier
+	 */
+	public TypeModifier getTypeModifier() {
+		return typeModifier;
+	}
+
+	/**
+	 * @param typeModifier the typeModifier to set
+	 */
+	public void setTypeModifier(TypeModifier typeModifier) {
+		this.typeModifier = typeModifier;
+	}
+
+	public void setStaticTypeModifier(){
+		this.setTypeModifier(TypeModifier.STATIC);
+	}
+	
+	public void setFinalStaticTypeModifier(){
+		this.setTypeModifier(TypeModifier.FINAL_STATIC);
+	}
+
+	public void setNoneModifier(){
+		this.setTypeModifier(TypeModifier.NONE);
+	}
+
+	public void setFinalTypeModifier(){
+		this.setTypeModifier(TypeModifier.FINAL);
+	}
+
+	protected String convertTypeModifier(){
+		return this.getTypeModifier().getTypeModifier();
+	}
+
+	
+	protected String convertVisibility(){
+		return this.getVisibility().getVisibility();
+	}
+	
+	@Override
+	protected String convertCodeDataMethodSign() {
+		String convertedCode = this.hasAnnotations() ? "\n": "";
+		convertedCode += "\t" + this.convertVisibility() + " " + this.convertTypeModifier();
+		convertedCode += this.hasReturnType() ? " " + this.convertReturnType() + " ": " void ";
+		convertedCode += this.getMethodName();
+		convertedCode += this.convertCodeDataParameters();
+		convertedCode += this.convertCodeDataExceptions();
+		return convertedCode;
 	}
 
 	@SuppressWarnings("unchecked")

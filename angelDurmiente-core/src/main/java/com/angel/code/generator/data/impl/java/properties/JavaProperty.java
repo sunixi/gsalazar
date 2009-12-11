@@ -33,7 +33,7 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 		this.setVisibility(Visibility.PRIVATE);
 		this.setTypeModifier(TypeModifier.NONE);
 	}
-	
+
 	public JavaProperty(String name, String canonicalType){
 		this(name);
 		this.setCanonicalType(canonicalType);
@@ -162,9 +162,9 @@ public class JavaProperty extends JavaParameter implements DataProperty {
 	public boolean isPublic() {
 		return this.isVisibility(Visibility.PUBLIC);
 	}
-	
-	public boolean isVisibility(Visibility visibility){
-		return this.getVisibility() == visibility;
+
+	public boolean isVisibility(Object visibility){
+		return this.getVisibility() == ((Visibility)visibility);
 	}
 
 	public boolean isProtected() {

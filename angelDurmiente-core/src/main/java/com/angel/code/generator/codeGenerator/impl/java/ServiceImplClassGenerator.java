@@ -15,8 +15,8 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.data.types.CodeBlock;
-import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.codeLine.HarcodedCodeLine;
 import com.angel.common.helpers.ReflectionHelper;
 
@@ -68,7 +68,7 @@ public class ServiceImplClassGenerator extends ClassGenerator {
 		String importClassName = generator.getImportForClassName(domainClassDAO);
 
 		String methodName = ReflectionHelper.getGetMethodName(domainClassDAO);
-		DataMethod typeMethod = super.getDataType().createDataMethod(methodName);
+		JavaDataMethod typeMethod = super.getDataType().createDataMethod(methodName);
 		typeMethod.setMethodName(methodName);
 		typeMethod.createReturnParameter(importClassName);
 		typeMethod.setVisibility(Visibility.PROTECTED);

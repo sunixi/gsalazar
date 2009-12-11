@@ -72,14 +72,10 @@ public abstract class DataParameter implements CodeConvertible, Importable {
 	public boolean equalsCanonicalType(DataParameter javaParameter){
 		return this.getCanonicalType().equals(javaParameter.getCanonicalType());
 	}
-	/*
-	public String getSimpleReturnTypeName(){
+
+	public String getSimpleTypeName(){
 		return PackageHelper.getClassSimpleName(this.getCanonicalType());
 	}
-
-	public String getParameter() {
-		return this.getSimpleReturnTypeName() + " " + (this.hasParameterName() ? this.getName() : "");
-	}*/
 
 	public boolean hasParameterName(){
 		return StringHelper.isNotEmpty(this.getName());
@@ -112,7 +108,6 @@ public abstract class DataParameter implements CodeConvertible, Importable {
 	 * @return a code representation of data types annotations.
 	 */
 	protected String convertCodeDataParameter() {
-		//return this.getSimpleType() + " " + this.getName();
 		return this.getSimpleType() + (this.isArray() ? "[]" : "") + " " + this.getName();
 	}
 

@@ -29,6 +29,7 @@ public class FlexAnnotationProperty extends JavaParameter implements CodeConvert
 
 	public FlexAnnotationProperty(String propertyName, String propertyValue){
 		this(propertyName);
+		this.setPropertyValue(propertyValue);
 	}
 	
 	public String convertCode() {

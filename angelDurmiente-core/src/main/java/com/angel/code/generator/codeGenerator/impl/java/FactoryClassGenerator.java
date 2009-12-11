@@ -15,6 +15,7 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
 import com.angel.code.generator.data.impl.java.JavaConstructor;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataMethod;
@@ -79,7 +80,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 			Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName() + "Empty";
 		JavaParameter returnParameter = new JavaParameter(domainClass.getCanonicalName());
-		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
+		JavaDataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
 		createDomainObjectEmptyTypeMethod.setMethodName(methodName);
 		createDomainObjectEmptyTypeMethod.setReturnType(returnParameter);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
@@ -92,7 +93,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 		
 		List<DataParameter> parameters = new ArrayList<DataParameter>();
 		parameters.add(new JavaParameter("quantity", Integer.class.getCanonicalName()));
-		DataMethod createDomainObjectForTypeMethod = super.getDataType().createDataMethod(methodName, parameters);
+		JavaDataMethod createDomainObjectForTypeMethod = super.getDataType().createDataMethod(methodName, parameters);
 		createDomainObjectForTypeMethod.setMethodName(methodName);
 		createDomainObjectForTypeMethod.setReturnType(new JavaParameter(List.class.getCanonicalName()));
 		createDomainObjectForTypeMethod.setStaticTypeModifier();
@@ -128,7 +129,7 @@ public class FactoryClassGenerator extends ClassGenerator {
 	protected void processCreateDomainObject(CodesGenerator generator, Class<?> domainClass) {
 		String methodName = "create" + domainClass.getSimpleName();
 
-		DataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
+		JavaDataMethod createDomainObjectEmptyTypeMethod = super.getDataType().createDataMethod(methodName);
 		createDomainObjectEmptyTypeMethod.setStaticTypeModifier();
 		createDomainObjectEmptyTypeMethod.setReturnType(new JavaParameter(domainClass.getCanonicalName()));
 		CodeBlock codeBlock = createDomainObjectEmptyTypeMethod.createCodeBlock();

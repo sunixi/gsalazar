@@ -9,7 +9,6 @@ import java.util.List;
 import com.angel.code.generator.data.types.CodeConvertible;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.Importable;
-import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
 
 
@@ -21,7 +20,7 @@ import com.angel.common.helpers.StringHelper;
  */
 public class FlexAnnotation implements DataAnnotation {
 
-	private String canonicalType;
+	private String name;
 	private List<FlexAnnotationProperty> properties;
 
 	public FlexAnnotation(){
@@ -29,9 +28,9 @@ public class FlexAnnotation implements DataAnnotation {
 		this.setProperties(new ArrayList<FlexAnnotationProperty>());
 	}
 
-	public FlexAnnotation(String canonicalType){
+	public FlexAnnotation(String name){
 		this();
-		this.setCanonicalType(canonicalType);
+		this.setName(name);
 	}
 	
 	public FlexAnnotation(String annotationClass, List<FlexAnnotationProperty> properties){
@@ -43,7 +42,7 @@ public class FlexAnnotation implements DataAnnotation {
 	 * @return the name
 	 */
 	public String getName() {
-		return "@" + PackageHelper.getClassSimpleName(this.getCanonicalType());
+		return this.name;
 	}
 
 	/**
@@ -57,14 +56,7 @@ public class FlexAnnotation implements DataAnnotation {
 	 * @return the canonicalType
 	 */
 	public String getCanonicalType() {
-		return canonicalType;
-	}
-
-	/**
-	 * @param canonicalType the canonicalType to set
-	 */
-	public void setCanonicalType(String canonicalType) {
-		this.canonicalType = canonicalType;
+		return this.getName();
 	}
 
 	/**
@@ -79,9 +71,10 @@ public class FlexAnnotation implements DataAnnotation {
 	}
 
 	public String convertCode() {
-		String codeConverter = "";
+		String codeConverter = "[";
 		codeConverter += this.getName();
-		codeConverter += this.hasProperties() ? "(\n\t" + this.convertProperties() + "\n)\n" : "";
+		codeConverter += this.hasProperties() ? "(" + this.convertProperties() + ")" : "";
+		codeConverter += "]";
 		return codeConverter;
 	}
 
@@ -102,7 +95,7 @@ public class FlexAnnotation implements DataAnnotation {
 	 */
 	public List<String> getImportsType() {
 		List<String> importsType = new ArrayList<String>();
-		importsType.add(this.getCanonicalType());
+		//importsType.add(this.getCanonicalType());
 		for(Importable i: this.getProperties()){
 			for(String imp: i.getImportsType()){
 				if(StringHelper.isNotEmpty(imp)){
@@ -117,39 +110,26 @@ public class FlexAnnotation implements DataAnnotation {
 		this.getProperties().add(javaAnnotationProperty);
 	}
 	
-	public FlexAnnotationProperty createJavaAnnotationProperty(String propertyName){
+	public FlexAnnotationProperty createAnnotationProperty(String propertyName){
 		FlexAnnotationProperty javaAnnotationProperty = new FlexAnnotationProperty(propertyName);
 		this.addAnnotationProperty(javaAnnotationProperty);
 		return javaAnnotationProperty;
 	}
 
-	public FlexAnnotationProperty createJavaAnnotationProperty(String propertyName, String propertyValue){
-		FlexAnnotationProperty javaAnnotationProperty = this.createJavaAnnotationProperty(propertyName);
+	public FlexAnnotationProperty createAnnotationProperty(String propertyName, String propertyValue){
+		FlexAnnotationProperty javaAnnotationProperty = this.createAnnotationProperty(propertyName);
 		javaAnnotationProperty.setPropertyValue(propertyValue);
 		return javaAnnotationProperty;
 	}
-	/*
-	public JavaAnnotationMultiValueProperty createJavaAnnotationMultiValueProperty(String propertyName){
-		JavaAnnotationMultiValueProperty javaAnnotationProperty = new JavaAnnotationMultiValueProperty(propertyName);
-		this.addAnnotationProperty(javaAnnotationProperty);
-		return javaAnnotationProperty;
-	}*/
-	
-	/*
-	public JavaAnnotationMultiValueProperty createJavaAnnotationMultiValuePropertyEmpty(String propertyName){
-		JavaAnnotationMultiValueProperty javaAnnotationProperty = new JavaAnnotationMultiValueProperty(propertyName);
-		this.addAnnotationProperty(javaAnnotationProperty);
-		return javaAnnotationProperty;
-	}*/
 
-	public FlexAnnotationProperty createJavaAnnotationPropertyClass(String propertyname, String classCanonicalName) {
+	public FlexAnnotationProperty createAnnotationPropertyClass(String propertyname, String classCanonicalName) {
 		FlexAnnotationProperty javaAnnotationProperty = new FlexAnnotationProperty(propertyname);
 		javaAnnotationProperty.addPropertyValueClass(classCanonicalName);
 		this.addAnnotationProperty(javaAnnotationProperty);
 		return javaAnnotationProperty;
 	}
 
-	public FlexAnnotationProperty createjavaAnnotationPropertyBoolean(String propertyname, Boolean booleanValue) {
+	public FlexAnnotationProperty createAnnotationPropertyBoolean(String propertyname, Boolean booleanValue) {
 		FlexAnnotationProperty javaAnnotationProperty = new FlexAnnotationProperty(propertyname);
 		javaAnnotationProperty.addPropertyValue(booleanValue.toString());
 		javaAnnotationProperty.setCanonicalType(Boolean.class.getCanonicalName());
@@ -157,7 +137,7 @@ public class FlexAnnotation implements DataAnnotation {
 		return javaAnnotationProperty;
 	}
 
-	public FlexAnnotationProperty createJavaAnnotationPropertyString(String propertyName, String stringValue) {
+	public FlexAnnotationProperty createAnnotationPropertyString(String propertyName, String stringValue) {
 		FlexAnnotationProperty javaAnnotationProperty = new FlexAnnotationProperty(propertyName);
 		javaAnnotationProperty.addPropertyValueString(stringValue);
 		this.addAnnotationProperty(javaAnnotationProperty);
@@ -192,4 +172,11 @@ public class FlexAnnotation implements DataAnnotation {
 	public boolean isCanonicalType(String canonicalType) {
 		return this.getCanonicalType().equalsIgnoreCase(canonicalType);
 	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}	
 }

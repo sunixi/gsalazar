@@ -10,6 +10,7 @@ import java.util.List;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.enums.TypeModifier;
 import com.angel.code.generator.data.enums.Visibility;
+import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.common.helpers.ReflectionHelper;
 import com.angel.common.helpers.StringHelper;
@@ -46,6 +47,8 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 	
 	public DataMethod(){
 		super();
+		this.setContent(new CodeBlock());
+		this.setComment(new DataCommentImpl());
 		this.setAnnotations(new ArrayList<DataAnnotation>());
 		this.setParameters(new ArrayList<DataParameter>());
 		this.setExceptions(new ArrayList<DataException>());

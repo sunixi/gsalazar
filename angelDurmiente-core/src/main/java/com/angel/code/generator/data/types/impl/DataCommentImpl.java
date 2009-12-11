@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.angel.code.generator.data.impl.java;
+package com.angel.code.generator.data.types.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,12 +20,12 @@ import com.angel.common.helpers.StringHelper;
  * @since 26/Noviembre/2009.
  *
  */
-public class JavaDataComment implements DataComment {
+public class DataCommentImpl implements DataComment {
 
 	private Map<String, String> tagsComment;
 	private String comment;
 	
-	public JavaDataComment(){
+	public DataCommentImpl(){
 		super();
 		this.setComment("");
 		this.setTagsComment(new HashMap<String, String>());
@@ -33,7 +33,7 @@ public class JavaDataComment implements DataComment {
 		this.addTag("since", dateFormat.format(new Date()));
 	}
 
-	public JavaDataComment(String comment){
+	public DataCommentImpl(String comment){
 		this();
 		this.setComment(comment);
 	}

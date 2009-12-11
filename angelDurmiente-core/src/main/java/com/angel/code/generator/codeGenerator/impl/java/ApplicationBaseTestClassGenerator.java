@@ -12,7 +12,6 @@ import com.angel.code.generator.codeGenerator.GroupClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
-import com.angel.code.generator.data.impl.java.JavaDataComment;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
 import com.angel.code.generator.data.types.CodeBlock;
@@ -21,6 +20,7 @@ import com.angel.code.generator.data.types.codeLine.CommentCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
 import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
+import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.test.GenericSpringTestCase;
 
 
@@ -72,7 +72,7 @@ public class ApplicationBaseTestClassGenerator extends GroupClassGenerator {
 		dataProperty.setPropertyValueArray(applicationContexts);
 		
 		DataMethod mockTestMethod = super.getDataType().createDataMethod("testNothing");
-		mockTestMethod.setComment(new JavaDataComment("Test mock para toda la jerarquía de test cases de la aplicación."));
+		mockTestMethod.setComment(new DataCommentImpl("Test mock para toda la jerarquía de test cases de la aplicación."));
 		mockTestMethod.createAnnotation(Test.class.getCanonicalName());
 		CodeBlock mockTestCodeBlock = mockTestMethod.getContent();
 		mockTestCodeBlock.addCodeLine(new CommentCodeLine("Do nothing."));

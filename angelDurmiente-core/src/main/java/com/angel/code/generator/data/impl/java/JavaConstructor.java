@@ -11,6 +11,7 @@ import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataComment;
 import com.angel.code.generator.data.types.DataConstructor;
 import com.angel.code.generator.data.types.DataParameter;
+import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.common.helpers.StringHelper;
 
 
@@ -33,7 +34,7 @@ public class JavaConstructor implements DataConstructor {
 		this.setVisibility(Visibility.PUBLIC);
 		this.setParameters(new ArrayList<DataParameter>());
 		this.setContent(new CodeBlock());
-		this.setComment(new JavaDataComment());
+		this.setComment(new DataCommentImpl());
 	}
 
 	/**

@@ -6,7 +6,6 @@ package com.angel.code.generator.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.angel.code.generator.data.impl.java.JavaDataComment;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.CodeConvertible;
 import com.angel.code.generator.data.types.DataAnnotation;
@@ -21,6 +20,7 @@ import com.angel.code.generator.data.types.codeLine.AssignableInstanceVariableCo
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
 import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
 import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
+import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.ImportsHelper;
 import com.angel.code.generator.helpers.PackageHelper;
@@ -69,7 +69,7 @@ public abstract class DataType implements CodeConvertible, Importable {
 		this.setGlobalImports(new ArrayList<String>());
 		this.setProperties(new ArrayList<DataProperty>());
 		this.setAnnotations(new ArrayList<DataAnnotation>());
-		this.setComment(new JavaDataComment());
+		this.setComment(new DataCommentImpl());
 	}
 
 	public DataType(String canonicalDataType) {

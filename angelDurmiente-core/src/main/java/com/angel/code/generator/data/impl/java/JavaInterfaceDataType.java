@@ -15,6 +15,7 @@ import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
+import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
 
@@ -32,7 +33,7 @@ public class JavaInterfaceDataType extends InterfaceDataType {
 	
 	public JavaInterfaceDataType(){
 		super();
-		this.setComment(new JavaDataComment());
+		this.setComment(new DataCommentImpl());
 	}
 	
 	public JavaInterfaceDataType(String canonicalName){

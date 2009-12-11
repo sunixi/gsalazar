@@ -26,6 +26,7 @@ public class BeanDemo extends User {
 	@Accesor
 	@Column(length = 40)
 	private String nombre;
+
 	@Accesor
 	@Column(length = 40)
 	private String apellido;

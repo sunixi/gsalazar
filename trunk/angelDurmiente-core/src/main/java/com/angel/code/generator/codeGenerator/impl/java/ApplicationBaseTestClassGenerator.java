@@ -12,6 +12,7 @@ import com.angel.code.generator.codeGenerator.GroupClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.impl.java.JavaClassDataType;
+import com.angel.code.generator.data.impl.java.JavaDataMethod;
 import com.angel.code.generator.data.impl.java.properties.JavaParameter;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
 import com.angel.code.generator.data.types.CodeBlock;
@@ -77,7 +78,7 @@ public class ApplicationBaseTestClassGenerator extends GroupClassGenerator {
 		CodeBlock mockTestCodeBlock = mockTestMethod.getContent();
 		mockTestCodeBlock.addCodeLine(new CommentCodeLine("Do nothing."));
 		
-		DataMethod dataMethod = super.getDataType().createDataMethod("getOtherContextsApplicationFiles");
+		JavaDataMethod dataMethod = super.getDataType().createDataMethod("getOtherContextsApplicationFiles");
 		dataMethod.setVisibility(Visibility.PROTECTED);
 		dataMethod.createAnnotation(Override.class.getCanonicalName());
 		JavaParameter returnParameter = dataMethod.createReturnParameter(String.class.getCanonicalName());

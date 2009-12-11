@@ -3,6 +3,8 @@
  */
 package com.angel.code.generator.helpers;
 
+import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter;
+import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter.FlexTypeImport;
 import com.angel.common.helpers.StringHelper;
 
 
@@ -29,6 +31,18 @@ public class PackageHelper {
 		return classType;
 	}
 
+	public static String getFlexClassSimpleName(String javaType){
+		FlexTypeImport flexTypeImport = FlexDataTypesConverter.getInstance().getFlexTypeFrom(javaType);
+		if(flexTypeImport != null){
+			String flexType = flexTypeImport.getCanonicalType();
+			if(flexType.contains(".")){
+				return getClassSimpleName(flexType);
+			}
+			return flexType;
+		}
+		return null;
+	}
+	
 	private PackageHelper(){
 		super();
 	}

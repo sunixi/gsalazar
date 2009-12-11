@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 import com.angel.code.generator.data.DataType;
-import com.angel.code.generator.data.enums.TypeModifier;
-import com.angel.code.generator.data.enums.Visibility;
 import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.common.helpers.ReflectionHelper;
@@ -29,8 +27,6 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 	private DataParameter returnType;
 	private CodeBlock content;
 	private boolean implemented = true;
-	private TypeModifier typeModifier;
-	private Visibility visibility;
 	private DataComment comment;
 	private List<DataAnnotation> annotations;
 	private List<DataException> exceptions;
@@ -52,8 +48,6 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 		this.setAnnotations(new ArrayList<DataAnnotation>());
 		this.setParameters(new ArrayList<DataParameter>());
 		this.setExceptions(new ArrayList<DataException>());
-		this.setVisibility(Visibility.PUBLIC);
-		this.setTypeModifier(TypeModifier.NONE);
 	}
 	
 	public void setNotImplemented(){
@@ -112,14 +106,6 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 		return codeConverted;
 	}
 	
-	protected String convertVisibility(){
-		return this.getVisibility().getVisibility();
-	}
-	
-	protected String convertTypeModifier(){
-		return this.getTypeModifier().getTypeModifier();
-	}
-	
 	public String convertCode() {
 		String convertedCode = "";
 		convertedCode += this.convertCodeDataComment();
@@ -160,15 +146,7 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 		return convertedCode + ")";
 	}
 
-	protected String convertCodeDataMethodSign() {
-		String convertedCode = this.hasAnnotations() ? "\n": "";
-		convertedCode += "\t" + this.convertVisibility() + " " + this.convertTypeModifier();
-		convertedCode += this.hasReturnType() ? " " + this.convertReturnType() + " ": " void ";
-		convertedCode += this.getMethodName();
-		convertedCode += this.convertCodeDataParameters();
-		convertedCode += this.convertCodeDataExceptions();
-		return convertedCode;
-	}
+	protected abstract String convertCodeDataMethodSign();
 	
 	public boolean hasAnnotations(){
 		return this.getAnnotations().size() > 0;
@@ -205,21 +183,7 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 		return this.getComment().convertCode();
 	}
 
-	public void setStaticTypeModifier(){
-		this.setTypeModifier(TypeModifier.STATIC);
-	}
-	
-	public void setFinalStaticTypeModifier(){
-		this.setTypeModifier(TypeModifier.FINAL_STATIC);
-	}
 
-	public void setNoneModifier(){
-		this.setTypeModifier(TypeModifier.NONE);
-	}
-
-	public void setFinalTypeModifier(){
-		this.setTypeModifier(TypeModifier.FINAL);
-	}
 
 	/**
 	 * @return the ownerType
@@ -303,34 +267,6 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 	 */
 	public void setImplemented(boolean implemented) {
 		this.implemented = implemented;
-	}
-
-	/**
-	 * @return the typeModifier
-	 */
-	public TypeModifier getTypeModifier() {
-		return typeModifier;
-	}
-
-	/**
-	 * @param typeModifier the typeModifier to set
-	 */
-	public void setTypeModifier(TypeModifier typeModifier) {
-		this.typeModifier = typeModifier;
-	}
-
-	/**
-	 * @return the visibility
-	 */
-	public Visibility getVisibility() {
-		return visibility;
-	}
-
-	/**
-	 * @param visibility the visibility to set
-	 */
-	public void setVisibility(Visibility visibility) {
-		this.visibility = visibility;
 	}
 
 	/**

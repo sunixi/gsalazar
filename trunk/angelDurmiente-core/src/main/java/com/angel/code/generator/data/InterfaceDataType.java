@@ -71,7 +71,7 @@ public abstract class InterfaceDataType extends DataType implements DataInterfac
 			throw new CodeGeneratorException("Data type [" + this.getSimpleName() + "] has a data property with name [" + dataProperty.getName() + "].");
 		}
 		if(dataProperty.isPrivate()){
-			throw new CodeGeneratorException("Data property cannot be [" + dataProperty.getVisibility() + "] in a interface data type.");
+			throw new CodeGeneratorException("Data property cannot be private in a interface data type.");
 		}
 		this.getProperties().add(dataProperty);
 	}

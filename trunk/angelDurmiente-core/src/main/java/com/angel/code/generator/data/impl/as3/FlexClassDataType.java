@@ -7,13 +7,18 @@ import java.util.List;
 
 import com.angel.code.generator.data.ClassDataType;
 import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
+import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter;
+import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter.FlexTypeImport;
+import com.angel.code.generator.data.impl.as3.properties.FlexProperty;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataConstructor;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
-import com.angel.code.generator.data.types.impl.DataCommentImpl;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
+import com.angel.code.generator.helpers.ImportsHelper;
 
 
 /**
@@ -39,7 +44,15 @@ public class FlexClassDataType extends ClassDataType {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataAnnotation> T createDataAnnotation(String canonicalName) {
-		return null;
+		FlexAnnotation flexAnnotation = new FlexAnnotation();
+		flexAnnotation.setName(canonicalName);
+		super.addAnnotation(flexAnnotation);
+		return (T) flexAnnotation;
+	}
+
+	@Override
+	protected void addDomainObjectImportsType(List<String> typesImports) {
+		//Do nothing.
 	}
 
 	@SuppressWarnings("unchecked")
@@ -65,7 +78,9 @@ public class FlexClassDataType extends ClassDataType {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataProperty> T createDataProperty(String name) {
-		return null;
+		FlexProperty flexProperty = new FlexProperty(name);
+		super.addProperty(flexProperty);
+		return (T) flexProperty;
 	}
 
 	@Override
@@ -73,6 +88,14 @@ public class FlexClassDataType extends ClassDataType {
 		return super.getSimpleName() + ACTION_SCRIPT_FILE_EXTENSION;
 	}
 
+	@Override
+	protected void addImport(List<String> imports, String canonicalType) {
+		FlexTypeImport flexDataType = FlexDataTypesConverter.getInstance().getFlexTypeFrom(canonicalType);
+		if(flexDataType != null && flexDataType.isImportType()){
+			ImportsHelper.addImport(imports, flexDataType.getCanonicalType());
+		}
+	}
+	
 	/**
 	 * Convert data type sign to a representation code.
 	 * 
@@ -84,6 +107,27 @@ public class FlexClassDataType extends ClassDataType {
 	}
 
 	@Override
+	protected String convertCodePackage() {
+		String basePackage = "";
+		if(this.hasBasePackage()){
+			 basePackage = this.getBasePackage().endsWith(".") ? this.getBasePackage().substring(0, this.getBasePackage().length() - 1) : this.getBasePackage(); 
+		}
+		return "package " + basePackage + "{\n\n\t";
+	}
+/*
+codeConverted += this.convertCodePackage();
+		codeConverted += this.convertCodeImportsType();
+		codeConverted += this.convertCodeDataTypeComment();
+		codeConverted += this.convertCodeDataAnnotations();
+		codeConverted += this.convertCodeDataTypeSign();
+		codeConverted += this.convertCodeInheritSubDataType();
+		codeConverted += this.convertCodeImplementsInterfaces();
+		codeConverted += this.convertCodeDataProperties();
+		codeConverted += this.convertCodeContent();
+		codeConverted += this.convertCodeDataMethods();
+		codeConverted += this.convertCodeEndOfDataType();
+ */
+	@Override
 	protected String convertCodeInheritSubDataType() {
 		String codeConverted = "";
 		if (this.hasSubDataType()) {
@@ -91,6 +135,10 @@ public class FlexClassDataType extends ClassDataType {
 			codeConverted += " extends " + flexClassDataType.getSimpleName();
 		}
 		return codeConverted;
+	}
+
+	protected String convertCodeEndOfDataType() {
+		return "\n}\n}";
 	}
 	
 	/**
@@ -112,5 +160,29 @@ public class FlexClassDataType extends ClassDataType {
 	@Override
 	protected void addTypeImports(List<String> typesImports) {
 		//Do Nothing.
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DataMethod> T createGetterDataMethod(String name) {
+		FlexProperty flexProperty = (FlexProperty) super.getProperty(name);
+		if(flexProperty != null) {
+			//TODO Arreglar
+			FlexDataMethod flexDataMethod = new FlexDataMethod();
+			flexDataMethod.setMethodName(name);
+			flexDataMethod.createReturnParameter(flexProperty.getCanonicalType());
+			flexDataMethod.setGetter(true);
+			super.addMethod(flexDataMethod);
+			return (T) flexDataMethod;
+		}
+		throw new CodeGeneratorException("Property with name [" + name + "] couldn't be found.");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends DataMethod> T createSetterDataMethod(String name) {
+		FlexDataMethod flexDataMethod = new FlexDataMethod();
+		flexDataMethod.setMethodName(name);
+		flexDataMethod.setSetter(true);
+		super.addMethod(flexDataMethod);
+		return (T) flexDataMethod;
 	}
 }

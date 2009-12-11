@@ -32,7 +32,6 @@ public class ImportsHelper {
 		JAVA_PRIMITIVES_CLASSES.add("char");
 	}
 	
-	
 	public static void addImport(List<String> imports, String typeClass){
 		if(!isJavaPrimitiveType(typeClass)){
 			String className = typeClass;
@@ -46,7 +45,7 @@ public class ImportsHelper {
 	}
 	
 	public static boolean isJavaPrimitiveType(String typeClass){
-		System.out.println("IsJavaPrimitiveType: [" + typeClass + "].");
+		//System.out.println("IsJavaPrimitiveType: [" + typeClass + "].");
 		String cleanTypeClass = "";
 		if(StringHelper.isNotEmpty(typeClass)){
 			cleanTypeClass = typeClass.trim().replaceAll(IMPORT_PREFIX, "");

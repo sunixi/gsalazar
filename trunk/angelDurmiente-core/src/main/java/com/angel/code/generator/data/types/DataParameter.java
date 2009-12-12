@@ -24,7 +24,7 @@ public abstract class DataParameter implements CodeConvertible, Importable {
 	private List<DataAnnotation> annotations;
 	private boolean isArray;
 	
-	public abstract <T extends DataAnnotation> T createAnnotation();
+	public abstract <T extends DataAnnotation> T createAnnotation(String canonicalType);
 
 	public DataParameter(String name, String canonicalType){
 		super();

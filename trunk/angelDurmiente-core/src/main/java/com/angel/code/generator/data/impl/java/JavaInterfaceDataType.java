@@ -10,12 +10,14 @@ import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.InterfaceDataType;
 import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
 import com.angel.code.generator.data.types.impl.DataCommentImpl;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
 
@@ -88,8 +90,9 @@ public class JavaInterfaceDataType extends InterfaceDataType {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DataProperty> T createDataProperty(String name) {
-		DataProperty dataProperty = new JavaProperty();
+	public <T extends DataProperty> T createDataProperty(String name, String canonicalType) {
+		JavaProperty dataProperty = new JavaProperty();
+		dataProperty.setCanonicalType(canonicalType);
 		super.addProperty(dataProperty);
 		return (T) dataProperty;
 	}
@@ -207,5 +210,15 @@ public class JavaInterfaceDataType extends InterfaceDataType {
 
 	public String getSimpleRightGeneric(){
 		return PackageHelper.getClassSimpleName(this.getRightGeneric());
+	}
+
+	@Override
+	protected void buildCodeBlockForGetterAccesor(DataProperty dataProperty, DataMethod getterDataMethod) {
+		throw new CodeGeneratorException("Cannot implements code for a getter accesorry [" + dataProperty.getName() + "] in a interface data type.");		
+	}
+
+	@Override
+	protected void buildCodeBlockForSetterAccesor(DataProperty dataProperty, DataMethod setterDataMethod) {
+		throw new CodeGeneratorException("Cannot implements code for a setter accesorry [" + dataProperty.getName() + "] in a interface data type.");
 	}
 }

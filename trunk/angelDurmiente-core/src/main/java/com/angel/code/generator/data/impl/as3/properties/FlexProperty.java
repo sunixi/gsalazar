@@ -112,7 +112,7 @@ public class FlexProperty extends DataParameter implements DataProperty {
 	}
 
 	@Override
-	public <T extends DataAnnotation> T createAnnotation() {
+	public <T extends DataAnnotation> T createAnnotation(String canonicalType) {
 		// TODO Auto-generated method stub
 		return null;
 	}

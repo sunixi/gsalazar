@@ -150,8 +150,7 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 	
 	private void createStaticJavaPropertyFor(Field f) {
 		String propertyName = buildStaticPropertyName(f.getName());
-		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName + "_COLUMN");
-		javaProperty.setCanonicalType(String.class.getCanonicalName());
+		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName + "_COLUMN", String.class.getCanonicalName());
 		javaProperty.setPropertyValue("\"" + f.getName() + "\"");
 		javaProperty.setPublicVisibility();
 		javaProperty.setFinalStaticTypeModifier();		
@@ -179,12 +178,13 @@ public class AnnotationRowProcessorCommandClassGenerator extends ClassGenerator 
 		String propertyType = generator.getImportForClassName(propertyName);
 
 		JavaProperty javaProperty = super.getDataType().createDataProperty(
-				PackageHelper.getClassSimpleVariableName(propertyName)
+				PackageHelper.getClassSimpleVariableName(propertyName),
+				propertyType
 				);
 		javaProperty.setCanonicalType(propertyType);
 		javaProperty.addAnnotation(Inject.class.getCanonicalName());
 
-		super.getDataType().createDataMethodGetterSetter(javaProperty);
+		super.getDataType().createDataMethodAccesorsFor(propertyName);
 	}
 
 	@Override

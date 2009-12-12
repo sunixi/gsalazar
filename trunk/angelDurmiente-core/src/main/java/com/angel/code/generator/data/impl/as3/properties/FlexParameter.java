@@ -1,9 +1,9 @@
 /**
  * 
  */
-package com.angel.code.generator.data.impl.java.properties;
+package com.angel.code.generator.data.impl.as3.properties;
 
-import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
+import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.common.helpers.StringHelper;
@@ -15,20 +15,20 @@ import com.angel.common.helpers.StringHelper;
  * @since 26/Noviembre/2009.
  *
  */
-public class JavaParameter extends DataParameter {
-
+public class FlexParameter extends DataParameter {
+//TODO ver si es necesario.
 	private boolean importType;
 	
-	public JavaParameter(String name, String canonicalType){
+	public FlexParameter(String name, String canonicalType){
 		super(name, canonicalType);
 		this.setImportType(true);
 	}
 	
-	public JavaParameter(String parameterType){
+	public FlexParameter(String parameterType){
 		this(StringHelper.EMPTY_STRING, parameterType);
 	}
 
-	public JavaParameter() {
+	public FlexParameter() {
 		this(StringHelper.EMPTY_STRING);
 	}
 
@@ -57,7 +57,7 @@ public class JavaParameter extends DataParameter {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataAnnotation> T createAnnotation(String canonicalType) {
-		DataAnnotation dataAnnotation = new JavaAnnotation(canonicalType);
+		DataAnnotation dataAnnotation = new FlexAnnotation(canonicalType);
 		super.addAnnotation(dataAnnotation);
 		return (T) dataAnnotation;
 	}

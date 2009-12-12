@@ -15,8 +15,6 @@ public interface DataProperty extends CodeConvertible, Importable {
 
 	public String getName();
 	
-	//public TypeModifier getTypeModifier();
-	
 	public boolean isVisibility(Object visibility);
 	
 	public String getCanonicalType();

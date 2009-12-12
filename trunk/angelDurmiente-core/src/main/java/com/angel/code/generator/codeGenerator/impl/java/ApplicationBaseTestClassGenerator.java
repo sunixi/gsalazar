@@ -59,9 +59,8 @@ public class ApplicationBaseTestClassGenerator extends GroupClassGenerator {
 	protected void generateContentClass(CodesGenerator generator, List<Class<?>> domainClasses) {
 		String applicationInitials = generator.getApplicationInitials();
 		
-		JavaProperty dataProperty = super.getDataType().createDataProperty("testContexts");
+		JavaProperty dataProperty = super.getDataType().createDataProperty("testContexts", String.class.getCanonicalName());
 		dataProperty.setFinalStaticTypeModifier();
-		dataProperty.setCanonicalType(String.class.getCanonicalName());
 		dataProperty.setArrayType();
 		
 		String[] applicationContexts = new String[]{

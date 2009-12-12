@@ -9,12 +9,18 @@ import com.angel.code.generator.data.ClassDataType;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataConstructor;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
+import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
+import com.angel.code.generator.data.types.codeLine.AssignableInstanceVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.code.generator.helpers.PackageHelper;
 import com.angel.common.helpers.StringHelper;
@@ -38,10 +44,10 @@ public class JavaClassDataType extends ClassDataType {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DataConstructor createDataConstructor() {
+	public <T extends DataConstructor> T createDataConstructor() {
 		DataConstructor dataConstructor = new JavaConstructor(this.getSimpleName());
 		super.addConstructor(dataConstructor);
-		return dataConstructor;
+		return (T) dataConstructor;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,10 +86,11 @@ public class JavaClassDataType extends ClassDataType {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DataProperty> T createDataProperty(String name) {
-		DataProperty dataProperty = new JavaProperty(name);
-		super.addProperty(dataProperty);
-		return (T) dataProperty;
+	public <T extends DataProperty> T createDataProperty(String name, String canonicalType) {
+		JavaProperty javaProperty = new JavaProperty(name);
+		javaProperty.setCanonicalType(canonicalType);
+		super.addProperty(javaProperty);
+		return (T) javaProperty;
 	}
 
 	@Override
@@ -200,5 +207,25 @@ public class JavaClassDataType extends ClassDataType {
 
 	public String getSimpleRightGeneric(){
 		return PackageHelper.getClassSimpleName(this.getRightGeneric());
+	}
+
+	@Override
+	protected void buildCodeBlockForGetterAccesor(DataProperty dataProperty, DataMethod getterDataMethod) {
+		CodeBlock getterCodeBlock = getterDataMethod.getContent();
+		ExecutableReturnCodeLine thisVariableName = new ExecutableReturnVariableCodeLine("this." + dataProperty.getName(), dataProperty.getCanonicalType());
+		ReturnableCodeLine getterReturnable = new ReturnableCodeLine(dataProperty.getCanonicalType(), thisVariableName); 
+		getterCodeBlock.addCodeLine(getterReturnable);		
+	}
+
+	@Override
+	protected void buildCodeBlockForSetterAccesor(DataProperty dataProperty, DataMethod setterDataMethod) {
+		CodeBlock setterCodeBlock = setterDataMethod.getContent();
+		ExecutableReturnCodeLine executableReturnCodeLine = 
+			new ExecutableReturnVariableCodeLine(dataProperty.getName(), dataProperty.getCanonicalType());
+		AssignableCodeLine assignableCodeLine = new AssignableInstanceVariableCodeLine(
+				dataProperty.getName(),
+				dataProperty.getCanonicalType(),
+				executableReturnCodeLine);
+		setterCodeBlock.addCodeLine(assignableCodeLine);		
 	}
 }

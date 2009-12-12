@@ -13,7 +13,6 @@ import ar.com.angelDurmiente.beans.BeanDemo;
 import com.angel.code.generator.data.impl.as3.FlexClassDataType;
 import com.angel.code.generator.data.impl.as3.FlexDataMethod;
 import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
-import com.angel.code.generator.data.impl.as3.properties.FlexProperty;
 
 /**
  * 
@@ -26,19 +25,19 @@ public class CreateFlexClassDataTypeTest {
 	@Test
 	public void testCreateNullAssigmentWithVariableNameCodeLineValid(){	
 		FlexClassDataType flexClassDataType = new FlexClassDataType();
-		flexClassDataType.setCanonicalName("HOLA");
+		flexClassDataType.setCanonicalName("Hola");
 		flexClassDataType.setDomainObject(BeanDemo.class);
 		flexClassDataType.createDataAnnotation("Bindable");
+		flexClassDataType.createDataConstructor();
+		
 		FlexAnnotation remoteClassAnnotation = flexClassDataType.createDataAnnotation("RemoteClass");
 		remoteClassAnnotation.createAnnotationPropertyString("alias", BeanDemo.class.getCanonicalName());
 		
 		
-		FlexProperty nombreProperty = flexClassDataType.createDataProperty("nombre");
-		nombreProperty.setCanonicalType(String.class.getCanonicalName());
-		FlexProperty flexProperty = flexClassDataType.createDataProperty("usuarios");
-		flexProperty.setCanonicalType(List.class.getCanonicalName());
+		flexClassDataType.createDataProperty("nombre", String.class.getCanonicalName());
+		flexClassDataType.createDataProperty("usuarios", List.class.getCanonicalName());
 
-		FlexDataMethod nombreGetterDataMethod = flexClassDataType.createGetterDataMethod("nombre");
+		flexClassDataType.createDataMethodAccesorsFor("nombre");
 		
 		FlexDataMethod flexDataMethod = flexClassDataType.createDataMethod("buscarUsuarios");
 		FlexAnnotation flexAnnotation = flexDataMethod.createAnnotation("Event");

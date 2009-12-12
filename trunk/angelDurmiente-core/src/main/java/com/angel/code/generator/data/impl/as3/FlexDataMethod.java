@@ -6,6 +6,7 @@ package com.angel.code.generator.data.impl.as3;
 import com.angel.code.generator.data.enums.FlexTypeModifier;
 import com.angel.code.generator.data.enums.FlexVisibility;
 import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
+import com.angel.code.generator.data.impl.as3.properties.FlexParameter;
 import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataException;
@@ -75,7 +76,7 @@ public class FlexDataMethod extends DataMethod {
 		String convertedCode = this.hasAnnotations() ? "\n": "";
 		convertedCode += "\t" + this.convertVisibility();
 		convertedCode += this.convertTypeModifier();
-		convertedCode += (this.isGetter() ? "get" : "") + (this.isSetter() ? "set": "") + " function ";
+		convertedCode += (this.isGetter() ? " get" : "") + (this.isSetter() ? " set": "") + " function ";
 		convertedCode += this.getMethodName();
 		convertedCode += this.convertCodeDataParameters();
 		convertedCode += ":" + (this.hasReturnType() ? " " + this.convertReturnType() + " ": " void ");
@@ -109,14 +110,19 @@ public class FlexDataMethod extends DataMethod {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DataParameter> T createParameter(String name) {
-		return null;
+	public <T extends DataParameter> T createParameter(String name, String canonicalName) {
+		FlexParameter flexParameter = new FlexParameter(canonicalName);
+		flexParameter.setCanonicalType(canonicalName);
+		super.addParameter(flexParameter);
+		return (T) flexParameter;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataParameter> T createReturnParameter(String canonicalName) {
-		return null;
+		FlexParameter flexParameter = new FlexParameter(canonicalName);
+		super.setReturnType(flexParameter);
+		return (T) flexParameter;
 	}
 
 	/**

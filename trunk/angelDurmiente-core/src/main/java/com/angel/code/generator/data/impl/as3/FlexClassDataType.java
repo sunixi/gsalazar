@@ -3,6 +3,7 @@
  */
 package com.angel.code.generator.data.impl.as3;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.angel.code.generator.data.ClassDataType;
@@ -11,13 +12,18 @@ import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
 import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter;
 import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter.FlexTypeImport;
 import com.angel.code.generator.data.impl.as3.properties.FlexProperty;
+import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataConstructor;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
-import com.angel.code.generator.exceptions.CodeGeneratorException;
+import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
+import com.angel.code.generator.data.types.codeLine.AssignableInstanceVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
+import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
+import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.code.generator.helpers.ImportsHelper;
 
 
@@ -32,13 +38,14 @@ public class FlexClassDataType extends ClassDataType {
 	
 	public FlexClassDataType(){
 		super();
-
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DataConstructor createDataConstructor() {
-		return null;
+	public <T extends DataConstructor> T createDataConstructor() {
+		FlexConstructor flexConstructor = new FlexConstructor(super.getSimpleName());
+		super.addConstructor(flexConstructor);
+		return (T) flexConstructor;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -61,24 +68,25 @@ public class FlexClassDataType extends ClassDataType {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataMethod> T createDataMethod(String name) {
+		return this.createDataMethod(name, new ArrayList<DataParameter>());
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DataMethod> T createDataMethod(String name, List<DataParameter> methodParameters){
 		FlexDataMethod flexDataMethod = new FlexDataMethod();
 		flexDataMethod.setMethodName(name);
+		flexDataMethod.setParameters(methodParameters);
 		super.addMethod(flexDataMethod);
 		return (T) flexDataMethod;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends DataMethod> T createDataMethod(String name, List<DataParameter> methodParameters){
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DataProperty> T createDataProperty(String name) {
+	public <T extends DataProperty> T createDataProperty(String name, String canonicalType) {
 		FlexProperty flexProperty = new FlexProperty(name);
+		flexProperty.setCanonicalType(canonicalType);
 		super.addProperty(flexProperty);
 		return (T) flexProperty;
 	}
@@ -161,28 +169,30 @@ codeConverted += this.convertCodePackage();
 	protected void addTypeImports(List<String> typesImports) {
 		//Do Nothing.
 	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends DataMethod> T createGetterDataMethod(String name) {
-		FlexProperty flexProperty = (FlexProperty) super.getProperty(name);
-		if(flexProperty != null) {
-			//TODO Arreglar
-			FlexDataMethod flexDataMethod = new FlexDataMethod();
-			flexDataMethod.setMethodName(name);
-			flexDataMethod.createReturnParameter(flexProperty.getCanonicalType());
-			flexDataMethod.setGetter(true);
-			super.addMethod(flexDataMethod);
-			return (T) flexDataMethod;
-		}
-		throw new CodeGeneratorException("Property with name [" + name + "] couldn't be found.");
-	}
 	
-	@SuppressWarnings("unchecked")
-	public <T extends DataMethod> T createSetterDataMethod(String name) {
-		FlexDataMethod flexDataMethod = new FlexDataMethod();
-		flexDataMethod.setMethodName(name);
-		flexDataMethod.setSetter(true);
-		super.addMethod(flexDataMethod);
-		return (T) flexDataMethod;
+	@Override
+	protected void buildCodeBlockForGetterAccesor(DataProperty dataProperty, DataMethod getterDataMethod) {
+		FlexDataMethod flexGetterDataMethod = (FlexDataMethod) getterDataMethod;
+		flexGetterDataMethod.setMethodName(dataProperty.getName());
+		flexGetterDataMethod.setGetter(true);
+		CodeBlock getterCodeBlock = getterDataMethod.getContent();
+		ExecutableReturnCodeLine thisVariableName = new ExecutableReturnVariableCodeLine("this." + dataProperty.getName(), dataProperty.getCanonicalType());
+		ReturnableCodeLine getterReturnable = new ReturnableCodeLine(dataProperty.getCanonicalType(), thisVariableName); 
+		getterCodeBlock.addCodeLine(getterReturnable);		
+	}
+
+	@Override
+	protected void buildCodeBlockForSetterAccesor(DataProperty dataProperty, DataMethod setterDataMethod) {
+		FlexDataMethod flexSetterDataMethod = (FlexDataMethod) setterDataMethod;
+		flexSetterDataMethod.setMethodName(dataProperty.getName());
+		flexSetterDataMethod.setSetter(true);
+		CodeBlock setterCodeBlock = setterDataMethod.getContent();
+		ExecutableReturnCodeLine executableReturnCodeLine = 
+			new ExecutableReturnVariableCodeLine(dataProperty.getName(), dataProperty.getCanonicalType());
+		AssignableCodeLine assignableCodeLine = new AssignableInstanceVariableCodeLine(
+				dataProperty.getName(),
+				dataProperty.getCanonicalType(),
+				executableReturnCodeLine);
+		setterCodeBlock.addCodeLine(assignableCodeLine);		
 	}
 }

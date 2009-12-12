@@ -35,7 +35,7 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 
 	public abstract <T extends DataException> T createException(String canonicalName);
 
-	public abstract <T extends DataParameter> T createParameter(String name);
+	public abstract <T extends DataParameter> T createParameter(String name, String canonicalName);
 	
 	public abstract <T extends DataParameter> T createReturnParameter(String canonicalName);
 	

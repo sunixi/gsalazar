@@ -57,9 +57,8 @@ public class ServiceTestClassGenerator extends ClassGenerator {
 	protected void buildServiceProperty(CodesGenerator generator, Class<?> domainClass) {
 		String propertyName = PackageHelper.getClassSimpleVariableName(domainClass.getSimpleName() + "Service");
 		String propertyType = generator.getImportForClassName(propertyName);
-		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName);
-		javaProperty.setCanonicalType(propertyType);
-		super.getDataType().createDataMethodGetterSetter(javaProperty);
+		JavaProperty javaProperty = super.getDataType().createDataProperty(propertyName, propertyType);
+		super.getDataType().createDataMethodAccesorsFor(propertyName);
 		javaProperty.addAnnotation(Autowired.class.getCanonicalName());
 	}
 

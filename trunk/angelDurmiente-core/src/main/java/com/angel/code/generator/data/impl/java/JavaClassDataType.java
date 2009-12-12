@@ -61,7 +61,7 @@ public class JavaClassDataType extends ClassDataType {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataInterface> T createDataInterface(String canonicalName) {
-		DataInterface dataInterface = new JavaInterfaceDataType(canonicalName);
+		DataInterface dataInterface = new DataInterface(canonicalName);
 		super.addInterface(dataInterface);
 		return (T) dataInterface;
 	}

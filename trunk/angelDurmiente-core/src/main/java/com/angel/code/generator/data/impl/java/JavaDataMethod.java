@@ -113,10 +113,12 @@ public class JavaDataMethod extends DataMethod {
 		return (T) codeBlock;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataException> T createException(String canonicalName) {
-		//TODO Implementar.
-		return null;
+		DataException dataException = new DataException(canonicalName);
+		super.addException(dataException);
+		return (T) dataException;
 	}
 
 	@SuppressWarnings("unchecked")

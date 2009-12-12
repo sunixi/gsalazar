@@ -5,7 +5,6 @@ package com.angel.code.generator.data;
 
 import java.util.List;
 
-import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataProperty;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
@@ -19,7 +18,7 @@ import com.angel.common.helpers.StringHelper;
  * @since 26/Noviembre/2009.
  *
  */
-public abstract class InterfaceDataType extends DataType implements DataInterface {
+public abstract class InterfaceDataType extends DataType {
 
 	public InterfaceDataType(){
 		super();

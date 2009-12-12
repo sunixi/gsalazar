@@ -12,12 +12,24 @@ import javax.persistence.Lob;
 
 import com.angel.architecture.persistence.beans.User;
 import com.angel.code.generator.annotations.Accesor;
+import com.angel.code.generator.annotations.MetadataAccesors;
+import com.angel.code.generator.annotations.MetadataAccess;
+import com.angel.code.generator.annotations.MetadataGenerator;
 
 /**
  * @author Guillermo Salazar
  * @since 19/Noviembre/2009.
  *
  */
+@MetadataGenerator
+@MetadataAccesors(
+accessStrategies = {
+		@MetadataAccess(
+				properties = {"apellido", "nombre"},
+				uniqueResult = true
+				)
+}
+)
 @Entity
 public class BeanDemo extends User {
 

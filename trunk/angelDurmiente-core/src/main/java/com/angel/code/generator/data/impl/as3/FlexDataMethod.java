@@ -12,6 +12,7 @@ import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataException;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
 
 
 /**
@@ -101,11 +102,14 @@ public class FlexDataMethod extends DataMethod {
 		return (T) codeBlock;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataException> T createException(String canonicalName) {
-		//TODO Implementar.
-		return null;
+		/*
+		DataException dataException = new DataException(canonicalName);
+		super.addException(dataException);
+		return (T) dataException;
+		*/
+		throw new CodeGeneratorException("Flex data type [" + this.getSign() + "] cannot add an exception [" + canonicalName + "] it method sign.");
 	}
 
 	@SuppressWarnings("unchecked")

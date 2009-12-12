@@ -15,43 +15,44 @@ import com.angel.code.generator.helpers.PackageHelper;
  * @since 26/Noviembre/2009.
  *
  */
-public abstract class DataException implements CodeConvertible, Importable{
+public class DataException implements CodeConvertible, Importable{
 
-	private String canonicalType;
+	private String canonicalName;
 	
-	public DataException(){
+	public DataException(String canonicalName){
 		super();
+		this.setCanonicalName(canonicalName);
 	}
 
 	public String convertCode() {
-		return this.getSimpleType();
+		return this.getSimpleName();
 	}
 
 	public List<String> getImportsType() {
 		List<String> importsType = new ArrayList<String>();
-		importsType.add(this.getCanonicalType());
+		importsType.add(this.getCanonicalName());
 		return importsType;
 	}
 	
-	public String getSimpleType(){
-		return PackageHelper.getClassSimpleName(this.getCanonicalType());
+	public String getSimpleName(){
+		return PackageHelper.getClassSimpleName(this.getCanonicalName());
 	}
 
 	/**
-	 * @return the canonicalType
+	 * @return the canonicalName
 	 */
-	public String getCanonicalType() {
-		return canonicalType;
+	public String getCanonicalName() {
+		return canonicalName;
 	}
 
 	/**
-	 * @param canonicalType the canonicalType to set
+	 * @param canonicalName the canonicalName to set
 	 */
-	public void setCanonicalType(String canonicalType) {
-		this.canonicalType = canonicalType;
+	public void setCanonicalName(String canonicalName) {
+		this.canonicalName = canonicalName;
 	}
 
-	public boolean hasCanonicalType(String canonicalType){
-		return this.getCanonicalType().equalsIgnoreCase(canonicalType);
-	}
+	public boolean hasCanonicalName(String canonicalName){
+		return this.getCanonicalName().equalsIgnoreCase(canonicalName);
+	}	
 }

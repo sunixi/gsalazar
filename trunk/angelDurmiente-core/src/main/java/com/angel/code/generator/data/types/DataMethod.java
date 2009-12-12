@@ -453,18 +453,18 @@ public abstract class DataMethod implements CodeConvertible, Importable{
 
 	public void addException(DataException dataException){
 		if(this.hasException(dataException)){
-			throw new CodeGeneratorException("Data method name [" + this.getName() + "] has a data exception with name [" + dataException.getCanonicalType() + "].");
+			throw new CodeGeneratorException("Data method name [" + this.getName() + "] has a data exception with name [" + dataException.getCanonicalName() + "].");
 		}
 		this.getExceptions().add(dataException);
 	}
 
 	public boolean hasException(DataException dataException) {
-		return this.getException(dataException.getCanonicalType()) != null;
+		return this.getException(dataException.getCanonicalName()) != null;
 	}
 
 	public DataException getException(String canonicalName){
 		for (DataException de: this.getExceptions()) {
-			if (de.hasCanonicalType(canonicalName)) {
+			if (de.hasCanonicalName(canonicalName)) {
 				return de;
 			}
 		}

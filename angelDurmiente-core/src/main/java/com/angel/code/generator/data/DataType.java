@@ -6,7 +6,6 @@ package com.angel.code.generator.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.CodeConvertible;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataComment;
@@ -15,11 +14,6 @@ import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
 import com.angel.code.generator.data.types.Importable;
-import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
-import com.angel.code.generator.data.types.codeLine.AssignableInstanceVariableCodeLine;
-import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
-import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
-import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
 import com.angel.code.generator.data.types.impl.DataCommentImpl;
 import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.ImportsHelper;
@@ -52,13 +46,28 @@ public abstract class DataType implements CodeConvertible, Importable {
 
 	private List<DataAnnotation> annotations;
 
+	/**
+	 * Create a method for this data type with a name.
+	 * 
+	 * @param <T> some instance {@link DataMethod} type.
+	 * @param name to assign to this data method.
+	 * @return a data method instance with a name added to this data type.
+	 */
 	public abstract <T extends DataMethod> T createDataMethod(String name);
 	
 	public abstract <T extends DataMethod> T createDataMethod(String methodName, List<DataParameter> methodParameters);
 
 	public abstract <T extends DataInterface> T createDataInterface(String canonicalType);
 
-	public abstract <T extends DataProperty> T createDataProperty(String name);
+	/**
+	 * Create a property for this data type with a name and its canonical type.
+	 * 
+	 * @param <T> some instance {@link DataProperty} type.
+	 * @param name to assign to this data property.
+	 * @param canonicalType to assign to this data property.
+	 * @return a data property instance added to this data type.
+	 */
+	public abstract <T extends DataProperty> T createDataProperty(String name, String canonicalType);
 
 	public abstract <T extends DataAnnotation> T createDataAnnotation(String canonicalType);
 
@@ -826,34 +835,45 @@ public abstract class DataType implements CodeConvertible, Importable {
 		return null;
 	}
 
-	public void createDataMethodGetterSetter(DataProperty dataProperty) {
-		this.createDataMethodGetter(dataProperty);
-		this.createDataMethodSetter(dataProperty);
+	/**
+	 * Create both accessories (getter and setter) for a property name. Property name must be created before create accessories, because
+	 * it find a data property with its name, and if property isn't found, it throws a {@link CodeGeneratorException}.
+	 *  
+	 * @param propertyName to create its accessories (getter and setter).
+	 */
+	public void createDataMethodAccesorsFor(String propertyName) {
+		DataProperty dataProperty = this.getProperty(propertyName);
+		if(dataProperty != null){
+			this.createDataMethodGetter(dataProperty);
+			this.createDataMethodSetter(dataProperty);
+		} else {
+			throw new CodeGeneratorException("Data property [" + propertyName + "] couldn't be found in data type [" + this.getCanonicalName() + "].");
+		}
 	}
 
+	/**
+	 * Create a getter accessory for data property.
+	 * 
+	 * @param dataProperty to create its getter accessory.
+	 */
 	public void createDataMethodGetter(DataProperty dataProperty) {
 		DataMethod dataMethod = this.createDataMethod(ReflectionHelper.getGetMethodName(dataProperty.getName()));
 		dataMethod.createReturnParameter(dataProperty.getCanonicalType());
-		CodeBlock getterCodeBlock = dataMethod.getContent();
-		ExecutableReturnCodeLine thisVariableName = new ExecutableReturnVariableCodeLine("this." + dataProperty.getName(), dataProperty.getCanonicalType());
-		ReturnableCodeLine getterReturnable = new ReturnableCodeLine(dataProperty.getCanonicalType(), thisVariableName); 
-		getterCodeBlock.addCodeLine(getterReturnable);
+		this.buildCodeBlockForGetterAccesor(dataProperty, dataMethod);
 	}
 
+	protected abstract void buildCodeBlockForGetterAccesor(DataProperty dataProperty, DataMethod getterDataMethod);
+	
+	protected abstract void buildCodeBlockForSetterAccesor(DataProperty dataProperty, DataMethod setterDataMethod);
+
+	/**
+	 * Create a setter accessory for data property.
+	 * 
+	 * @param dataProperty to create its setter accessory.
+	 */
 	public void createDataMethodSetter(DataProperty dataProperty) {
 		DataMethod dataMethod = this.createDataMethod(ReflectionHelper.getSetMethodName(dataProperty.getName()));
-		DataParameter dataParameter = dataMethod.createParameter(dataProperty.getName());
-		dataParameter.setCanonicalType(dataProperty.getCanonicalType());
-		
-		CodeBlock getterCodeBlock = dataMethod.getContent();
-		ExecutableReturnCodeLine executableReturnCodeLine = new ExecutableReturnVariableCodeLine(dataProperty.getName(), dataProperty.getCanonicalType());
-
-		AssignableCodeLine assignableCodeLine = new AssignableInstanceVariableCodeLine(
-				dataProperty.getName(),
-				dataProperty.getCanonicalType(),
-				executableReturnCodeLine);
-		
-
-		getterCodeBlock.addCodeLine(assignableCodeLine);
+		dataMethod.createParameter(dataProperty.getName(), dataProperty.getCanonicalType());		
+		this.buildCodeBlockForSetterAccesor(dataProperty, dataMethod);
 	}
 }

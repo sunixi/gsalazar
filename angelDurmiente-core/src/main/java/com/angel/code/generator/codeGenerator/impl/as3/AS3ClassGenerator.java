@@ -11,7 +11,6 @@ import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.impl.as3.FlexClassDataType;
 import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
-import com.angel.code.generator.data.impl.as3.properties.FlexProperty;
 import com.angel.common.helpers.ReflectionHelper;
 
 /**
@@ -34,8 +33,7 @@ public class AS3ClassGenerator extends ClassGenerator {
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
-				FlexProperty flexProperty = super.getDataType().createDataProperty(f.getName());
-				flexProperty.setCanonicalType(f.getType().getCanonicalName());
+				super.getDataType().createDataProperty(f.getName(), f.getType().getCanonicalName());
 			}
 		}
 	}

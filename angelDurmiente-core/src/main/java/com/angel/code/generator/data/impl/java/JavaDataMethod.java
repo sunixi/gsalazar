@@ -13,7 +13,6 @@ import com.angel.code.generator.data.types.DataException;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.impl.DataCommentImpl;
-import com.angel.common.helpers.StringHelper;
 
 
 /**
@@ -122,8 +121,8 @@ public class JavaDataMethod extends DataMethod {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends DataParameter> T createParameter(String name) {
-		DataParameter dataParameter = new JavaParameter(name, StringHelper.EMPTY_STRING);
+	public <T extends DataParameter> T createParameter(String name, String canonicalName) {
+		DataParameter dataParameter = new JavaParameter(name, canonicalName);
 		super.addParameter(dataParameter);
 		return (T) dataParameter;
 	}

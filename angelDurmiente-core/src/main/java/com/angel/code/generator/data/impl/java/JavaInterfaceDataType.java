@@ -10,7 +10,6 @@ import com.angel.code.generator.data.DataType;
 import com.angel.code.generator.data.InterfaceDataType;
 import com.angel.code.generator.data.impl.java.annotations.JavaAnnotation;
 import com.angel.code.generator.data.impl.java.properties.JavaProperty;
-import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataAnnotation;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
@@ -56,12 +55,13 @@ public class JavaInterfaceDataType extends InterfaceDataType {
 		return (T) dataAnnotation;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends DataInterface> T createDataInterface(String canonicalName) {
-		DataInterface dataInterface = new JavaInterfaceDataType(canonicalName);
+		//TODO Debe poder crear una implements Interface, una interface?????.
+		/*DataInterface dataInterface = new JavaInterfaceDataType(canonicalName);
 		super.addInterface(dataInterface);
-		return (T) dataInterface;
+		return (T) dataInterface;*/
+		throw new CodeGeneratorException("A interface data type [" + this.getSimpleName() + "] cannot create an interface implementation [" + canonicalName + "].");
 	}
 
 	@SuppressWarnings("unchecked")

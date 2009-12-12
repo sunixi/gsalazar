@@ -6,24 +6,18 @@ package com.angel.code.generator.data.impl.as3;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.angel.code.generator.data.ClassDataType;
 import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.data.InterfaceDataType;
 import com.angel.code.generator.data.impl.as3.annotations.FlexAnnotation;
 import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter;
 import com.angel.code.generator.data.impl.as3.converter.FlexDataTypesConverter.FlexTypeImport;
 import com.angel.code.generator.data.impl.as3.properties.FlexProperty;
-import com.angel.code.generator.data.types.CodeBlock;
 import com.angel.code.generator.data.types.DataAnnotation;
-import com.angel.code.generator.data.types.DataConstructor;
 import com.angel.code.generator.data.types.DataInterface;
 import com.angel.code.generator.data.types.DataMethod;
 import com.angel.code.generator.data.types.DataParameter;
 import com.angel.code.generator.data.types.DataProperty;
-import com.angel.code.generator.data.types.codeLine.AssignableCodeLine;
-import com.angel.code.generator.data.types.codeLine.AssignableInstanceVariableCodeLine;
-import com.angel.code.generator.data.types.codeLine.ExecutableReturnCodeLine;
-import com.angel.code.generator.data.types.codeLine.ExecutableReturnVariableCodeLine;
-import com.angel.code.generator.data.types.codeLine.ReturnableCodeLine;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.code.generator.helpers.ImportsHelper;
 
 
@@ -32,20 +26,12 @@ import com.angel.code.generator.helpers.ImportsHelper;
  * @since 26/Noviembre/2009.
  *
  */
-public class FlexClassDataType extends ClassDataType {
+public class FlexInterfaceDataType extends InterfaceDataType {
 	
 	protected final static String ACTION_SCRIPT_FILE_EXTENSION = ".as";
 	
-	public FlexClassDataType(){
+	public FlexInterfaceDataType(){
 		super();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T extends DataConstructor> T createDataConstructor() {
-		FlexConstructor flexConstructor = new FlexConstructor(super.getSimpleName());
-		super.addConstructor(flexConstructor);
-		return (T) flexConstructor;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -79,6 +65,7 @@ public class FlexClassDataType extends ClassDataType {
 	public <T extends DataMethod> T createDataMethod(String name, List<DataParameter> methodParameters){
 		FlexDataMethod flexDataMethod = new FlexDataMethod();
 		flexDataMethod.setMethodName(name);
+		flexDataMethod.setNotImplemented();
 		flexDataMethod.setParameters(methodParameters);
 		super.addMethod(flexDataMethod);
 		return (T) flexDataMethod;
@@ -141,7 +128,7 @@ codeConverted += this.convertCodePackage();
 	protected String convertCodeInheritSubDataType() {
 		String codeConverted = "";
 		if (this.hasSubDataType()) {
-			FlexClassDataType flexClassDataType = (FlexClassDataType) this.getSubDataType();
+			FlexInterfaceDataType flexClassDataType = (FlexInterfaceDataType) this.getSubDataType();
 			codeConverted += " extends " + flexClassDataType.getSimpleName();
 		}
 		return codeConverted;
@@ -171,30 +158,14 @@ codeConverted += this.convertCodePackage();
 	protected void addTypeImports(List<String> typesImports) {
 		//Do Nothing.
 	}
-	
+
 	@Override
 	protected void buildCodeBlockForGetterAccesor(DataProperty dataProperty, DataMethod getterDataMethod) {
-		FlexDataMethod flexGetterDataMethod = (FlexDataMethod) getterDataMethod;
-		flexGetterDataMethod.setMethodName(dataProperty.getName());
-		flexGetterDataMethod.setGetter(true);
-		CodeBlock getterCodeBlock = getterDataMethod.getContent();
-		ExecutableReturnCodeLine thisVariableName = new ExecutableReturnVariableCodeLine("this." + dataProperty.getName(), dataProperty.getCanonicalType());
-		ReturnableCodeLine getterReturnable = new ReturnableCodeLine(dataProperty.getCanonicalType(), thisVariableName); 
-		getterCodeBlock.addCodeLine(getterReturnable);		
+		throw new CodeGeneratorException("An interface datat type [" + this.getSimpleName() + "] cannot build code block for an accesory [" + dataProperty.getName() + "].");		
 	}
 
 	@Override
 	protected void buildCodeBlockForSetterAccesor(DataProperty dataProperty, DataMethod setterDataMethod) {
-		FlexDataMethod flexSetterDataMethod = (FlexDataMethod) setterDataMethod;
-		flexSetterDataMethod.setMethodName(dataProperty.getName());
-		flexSetterDataMethod.setSetter(true);
-		CodeBlock setterCodeBlock = setterDataMethod.getContent();
-		ExecutableReturnCodeLine executableReturnCodeLine = 
-			new ExecutableReturnVariableCodeLine(dataProperty.getName(), dataProperty.getCanonicalType());
-		AssignableCodeLine assignableCodeLine = new AssignableInstanceVariableCodeLine(
-				dataProperty.getName(),
-				dataProperty.getCanonicalType(),
-				executableReturnCodeLine);
-		setterCodeBlock.addCodeLine(assignableCodeLine);		
+		throw new CodeGeneratorException("An interface datat type [" + this.getSimpleName() + "] cannot build code block for an accesory [" + dataProperty.getName() + "].");		
 	}
 }

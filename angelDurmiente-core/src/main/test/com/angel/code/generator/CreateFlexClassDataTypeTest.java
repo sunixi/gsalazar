@@ -40,6 +40,7 @@ public class CreateFlexClassDataTypeTest {
 		flexClassDataType.createDataMethodAccesorsFor("nombre");
 		
 		FlexDataMethod flexDataMethod = flexClassDataType.createDataMethod("buscarUsuarios");
+		//flexDataMethod.createException(CodeGeneratorException.class.getCanonicalName());
 		FlexAnnotation flexAnnotation = flexDataMethod.createAnnotation("Event");
 		flexAnnotation.createAnnotationPropertyString("name", "usuarios");
 		String convertedCode = flexClassDataType.convertCode();

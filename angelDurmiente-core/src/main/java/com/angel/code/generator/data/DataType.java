@@ -436,9 +436,9 @@ public abstract class DataType implements CodeConvertible, Importable {
 			codeConverted += " implements ";
 			for (DataInterface dataInterface : this.getInterfaces()) {
 				if (this.getInterfaces().indexOf(dataInterface) == 0) {
-					codeConverted += dataInterface.getSign();
+					codeConverted += dataInterface.convertCode();
 				} else {
-					codeConverted += ", " + dataInterface.getSign();
+					codeConverted += ", " + dataInterface.convertCode();
 				}
 			}
 		}

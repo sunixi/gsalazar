@@ -3,9 +3,12 @@
  */
 package com.angel.code.generator.data.types;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.angel.code.generator.exceptions.CodeGeneratorException;
+import com.angel.code.generator.helpers.ImportsHelper;
+import com.angel.code.generator.helpers.PackageHelper;
+
 
 
 /**
@@ -13,54 +16,56 @@ import com.angel.code.generator.exceptions.CodeGeneratorException;
  * @since 26/Noviembre/2009.
  *
  */
-public interface DataInterface extends CodeConvertible, Importable {
+public class DataInterface implements Importable, CodeConvertible {
+
+	private String canonicalName;
 	
-	public String getName();
-	
-	public List<DataAnnotation> getAnnotations();
-	
-	public List<DataMethod> getMethods();
-	
-	public List<String> getMethodsSign();
-	
-	public String getCanonicalName();
+	public DataInterface(String canonicalName){
+		super();
+		this.setCanonicalName(canonicalName);
+	}
 
 	/**
-	 * 
-	 * @param name
-	 * @param totalParameters
-	 * @return
-	 * @throws CodeGeneratorException when there are more than one method with the same method name and total quantity parameters. 
+	 * @return the canonicalName
 	 */
-	public DataMethod getMethod(String name, int totalParameters) throws CodeGeneratorException;
+	public String getCanonicalName() {
+		return canonicalName;
+	}
 
 	/**
-	 * Get a method with a name. Parameters types (canonical types) must match with canonical parameters types.
-	 * 
-	 * @param name method to find.
-	 * @param canonicalParamtersTypes to match in all data method.
-	 * @return a method with a name, and all canonical parameters types. Or return null if method doesn't exist.
+	 * @param canonicalName the canonicalName to set
 	 */
-	public DataMethod getMethod(String name, List<String> canonicalParamtersTypes);
+	public void setCanonicalName(String canonicalName) {
+		this.canonicalName = canonicalName;
+	}
+	
+	public String getSign(){
+		return this.getSimpleName();
+	}
 
-	/**
-	 * Get a method with a name, and without parameters.
-	 * 
-	 * @param name method to find.
-	 * @return a method with a name and without parameters.
-	 * @throws CodeGeneratorException when there are more than one method with the same method name and total quantity parameters.
-	 */
-	public DataMethod getMethod(String name) throws CodeGeneratorException;
+	public String getSimpleName(){
+		return PackageHelper.getClassSimpleName(this.getCanonicalName());
+	}
 
-	/**
-	 * Get an simple interface name.
-	 * 
-	 * @return interface sign. It is a simple interface name.
-	 */
-	public String getSign();
+	public String convertCode(){
+		return this.getSign();
+	}
 
-	public boolean hasCanonicalName(String canonicalName);
+	public List<String> getImportsType(){
+		List<String> importsType = new ArrayList<String>();
+		ImportsHelper.addImport(importsType, this.getCanonicalName());
+		return importsType;
+	}
 
-	public boolean hasName(String name);
+	public boolean hasCanonicalName(String canonicalName) {
+		return this.getCanonicalName().equalsIgnoreCase(canonicalName);
+	}
 
+	public boolean hasName(String name) {
+		return this.getName().equalsIgnoreCase(name);
+	}
+
+	public String getName(){
+		return PackageHelper.getClassSimpleName(this.getCanonicalName());
+	}
 }

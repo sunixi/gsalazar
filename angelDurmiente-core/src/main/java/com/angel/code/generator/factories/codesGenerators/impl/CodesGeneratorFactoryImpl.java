@@ -16,6 +16,7 @@ import com.angel.code.generator.codeGenerator.impl.java.ServiceClassGenerator;
 import com.angel.code.generator.codeGenerator.impl.java.ServiceImplClassGenerator;
 import com.angel.code.generator.codeGenerator.impl.java.ServiceTestClassGenerator;
 import com.angel.code.generator.codeGenerator.impl.xml.DAOsSpringXMLGenerator;
+import com.angel.code.generator.codeGenerator.impl.xml.ModelSpringXMLGenerator;
 import com.angel.code.generator.codeGenerator.impl.xml.ServicesSpringXMLGenerator;
 import com.angel.code.generator.codeGenerator.impl.xml.WebXMLGenerator;
 import com.angel.code.generator.factories.codesGenerators.CodesGeneratorFactory;
@@ -60,6 +61,7 @@ public class CodesGeneratorFactoryImpl implements CodesGeneratorFactory {
 		classesGenerator.addCodeGenerator(new WebXMLGenerator());
 		classesGenerator.addCodeGenerator(new ApplicationBaseTestClassGenerator(""));
 		classesGenerator.addCodeGenerator(new AS3ClassGenerator("flex"));
+		classesGenerator.addCodeGenerator(new ModelSpringXMLGenerator());
 		return classesGenerator;
 	}
 	

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="com.angel.code.generator.plugin.contribution1">
+         <menu
+               label="Generate code"
+               path="additions"
+               id="com.angel.code.generator.plugin.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Code Generator"
+               class="com.angel.code.generator.plugin.popup.actions.GenerateCodeAction"
+               menubarPath="com.angel.code.generator.plugin.menu1/group1"
+               enablesFor="1"
+               id="com.angel.code.generator.plugin.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension 
+         point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="com.angel.code.generator.plugin.commands"
+               label="Generate Code"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="com.angel.code.generator.plugin.commands"
+            name="CodeGeneratorCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Code Generator"
+            class="com.angel.code.generator.plugin.preferences.CodeGeneratorPreferencePage"
+            id="com.angel.code.generator.plugin.preferences.CodeGeneratorPreferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.angel.code.generator.plugin.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

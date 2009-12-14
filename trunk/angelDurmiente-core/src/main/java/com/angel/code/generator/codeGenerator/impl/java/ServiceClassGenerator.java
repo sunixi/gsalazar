@@ -9,7 +9,6 @@ import java.lang.reflect.Modifier;
 import com.angel.architecture.services.interfaces.GenericService;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.annotations.Accesor;
-import com.angel.code.generator.builders.method.MethodBuilder;
 import com.angel.code.generator.builders.method.impl.AccesorJavaAnnotationMethodBuilder;
 import com.angel.code.generator.codeGenerator.ClassGenerator;
 import com.angel.code.generator.data.DataType;
@@ -41,8 +40,7 @@ public class ServiceClassGenerator extends ClassGenerator {
 		Field[] fields = ReflectionHelper.getFieldsDeclaredFor(domainClass);
 		for(Field f : fields){
 			if(f.getModifiers() < Modifier.STATIC){
-				MethodBuilder methodBuilder = super.getMethodBuilderFor(f);
-				methodBuilder.buildDataMethod(generator, this.getDataType(), domainClass, f);
+				super.buildMethodFor(f, generator, domainClass);
 			}
 		}
 	}

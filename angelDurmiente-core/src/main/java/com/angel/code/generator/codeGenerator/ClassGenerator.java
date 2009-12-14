@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.builders.method.MethodBuilder;
 import com.angel.code.generator.data.DataType;
+import com.angel.code.generator.exceptions.CodeGeneratorException;
 import com.angel.common.helpers.FileHelper;
 import com.angel.common.helpers.StringHelper;
 
@@ -193,18 +194,66 @@ public abstract class ClassGenerator extends CodeGenerator {
 	 *  
 	 * @param field to verify its properties and annotations.
 	 * @return a method builder for a field. Otherwise it returns null.
+	 * @throws @{@link CodeGeneratorException} when method builder getted is null.
 	 */
-	public MethodBuilder getMethodBuilderFor(Field field) {
+	public MethodBuilder getMethodBuilderNullSafeFor(AnnotatedElement annotatedElement) {
+		MethodBuilder methodBuilder = this.getMethodBuilderFor(annotatedElement);
+		if(methodBuilder != null){
+			return methodBuilder;
+		}
+		String exceptionMessage = "Annotated element [ Class: " + annotatedElement.getClass() + "]" +
+			" wasn't processed because it isn't specificied with Accesor annotation.";
+		LOGGER.error(exceptionMessage);
+		throw new CodeGeneratorException(exceptionMessage);
+	}
+
+	/**
+	 * Get a method builder for a specific field. It depends on field properties and its annotations.
+	 *  
+	 * @param field to verify its properties and annotations.
+	 * @return a method builder for a field. Otherwise it returns null.
+	 */
+	public MethodBuilder getMethodBuilderFor(AnnotatedElement annotatedElement) {
 		for(Class<? extends Annotation> a: methodBuilderStrategies.keySet()){
-			boolean isPresent = field.isAnnotationPresent(a);
+			boolean isPresent = annotatedElement.isAnnotationPresent(a);
 			if(isPresent){
-				Annotation annotation = field.getAnnotation(a);
+				Annotation annotation = annotatedElement.getAnnotation(a);
 				return this.getMethodBuilderStrategies().get(annotation.annotationType());
 			}
 		}
-		LOGGER.warn("Property field [ Name: " + field.getName() + " - Type: " + field.getType() + "]" +
-		" wasn't processed because it wasn't specificied with annotations.");
 		return null;
+	}
+
+	/**
+	 * Test if field contains a method builder strategy through field's annotations stratategies.
+	 * 
+	 * @param field to test its annotations.
+	 * @return true if an annotation strategy was added. Otherwise it returns false.
+	 */
+	protected boolean containsMethodBuilderFor(AnnotatedElement annotatedElement){
+		for(Class<? extends Annotation> a: methodBuilderStrategies.keySet()){
+			boolean isPresent = annotatedElement.isAnnotationPresent(a);
+			if(isPresent){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Build method for a domain class and an annotated element in domain class. First it tests, if annotated elements
+	 * contains some annotation to build method, then if it contains some one, it build data method.
+	 * Otherwise it do nothing.
+	 * 
+	 * @param annotatedElement to inspects its annotations.
+	 * @param generator to can build data method.
+	 * @param domainClass to can build data method.
+	 */
+	public void buildMethodFor(AnnotatedElement annotatedElement, CodesGenerator generator, Class<?> domainClass){
+		if(this.containsMethodBuilderFor(annotatedElement)){
+			MethodBuilder methodBuilder = this.getMethodBuilderFor(annotatedElement);
+			methodBuilder.buildDataMethod(generator, this.getDataType(), domainClass, annotatedElement);
+		}
 	}
 	
 	/**

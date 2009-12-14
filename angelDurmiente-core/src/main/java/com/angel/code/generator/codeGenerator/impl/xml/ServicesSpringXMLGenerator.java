@@ -69,4 +69,9 @@ public class ServicesSpringXMLGenerator extends GroupXMLGenerator {
 		}
 		super.addRootBean(rootServiceXML);
 	}
+
+	@Override
+	protected void generateXMLHeader(List<String> headerXMLLines) {
+		headerXMLLines.add("<!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\n\t\t" +
+	    "http://www.springframework.org/dtd/spring-beans.dtd\">\n");	}
 }

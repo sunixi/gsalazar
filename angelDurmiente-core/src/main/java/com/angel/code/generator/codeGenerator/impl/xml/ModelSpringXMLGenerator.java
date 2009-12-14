@@ -41,7 +41,9 @@ public class ModelSpringXMLGenerator extends GroupXMLGenerator {
 	@Override
 	protected void generateCodeFor(CodesGenerator generator, List<Class<?>> domainClasses) {
 		XMLBeans rootServiceXML = new XMLBeans();
+		LOGGER.info("[" + super.getXmlFileName() + "] Processing data source bean.");
 		this.processDataSourceBean(generator, domainClasses, rootServiceXML);
+		LOGGER.info("[" + super.getXmlFileName() + "] Processing session factory bean.");
 		this.processSessionFactoryBean(generator, domainClasses, rootServiceXML);
 		super.addRootBean(rootServiceXML);
 	}
@@ -139,5 +141,11 @@ public class ModelSpringXMLGenerator extends GroupXMLGenerator {
 		mappingResources.setName("mappingResources");
 		dataSourceBean.addProperty(mappingResources);
 		rootModelXML.addBean(dataSourceBean);
+	}
+
+	@Override
+	protected void generateXMLHeader(List<String> headerXMLLines) {
+		headerXMLLines.add("<!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\n\t\t" + 
+        "http://www.springframework.org/dtd/spring-beans.dtd\">\n");
 	}
 }

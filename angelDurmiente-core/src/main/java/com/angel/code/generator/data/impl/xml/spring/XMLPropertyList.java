@@ -3,9 +3,6 @@
  */
 package com.angel.code.generator.data.impl.xml.spring;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
@@ -17,20 +14,20 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class XMLPropertyList extends XMLPropertyValue{
 
 	@XStreamAlias("list")
-	private List<XMLPropertyListValue> values;
+	private XMLPropertyListValue values;
 
 	/**
 	 * 
 	 */
 	public XMLPropertyList() {
 		super();
-		this.setValues(new ArrayList<XMLPropertyListValue>());
+		this.setValues(new XMLPropertyListValue());
 	}
 
 	/**
 	 * @return the values
 	 */
-	public List<XMLPropertyListValue> getValues() {
+	public XMLPropertyListValue getValues() {
 		return values;
 	}
 
@@ -38,11 +35,12 @@ public class XMLPropertyList extends XMLPropertyValue{
 	/**
 	 * @param values the values to set
 	 */
-	public void setValues(List<XMLPropertyListValue> values) {
+	public void setValues(XMLPropertyListValue values) {
 		this.values = values;
 	}
 
-	public void addValue(String value){
-		this.getValues().add(new XMLPropertyListValue(value));
+	public void addValue(String canonicalName) {
+		this.getValues().addValue(canonicalName);
 	}
+
 }

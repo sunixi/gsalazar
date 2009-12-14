@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -32,6 +33,8 @@ public abstract class GroupXMLGenerator extends GroupCodeGenerator {
 	private Object rootXML;
 	
 	private String xmlFileName;
+	
+	private List<String> headerXMLLines;
 
 	public GroupXMLGenerator(){
 		super();
@@ -61,12 +64,20 @@ public abstract class GroupXMLGenerator extends GroupCodeGenerator {
 	
 	@Override
 	public void generateCode(CodesGenerator generator, List<Class<?>> domainClasses) {
+		this.generateHeaderXMLLines(generator, domainClasses);
 		super.generateCode(generator, domainClasses);
 		this.createXMLFile(generator, domainClasses);
 	}
 	
+	protected void generateHeaderXMLLines(CodesGenerator generator, List<Class<?>> domainClasses){
+		this.setHeaderXMLLines(new ArrayList<String>());
+		this.getHeaderXMLLines().add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		this.generateXMLHeader(this.getHeaderXMLLines());	
+	}
+	
+	protected abstract void generateXMLHeader(List<String> headerXMLLines2);
+
 	protected void createXMLFile(CodesGenerator generator, List<Class<?>> domainClasses){
-		String headerXMLFile = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		String xmlFileContent = this.getXStream().toXML(this.getRootXML());
 		String directory = System.getProperty("user.dir") + super.getBaseSourcesDirectory();
 		File directories = new File(directory);
@@ -76,7 +87,9 @@ public abstract class GroupXMLGenerator extends GroupCodeGenerator {
 		File xmlClassFile = FileHelper.createFile(directory, fileName);
 		try {
 			Writer writer = new FileWriter(xmlClassFile);
-			writer.write(headerXMLFile);
+			for(String headerLine: this.getHeaderXMLLines()){
+				writer.write(headerLine);				
+			}
 			writer.write(xmlFileContent);
 			writer.flush();
 		} catch (IOException e) {}
@@ -127,5 +140,19 @@ public abstract class GroupXMLGenerator extends GroupCodeGenerator {
 	 */
 	protected void setXmlFileName(String xmlFileName) {
 		this.xmlFileName = xmlFileName;
+	}
+
+	/**
+	 * @return the headerXMLLines
+	 */
+	private List<String> getHeaderXMLLines() {
+		return headerXMLLines;
+	}
+
+	/**
+	 * @param headerXMLLines the headerXMLLines to set
+	 */
+	private void setHeaderXMLLines(List<String> headerXMLLines) {
+		this.headerXMLLines = headerXMLLines;
 	}
 }

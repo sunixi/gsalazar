@@ -143,4 +143,9 @@ public class WebXMLGenerator extends GroupXMLGenerator {
 						)
 				);
 	}
+
+	@Override
+	protected void generateXMLHeader(List<String> headerXMLLines) {
+		//Do nothing.	
+	}
 }

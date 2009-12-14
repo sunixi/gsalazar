@@ -3,7 +3,9 @@
  */
 package com.angel.code.generator.data.impl.xml.spring;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 
@@ -14,28 +16,33 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  */
 public class XMLPropertyListValue extends XMLPropertyValue{
 
-	@XStreamAlias("value")
-	private String listValue;
+	@XStreamImplicit(itemFieldName = "value")
+	private List<String> listValue;
 
 	/**
 	 * 
 	 */
-	public XMLPropertyListValue(String listValue) {
+	public XMLPropertyListValue() {
 		super();
-		this.setListValue(listValue);
+		this.setListValue(new ArrayList<String>());
 	}
 
 	/**
 	 * @return the listValue
 	 */
-	public String getListValue() {
+	public List<String> getListValue() {
 		return listValue;
 	}
 
 	/**
 	 * @param listValue the listValue to set
 	 */
-	public void setListValue(String listValue) {
+	public void setListValue(List<String> listValue) {
 		this.listValue = listValue;
 	}
+
+	public void addValue(String value){
+		this.getListValue().add(value);
+	}
+
 }

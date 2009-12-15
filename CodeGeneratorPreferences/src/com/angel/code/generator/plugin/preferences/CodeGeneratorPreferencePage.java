@@ -1,8 +1,10 @@
 package com.angel.code.generator.plugin.preferences;
 
-import org.eclipse.jface.preference.*;
-import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
 import com.angel.code.generator.activator.Activator;
 
 /**
@@ -40,7 +42,23 @@ public class CodeGeneratorPreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-		
+		org.eclipse.swt.widgets.Composite composite = getFieldEditorParent();
+		composite.setData("com.angel.code.generator.factories.codesGenerators.impl.CodesGeneratorFactoryImpl");
+		addField(
+				new StringFieldEditor(
+						PreferenceConstants.P_STRING, 
+						"Code Generator Factory Class:",
+						composite						
+						)
+				);
+		addField(
+				new StringFieldEditor(
+						PreferenceConstants.BASE_PACKAGE_NAME_STRING, 
+						"Base package name:",
+						getFieldEditorParent()						
+						)
+				);
+		/*
 		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, 
 				"&Directory preference:", getFieldEditorParent()));
 		addField(
@@ -48,7 +66,6 @@ public class CodeGeneratorPreferencePage
 				PreferenceConstants.P_BOOLEAN,
 				"&An example of a boolean preference",
 				getFieldEditorParent()));
-
 		addField(new RadioGroupFieldEditor(
 				PreferenceConstants.P_CHOICE,
 			"An example of a multiple-choice preference",
@@ -58,6 +75,7 @@ public class CodeGeneratorPreferencePage
 		}, getFieldEditorParent()));
 		addField(
 			new StringFieldEditor(PreferenceConstants.P_STRING, "A &text preference:", getFieldEditorParent()));
+		*/
 	}
 
 	/* (non-Javadoc)

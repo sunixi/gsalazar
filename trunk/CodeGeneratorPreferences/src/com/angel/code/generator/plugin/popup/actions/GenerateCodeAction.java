@@ -29,7 +29,6 @@ public class GenerateCodeAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		action.run();
 		MessageDialog.openInformation(
 			shell,
 			"CodeGeneratorPreferences Plug-in",

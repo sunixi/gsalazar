@@ -2,6 +2,7 @@ package com.angel.code.generator.plugin.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarFile;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -17,6 +18,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.angel.code.generator.CodesGenerator;
 import com.angel.code.generator.activator.Activator;
 import com.angel.code.generator.factories.codesGenerators.CodesGeneratorFactory;
+import com.angel.code.generator.loader.JarFileClassLoader;
 import com.angel.code.generator.plugin.preferences.PreferenceConstants;
 
 /**
@@ -28,31 +30,36 @@ public class CodeGeneratorCommand extends AbstractHandler {
 		
 		try {
 			//List<Class<?>> beanClasses = this.getClassesSelected(event);
-			
 			this.generateCode(new ArrayList<Class<?>>(), event);
 		} catch (Exception e) {
+			e.printStackTrace();
+			MessageDialog.openError(HandlerUtil
+					.getActiveShell(event), "Code Generator", "Error: " + e.getMessage());
 			throw new ExecutionException("Error executing command.", e);
 		}
 		return null;
 	}
 
-	protected void generateCode(List<Class<?>> beanClasses, ExecutionEvent event) {
+	protected void generateCode(List<Class<?>> beanClasses, ExecutionEvent event) throws Exception {
 		Activator activator = Activator.getDefault();
 		IPreferenceStore preferenceStore = activator.getPreferenceStore();
 		String codeGeneratorFactoryClassName = preferenceStore.getString(PreferenceConstants.P_STRING);
+		
+		
+		/*
+		JarFile jarFile = new JarFile("c://angel-codeGenerator-0.3.1.jar");
+		JarFileClassLoader classLoader = new JarFileClassLoader(jarFile);
+		Class<?> classFactoryName = classLoader.loadClass(codeGeneratorFactoryClassName);*/
+		
+		
 		String basePackageName = preferenceStore.getString(PreferenceConstants.BASE_PACKAGE_NAME_STRING);
-		try {
-			Class<?> codeGeneratorFactoryClass = Class.forName(codeGeneratorFactoryClassName);
-			CodesGeneratorFactory generatorFactory = (CodesGeneratorFactory) codeGeneratorFactoryClass.newInstance();
-			CodesGenerator codesGenerator = generatorFactory.createClassesGenerator(basePackageName);
-			for(Class<?> beanClass : beanClasses){
-				codesGenerator.addDomain(beanClass);
-			}
-			codesGenerator.generateCode();
-		} catch (Exception e1) {
-			MessageDialog.openError(HandlerUtil
-					.getActiveShell(event), "Code Generator", "Code generator factory class error " + e1.getMessage());
-		}		
+		Class<?> codeGeneratorFactoryClass = Class.forName(codeGeneratorFactoryClassName);
+		CodesGeneratorFactory generatorFactory = (CodesGeneratorFactory) codeGeneratorFactoryClass.newInstance();
+		CodesGenerator codesGenerator = generatorFactory.createClassesGenerator(basePackageName);
+		for(Class<?> beanClass : beanClasses){
+			codesGenerator.addDomain(beanClass);
+		}
+		codesGenerator.generateCode();
 	}
 
 	protected List<Class<?>> getClassesSelected(ExecutionEvent event) throws Exception {

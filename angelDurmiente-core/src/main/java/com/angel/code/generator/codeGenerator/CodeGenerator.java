@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.common.util.StringHelper;
-
 import com.angel.code.generator.CodesGenerator;
 import com.angel.common.helpers.ReflectionHelper;
+import com.angel.common.helpers.StringHelper;
 
 /**
  * @author Guillermo D. Salazar

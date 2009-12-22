@@ -161,7 +161,7 @@ public abstract class ClassGenerator extends CodeGenerator {
 		String javaFileContent = this.getDataType().convertCode();
 		String packageName = generator.getBaseProjectPackage() + (this.hasBasePackage() ? "." + this.getBasePackage() + "\\": "");
 		LOGGER.info("Creating java class file [" + this.getDataType().getSimpleName() + "] at package [" + packageName + "].");
-		String directory = System.getProperty("user.dir") + super.getBaseSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
+		String directory = generator.getBaseProjectDirectory() + super.getBaseSourcesDirectory() + StringHelper.replaceAll(packageName, ".", "\\");
 		File directories = new File(directory);
 		boolean directoriesCreated = directories.mkdirs();
 		LOGGER.info("Directories [" + directory + "] was created: [" + directoriesCreated + "].");

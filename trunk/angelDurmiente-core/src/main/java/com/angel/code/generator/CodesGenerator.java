@@ -32,6 +32,7 @@ public class CodesGenerator {
 	private List<Class<?>> excludesDomains;
 	private String beanPackageName;
 	private String projectName;
+	private String projectPath;
 
 	/**
 	 * 
@@ -350,5 +351,27 @@ public class CodesGenerator {
 			applicationInitial = "ap";
 		}
 		return applicationInitial;
+	}
+
+	/**
+	 * @return the projectPath
+	 */
+	public String getProjectPath() {
+		return projectPath;
+	}
+
+	/**
+	 * @param projectPath the projectPath to set
+	 */
+	public void setProjectPath(String projectPath) {
+		this.projectPath = projectPath;
+	}
+
+	public boolean hasProjectPath(){
+		return StringHelper.isNotEmpty(this.getProjectPath());
+	}
+
+	public String getBaseProjectDirectory(){
+		return this.hasProjectPath() ? this.getProjectPath(): System.getProperty("user.dir");
 	}
 }

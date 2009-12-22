@@ -52,7 +52,7 @@ public class CodesGeneratorFactoryImpl implements CodesGeneratorFactory {
 		classesGenerator.addCodeGenerator(new ServiceImplClassGenerator("services.impl"));
 		//classesGenerator.addCodeGenerator(new DAOImplClassGenerator("daos.impl"));
 		//classesGenerator.addCodeGenerator(new ServiceTestClassGenerator("services"));
-		classesGenerator.addCodeGenerator(new FactoryClassGenerator("factories"));
+		//classesGenerator.addCodeGenerator(new FactoryClassGenerator("factories"));
 		classesGenerator.addCodeGenerator(new ApplicationAnnotationGeneratorExecutableClassGenerator("executables"));
 		/*classesGenerator.addCodeGenerator(new ServicesSpringXMLGenerator());
 		classesGenerator.addCodeGenerator(new DAOsSpringXMLGenerator());

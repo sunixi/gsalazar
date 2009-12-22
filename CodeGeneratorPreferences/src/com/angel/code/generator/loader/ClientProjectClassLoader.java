@@ -21,12 +21,12 @@ public class ClientProjectClassLoader {
 		return innerCL.loadClass(name);
 	}
 
-	public ClientProjectClassLoader(ICompilationUnit c, ClassLoader parent) {
+	public ClientProjectClassLoader(ICompilationUnit c, ClassLoader parent, String projectCompileDirectory) {
 		String unitPath = c.getResource().getProject().getLocationURI()
 				.toString();
 		URL binURI = null;
 		try {
-			binURI = new URL(unitPath + "/bin/");
+			binURI = new URL(unitPath + projectCompileDirectory);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

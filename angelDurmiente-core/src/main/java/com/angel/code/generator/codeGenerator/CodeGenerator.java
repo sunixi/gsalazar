@@ -166,4 +166,5 @@ public abstract class CodeGenerator {
 	public boolean hasBasePackage(){
 		return StringHelper.isNotEmpty(this.getBasePackage());
 	}
+
 }

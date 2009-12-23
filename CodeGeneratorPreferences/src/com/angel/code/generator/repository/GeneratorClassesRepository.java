@@ -36,22 +36,28 @@ public class GeneratorClassesRepository {
 		
 		this.addGeneratorClassInfo(
 				AnnotationDataGeneratorClassGenerator.class,
-				"Description de annotation data generator class generator.");
+				"Description de annotation data generator class generator.",
+				"dataGenerators");
 		this.addGeneratorClassInfo(
 				AnnotationRowProcessorCommandClassGenerator.class,
-				"Description de annotation row processor command class generator.");
+				"Description de annotation row processor command class generator.",
+				"rowProcessors");
 		this.addGeneratorClassInfo(
 				ApplicationAnnotationGeneratorExecutableClassGenerator.class,
-				"Description de application annotation generator executable class generator.");
+				"Description de application annotation generator executable class generator.",
+				"runners");
 		this.addGeneratorClassInfo(
 				ApplicationBaseTestClassGenerator.class,
-				"Description application base test class generator.");
+				"Description application base test class generator.",
+				"");
 		this.addGeneratorClassInfo(
 				DAOClassGenerator.class,
-				"Description dao class generator.");
+				"Description dao class generator.",
+				"daos");
 		this.addGeneratorClassInfo(
 				DAOImplClassGenerator.class,
-				"Description dao impl class generator.");
+				"Description dao impl class generator.",
+				"daos.impl");
 	}
 
 	public static synchronized GeneratorClassesRepository getInstance(){
@@ -75,8 +81,8 @@ public class GeneratorClassesRepository {
 		this.generatorClasses = generatorClasses;
 	}
 
-	public <T extends CodeGenerator> void addGeneratorClassInfo(Class<T> generatorClass, String description){
-		this.getGeneratorClasses().add(new CodeGeneratorInfo(generatorClass, description));
+	public <T extends CodeGenerator> void addGeneratorClassInfo(Class<T> generatorClass, String description, String basePackageGenerator){
+		this.getGeneratorClasses().add(new CodeGeneratorInfo(generatorClass, description, basePackageGenerator));
 	}
 
 	public CodeGeneratorInfo getCodeGeneratorInfo(String simpleName) {

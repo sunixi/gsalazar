@@ -38,11 +38,12 @@ public class CodeGeneratorCommand extends AbstractHandler {
 			List<Class<?>> beanClasses = this.getClassesSelected(event);
 
 			CodeGeneratorDialog dirDialog = new CodeGeneratorDialog(shell, beanClasses);
-			dirDialog.open();
-			String[] selected = dirDialog.getItemsToOpen();
-			
-			
-			//this.generateCode(beanClasses, event);
+			int returnCode = dirDialog.open();
+
+			if(CodeGeneratorDialog.GENERATE_CODE == returnCode){
+				String[] selected = dirDialog.getItemsToOpen();
+				this.generateCode(beanClasses, event);				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageDialog.openError(HandlerUtil

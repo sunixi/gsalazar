@@ -16,11 +16,13 @@ public class CodeGeneratorInfo {
 
 	private Class<?> codeGeneratorClass;
 	private String description;
+	private String basePackageGenerator;
 	
-	public CodeGeneratorInfo(Class<?> codeGeneratorClass, String description){
+	public CodeGeneratorInfo(Class<?> codeGeneratorClass, String description, String basePackageGenerator){
 		super();
 		this.setCodeGeneratorClass(codeGeneratorClass);
 		this.setDescription(description);
+		this.setBasePackageGenerator(basePackageGenerator);
 	}
 	
 	/**
@@ -65,5 +67,19 @@ public class CodeGeneratorInfo {
 
 	public boolean hasSimpleName(String simpleName) {
 		return this.getSimpleName().equalsIgnoreCase(simpleName);
+	}
+
+	/**
+	 * @return the basePackageGenerator
+	 */
+	public String getBasePackageGenerator() {
+		return basePackageGenerator;
+	}
+
+	/**
+	 * @param basePackageGenerator the basePackageGenerator to set
+	 */
+	public void setBasePackageGenerator(String basePackageGenerator) {
+		this.basePackageGenerator = basePackageGenerator;
 	}
 }

@@ -3,12 +3,11 @@
  */
 package com.angel.code.generator.dialogs;
 
-//import java.util.List;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,14 +35,16 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 	 * IDs for MailDialog buttons We use large integers because we don't want to
 	 * conflict with system constants.
 	 */
-	public static final int OPEN = 9999;
+	public static final int GENERATE_CODE = 9999;
 
-	public static final int DELETE = 9998;
+	public static final int CANCEL = 9998;
 
 	// List widget
 	private List list;
 	
 	private Label codeGeneratorDescription;
+	
+	private StringFieldEditor packageBase;
 	
 	private Collection<Class<?>> domainClasses;
 
@@ -95,13 +96,24 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 		
 		this.buildClassGeneratorDescription(parent);
 		
+		this.buildClassGeneratorPackage(area);
+		
 		return area;
 	}
 
+	protected void buildClassGeneratorPackage(Composite parent) {
+		StringFieldEditor packageBaseName = new StringFieldEditor("basePackageName", "Base package Name:", parent);
+		packageBaseName.setEmptyStringAllowed(true);
+		packageBaseName.setStringValue("Package base donde se generará el código.");
+		this.setPackageBase(packageBaseName);
+	}
+	
 	protected void buildClassGeneratorDescription(Composite parent) {
 		Label classGeneratorDescription = new Label(parent, SWT.BOLD);
 		classGeneratorDescription.setText("Class generator description.");
 		GridData gridData = this.createGridData(500, 150, 100, 100);
+		
+		
 		classGeneratorDescription.setLayoutData(gridData);
 		this.setCodeGeneratorDescription(classGeneratorDescription);
 	}
@@ -140,6 +152,7 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 					String simpleName = list.getSelection()[0];
 					CodeGeneratorInfo codeGeneratorInfo = generatorClassesRepository.getCodeGeneratorInfo(simpleName);	
 					codeGeneratorDescription.setText(codeGeneratorInfo.getDescription());
+					packageBase.setStringValue(codeGeneratorInfo.getBasePackageGenerator());
 				}
 			}
 		});
@@ -163,7 +176,7 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 		// We select the number of selected list entries
 		boolean selected = (list.getSelectionCount() > 0);
 		// We enable/disable the Open and Delete buttons
-		getButton(OPEN).setEnabled(selected);
+		getButton(GENERATE_CODE).setEnabled(selected);
 		//getButton(DELETE).setEnabled(selected);
 		if (!selected)
 			// If nothing was selected, we set an error message
@@ -182,7 +195,7 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
 		// Create Open button
-		Button openButton = createButton(parent, OPEN, "Generate Code", true);
+		Button openButton = createButton(parent, GENERATE_CODE, "Generate Code", true);
 		// Initially deactivate it
 		openButton.setEnabled(false);
 		// Add a SelectionListener
@@ -191,7 +204,7 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 				// Retrieve selected entries from list
 				itemsToOpen = list.getSelection();
 				// Set return code
-				setReturnCode(OPEN);
+				setReturnCode(GENERATE_CODE);
 				// Close dialog
 				close();
 			}
@@ -256,5 +269,19 @@ public class CodeGeneratorDialog extends TitleAreaDialog {
 	 */
 	public void setCodeGeneratorDescription(Label codeGeneratorDescription) {
 		this.codeGeneratorDescription = codeGeneratorDescription;
+	}
+
+	/**
+	 * @return the packageBase
+	 */
+	public StringFieldEditor getPackageBase() {
+		return packageBase;
+	}
+
+	/**
+	 * @param packageBase the packageBase to set
+	 */
+	public void setPackageBase(StringFieldEditor packageBase) {
+		this.packageBase = packageBase;
 	}
 }

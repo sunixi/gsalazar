@@ -1,0 +1,21 @@
+Recursos Humanos:
+Problema: 
+Hay inconsistencia, nuestro escenario plantea un departamento de sistemas de 3 integrantes,
+por otra la sección de de RR.HH. establece un equipo de 6 integrantes para el proyecto.
+Si tocamos el escenario tenemos que modicar un supuesto que hicimos MUY al principio y seria otra modificacion al TP. A la hora de presentarlo
+puede generar inconvenientes hasta en nosotros. Por lo tanto propongo el siguiente supuesto.
+
+Supuesto:
+Para justificar la existencia de los 3 integrantes de sistemas, afirmamos que la empresa tiene varias iniciativas para comenzar
+si los recursos no se ocupan en este proyecto podrian dedicarse a la sistematizacion de otros sistemas.
+
+Como solucionamos este problema?
+Podriamos decir que los integrantes del dpto de sistemas tienen los roles de Lider de proyecto, Analista funcional y Desarrollador.
+Los restantes integrantes del equipo de desarrollo deben ser contratados, idealmente consultora. 
+
+Que hay que cambiar de lo que existe hoy?
+La introduccion de recursos necesarios esta bien planteada. Habría que cambiar contabilizar a CERO los sueldos de los empleados de la organizacion
+y asignar un sueldo de consultora para los recursos que se necesiten contratar (el doble de lo que figura hoy).
+En la planilla de costos y flujo de fondos hay una solapa que dice "costos de RR HH sistema"
+
+ 

@@ -1,0 +1,72 @@
+	<project default="buildClassesJar">
+	    <property name="userName"           value="William"/>
+	    <property name="jar.name"           value="angel-arquitectura-"/>
+	    <property name="jar.majorVersion"   value="1"/>
+	    <property name="jar.mediumVersion"  value="0"/>
+	    <property name="jar.minorVersion"   value="1"/>
+	    <property name="jar.version"        value="${jar.majorVersion}-${jar.mediumVersion}-${jar.minorVersion}"/>
+	    <property name="jar.fileName"       value="${jar.name}${jar.version}.jar"/>
+	    <property name="jar.sourceFileName" value="${jar.name}-src-${jar.version}.jar"/>
+	    <tstamp>
+	        <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+	    </tstamp>
+
+
+	    <target name="compile">
+	        <javac srcdir="." />
+	    </target>
+
+	    <target name="classesJar">
+	        <delete file="${jar.fileName}"/>
+	        <buildnumber file="build.num"/>
+
+	        <manifest file="MANIFEST.MF">
+	            <attribute name="Built-Date"                value="${TODAY}"/>
+	            <attribute name="Built-By"                  value="${userName}"/>
+	            <attribute name="Implementation-Version"    value="${jar.version}"/>
+	        </manifest>
+
+	        <jar destfile="${jar.fileName}"
+	            basedir="${basedir}/../webapp/WEB-INF/classes"            
+	            excludes="**/*-sg*.xml,**/*.dtd,**/*.cfg.xml,**/log4j.xml,ar**"
+	            manifest="MANIFEST.MF"
+	        />
+	    </target>
+
+	    <target name="sourcesJar">
+	        <delete file="${jar.sourceFileName}"/>
+	        <buildnumber file="build.num"/>
+
+	        <manifest file="MANIFEST.MF">
+	            <attribute name="Built-Date"                value="${TODAY}"/>
+	            <attribute name="Built-By"                  value="${userName}"/>
+	            <attribute name="Implementation-Version"    value="${jar.version}"/>
+	        </manifest>
+
+	        <jar destfile="${jar.sourceFileName}"
+	            basedir="${basedir}/../java/"
+	            includes="com/angel/**"
+	            manifest="MANIFEST.MF"
+	        />
+	    </target>
+
+	  <target name="cleanup">
+	       <delete>
+	         <fileset dir="." includes="**/*.class"/>
+	         <fileset file="MANIFEST.MF"/>
+	       </delete>
+	  </target>
+
+	    <target name="buildClassesJar"  depends="compile,classesJar,cleanup"/>
+	    <target name="buildSourceJar"   depends="compile,sourcesJar,cleanup"/>
+
+	<target name="run-datagenerator" description="Ejecutando carga de datos de prueba">
+        <echo message="Iniciando proceso..."/>
+			<java fork="true" classname="ar.com.eventos.runner.EVProcessorRunners" >
+			<classpath>
+				<pathelement location="src/main/webapp/WEB-INF/classes"/>
+			</classpath>
+			<jvmarg line="-Xms256m -Xmx768m" />
+        </java>
+	</target>
+</project>

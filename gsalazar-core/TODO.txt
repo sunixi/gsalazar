@@ -18,8 +18,8 @@ Arquitectura:
 	} 
 
 	NO SOPORTA:
+	- LISTO from Cat cat inner join fetch cat.mate left join fetch cat.kittens
+	- LISTO from Document fetch all properties order by name
+	- LISTO from Document doc fetch all properties where doc.name like '%cats%'
+	- LISTO from Cat cat inner join fetch cat.mate left join fetch cat.kittens child left join fetch child.kittens
 	- from Cat cat left join cat.kittens kitten with kitten.bodyWeight > 10.0
-	- from Cat cat inner join fetch cat.mate left join fetch cat.kittens
-	- from Cat cat inner join fetch cat.mate left join fetch cat.kittens child left join fetch child.kittens
-	- from Document fetch all properties order by name
-	- from Document doc fetch all properties where lower(doc.name) like '%cats%'

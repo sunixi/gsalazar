@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%" xmlns:components="ar.com.eventos.components.*"
+	currentState="menu">
+	<mx:Metadata>
+		[Event(name="clickMenu", type="ar.com.odra.events.DataCarrierEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.odra.events.DataCarrierEvent;
+			import mx.core.Application;
+			
+			private function onClickBotonSector(e:Event, stateName:String):void {
+				dispatchEvent(new DataCarrierEvent("clickMenu",stateName));
+			}
+			public function cambiarMensaje():void {
+				this.currentState = '';
+			}
+			
+			public function get mostrarMenu():Boolean {
+				return currentState != null && currentState == 'menu';
+			}
+			
+			public function set mostrarMenu(value:Boolean):void {
+				if(currentState != null){
+					if(value){
+						currentState = 'menu';
+					} else {
+						currentState = 'vacio';
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Label
+		horizontalCenter="0"
+		top="0"
+		width="100%"
+		textAlign="left"
+		text="Menú Principal"
+	/>
+	<mx:Canvas
+		id="contentContainer"
+		width="100%" height="70%"
+		horizontalCenter="0"
+		bottom="0"
+		borderColor="#0000FF" borderStyle="solid" borderThickness="1"
+	/>
+	<mx:states>
+		<mx:State name="vacio">
+		</mx:State>
+		<mx:State name="menu">
+			<mx:AddChild position="lastChild" relativeTo="{contentContainer}">
+				<mx:Canvas
+					id="buttonsContainer"
+					width="100%" height="100%">
+					<components:BotonSector
+						allowTransition="false"
+						verticalCenter="0" left="5"
+						width="40" height="40"
+						imagenBoton="@Embed(source='/assets/images/botones/tmb01.jpg')"
+						clickImage="onClickBotonSector(event,'informacion');"
+					/>
+					<components:BotonSector
+						allowTransition="false"
+						verticalCenter="0" left="55"
+						width="40" height="40"
+						imagenBoton="@Embed(source='/assets/images/botones/tmb02.jpg')"
+						clickImage="onClickBotonSector(event,'imagenes');"
+					/>
+					<components:BotonSector
+						allowTransition="false"
+						verticalCenter="0" left="100"
+						width="40" height="40"
+						imagenBoton="@Embed(source='/assets/images/botones/tmb03.jpg')"
+						clickImage="onClickBotonSector(event,'imagenes');"
+					/>
+					<components:BotonSector
+						allowTransition="false"
+						verticalCenter="0" left="145"
+						width="40" height="40"
+						imagenBoton="@Embed(source='/assets/images/botones/tmb03.jpg')"
+						clickImage="onClickBotonSector(event,'datosSalon');"
+					/>
+					<components:BotonSector
+						allowTransition="false"
+						verticalCenter="0" left="190"
+						width="40" height="40"
+						imagenBoton="@Embed(source='/assets/images/botones/tmb04.jpg')"
+						clickImage="onClickBotonSector(event,'empresa');"
+					/>
+				</mx:Canvas>
+			</mx:AddChild> 
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

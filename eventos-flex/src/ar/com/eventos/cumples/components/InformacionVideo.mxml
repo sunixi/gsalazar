@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="clickVideo", type="ar.com.odra.events.DataCarrierEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.XVideo;
+			import ar.com.odra.events.DataCarrierEvent;
+			import mx.controls.Alert;
+			import mx.binding.utils.BindingUtils;
+
+			import mx.core.UIComponent;
+
+			[Bindable]
+			public var video:XVideo;
+
+			private function dispatchClickVideoEvent():void {
+				dispatchEvent(new DataCarrierEvent("clickVideo", _video));
+			}
+		]]>
+	</mx:Script>
+	<mx:Fade
+		id="fadeIn"
+		alphaFrom="0"
+		alphaTo="1"
+	/>
+	<mx:Fade
+		id="fadeOut"
+		alphaFrom="1"
+		alphaTo="0"
+	/>
+	<mx:UIComponent
+		id="videoContainer"
+		width="100%" height="100%"
+		visible="false"
+		showEffect="{fadeIn}" hideEffect="{fadeOut}"
+		useHandCursor="{videoClickEnabled}" buttonMode="{videoClickEnabled}"
+		click="onVideoClick(event);"
+	/>
+
+	<mx:states>
+		<mx:State name="loading">
+			<mx:AddChild relativeTo="{videoContainer}" position="lastChild">
+				
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

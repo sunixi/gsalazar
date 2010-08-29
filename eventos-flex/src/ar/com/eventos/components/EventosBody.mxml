@@ -1,51 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingBottom="0" paddingLeft="0" 
-	paddingRight="0" paddingTop="0" xmlns:pages="ar.com.eventos.pages.*"
-	>
-<mx:Style>
-	.mainFooterStyle {
-		corner-radius: 25;
-		paddingLeft: 5;
-		paddingRight: 5;
-	}
-</mx:Style>
-
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%" xmlns:components="ar.com.eventos.components.*">
 	<mx:Script>
 		<![CDATA[
 			import mx.core.Application;
+			import com.angel.application.ApplicationLocator;
+			import caurina.transitions.Tweener;
 			
+			[Bindable]
+			public var showBackButton:Boolean;
+			private function onClickBotonSector(e:Event, stateName:String):void {
+				Tweener.addTween(contentContainer,
+				{
+					y: -250,
+		            time: 1,            
+		            transition: "easeInOutQuart",
+		            onComplete:function():void { moveToNormalPosition(stateName); }
+				});
+			}
+			private function moveToNormalPosition(stateName:String):void {
+				currentState = 'vacio';
+				Tweener.addTween(contentContainer,
+				{
+					y: 0,
+		            time: 1,            
+		            transition: "easeInOutQuart",
+		            onComplete:function():void { cambiarEstadoA(stateName); }
+				});
+			}
+			private function cambiarEstadoA(stateName:String):void {
+				//Application.application.backButton.visible = !Application.application.backButton.visible;
+				currentState = stateName;
+				showBackButton = currentState != '' && currentState != 'vacio';
+			}
 			
-
+			public function mostrarInicio():void {
+				onClickBotonSector(null,'');
+			}
+			
+			public function mostrarInformacion():void {
+				onClickBotonSector(null,'informacion');
+			}
+			public function mostrarImagenes():void {
+				onClickBotonSector(null,'imagenes');
+			}
+			public function mostrarDatosSalon():void {
+				onClickBotonSector(null,'datosSalon');
+			}
+			public function mostrarEmpresa():void {
+				onClickBotonSector(null,'empresa');
+			}
 		]]>
 	</mx:Script>
-	<mx:HBox id="mainHBox" width="100%" height="15%" verticalAlign="middle" horizontalAlign="right"
-		paddingRight="20" paddingLeft="20"
-		backgroundImage="@Embed(source='/images/foto_ color clarito.jpg')" backgroundSize="70" styleName="mainFooterStyle">
-		<!--
-		<mx:Image source="@Embed(source = 'images/foto_ color clarito.jpg')" toolTip="Tu fiesta on line." 
-			height="{mainHBox.height}" width="{Application.application.width}" alpha="0.5" includeInLayout="false"/>
-			-->
-		<mx:ApplicationControlBar width="70%" horizontalAlign="center" verticalAlign="middle" height="10%"
-			styleName="mainFooterStyle">
-			<mx:Spacer width="15%"/>
-			<mx:LinkBar dataProvider="paginas" height="35" fontSize="16" styleName="mainPageStyle"/>
-			<mx:Spacer width="15%"/>
-		</mx:ApplicationControlBar>
-	</mx:HBox>
-	<mx:TitleWindow width="100%" height="100%" backgroundAlpha="0">
-		<mx:ViewStack id="paginas" width="100%" height="80%" selectedIndex="0">
-			<pages:Inicio width="100%" height="100%" />
-			<pages:Quinceaneras width="100%" height="100%" toolTip="Disfruta de este momento tan inolvidable ahora via web con tus amigas y amigos.">
-				<pages:quinceaneras>
-					<mx:Object nombre="Laura" apellido="Gonzalez"/>
-					<mx:Object nombre="Sabrina" apellido="Gutierrez"/>
-					<mx:Object nombre="Rocio" apellido="Santos"/>
-					<mx:Object nombre="Emilse" apellido="Larrea"/>
-				</pages:quinceaneras>
-			</pages:Quinceaneras>
-			<pages:Casamientos width="100%" height="100%" toolTip="Festeja tu casamiento, y seguí disfrutandolo de manera online."/>
-			<pages:EventosGenerales width="100%" height="100%"/>
-			<pages:Contacto width="100%" height="100%"/>
-		</mx:ViewStack>
-	</mx:TitleWindow>
-</mx:VBox>
+	
+	<mx:Canvas
+		id="contentContainer"
+		width="95%" height="98%"
+		horizontalCenter="0"
+		cornerRadius="20"
+		borderColor="#0000FF" borderStyle="solid" borderThickness="3">
+		<mx:Canvas
+			id="buttonsContainer"
+			width="100%" height="100%">
+			<components:BotonSector
+				yPosition="110"
+				bottom="30" left="50"
+				width="130" height="130"
+				imagenBoton="@Embed(source='/assets/images/botones/tmb01.jpg')"
+				imagenMensaje="Información Personal"
+				clickImage="onClickBotonSector(event,'informacion');"
+			/>
+			<components:BotonSector
+				yPosition="110"
+				bottom="30" horizontalCenter="-165"
+				width="130" height="130"
+				imagenBoton="@Embed(source='/assets/images/botones/tmb02.jpg')"
+				imagenMensaje="Imágenes del Evento"
+				clickImage="onClickBotonSector(event,'imagenes');"
+			/>
+			<components:BotonSector
+				yPosition="110"
+				bottom="30" horizontalCenter="0"
+				width="130" height="130"
+				imagenBoton="@Embed(source='/assets/images/botones/tmb03.jpg')"
+				imagenMensaje="YYYY"
+				clickImage="onClickBotonSector(event,'imagenes');"
+			/>
+			<components:BotonSector
+				yPosition="110"
+				bottom="30" horizontalCenter="165"
+				width="130" height="130"
+				imagenBoton="@Embed(source='/assets/images/botones/tmb03.jpg')"
+				imagenMensaje="Datos del Salón del Evento"
+				clickImage="onClickBotonSector(event,'datosSalon');"
+			/>
+			<components:BotonSector
+				yPosition="110"
+				bottom="30" right="50"
+				width="130" height="130"
+				imagenBoton="@Embed(source='/assets/images/botones/tmb04.jpg')"
+				imagenMensaje="Empresa Desarrolladora"
+				clickImage="onClickBotonSector(event,'empresa');"
+			/>
+		</mx:Canvas>
+	</mx:Canvas>
+	<mx:states>
+		<mx:State name="vacio">
+			<mx:RemoveChild target="{buttonsContainer}"/>
+		</mx:State>
+		<mx:State name="informacion">
+			<mx:RemoveChild target="{buttonsContainer}"/>
+			<mx:AddChild position="lastChild" relativeTo="{contentContainer}">
+				<components:InformacionPersonal
+					width="100%" height="100%"
+				/>
+			</mx:AddChild> 
+		</mx:State>
+		<mx:State name="datosSalon">
+			<mx:RemoveChild target="{buttonsContainer}"/>
+			<mx:AddChild position="lastChild" relativeTo="{contentContainer}">
+				<components:DatosSalon
+					width="100%" height="100%"
+				/>
+			</mx:AddChild> 
+		</mx:State>
+		<mx:State name="empresa">
+			<mx:RemoveChild target="{buttonsContainer}"/>
+			<mx:AddChild position="lastChild" relativeTo="{contentContainer}">
+				<components:EmpresaDesarrolladora
+					width="100%" height="100%"
+				/>
+			</mx:AddChild> 
+		</mx:State>
+		<mx:State name="imagenes">
+			<mx:RemoveChild target="{buttonsContainer}"/>
+			<mx:AddChild position="lastChild" relativeTo="{contentContainer}">
+				<components:Imagenes
+					width="100%" height="100%"
+				/>
+			</mx:AddChild> 
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

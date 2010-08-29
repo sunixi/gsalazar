@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="clickImage")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.InfoPersonal;
+			import ar.com.odra.events.DataCarrierEvent;
+			import ar.com.eventos.components.Imagen;
+			import mx.effects.Fade;
+			import mx.events.EffectEvent;
+			import mx.effects.Move;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.collections.IList;
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		public var informacionPersonal:IList;
+		
+		private function clickImage(e:DataCarrierEvent):void {
+			//cumple15Visualizacion.imagen = e.object;
+		}
+		
+		private function informacionPersonalHTML(value:Object):String {
+			var htmlText:String = '';
+			htmlText += "<font face='SF Automaton' size='14' color='#004DE5'><b>" + value.nombre + ":</b></font>	";
+			htmlText += "<font face='SF Automaton' size='13' color='#0095E9'><i>" + value.valor + "</i></font></br></br>";
+			return htmlText;
+		}
+		]]>
+	</mx:Script>
+	<mx:Fade
+		id="fadeIn"
+		alphaFrom="0"
+		alphaTo="1"
+	/>
+	<mx:Fade
+		id="fadeOut"
+		alphaFrom="1"
+		alphaTo="0"
+	/>
+	<mx:Text
+		width="70%"
+		selectable="false"
+		text="Información Personal"
+		textAlign="center"
+		styleName="informacionPersonalTitulo"
+	/>
+	<mx:VBox
+		id="topContainer"
+		left="5" right="5" 
+		top="50"
+		verticalGap="0"
+		paddingLeft="0" paddingRight="0"
+		paddingBottom="0" paddingTop="0"
+		height="340" maxHeight="340"
+		width="70%"
+		horizontalAlign="center" verticalAlign="top">
+		<mx:Repeater
+			id="comentariosRepeater"
+			width="70%" height="100%"
+			dataProvider="{informacionPersonal}">
+			<mx:VBox
+				width="90%"
+				paddingLeft="0" paddingRight="0"
+				paddingBottom="0" paddingTop="0">
+				<mx:Text
+					width="60%"
+					selectable="false"
+					htmlText="{informacionPersonalHTML(comentariosRepeater.currentItem)}"
+					textAlign="left"
+				/>
+			</mx:VBox>
+		</mx:Repeater>
+	</mx:VBox>
+	<mx:Image
+		width="320"
+		height="450"
+		right="5"
+		top="50"
+		source="@Embed(source='/assets/images/ultimasAgregadas/pic09.jpg')"
+	/>
+</mx:Canvas>

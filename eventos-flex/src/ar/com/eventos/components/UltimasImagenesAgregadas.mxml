@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%">
+	<mx:Metadata>
+		[Event(name="clickImage")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Fade;
+			import mx.events.EffectEvent;
+			import mx.effects.Move;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.collections.IList;
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		public var maximaCantidad:Number = 4;
+		[Bindable]
+		public var imagenWidth:Number = 80;
+		[Bindable]
+		public var imagenHeight:Number = 70;
+		[Bindable]
+		private var _imagenes:IList;
+		
+		[Bindable]
+		private var _imagenesIzquierda:IList = new ArrayCollection();
+		[Bindable]
+		private var _imagenesDerecha:IList = new ArrayCollection();
+		[Bindable]
+		private var xPosition:Number = 7;
+		
+		public function get imagenes():IList {
+			return _imagenes;
+		}
+		public function set imagenes(value:IList):void {
+			_imagenes = value;
+			agregarImagenesAVisualizar();
+		}
+		private function cantidadImagesContainerChildren():Number {
+			return imagesContainer.getChildren().length;
+		}
+		private function agregarImagenesAVisualizar():void {
+			for each(var i:Object in _imagenes.toArray()){
+				var imagen:Imagen = this.buildImagen(i);
+				if( cantidadImagesContainerChildren() < maximaCantidad){
+					imagesContainer.addChild(imagen);
+				} else {
+					_imagenesDerecha.addItem(imagen);
+				}
+			}
+			updateTipsRoomButtonsEnable();
+		}
+		private function buildImagen(value:Object):Imagen {
+			var imagen:Imagen = new Imagen();
+			imagen.imagen = value;
+			imagen.width = imagenWidth;
+			imagen.height = imagenHeight;
+			return imagen;
+		}
+
+
+
+		private function buscarSiguienteImagenA():Imagen{
+			if(_imagenesDerecha.length == 0){
+				return Imagen(_imagenesIzquierda.getItemAt(0));
+			} else {
+				return Imagen(_imagenesDerecha.getItemAt(0));
+			}
+		}
+		
+		private function buscarAnteriorImagenA():Imagen{
+			if(_imagenesIzquierda.length == 0){
+				return Imagen(_imagenesDerecha.getItemAt(0));
+			} else {
+				return Imagen(_imagenesIzquierda.getItemAt(0));
+			}
+		}
+		
+		private function clickNextImagen():void {
+			var siguienteImagen:Imagen = this.buscarSiguienteImagenA();
+			var primera:Imagen = Imagen(imagesContainer.getChildAt(0));
+			
+			this.moverImagesContainerAIzquierda(primera, siguienteImagen);
+		}
+		
+		private function actualizarAgregadoListaIzquierda(value:Imagen):void {
+			imagesContainer.removeChild(value);
+			_imagenesIzquierda.addItemAt(value,0);
+		}
+		
+		private function actualizarRemovidoListaDerecha(value:Imagen):void {
+			imagesContainer.addChild(value);
+			_imagenesDerecha.removeItemAt(_imagenesDerecha.getItemIndex(value));
+		}
+		private function moverImagesContainerAIzquierda(primera:Imagen, siguienteImagen:Imagen):void {
+			Tweener.addTween(primera,
+			{
+				alpha: 0,
+	            time: 0.5,
+	            transition: "easeInOutQuart",
+	            onComplete:function():void { 
+	            	actualizarAgregadoListaIzquierda(primera);
+		            Tweener.addTween(imagesContainer,
+					{
+						x: imagenWidth * -1,
+			            time: 1,            
+			            transition: "easeInOutQuart",
+			            onComplete:function():void {
+			            	siguienteImagen.alpha = 0;
+			            	actualizarRemovidoListaDerecha(siguienteImagen);
+			            	Tweener.addTween(siguienteImagen,
+							{
+								alpha: 1,
+					            time: 1,            
+					            transition: "easeInOutQuart",
+					            onComplete:function():void {  }
+							});  
+			            }
+					});
+	            }
+			});
+		}
+		private function clickPreviousImagen():void {
+			
+		}
+		private function onMouseOut(e:Event):void {
+			/*
+			Tweener.addTween(mensaje,
+				{
+					y: 0,
+		            time: 1,            
+		            transition: "easeInOutQuart",
+		            onComplete:function():void {  }
+				});
+				*/
+		}
+
+/* BEGINs logic to shift right tips rooms. */
+			[Bindable]
+			public var isShifting:Boolean;
+			[Bindable]
+			private var IMAGEN_WIDTH:Number = 90;
+			
+			/**
+			 * Shift result list to right. First it tests if previous button is enabled, and if it isn't shifting. 
+			 */
+			private function shiftRightTipsRoomButton(e:Event):void{
+				if(previousButton.enabled && !isShifting){
+					this.moveRightRoomTipsButtonContainer();
+				}
+			}
+			/**
+			 * Move right result list. First it create a move effect, and when it plays, it do the following steps:
+			 */
+			private function moveRightRoomTipsButtonContainer():void {
+				var move:Move = new Move();
+	            move.duration = 300;
+	            move.xTo = IMAGEN_WIDTH;
+	            move.target = imagesContainer;
+	            move.addEventListener(EffectEvent.EFFECT_END, function(e:*):void {
+	            	addLastRightTipRoomButtonToShiftRight();//Agrego el ultimo que se esta viendo a la lista de "no vistos" de la derecha.
+	                imagesContainer.x = xPosition;
+	                addLastLeftTipRoomButtonToShiftRight();//Agrego el ultimo que "no se esta viendo" al contenedor para que se vea.
+	                updateTipsRoomButtonsEnable();
+	                isShifting = false;
+	            });
+	            isShifting = true;
+	            move.play();
+			}
+			/**
+			 * It moves (add in one list and remove from other) last tip room button in tips button container (they contain all button showing actually) to right tips list.
+			 */
+			private function addLastRightTipRoomButtonToShiftRight():void{
+				var lastTipRoomButton:Imagen = Imagen(imagesContainer.getChildAt(imagesContainer.getChildren().length - 1));
+	            _imagenesDerecha.addItemAt(lastTipRoomButton, 0);
+	            imagesContainer.removeChild(lastTipRoomButton);				
+			}
+			/**
+			 * It moves (add in one list and remove from other) last tip room button in left tips list to tips button container.
+			 */
+			private function addLastLeftTipRoomButtonToShiftRight():void{
+				var lastTipRoomButton:Imagen = Imagen(_imagenesIzquierda.getItemAt(_imagenesIzquierda.length - 1));
+	            _imagenesIzquierda.removeItemAt(_imagenesIzquierda.getItemIndex(lastTipRoomButton));
+	            imagesContainer.addChildAt(lastTipRoomButton, 0);
+			}
+/* ENDs logic to shift right tips rooms. */
+/* BEGINs logic to shift left tips rooms. */
+			/**
+			 * Shift result list to left. First it tests if next button is enabled, and if it isn't shifting. 
+			 */
+			private function shiftLeftTipsRoomButton(e:Event):void{
+				if(nextButton.enabled && !isShifting){
+					this.moveLeftRoomTipsButtonContainer();
+				}
+			}
+			
+			/**
+			 * Move right result list. First it create a move effect, and when it plays, it do the following steps:
+			 * 
+			 */
+			private function moveLeftRoomTipsButtonContainer():void {
+				var move:Move = new Move();
+	            move.duration = 300;
+	            move.xTo = (IMAGEN_WIDTH - 10) * -1;
+	            move.target = imagesContainer;
+	            move.addEventListener(EffectEvent.EFFECT_END, function(e:*):void {
+	            	addFirstLeftTipRoomButtonToShiftLeft();//Agreo el primero que se esta viendo a la lista de "no vistos" de la izquierda.
+	                imagesContainer.x = xPosition;
+	                addLastRightTipRoomButtonToButtonsContainer();//Agrego el primero de la derecha de "no vistos" al contenedor de visualizados.
+	                updateTipsRoomButtonsEnable();
+	                isShifting = false;
+	            });
+				isShifting = true;
+	            move.play();
+			}
+			/**
+			 * Moves first tip room button in room tips container (it contains tips button showing actually) to left tips room list.
+			 */
+			private function addFirstLeftTipRoomButtonToShiftLeft():void{//
+				var firstTipRoomButton:Imagen = Imagen(imagesContainer.getChildAt(0));
+	            _imagenesIzquierda.addItem(firstTipRoomButton);
+	            imagesContainer.removeChild(firstTipRoomButton);				
+			}
+			
+			/**
+			 * Moves last tip room button in right tips room list to room tips container.
+			 */
+			private function addLastRightTipRoomButtonToButtonsContainer():void {
+				//var lastTipRoomButton:TipRoomButton = TipRoomButton(rightTipsRoomButtons.getItemAt(rightTipsRoomButtons.length - 1));
+				var lastTipRoomButton:Imagen = Imagen(_imagenesDerecha.getItemAt(0));
+				var fade:Fade = new Fade();
+				fade.alphaFrom = 0;
+				fade.alphaTo = 1;
+				fade.duration = 150;
+				fade.target = lastTipRoomButton;
+				fade.addEventListener(EffectEvent.EFFECT_START, function(e:*):void {
+					_imagenesDerecha.removeItemAt(_imagenesDerecha.getItemIndex(lastTipRoomButton));
+					imagesContainer.addChild(lastTipRoomButton);
+				});
+				fade.play();
+			}
+
+			/**
+			 * Update tips room button enable value. It test if there are elements in right and left tips room list to set false or true.
+			 */
+			private function updateTipsRoomButtonsEnable():void {
+				nextButton.enabled = _imagenesDerecha.length > 0;
+				previousButton.enabled = _imagenesIzquierda.length > 0;
+			}
+/* ENDs logic to shift left tips rooms. */
+
+		]]>
+	</mx:Script>
+	<mx:Text
+		id="mensaje"
+		selectable="false"
+		text="Últimas Imágenes Agregadas"
+		fontSize="15" color="white"
+		height="100%" width="100"
+		textAlign="center"
+		left="0"
+		verticalCenter="0"
+		includeInLayout="false"
+	/>
+	<mx:Image
+		id="previousButton"
+		source="@Embed(source='/assets/images/next.png')"
+		verticalCenter="10"
+		left="110"
+		rotation="180"
+		useHandCursor="{previousButton.enabled}" buttonMode="{previousButton.enabled}"
+		click="shiftRightTipsRoomButton(event);"
+	/>
+	<mx:Image
+		id="nextButton"
+		source="@Embed(source='/assets/images/next.png')"
+		verticalCenter="0"
+		right="0"
+		useHandCursor="{nextButton.enabled}" buttonMode="{nextButton.enabled}"
+		click="shiftLeftTipsRoomButton(event);"
+	/>
+	<mx:Canvas
+		right="10"
+		verticalCenter="0"
+		width="75%" height="100%"
+		borderColor="red" borderStyle="solid" borderThickness="1"
+		verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:HBox
+			id="imagesContainer"
+			x="{xPosition}"
+			width="100%" height="98%"
+			verticalAlign="middle"
+			horizontalGap="5"
+		/>
+	</mx:Canvas>
+</mx:Canvas>

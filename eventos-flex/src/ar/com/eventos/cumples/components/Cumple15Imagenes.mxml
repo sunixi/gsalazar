@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="clickImage")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.Foto;
+			import ar.com.eventos.cumples.beans.CategoriaFoto;
+			import ar.com.odra.events.DataCarrierEvent;
+			import ar.com.eventos.components.Imagen;
+			import mx.effects.Fade;
+			import mx.events.EffectEvent;
+			import mx.effects.Move;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.collections.IList;
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		private var _categorias:IList;
+		
+		public function set categorias(value:IList):void {
+			_categorias = value;
+			this.updateVisualizacionConPrimerCategoriaFoto();
+		}
+		public function get categorias():IList {
+			return _categorias;
+		}
+		
+		private function updateVisualizacionConPrimerCategoriaFoto():void {
+			if(_categorias.length > 0){
+				this.clickImage(new DataCarrierEvent("",_categorias.getItemAt(0)));
+			}
+		}
+		
+		private function clickImage(e:DataCarrierEvent):void {
+			cumple15Visualizacion.categoriaFoto = CategoriaFoto(e.object);
+		}
+		
+		private function onClickFullview(e:Event):void {
+			cumple15Visualizacion.activateVisualizacionFull();
+		}
+		
+		private function onClickImage(event:DataCarrierEvent):void {
+			cumple15Comentarios.foto = Foto(event.object);
+		}
+
+		]]>
+	</mx:Script>
+	<!--
+	<mx:Image
+		id="shareFacebook"
+		source="@Embed(source='/assets/images/facebook.png')"
+		mouseOver="{shareFacebook.filters = [dropShadowFilter]}"
+		mouseOut="{shareFacebook.filters = null}"
+		useHandCursor="true" buttonMode="true"
+	/>
+	<mx:DropShadowFilter
+		id="dropShadowFilter"
+		blurX="10" blurY="10"
+		color="#000066"
+		distance="3"
+		quality="10"
+	/>
+	-->
+	<mx:Fade
+		id="fadeIn"
+		alphaFrom="0"
+		alphaTo="1"
+	/>
+	<mx:Fade
+		id="fadeOut"
+		alphaFrom="1"
+		alphaTo="0"
+	/>
+	<components:Cumple15ShareComponent
+		width="235" height="45"
+		left="0"
+		direction="horizontal"
+		visible="{cumple15Visualizacion.categoriaFoto != null}"
+		showEffect="{fadeIn}" hideEffect="{fadeOut}"
+		clickFullview="onClickFullview(event);"
+	/>
+	<components:Cumple15Comentarios
+		id="cumple15Comentarios"
+		top="45"
+		left="0"
+		width="237" height="305"
+		cornerRadius="10"
+		visible="{cumple15Visualizacion.categoriaFoto != null}"
+		showEffect="{fadeIn}" hideEffect="{fadeOut}"
+	/>
+	<mx:Label
+		text="Selecciona la categoria:"
+		bottom="100"
+		left="230"
+		styleName="seleccionaCategoriaFoto"
+	/>
+	<components:Cumple15Previsualizacion
+		width="545"
+		height="110"
+		categorias="{_categorias}"
+		clickImage="clickImage(event);"
+		maximaCantidad="5"
+		imagenesGap="2"
+		imagenWidth="100" imagenHeight="90"
+		bottom="0" right="5"
+		nextButtonStyleName="nextButtonImagenes"
+		previousButtonStyleName="previousButtonImagenes"
+	/>
+	<components:Cumple15Visualizacion
+		id="cumple15Visualizacion"
+		width="545" height="350"
+		right="10" top="0"
+		clickImage="onClickImage(event);"
+		cornerRadius="10"
+	/>
+</mx:Canvas>

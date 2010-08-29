@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	borderColor="#6f6f6f" borderStyle="solid" borderThickness="4" 
+	width="100%" height="100%" xmlns:components="ar.com.eventos.cumples.components.*"
+	creationComplete="init();">
+	<mx:Metadata>
+		[Event(name="clickImage", type="ar.com.odra.events.DataCarrierEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.odra.events.DataCarrierEvent;
+			import ar.com.eventos.cumples.beans.Foto;
+			import ar.com.eventos.cumples.beans.CategoriaFoto;
+			import mx.core.Application;
+			import ar.com.eventos.components.Imagen;
+			import mx.effects.Fade;
+			import mx.events.EffectEvent;
+			import mx.effects.Move;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.collections.IList;
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		private var _categoriaFoto:CategoriaFoto;
+		[Bindable]
+		private var _imagenes:IList = _categoriaFoto != null ? _categoriaFoto.fotos: null;
+		[Bindable]
+		private var fotoActual:Foto;
+		[Bindable]
+		private var _xGlobalPoint:Number;
+		[Bindable]
+		private var _yGlobalPoint:Number;
+		
+		private function init():void {
+			var globalPoint:Point = new Point(0,0);
+			var localPoint:Point = globalToLocal(globalPoint);
+			_xGlobalPoint = localPoint.x;
+			_yGlobalPoint = localPoint.y;
+		}
+		
+		[Bindable]
+		public function get categoriaFoto():CategoriaFoto {
+			return _categoriaFoto;
+		}
+		
+		public function set categoriaFoto(value:CategoriaFoto):void {
+			_categoriaFoto = value;
+			fotoActual = _categoriaFoto.primerFoto();
+			image.cambiarFoto(fotoActual);
+			this.dispatchClickImage(fotoActual);
+		}
+		
+		private function onSiguienteFoto(e:Event):void {
+			fotoActual = _categoriaFoto.siguienteFoto(fotoActual);
+			image.cambiarFoto(fotoActual);
+			this.dispatchClickImage(fotoActual);
+		}
+		private function onAnteriorFoto(e:Event):void {
+			fotoActual = _categoriaFoto.anteriorFoto(fotoActual);
+			image.cambiarFoto(fotoActual);
+			this.dispatchClickImage(fotoActual);
+		}
+		
+		private function dispatchClickImage(value:Foto):void {
+			dispatchEvent(new DataCarrierEvent("clickImage",value));
+		}
+		
+		private function onClickImage(e:Event):void {
+			this.doActivateVisualizacionFull();
+		}
+		
+		private function onCloseFullVisualizacion(e:Event):void {
+			this.doUnactivateVisualizacionFull();
+		}
+		
+		public function activateVisualizacionFull():void {
+			this.doActivateVisualizacionFull();
+		}
+		private function doActivateVisualizacionFull():void {
+			fullVisualizacion.visible = true;
+		}
+		private function doUnactivateVisualizacionFull():void {
+			fullVisualizacion.visible = false;
+		}
+
+		]]>
+	</mx:Script>
+	<mx:Fade
+		id="fadeIn"
+		alphaFrom="0"
+		alphaTo="1"
+	/>
+	<mx:Fade
+		id="fadeOut"
+		alphaFrom="1"
+		alphaTo="0"
+	/>
+	<mx:Box
+		width="80%" height="88%"
+		verticalScrollPolicy="off" horizontalScrollPolicy="off"
+		backgroundColor="#082c5c" backgroundAlpha="0.4"
+		horizontalAlign="center" verticalAlign="middle">
+		<components:VisualizadorImagen
+			id="image"
+			width="100%" height="100%"
+			clickImage="onClickImage(event);"
+			imagenInicial="@Embed(source='/assets/cumple15/images/imagepreview3.png')"
+		/>
+	</mx:Box>
+	<mx:Canvas
+		width="20.2%" height="88%"
+		top="0" right="0"
+		backgroundColor="#2d2d2d" backgroundAlpha="0.4">
+		<mx:Text
+			width="95%" top="0"
+			text="Descripción:"
+			textAlign="left"
+			styleName="descripcionImagen"
+			color="#000000"
+		/>
+		<mx:Text
+			width="95%" height="90%"
+			top="17"
+			text="{fotoActual.descripcion}"
+			styleName="descripcionImagen"
+		/>
+		<mx:HBox
+			width="100%" height="30"
+			horizontalAlign="center" verticalAlign="middle"
+			bottom="0">
+			<mx:Button
+				id="previousButton"
+				useHandCursor="true" buttonMode="true"
+				styleName="previousImagen"
+				width="15" height="15"
+				click="onAnteriorFoto(event);"
+			/>
+			<mx:Label
+				text="{_categoriaFoto != null ? _categoriaFoto.indexFoto(fotoActual) + 1: 0}"
+				width="20"
+				textAlign="center"
+				styleName="numeroImagen"
+			/>
+			<mx:Button
+				id="nextButton"
+				useHandCursor="true" buttonMode="true"
+				styleName="nextImagen"
+				width="15" height="15"
+				click="onSiguienteFoto(event);"
+			/>
+		</mx:HBox>
+	</mx:Canvas>
+	<mx:Canvas
+		width="100%" height="12.4%"
+		bottom="0"
+		backgroundColor="#ff004e" backgroundAlpha="0.4">
+		<mx:Text
+			width="95%" height="50%"
+			text="Categoría: {categoriaFoto.nombre} - Fecha: {dateFormatter.format(fotoActual.fecha)}"
+			styleName="descripcionImagen"
+			color="#FFFFFF"
+		/>
+		<mx:Text
+			width="95%" height="50%"
+			top="15"
+			text="Nombre: {fotoActual.nombre}"
+			styleName="descripcionImagen"
+			color="#FFFFFF"
+		/>
+	</mx:Canvas>
+	<mx:DateFormatter
+		id="dateFormatter"
+		formatString="DD de MMM del YYY."
+	/>
+
+	<components:Cumple15FullVisualizacion
+		id="fullVisualizacion"
+		width="{Application.application.width}" height="800"
+		x="{_xGlobalPoint}" y="{_yGlobalPoint}"
+		showEffect="{fadeIn}" hideEffect="{fadeOut}"
+		includeInLayout="false" visible="false"
+		categoriaFoto="{_categoriaFoto}"
+		closePanel="onCloseFullVisualizacion(event);"
+	/>
+</mx:Canvas>

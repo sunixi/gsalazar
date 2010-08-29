@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%">
+	<mx:Metadata>
+		[Event(name="clickImage")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		public var imagenBoton:Class;
+		[Bindable]
+		public var allowTransition:Boolean = true;
+		[Bindable]
+		public var imagenMensaje:String;
+		[Bindable]
+		public var imagenBotonWidth:Number = 100;
+		[Bindable]
+		public var imagenBotonHeight:Number = 100;
+		[Bindable]
+		public var yPosition:Number = 50;
+		[Bindable]
+		public var mensajeSectorStyleName:String = 'mensajeSector';
+		
+		private function onMouseOut(e:Event):void {
+			if(allowTransition){
+				Tweener.addTween(mensaje,
+					{
+						y: 0,
+			            time: 1,            
+			            transition: "easeInOutQuart",
+			            onComplete:function():void {  }
+					});
+			}
+		}
+		
+		private function onMouseOver(e:Event):void {
+			if(allowTransition){
+				Tweener.addTween(mensaje,
+					{
+						y: yPosition,
+			            time: 1,            
+			            transition: "easeInOutQuart",
+			            onComplete:function():void {  }
+					});
+			}
+		}
+		private function dispatchClickImageEvent():void {
+			dispatchEvent(new Event("clickImage"));
+		}
+
+		]]>
+	</mx:Script>
+	<mx:Text
+		id="mensaje"
+		selectable="false"
+		text="{imagenMensaje}"
+		width="95%"
+		height="{imagenBotonHeight}"
+		textAlign="center"
+		horizontalCenter="0"
+		y="0"
+		includeInLayout="false"
+		styleName="{mensajeSectorStyleName}"
+	/>
+	<mx:Canvas
+		width="100%" height="90%">
+		<mx:Image
+			buttonMode="true" useHandCursor="true"
+			source="{imagenBoton}"
+			mouseOut="onMouseOut(event);"
+			mouseOver="onMouseOver(event);"
+			width="100%" height="100%"
+			click="dispatchClickImageEvent();"
+		/>
+	</mx:Canvas>
+</mx:Canvas>

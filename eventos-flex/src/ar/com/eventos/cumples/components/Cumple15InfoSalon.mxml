@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%" xmlns:components="ar.com.eventos.cumples.components.*"
+	creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.Foto;
+			import ar.com.eventos.cumples.beans.InfoSalon;
+			import ar.com.eventos.cumples.beans.CategoriaFoto;
+			import ar.com.odra.events.DataCarrierEvent;
+			import ar.com.eventos.components.Imagen;
+			import mx.effects.Fade;
+			import mx.events.EffectEvent;
+			import mx.effects.Move;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.collections.IList;
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		public var infoSalon:InfoSalon;
+		[Bindable]
+		private var fotoActual:Foto;
+		
+		private function init():void {
+			imagen.cambiarFoto(Foto(infoSalon.fotos.getItemAt(0)));
+		}
+		
+		private function onSiguienteFoto(e:Event):void {
+			fotoActual = _categoriaFoto.siguienteFoto(fotoActual);
+			image.cambiarFoto(fotoActual);
+			this.dispatchClickImage(fotoActual);
+		}
+		private function onAnteriorFoto(e:Event):void {
+			fotoActual = _categoriaFoto.anteriorFoto(fotoActual);
+			image.cambiarFoto(fotoActual);
+			this.dispatchClickImage(fotoActual);
+		}
+
+		]]>
+	</mx:Script>
+	<mx:VBox
+		width="300" height="300"
+		verticalAlign="middle" horizontalAlign="left">
+		<mx:Label
+			text="Informaci Fotógrafo"
+		/>
+		<mx:HBox
+			width="100%">
+			<mx:Label
+				text="Nombre: "
+			/>
+			<mx:Label
+				text="{infoSalon.nombre}"
+			/>
+		</mx:HBox>
+		<mx:HBox
+			width="100%">
+				<mx:Label
+					text="Sitio web: "
+				/>
+				<mx:Label
+					text="{infoSalon.enlace}"
+				/>
+		</mx:HBox>
+		<mx:HBox
+			width="100%">
+			<mx:Label
+				text="Dirección: "
+			/>
+			<mx:Label
+				text="{infoSalon.direccion}"
+			/>
+		</mx:HBox>
+
+		<mx:HBox
+			width="100%">
+			<mx:Label
+				text="Descripción: "
+			/>
+			<mx:Text
+				width="100%"
+				text="{infoSalon.descripcion}"
+			/>
+		</mx:HBox>
+
+		<mx:HBox
+			width="100%">
+			<mx:Label
+				text="Localidad: "
+			/>
+			<mx:Label
+				text="{infoSalon.localidad}"
+			/>
+		</mx:HBox>
+
+		<mx:HBox
+			width="100%">
+			<mx:Label
+				text="Teléfono: "
+			/>
+			<mx:Label
+				text="{infoSalon.telefono}"
+			/>
+		</mx:HBox>
+	</mx:VBox>
+	
+</mx:Canvas>

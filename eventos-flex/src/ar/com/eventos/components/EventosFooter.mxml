@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:HBox width="100%" height="100%"	xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Canvas width="100%" height="100%"	xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
 
@@ -10,19 +10,27 @@
 				navigateToURL(new URLRequest("mailto:eventos@odra.com.ar?subject=Servicio ODRA Eventos"));
 			}
 			private function clickODRASolucionesInformaticasWebSite():void {
-				navigateToURL(new URLRequest("http://www.odra.com.ar"));
+				navigateToURL(new URLRequest("http://www.odrait.com.ar"));
 			}
 		]]>
 	</mx:Script>
-	<mx:ControlBar verticalAlign="middle" horizontalAlign="center" paddingBottom="0" paddingTop="0">
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text="Ultima Actualizacion: {shortDateFormatter.format(ultimaActualizacion)} " styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text="2009 - 2010" styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text="Diseñado por: " styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" ODRA Soluciones Informaticas" click="clickODRASolucionesInformaticasWebSite();" styleName="mainFooterStyle"/>
-		<mx:Label fontSize="10" fontWeight="bold" text=" | " styleName="mainFooterStyle"/>
-	</mx:ControlBar>
-	<mx:DateFormatter id="shortDateFormatter" formatString="DD/MM/YYYY"/>
-</mx:HBox>
+	<mx:Label
+		fontSize="10"
+		fontWeight="bold"
+		verticalCenter="0"
+		right="140"
+		text="2010 - ODRA Soluciones Informáticas - "
+		click="clickODRASolucionesInformaticasWebSite();"
+		styleName="mainFooterStyle"
+	/>
+	<mx:Label
+		fontSize="10"
+		fontWeight="bold"
+		verticalCenter="0"
+		right="30"
+		text="www.odrait.com.ar"
+		click="clickODRASolucionesInformaticasWebSite();"
+		styleName="mainFooterStyle"
+		buttonMode="true" useHandCursor="true" mouseChildren="false"
+	/>
+</mx:Canvas>

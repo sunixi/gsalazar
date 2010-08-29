@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import ar.com.odra.events.DataCarrierEvent;
+			import ar.com.eventos.cumples.beans.XVideo;
+			import mx.collections.IList;
+		
+		[Bindable]
+		private var _videos:IList;
+		[Bindable]
+		public var videoActual:XVideo;
+		
+		public function set videos(value:IList):void {
+			_videos = value;
+			if(value.length > 0){
+				this.mostrarVideo(XVideo(value.getItemAt(0)));
+			}
+		}
+		public function get videos():IList {
+			return _videos;
+		}
+
+		private function onClickVideo(event:DataCarrierEvent):void {
+			this.mostrarVideo(XVideo(event.object));
+		}
+		private function mostrarVideo(value:XVideo):void {
+			videoActual = value;
+			visualizadorVideo.mostrarVideo(videoActual);
+		}
+		
+		public function pauseVideo():void {
+			visualizadorVideo.pauseVideo();
+		}
+		
+
+		]]>
+	</mx:Script>
+
+	<components:Cumple15VideosRepeater
+		width="270" height="330"
+		top="10" left="5"
+		videos="{_videos}"
+		clickVideo="onClickVideo(event);"
+	/>
+
+	<components:VisualizadorVideo
+		id="visualizadorVideo"
+		top="10" right="15"
+		width="500" height="330"
+		videoAutoplay="false"
+		videoClickEnabled="false"
+		video="{videoActual}"
+		skinURL="http://{Application.application.URL_BASE}/eventos/videos/SkinOverAll.swf"
+		borderColor="#6f6f6f" borderStyle="solid" borderThickness="4"
+		cornerRadius="10"
+		backgroundColor="#082c5c" backgroundAlpha="0.4"
+	/>
+	<components:Cumple15VideoComentarios
+		width="500" height="180"
+		bottom="0" right="15"
+		video="{videoActual}"
+	/>
+</mx:Canvas>

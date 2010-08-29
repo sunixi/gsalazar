@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%" xmlns:components="ar.com.eventos.components.*"
+	verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	
+	<mx:Script>
+		<![CDATA[
+		
+		]]>
+	</mx:Script>
+	<mx:Image
+		id="backgroundHeader"
+		source="@Embed(source='/assets/images/casamientos/3.jpg')"
+		horizontalCenter="0"
+		top="-100"
+		width="950" height="360"
+		scaleContent="true"
+		filters="{headerFilters}"
+		themeColor="#000000"
+	/>
+	<mx:Canvas
+		width="{backgroundHeader.width}" height="{backgroundHeader.height}"
+		backgroundColor="#666666" backgroundAlpha="0.1"
+		horizontalCenter="0"
+		top="-100"
+	/>
+	<mx:Array id="headerFilters">
+		<mx:BlurFilter
+			blurX="15"
+			blurY="15"
+			quality="1"
+		/>
+	</mx:Array>
+</mx:Canvas>

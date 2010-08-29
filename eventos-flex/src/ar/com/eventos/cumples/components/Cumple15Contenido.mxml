@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%" 
+	xmlns:components="ar.com.eventos.components.*" xmlns:components1="ar.com.eventos.cumples.components.*"
+	currentState="inicio">
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.EventoContexto;
+			
+			
+			[Bindable]
+			public var eventoContexto:EventoContexto;
+
+			public function mostrarInicio():void {
+				this.pausarVideo();
+				this.mostrar('inicio');
+			}
+			public function mostrarInfoPersonal():void {
+				this.pausarVideo();
+				this.mostrar('infoPersonal');
+			}
+			public function mostrarImagenesEvento():void {
+				this.pausarVideo();
+				this.mostrar('imagenesEvento');
+			}
+			public function mostrarVideosEvento():void {
+				this.mostrar('videosEvento');
+			}
+			public function mostrarInfoSalon():void {
+				this.pausarVideo();
+				this.mostrar('infoSalon');
+			}
+			public function mostrarEmpresa():void {
+				this.pausarVideo();
+				this.mostrar('empresa');
+			}
+
+			private function pausarVideo():void {
+				if(cumple15Videos != null){
+					cumple15Videos.pauseVideo();
+				}
+			}
+			
+			private function mostrar(name:String):void {
+				currentState = name;
+			}
+			
+		]]>
+	</mx:Script>
+
+
+	<mx:states>
+		<mx:State name="imagenesEvento">
+			<mx:AddChild>
+				<components1:Cumple15Imagenes
+					width="100%" height="100%"
+					categorias="{eventoContexto.categoriasFotos}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="videosEvento">
+			<mx:AddChild>
+				<components1:Cumple15Videos
+					id="cumple15Videos"
+					width="100%" height="100%"
+					videos="{eventoContexto.videos}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="inicio">
+			<mx:AddChild>
+				<components1:Cumple15Inicio
+					width="100%" height="100%"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="empresa">
+			<mx:AddChild>
+				<components1:Cumple15Empresa
+					width="100%" height="100%"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="infoPersonal">
+			<mx:AddChild>
+				<components1:Cumple15InfoPersonal
+					width="100%" height="100%"
+					informacionPersonal="{eventoContexto.infoPersonal}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="infoSalon">
+			<mx:AddChild>
+				<components1:Cumple15InfoSalon
+					width="100%" height="100%"
+					infoSalon="{eventoContexto.infoSalon}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:ArrayCollection id="imagenes">
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic06.jpg')" descripcion="Descripción imagen 01."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic07.jpg')" descripcion="Descripción imagen 02."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic08.jpg')" descripcion="Descripción imagen 03."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic09.jpg')" descripcion="Descripción imagen 04."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic10.jpg')" descripcion="Descripción imagen 05."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic11.jpg')" descripcion="Descripción imagen 06."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic09.jpg')" descripcion="Descripción imagen 07."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic10.jpg')" descripcion="Descripción imagen 08."/>
+		<mx:Object imagen="@Embed(source='/assets/images/ultimasAgregadas/pic11.jpg')" descripcion="Descripción imagen 09."/>
+	</mx:ArrayCollection>
+</mx:Canvas>

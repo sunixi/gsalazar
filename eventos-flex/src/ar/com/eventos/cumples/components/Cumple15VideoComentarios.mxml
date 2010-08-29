@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	currentState="visualizando"
+	cornerRadius="10"
+	borderColor="#6f6f6f" borderStyle="solid" borderThickness="4"
+	xmlns:forms="ar.com.odra.components.forms.*"
+	xmlns:inputs="ar.com.odra.components.inputs.*"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="clickFullview")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.XVideo;
+			import ar.com.eventos.cumples.beans.Comentario;
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+				
+		[Bindable]
+		public var video:XVideo;
+		
+		private function onClickComentar(e:Event):void {
+			currentState = 'comentando';
+		}
+		
+		private function onClickCancelar(e:Event):void {
+			currentState = 'visualizando';
+		}
+		]]>
+	</mx:Script>
+	<mx:HBox
+		id="videoInfoContainer"
+		width="100%" height="100%"
+		paddingBottom="0" paddingTop="0"
+		paddingLeft="0" paddingRight="0"
+		horizontalGap="0">
+		<mx:VBox
+			width="40%" height="100%"
+			verticalGap="0">
+			<mx:Label
+				text="Descripción:"
+				styleName="videoDescripcionTitulo"
+			/>
+			<mx:Label
+				text="{video.nombre}"
+				styleName="videoDescripcion"
+			/>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:states>
+		<mx:State name="visualizando">
+			<mx:AddChild position="lastChild" relativeTo="{videoInfoContainer}">
+				<components:Cumple15ComentariosRepeater
+					width="60%" height="100%"
+					comentariosListHeight="125"
+					clickComentar="onClickComentar(event);"
+					comentarios="{video.comentarios}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="comentando">
+			<mx:AddChild position="lastChild" relativeTo="{videoInfoContainer}">
+				<components:Cumple15ComentarioXForm
+					width="60%" height="100%"
+					fieldDirection="horizontal"
+					clickCancelar="onClickCancelar(event);"
+					clickComentar="onClickCancelar(event);"
+					comentarios="{video.comentarios}"
+					isImagen="false"
+				/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

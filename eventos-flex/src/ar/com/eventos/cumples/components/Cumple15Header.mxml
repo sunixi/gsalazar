@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%" 
+	xmlns:components="ar.com.eventos.components.*">
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.EventoContexto;
+			
+			[Bindable]
+			public var eventoContexto:EventoContexto
+			
+		]]>
+	</mx:Script>
+		
+	<mx:Label
+		top="5"
+		text="{eventoContexto.valorInfoPersonal('nombre')} {eventoContexto.valorInfoPersonal('apellidos')}"
+		styleName="tituloHeader"
+		horizontalCenter="-120"
+	/>
+	<mx:Label
+		text="Muchas Felicidades!!!"
+		styleName="tituloHeader"
+		horizontalCenter="50"
+		bottom="-20"
+		includeInLayout="false"
+	/>
+	<components:ShareComponent
+		width="30" height="100"
+		right="10"
+		top="5"
+		shareSiteGap="1"
+		shareSiteHeight="32"
+	/>
+</mx:Canvas>

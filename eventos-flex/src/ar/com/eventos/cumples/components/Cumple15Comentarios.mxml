@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	currentState="visualizando"
+	cornerRadius="10"
+	borderColor="#6f6f6f" borderStyle="solid" borderThickness="4"
+	xmlns:forms="ar.com.odra.components.forms.*"
+	xmlns:inputs="ar.com.odra.components.inputs.*"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="clickFullview")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.Comentario;
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			import ar.com.eventos.cumples.beans.Foto;
+		
+		[Bindable]
+		public var foto:Foto;
+		
+		private function onClickComentar(e:Event):void {
+			currentState = 'comentando';
+		}
+		
+		private function onClickCancelar(e:Event):void {
+			currentState = 'visualizando';
+		}
+		]]>
+	</mx:Script>
+	
+	<mx:states>
+		<mx:State name="visualizando">
+			<mx:AddChild>
+				<components:Cumple15ComentariosRepeater
+					width="100%" height="100%"
+					clickComentar="onClickComentar(event);"
+					comentarios="{foto.comentarios}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="comentando">
+			<mx:AddChild>
+				<components:Cumple15ComentarioXForm
+					width="100%" height="100%"
+					clickCancelar="onClickCancelar(event);"
+					clickComentar="onClickCancelar(event);"
+					comentarios="{foto.comentarios}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+</mx:Canvas>

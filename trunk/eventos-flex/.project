@@ -19,7 +19,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>C:/Dev/Projects/eventos-core/src/main/webapp</location>
+			<location>C:/Dev/Projects/eventos-core/src/main</location>
 		</link>
 	</linkedResources>
 </projectDescription>

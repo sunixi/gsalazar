@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+		
+		private function onClickEnlace(enlace:String, nombre:String):void {
+			navigateToURL(new URLRequest(enlace),'_blank');
+		}
+		private function mouseOver(descripcion:String):void {
+			descripcionURL.text = descripcion;
+		}
+		private function mouseOut():void {
+			descripcionURL.text = '';
+		}
+
+		]]>
+	</mx:Script>
+	<mx:Canvas
+	top="10"
+	right="20" left="20"
+	height="20%">
+		<mx:Image
+			source="@Embed(source='/assets/images/odraLogo.gif')"
+			scaleX="1.1" scaleY="1.1"
+			top="0"
+			horizontalCenter="0"
+		/>
+		<mx:Label
+			text="ODRA Soluciones Informáticas"
+			styleName="ODRASolucionesInformaticasTitulo"
+			bottom="0"
+			horizontalCenter="0"
+		/>
+	</mx:Canvas>
+	<mx:Canvas
+		top="130" bottom="90"
+		right="30"
+		width="50%">
+		<mx:HBox
+			top="10"
+			horizontalCenter="0"
+			height="30">
+			<mx:Label
+				text="Sitio Web:"
+				styleName="ODRASolucionesInformaticasEnlace"
+				fontWeight="bold"
+				fontStyle="normal"
+			/>
+			<mx:Label
+				text="http://www.odrait.com.ar"
+				click="onClickEnlace('http://www.odrait.com.ar','odraIT')"
+				styleName="ODRASolucionesInformaticasEnlace"
+				useHandCursor="true" buttonMode="true" mouseChildren="false"
+				mouseOver="mouseOver('Visita el sitio oficial ODRA Soluciones Informáticas, y contactános para proyectos y desarrollos.');" mouseOut="mouseOut();"
+			/>
+		</mx:HBox>
+		<mx:HBox
+			top="30" horizontalCenter="0"
+			height="30">
+			<mx:Label
+				text="Blog:"
+				styleName="ODRASolucionesInformaticasEnlace"
+				fontWeight="bold"
+				fontStyle="normal"
+			/>
+			<mx:Label
+				text="http://blog.odra.com.ar"
+				click="onClickEnlace('http://blog.odra.com.ar','odraBlog')"
+				styleName="ODRASolucionesInformaticasEnlace"
+				useHandCursor="true" buttonMode="true" mouseChildren="false"
+				mouseOver="mouseOver('Blog donde encontrarás artículos de temas sobre las ultimas tecnología y desarrollos de ODRA Soluciones Informáticas.');" mouseOut="mouseOut();"
+			/>
+		</mx:HBox>
+		<mx:HBox
+			top="50" horizontalCenter="0"
+			height="30">
+			<mx:Label
+				text="Foro:"
+				styleName="ODRASolucionesInformaticasEnlace"
+				fontWeight="bold"
+				fontStyle="normal"
+			/>
+			<mx:Label
+				text="http://foro.odra.com.ar"
+				click="onClickEnlace('http://foro.odra.com.ar','odraForo')"
+				styleName="ODRASolucionesInformaticasEnlace"
+				useHandCursor="true" buttonMode="true" mouseChildren="false"
+				mouseOver="mouseOver('Foro oficial de debate sobre temas variados.');" mouseOut="mouseOut();"
+			/>
+		</mx:HBox>
+		<mx:VBox
+			top="80" horizontalCenter="0"
+			verticalGap="1"
+			height="60">
+			<mx:Label
+				text="Productos &amp; Servicios:"
+				styleName="ODRASolucionesInformaticasEnlace"
+				fontWeight="bold"
+				width="60%"
+				textAlign="left"
+				fontStyle="normal"
+			/>
+			<mx:Label
+				text="http://productos.odra.com.ar"
+				styleName="ODRASolucionesInformaticasEnlace"
+				click="onClickEnlace('http://productos.odra.com.ar','odraProductos')"
+				useHandCursor="true" buttonMode="true" mouseChildren="false"
+				textAlign="right"
+				mouseOver="mouseOver('Sitio desarrollado como ejemplo para todas las PyMEs que quieran realizar sus primeros pasos en internet.');" mouseOut="mouseOut();"
+			/>
+			<mx:Label
+				text="http://eventos.odra.com.ar"
+				styleName="ODRASolucionesInformaticasEnlace"
+				click="onClickEnlace('http://eventos.odra.com.ar','odraEventos')"
+				useHandCursor="true" buttonMode="true" mouseChildren="false"
+				textAlign="right"
+				mouseOver="mouseOver('');" mouseOut="mouseOut();"
+			/>
+		</mx:VBox>
+		<mx:Box
+			width="100%" height="30%"
+			verticalAlign="middle" horizontalAlign="center"
+			bottom="30">
+			<mx:Text
+				id="descripcionURL"
+				selectable="false"
+				styleName="ODRASolucionesInformaticasDescripcion"
+				fontWeight="normal"
+				width="100%" height="100%"
+				textAlign="center"
+			/>
+		</mx:Box>
+	</mx:Canvas>
+
+	<mx:Canvas
+		top="110" bottom="100"
+		left="10"
+		width="45%">		
+		<mx:Text
+			top="25"
+			text="ODRA Soluciones Informáticas es una pequeña e innovadora empresa que ofrece servicios para desarrollos de sistemas y sitios web de alta calidad, y experiencia de usuario. Con altos conocimientos en las últimas tecnologías del mercado, su distinción en la comunicación con el cliente, y alta calidad en sus desarrollos, ODRA Soluciones Informáticas ofrece a sus clientes los mejores productos y servicios."
+			selectable="false"
+			styleName="ODRASolucionesInformaticasDescripcion"
+			fontWeight="normal"
+			width="80%" height="100%"
+			textAlign="center"
+			horizontalCenter="0"
+		/>
+	</mx:Canvas>
+
+</mx:Canvas>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%" 
+	xmlns:components="ar.com.eventos.components.*"
+	xmlns:components1="ar.com.eventos.cumples.components.*">
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.EventoContexto;
+		
+			[Bindable]
+			public var eventoContexto:EventoContexto;
+			
+			private function clickInicio(e:Event):void {
+				cumple15Contenido.mostrarInicio();
+			}
+			private function clickInfoPersonal(e:Event):void {
+				cumple15Contenido.mostrarInfoPersonal();
+			}
+			private function clickImagenesEvento(e:Event):void {
+				cumple15Contenido.mostrarImagenesEvento();
+			}
+			private function clickVideosEvento(e:Event):void {
+				cumple15Contenido.mostrarVideosEvento();
+			}
+			private function clickInfoSalon(e:Event):void {
+				cumple15Contenido.mostrarInfoSalon();
+			}
+			private function clickEmpresa(e:Event):void {
+				cumple15Contenido.mostrarEmpresa();
+			}
+		]]>
+	</mx:Script>
+	<!--
+	-->
+	<components1:Cumple15Header
+		width="1024" height="110"
+		eventoContexto="{eventoContexto}"
+		horizontalCenter="0" top="0"
+		borderColor="red" borderStyle="solid" borderThickness="1"
+	/>
+	<components1:Cumple15MenuIzquierdo
+		width="200" height="440"
+		top="10"
+		left="23"
+		clickEmpresa="clickEmpresa(event);"
+		clickImagenesEvento="clickImagenesEvento(event);"
+		clickInfoPersonal="clickInfoPersonal(event);"
+		clickInfoSalon="clickInfoSalon(event);"
+		clickInicio="clickInicio(event);"
+		clickVideosEvento="clickVideosEvento(event);"
+	/>
+	<components1:Cumple15Footer
+		width="1024" height="150"
+		horizontalCenter="0" bottom="0"
+		borderColor="red" borderStyle="solid" borderThickness="1"
+	/>
+	<components1:Cumple15Contenido
+		id="cumple15Contenido"
+		width="790" height="520"
+		top="120"
+		eventoContexto="{eventoContexto}"
+		right="5"
+		borderColor="red" borderStyle="solid" borderThickness="1"
+	/>
+</mx:Canvas>

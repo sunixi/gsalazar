@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:forms="ar.com.odra.components.forms.*"
+	xmlns:inputs="ar.com.odra.components.inputs.*">
+	<mx:Metadata>
+		[Event(name="clickComentar")]
+		[Event(name="clickCancelar")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.IList;
+			import ar.com.eventos.cumples.beans.Comentario;
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			import ar.com.eventos.cumples.beans.Foto;
+		
+		[Bindable]
+		public var comentarios:IList;
+		[Bindable]
+		public var fieldDirection:String = "vertical";
+		[Bindable]
+		private var errorActual:String;
+		[Bindable]
+		public var isImagen:Boolean = true;
+
+		private function onClickDoComentar(e:Event):void {
+			var errors:Array = Validator.validateAll(comentarioXFormValidators);
+			if(errors.length == 0){
+				var comentario:Comentario = this.buildComentario();
+				comentarios.addItem(comentario);
+				dispatchEvent(new Event("clickComentar"));
+				
+			}
+		}
+		private function buildComentario():Comentario {
+			var comentario:Comentario = new Comentario();
+			comentario.comentario = comentarioTextArea.text;
+			comentario.usuario = usuarioTextInput.text;
+			comentario.fecha = new Date();
+			comentario.email = emailTextInput.text;
+			return comentario;
+		}
+		private function onClickCancelar(e:Event):void {
+			dispatchEvent(new Event("clickCancelar"));
+		}
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas
+		width="100%" height="85%"
+		top="0">
+		<forms:XForm
+			top="0"
+			id="comentarioXForm"
+			width="90%" height="80%">
+			<inputs:XTextInput
+				id="usuarioTextInput"
+				label="Usuario: "
+				direction="{fieldDirection}"
+				labelWidth="{isImagen ? 75: 60}"
+				inputWidth="{isImagen ? 150: 190}"
+				errorLabelStyleName="formErrorStyleName"
+			/>
+			<inputs:XTextInput
+				id="emailTextInput"
+				label="Email: "
+				direction="{fieldDirection}"
+				labelWidth="{isImagen ? 75: 50}"
+				inputWidth="{isImagen ? 150: 200}"
+				errorLabelStyleName="formErrorStyleName"
+			/>
+			<inputs:XTextArea
+				id="comentarioTextArea"
+				label="Comentario: "
+				labelWidth="{isImagen ? 100: 80}"
+				direction="{fieldDirection}"
+				inputHeight="{isImagen ? 80: 50}"
+				inputWidth="{isImagen ? 150: 170}"
+				errorLabelStyleName="formErrorStyleName"
+			/>
+		</forms:XForm>
+	</mx:Canvas>
+	<mx:HBox width="100%" height="10%" bottom="0"
+		verticalAlign="middle" horizontalAlign="right">
+		<mx:LinkButton
+			label="Comentar"
+			bottom="0"
+			left="0"
+			click="onClickDoComentar(event);"
+			focusEnabled="false"
+		/>
+		<mx:LinkButton
+			label="Cancelar"
+			bottom="0"
+			right="0"
+			click="onClickCancelar(event);"
+			focusEnabled="false"
+		/>
+	</mx:HBox>
+	<mx:Array id="comentarioXFormValidators">
+		<mx:EmailValidator
+			source="{emailTextInput}"
+			property="text"
+			required="true"
+			requiredFieldError="Este campo es requerido."
+			invalidIPDomainError="El dominio de la IP en su dirección de correo electrónico tiene un formato incorrecto."
+			invalidCharError="Su dirección de correo electrónico contiene caracteres no válidos."
+			invalidDomainError="El dominio en su dirección de correo electrónico tiene un formato incorrecto."
+			invalidPeriodsInDomainError="El dominio en su dirección de e-mail tiene períodos consecutivos."
+			missingAtSignError="El caracteres arroba (@) falta en su dirección de e-mail."
+			missingPeriodInDomainError="El dominio en su dirección de e-mail le falta un(os) punto(s)."
+			tooManyAtSignsError="Su dirección de correo electrónico contiene demasiados caracteres arroba (@)."
+			missingUsernameError="El nombre de usuario en su dirección de e-mail no se encuentra."
+		/>
+		<mx:StringValidator
+			source="{usuarioTextInput}"
+			property="text"
+			maxLength="40"
+			minLength="5"
+			required="true"
+			requiredFieldError="Este campo es requerido."
+			tooLongError="El texto es demasiado largo para el máximo permitido. Debe tener como máximo 40 caracteres de largo."
+			tooShortError="El texto es demasiado corto para el mínimo permitido. Debe tener al menos 5 caracteres de largo."
+		/>
+		<mx:StringValidator
+			source="{comentarioTextArea}"
+			property="text"
+			maxLength="70"
+			minLength="5"
+			required="true"
+			requiredFieldError="Este campo es requerido."
+			tooLongError="El texto es demasiado largo para el máximo permitido. Debe tener como máximo 70 caracteres de largo."
+			tooShortError="El texto es demasiado corto para el mínimo permitido. Debe tener al menos 5 caracteres de largo."
+		/>
+	</mx:Array>
+</mx:Canvas>

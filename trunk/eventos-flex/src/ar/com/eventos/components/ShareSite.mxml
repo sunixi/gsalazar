@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%">
+	<mx:Metadata>
+		[Event(name="clickShare")]
+	</mx:Metadata>
+<mx:Script>
+	<![CDATA[
+		
+		[Bindable]
+		public var shareSiteImage:Class;
+		[Bindable]
+		public var shareSiteTooltip:String;
+		[Bindable]
+		public var shareDropshadowColor:uint = 0x000066;
+		
+		private function mouseOut(e:Event):void {
+			shareImage.filters = null;
+		}
+		
+		private function mouseOver(e:Event):void {
+			shareImage.filters = [dropShadowFilter];
+		}
+		private function dispatchShare():void {
+			dispatchEvent(new Event('clickShare'));
+		}
+	]]>
+</mx:Script>
+	<mx:Image
+		id="shareImage"
+		source="{shareSiteImage}"
+		useHandCursor="true" buttonMode="true"
+		mouseOver="mouseOver(event);" mouseOut="mouseOut(event);"
+		click="dispatchShare();"
+		toolTip="{shareSiteTooltip}"
+	/>
+	<mx:DropShadowFilter
+		id="dropShadowFilter"
+		blurX="10" blurY="10"
+		color="{shareDropshadowColor}"
+		distance="3"
+		quality="10"
+	/>
+</mx:Canvas>

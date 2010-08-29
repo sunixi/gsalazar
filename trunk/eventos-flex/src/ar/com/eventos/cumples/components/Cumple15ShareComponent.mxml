@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	direction="vertical"
+	verticalGap="{shareSiteGap}" horizontalGap="{shareSiteGap}"
+	horizontalAlign="center" verticalAlign="top"
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.components.*">
+	<mx:Metadata>
+		[Event(name="clickFullview")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.odra.webServices.social.share.AddThisShareService;
+			import ar.com.odra.webServices.social.share.ShareService;
+		[Bindable]
+		public var shareSiteWidth:Number = 40;
+		[Bindable]
+		public var shareSiteHeight:Number = 40;
+		[Bindable]
+		public var shareSiteGap:Number = 0;
+		[Bindable]
+		public var facebookShareService:ShareService = new AddThisShareService('facebook','productos.odra.com.ar','ODRA Soluciones Informaticas');
+		[Bindable]
+		public var twitterShareService:ShareService = new AddThisShareService('twitter','productos.odra.com.ar','ODRA Soluciones Informaticas');
+		[Bindable]
+		public var emailShareService:ShareService = new AddThisShareService('email','productos.odra.com.ar','ODRA Soluciones Informaticas');
+		[Bindable]
+		public var message:String = "";
+		
+		private function clickFacebook(event:Event):void{
+			facebookShareService.service();
+		}
+		
+		private function clickTwitter(event:Event):void{
+			twitterShareService.service();
+		}
+		private function clickEmail(event:Event):void{
+			emailShareService.service();
+		}
+		
+		private function clickFullView(e:Event):void {
+			dispatchEvent(new Event("clickFullview"));
+		}
+		]]>
+	</mx:Script>
+	<components:ShareSite
+		width="{shareSiteWidth}" height="{shareSiteHeight}"
+		shareSiteImage="@Embed(source='/assets/images/facebook.png')"
+		shareSiteTooltip="Compartí {message} en Facebook!"
+		clickShare="clickFacebook(event);"
+	/>
+	<components:ShareSite
+		width="{shareSiteWidth}" height="{shareSiteHeight}"
+		shareSiteImage="@Embed(source='/assets/images/twitter.png')"
+		shareSiteTooltip="Compartí {message} en Twitter!"
+		clickShare="clickTwitter(event);"
+	/>
+	<components:ShareSite
+		width="{shareSiteWidth}" height="{shareSiteHeight}"
+		shareSiteImage="@Embed(source='/assets/images/email.png')"
+		shareSiteTooltip="Compartí {message} por Email!"
+		clickShare="clickEmail(event);"
+	/>
+	<!--
+	<components:ShareSite
+		width="{shareSiteWidth}" height="{shareSiteHeight}"
+		shareSiteImage="@Embed(source='/assets/cumple15/images/comments.png')"
+		shareSiteTooltip="Comentarios!"
+	/>
+	-->
+	<components:ShareSite
+		width="{shareSiteWidth}" height="{shareSiteHeight}"
+		shareSiteImage="@Embed(source='/assets/cumple15/images/fullview.png')"
+		shareSiteTooltip="Visualización Completa!"
+		clickShare="clickFullView(event);"
+	/>
+</mx:Box>

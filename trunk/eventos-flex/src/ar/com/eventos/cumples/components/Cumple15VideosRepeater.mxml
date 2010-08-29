@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*"
+	borderColor="#6f6f6f" borderStyle="solid" borderThickness="4"
+	cornerRadius="10">
+	<mx:Metadata>
+		[Event(name="clickVideo", type="ar.com.odra.events.DataCarrierEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.odra.events.DataCarrierEvent;
+			import mx.controls.Alert;
+			import ar.com.odra.utils.AutoScrollingManager;
+			import ar.com.eventos.cumples.beans.XVideo;
+			import mx.collections.IList;
+			import ar.com.eventos.cumples.beans.Comentario;
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			import ar.com.eventos.cumples.beans.Foto;
+		
+		[Bindable]
+		public var videos:IList;
+		
+		private function nombreHTML(value:Object):String {
+			var video:XVideo = XVideo(value);
+			var htmlText:String = '';
+			htmlText += "<font face='Verdana' size='10'><b>" + video.nombre + " (" + video.comentarios.length + ")" + ":</b></font></br>";
+			htmlText += "<font face='Verdana' size='9'><i>" + video.descripcion + "</i></font>";
+			return htmlText;
+		}
+		private function onClickVideo(event:DataCarrierEvent):void {
+			dispatchEvent(new DataCarrierEvent("clickVideo", event.object));
+		}
+		]]>
+	</mx:Script>
+	<mx:DateFormatter
+		id="dateFormatter"
+		formatString="DD/MM/YYYY"
+	/>
+	<mx:VBox
+		id="topContainer"
+		left="0" right="0"
+		top="20"
+		verticalGap="0"
+		paddingLeft="0" paddingRight="0"
+		paddingBottom="0" paddingTop="0"
+		height="280" maxHeight="280"
+		verticalScrollPolicy="off"
+		horizontalAlign="left" verticalAlign="top">
+		<mx:Repeater
+			id="comentariosRepeater"
+			width="100%" height="100%"
+			dataProvider="{videos}">
+			<mx:HBox
+				width="90%"
+				horizontalGap="0"
+				verticalAlign="middle" horizontalAlign="left"
+				paddingLeft="0" paddingRight="0"
+				paddingBottom="0" paddingTop="0">
+				<components:VisualizadorVideo
+					width="150" height="95"
+					videoAutoplay="false"
+					video="{XVideo(comentariosRepeater.currentItem)}"
+					clickVideo="onClickVideo(event);"
+				/>
+				<mx:HBox
+					width="100" height="100%"
+					horizontalGap="0"
+					verticalAlign="middle" horizontalAlign="left"
+					paddingLeft="0" paddingRight="0"
+					paddingBottom="0" paddingTop="0">
+					<mx:Text
+						width="100%"
+						truncateToFit="true"
+						selectable="false"
+						htmlText="{nombreHTML(comentariosRepeater.currentItem)}"
+						textAlign="left"
+					/>
+				</mx:HBox>
+			</mx:HBox>
+		</mx:Repeater>
+	</mx:VBox>
+	<mx:VBox
+		id="bottomContainer"
+		paddingLeft="0" paddingRight="0"
+		paddingBottom="0" paddingTop="0"
+		width="100%" height="20" bottom="0"
+		verticalGap="0"
+		horizontalAlign="center" verticalAlign="top">
+		<mx:Label
+			width="100%"
+			text="{videos.length} videos."
+			textAlign="left"
+			fontStyle="italic"
+		/>
+	</mx:VBox>
+	<mx:Image
+		mouseMove="{topContainer.verticalScrollPosition = topContainer.verticalScrollPosition - 3}"
+		click="{topContainer.verticalScrollPosition = topContainer.verticalScrollPosition - 5}"
+		useHandCursor="true" buttonMode="true"
+		width="25" height="25"
+		left="195"
+		top="0"
+		source="@Embed(source='/assets/cumple15/images/up.png')"
+	/>
+	<mx:Image
+		mouseMove="{topContainer.verticalScrollPosition = topContainer.verticalScrollPosition + 3}"
+		click="{topContainer.verticalScrollPosition = topContainer.verticalScrollPosition + 5}"
+		useHandCursor="true" buttonMode="true"
+		width="25" height="25"
+		left="195"
+		bottom="0"
+		source="@Embed(source='/assets/cumple15/images/down.png')"
+	/>
+</mx:Canvas>

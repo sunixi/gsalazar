@@ -1,716 +1,412 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="absolute"
 	width="100%" height="100%"  
-	xmlns:components="ar.com.eventos.components.*">
-    <mx:Style>
-        Application {
-            paddingLeft: 1px;
-            paddingRight: 1px;
-            paddingTop: 0px;
-            paddingBottom: 0px;
-            horizontalAlign: "left";
-            backgroundImage: "";
-            backgroundColor: #AAAACC;
-        }
-	</mx:Style>
+	xmlns:components="ar.com.eventos.components.*"
+	xmlns:components1="ar.com.eventos.cumples.components.*"
+	currentState="cumples"
+	borderColor="yellow" borderStyle="solid" borderThickness="1"
+	creationComplete="init();"
+	xmlns:mxml="org.bytearray.mxml.*" xmlns:download="ar.com.odra.webServices.io.download.*" xmlns:beans="ar.com.eventos.cumples.beans.*" xmlns:beans1="ar.com.odra.attachments.beans.*">
 	<mx:Script>
 		<![CDATA[
+			import com.facebook.net.FacebookCall;
+			import com.facebook.commands.users.GetInfo;
+			import com.facebook.events.FacebookEvent;
+			import com.facebook.Facebook;
+			import com.facebook.session.WebSession;
+			import ar.com.odra.events.attachment.LoaderBufferEvent;
+			import ar.com.odra.attachments.beans.ImageAttachment;
+			import ar.com.odra.attachments.beans.IAttachment;
+			import ar.com.odra.utils.StringUtil;
+			import ar.com.odra.attachments.loader.LoaderBuffer;
+			import org.bytearray.gif.events.FrameEvent;
+			import org.bytearray.gif.events.GIFPlayerEvent;
+			import org.bytearray.gif.player.GIFPlayer;
+			import org.bytearray.gif.encoder.GIFEncoder;
+			import ar.com.eventos.cumples.beans.EventoContexto;
+			import ar.com.eventos.cumples.beans.InfoSalon;
+			import ar.com.eventos.cumples.beans.InfoPersonal;
+			import ar.com.eventos.cumples.beans.Foto;
+			import ar.com.eventos.cumples.beans.Configuracion;
+			import ar.com.eventos.cumples.beans.Comentario;
+			import ar.com.eventos.cumples.beans.CategoriaFoto;
+			import mx.controls.Alert;
+			import mx.managers.CursorManager;
+			import com.rubenswieringa.CSSLoader;
 			
-
-			[Embed(source="assets/images/Icons.swf", symbol="ButtonIcon")]
-
 			[Bindable]
-
-			public var ButtonIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="ButtonBarIcon")]
-
-			[Bindable]
-
-			public var ButtonBarIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="LinkButtonIcon")]
-
-			[Bindable]
-
-			public var LinkButtonIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="LinkBarIcon")]
-
-			[Bindable]
-
-			public var LinkBarIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="HDividedBoxIcon")]
-
-			[Bindable]
-
-			public var HDividedBoxIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="VDividedBoxIcon")]
-
-			[Bindable]
-
-			public var VDividedBoxIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="CheckBoxIcon")]
-
-			[Bindable]
-
-			public var CheckBoxIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="ComboBoxIcon")]
-
-			[Bindable]
-
-			public var ComboBoxIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="DateChooserIcon")]
-
-			[Bindable]
-
-			public var DateChooserIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="NumericStepperIcon")]
-
-			[Bindable]
-
-			public var NumericStepperIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="RadioButtonIcon")]
-
-			[Bindable]
-
-			public var RadioButtonIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="TextAreaIcon")]
-
-			[Bindable]
-
-			public var TextAreaIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="TextInputIcon")]
-
-			[Bindable]
-
-			public var TextInputIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="ListIcon")]
-
-			[Bindable]
-
-			public var ListIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="TreeIcon")]
-
-			[Bindable]
-
-			public var TreeIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="AccordionIcon")]
-
-			[Bindable]
-
-			public var AccordionIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="TabNavigatorIcon")]
-
-			[Bindable]
-
-			public var TabNavigatorIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="HScrollBarIcon")]
-
-			[Bindable]
-
-			public var HScrollBarIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="VScrollBarIcon")]
-
-			[Bindable]
-
-			public var VScrollBarIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="HSliderIcon")]
-
-			[Bindable]
-
-			public var HSliderIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="VSliderIcon")]
-
-			[Bindable]
-
-			public var VSliderIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="ColorPickerIcon")]
-
-			[Bindable]
-
-			public var ColorPickerIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="DataGridIcon")]
-
-			[Bindable]
-
-			public var DataGridIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="MenuBarIcon")]
-
-			[Bindable]
-
-			public var MenuBarIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="ProgressBarIcon")]
-
-			[Bindable]
-
-			public var ProgressBarIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="CursorsIcon")]
-
-			[Bindable]
-
-			public var CursorsIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="ToolTipIcon")]
-
-			[Bindable]
-
-			public var ToolTipIcon:Class;
-
-			[Embed(source="assets/images/Icons.swf", symbol="CursorsPreview")]
-
-			[Bindable]
-
-			public var CursorsPreviewClip:Class;
-
-			[Embed(source="assets/images/Title.swf")]
-
-			[Bindable]
-
-			public var TitleImg:Class;
-
-			[Embed(source="assets/images/CandySplash.png")]
-
-			[Bindable]
-			public var SplashImg:Class;
-
+			public var URL_BASE:String = 'eventos.odra.com.ar';//'localhost:8080'
+		
+		private function init():void {
+			Security.allowDomain("*");
 			
+			//fileDownloadService.url = 'http://www.webrecursos.es/wp-content/uploads/2008/12/flex3_.jpg';
+			
+			imagenFondo.visible = true;
+			if(cumple15PantallaInicial != null){
+				cumple15PantallaInicial.visible = true;
+			}
+			trace(StringUtil.generateRandom(4, "ROGER"));
+		}
 
-			private function onCreationComplete(p_evt:Event):void {
-
-				manualProgressBar.setProgress(40,100);
-
+		private function buildAttachment(url:String):IAttachment {
+			var image:ImageAttachment = new ImageAttachment();
+			image.url = url;
+			return image;
+		}
+		    private function onFacebookConnect():void {
+		    	ExternalInterface.addCallback("onLogin", onLogin);
+		    	ExternalInterface.call('fbLogin', '8ae191833c357ff6c3cdf0761cc03a76');
+		    }
+			/**
+			 * JS callback - called when user logged into facebook account.
+			 */
+			 [Bindable]
+			 private var _session:Object;
+			 [Bindable]
+			 private var _facebook:Facebook;
+			private function onLogin(session:Object):void
+			{
+				Alert.show('onLogin');
+				if(session == null)
+				{
+					return;
+				}
+			
+				_session = session;
+			
+				// save session data in shared object for later use ...
+				var my_so:SharedObject = SharedObject.getLocal('SO_NAME');
+				my_so.data.session = session;
+			
+				// start a WebSession with the session secret and key passed in from Javascript
+				var webSession:WebSession = new WebSession('8ae191833c357ff6c3cdf0761cc03a76', session.secret, session.session_key);
+				_facebook.startSession(webSession);
+			
+				webSession.addEventListener(FacebookEvent.CONNECT, onSessionConnect);
+				webSession.addEventListener(FacebookEvent.ERROR, onSessionError);
+				webSession.verifySession();
+			}
+			private function onSessionError(e:FacebookEvent):void {
+				Alert.show('onsessionError');
+			}
+			private function onSessionConnect(e:FacebookEvent):void {
+				Alert.show('onSessionConnect');
+				var call:FacebookCall = _facebook.post(new GetInfo([_session.uid], ['first_name', 'last_name']));
+				call.addEventListener(FacebookEvent.COMPLETE, handleGetInfoResponse);
+			}
+			private function handleGetInfoResponse(e:FacebookEvent):void {
+				
 			}
 
-			
-
-			private function onHeaderLink(p_evt:MouseEvent):void {
-
-				var req:URLRequest = new URLRequest("http://www.philterdesign.com/");
-
-				navigateToURL(req);
-
-			}
-
-			
-
-			private function onTreeSelect(p_evt:Event):void {
-
-				if ((p_evt.currentTarget.selectedItem as XML).children().length() > 0) { return; }
-
-				previewStack.selectedChild = this[p_evt.currentTarget.selectedItem.@label + "Preview"];
-
-			}
-
+		    
+		    private function compileBeans():void {
+		    	CategoriaFoto;
+		    	Comentario;
+		    	Configuracion;
+		    	EventoContexto;
+		    	Foto;
+		    	InfoPersonal;
+		    	InfoSalon;
+		    }
+		    
 		]]>
 	</mx:Script>
-	<mx:XML xmlns="" id="previewListData">
-
-		<nodes>
-
-			<node label="One"/>
-
-			<node label="Two"/>
-
-			<node label="Three"/>
-
-			<node label="Four"/>
-
-		</nodes>
-
-	</mx:XML>
-
-	<mx:XML xmlns="" id="previewTreeData">
-
-		<nodes>
-
-			<node label="One">
-
-				<node label="One Point One" />
-
-				<node label="One Point Two" />
-
-				<node label="One Point Three" />
-
-			</node>
-
-			<node label="Two">
-
-				<node label="Two Point One" />
-
-				<node label="Two Point Two" />
-
-			</node>
-
-			<node label="Three">
-
-				<node label="Three Point One" />
-
-				<node label="Three Point Two" />
-
-				<node label="Three Point Three" />
-
-			</node>
-
-			<node label="Four">
-
-				<node label="Four Point One" />
-
-				<node label="Four Point Two" />
-
-				<node label="Four Point Three" />
-
-				<node label="Four Point Four" />
-
-			</node>
-
-		</nodes>
-
-	</mx:XML>
-
-	<mx:XML xmlns="" id="treeData">
-
-		<nodes>
-
-			<node label="Buttons">
-
-				<node label="Button" icon="ButtonIcon"/>
-
-				<node label="ButtonBar" icon="ButtonBarIcon"/>
-
-				<node label="ToggleButtonBar" icon="ButtonBarIcon"/>
-
-				<node label="LinkBar" icon="LinkBarIcon"/>
-
-				<node label="LinkButton" icon="LinkButtonIcon"/>
-
-			</node>
-
-			<node label="Containers">
-
-				<node label="VDividedBox" icon="VDividedBoxIcon"/>
-
-			</node>
-
-			<node label="Form Elements">
-
-				<node label="CheckBox" icon="CheckBoxIcon"/>
-
-				<node label="ComboBox" icon="ComboBoxIcon" />
-
-				<node label="DateChooser" icon="DateChooserIcon" />
-
-				<node label="NumericStepper" icon="NumericStepperIcon" />
-
-				<node label="RadioButton" icon="RadioButtonIcon" />
-
-				<node label="TextArea" icon="TextAreaIcon" />
-
-				<node label="TextInput" icon="TextInputIcon" />
-
-			</node>
-
-			<node label="Lists">
-
-				<node label="List" icon="ListIcon"/>
-
-				<node label="Tree" icon="TreeIcon"/>
-
-			</node>
-
-			<node label="Navigators">
-
-				<node label="Accordion" icon="AccordionIcon"/>
-
-				<node label="TabNavigator" icon="TabNavigatorIcon"/>
-
-			</node>
-
-			<node label="ScrollBar &amp; Slider">
-
-				<node label="HScrollBar" icon="HScrollBarIcon"/>
-
-				<node label="VScrollBar" icon="VScrollBarIcon"/>
-
-				<node label="HSlider" icon="HSliderIcon"/>
-
-				<node label="VSlider" icon="VSliderIcon"/>
-
-			</node>
-
-			<node label="Other">
-
-				<node label="ColorPicker" icon="ColorPickerIcon"/>
-
-				<node label="DataGrid" icon="DataGridIcon"/>
-
-				<node label="MenuBar" icon="MenuBarIcon"/>
-
-				<node label="ProgressBar" icon="ProgressBarIcon"/>
-
-				<node label="ToolTip" icon="ToolTipIcon"/>
-
-				<node label="Cursors" icon="CursorsIcon"/>
-
-			</node>
-
-		</nodes>
-
-	</mx:XML>
-
-	<mx:ArrayCollection id="gridData" >
-
-		<mx:Object Component="Button" Skin="Rad" />
-
-		<mx:Object Component="CheckBox" Skin="Super Cool" />
-
-		<mx:Object Component="ToolTip" Skin="Wowza" />
-
-	</mx:ArrayCollection>
-
-	<mx:HBox verticalAlign="middle" width="100%" height="100%">
-
-		<mx:VBox horizontalAlign="center" verticalAlign="middle" width="100%" height="100%">
-
-			<mx:Canvas width="100%" height="15%">
-
-				<mx:Image source="{TitleImg}" width="100%" height="100%" />
-<!--
-				<mx:LinkButton label="by Phil Chung" click="onHeaderLink(event)"  x="575" y="18" color="#FFFFFF"/>
--->
-			</mx:Canvas>
-
-			<mx:HBox width="100%" height="80%"  verticalGap="0" horizontalAlign="center">
-
-				<mx:Panel width="100%" height="100%" layout="absolute" title="Skin List" color="#FFFFFF">
-
-					<mx:Tree height="100%" width="95%" id="tree1" dataProvider="{treeData}" showRoot="false" 
-
-						labelField="@label" iconField="@icon" x="10" y="30" change="onTreeSelect(event)"
-
-						cornerRadius="0"></mx:Tree>
-
-				</mx:Panel>
-
-				<mx:Panel width="100%" height="100%" layout="absolute" title="Preview" color="#FFFFFF">
-
-					<mx:ViewStack x="9" y="29" id="previewStack" width="379" height="313">
-
-						<mx:VBox width="100%" height="100%" id="StartPreview" verticalAlign="middle" horizontalAlign="center">
-
-						<mx:Image width="350" height="250" source="{SplashImg}"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ButtonPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:Button label="Enabled Button"/>
-
-							<mx:Button label="Disabled Button" enabled="false"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ButtonBarPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:ButtonBar label="Button">
-
-								<mx:ViewStack id="dummy">
-
-									<mx:Canvas label="One" width="100%" height="100%">
-
-									</mx:Canvas>
-
-									<mx:Canvas label="Two" width="100%" height="100%">
-
-									</mx:Canvas>
-
-									<mx:Canvas label="Three" width="100%" height="100%">
-
-									</mx:Canvas>
-
-								</mx:ViewStack>
-
-							</mx:ButtonBar>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ToggleButtonBarPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:ToggleButtonBar>
-
-								<mx:ViewStack id="dummy2">
-
-									<mx:Canvas label="One" width="100%" height="100%">
-
-									</mx:Canvas>
-
-									<mx:Canvas label="Two" width="100%" height="100%">
-
-									</mx:Canvas>
-
-									<mx:Canvas label="Three" width="100%" height="100%">
-
-									</mx:Canvas>
-
-								</mx:ViewStack>
-
-							</mx:ToggleButtonBar>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="LinkButtonPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:LinkButton label="Link Button"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="LinkBarPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:LinkBar>
-
-								<mx:ViewStack id="dummy3">
-
-									<mx:Canvas label="Link One" width="100%" height="100%">
-
-									</mx:Canvas>
-
-									<mx:Canvas label="Link Two" width="100%" height="100%">
-
-									</mx:Canvas>
-
-									<mx:Canvas label="Link Three" width="100%" height="100%">
-
-									</mx:Canvas>
-
-								</mx:ViewStack>
-
-							</mx:LinkBar>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="VDividedBoxPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:VDividedBox width="300" height="200">
-
-								<mx:Canvas label="TopBox" width="100%" height="100" backgroundColor="#FFFFFF" backgroundAlpha="0.7">
-
-								</mx:Canvas>
-
-								<mx:Canvas label="BottomBox" width="100%" height="100" backgroundColor="#FFFFFF" backgroundAlpha="0.7">
-
-								</mx:Canvas>
-
-							</mx:VDividedBox>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="CheckBoxPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:VBox>
-
-								<mx:CheckBox label="One"/>
-
-								<mx:CheckBox label="Two"/>
-
-								<mx:CheckBox label="Three"/>
-
-							</mx:VBox>			
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ComboBoxPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:ComboBox width="250" dataProvider="{previewListData.node}" labelField="@label"/>
-
-							<mx:ComboBox width="250" dataProvider="{previewListData.node}" labelField="@label" editable="true" focusRoundedCorners="tr,br" color="#000000"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="DateChooserPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:DateChooser/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="NumericStepperPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:NumericStepper/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="RadioButtonPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:VBox>
-
-								<mx:RadioButton label="One"/>
-
-								<mx:RadioButton label="Two"/>
-
-								<mx:RadioButton label="Three"/>
-
-							</mx:VBox>								
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="TextAreaPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:TextArea width="300" height="200" text="Type here..."/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="TextInputPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:TextInput width="300" text="Type here..."/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ListPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:List dataProvider="{previewListData.node}" labelField="@label" width="300" height="200"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="TreePreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:Tree dataProvider="{previewTreeData.node}" labelField="@label" width="300" height="200" showRoot="false"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="AccordionPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:Accordion width="300" height="200" >
-
-								<mx:Canvas label="One" width="100%" height="100%">
-
-								</mx:Canvas>
-
-								<mx:Canvas label="Two" width="100%" height="100%">
-
-								</mx:Canvas>
-
-								<mx:Canvas label="Three" width="100%" height="100%">
-
-								</mx:Canvas>
-
-							</mx:Accordion>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="TabNavigatorPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:TabNavigator width="300" height="200">
-
-								<mx:Canvas label="One" width="100%" height="100%">
-
-								</mx:Canvas>
-
-								<mx:Canvas label="Two" width="100%" height="100%">
-
-								</mx:Canvas>
-
-								<mx:Canvas label="Three" width="100%" height="100%">
-
-								</mx:Canvas>
-
-							</mx:TabNavigator>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="HScrollBarPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:HScrollBar width="200" pageSize="10" maxScrollPosition="100"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="VScrollBarPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:VScrollBar height="200" pageSize="10" maxScrollPosition="100"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="HSliderPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:HSlider/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="VSliderPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:VSlider/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ColorPickerPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:ColorPicker/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="DataGridPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:DataGrid dataProvider="{gridData}" labelField="@label" width="300" height="200"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="MenuBarPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:MenuBar dataProvider="{previewTreeData.node}" labelField="@label" width="300"/>
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ProgressBarPreview" verticalAlign="middle" horizontalAlign="center" creationComplete="onCreationComplete(event)">
-
-							<mx:ProgressBar indeterminate="true"/>
-
-							<mx:ProgressBar id="manualProgressBar" mode="manual" minimum="0" maximum="100" />
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="ToolTipPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:Label text="Roll over this to view the ToolTip skin." toolTip="ToolTip skin by Phil Chung" />
-
-						</mx:VBox>
-
-						<mx:VBox width="100%" height="100%" id="CursorsPreview" verticalAlign="middle" horizontalAlign="center">
-
-							<mx:Image source="{CursorsPreviewClip}" width="179"/>
-
-						</mx:VBox>			
-
-					</mx:ViewStack>
-
-				</mx:Panel>
-
-			</mx:HBox>
-
-		</mx:VBox>
-
-	</mx:HBox>
-
-
-
-	<mx:Style source="assets/skins/flex_skins.css"/>
+	<mx:Image
+		source="@Embed(source='/assets/cumple15/images/fondo.png')"
+		top="0"
+		horizontalCenter="0"
+		id="imagenFondo"
+	/>
+	<mx:states>
+	<!--
+		<mx:State name="eventos">
+			<mx:AddChild position="lastChild">
+				<components:EventosPrincipal
+					id="eventosPrincipal"
+					top="0"
+					horizontalCenter="0"
+					width="1024" height="800"
+					visible="false"
+					showEffect="{fadeIn}" hideEffect="{fadeOut}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+	-->
+		<mx:State name="cumples">
+			<mx:AddChild position="lastChild">
+			<!--
+				<components1:Cumple15PantallaInicial
+					eventoContexto="{eventoContexto}"
+					id="cumple15PantallaInicial"
+					width="1024" height="800"
+					top="0"
+					horizontalCenter="0"
+					showEffect="{fadeIn}" hideEffect="{fadeOut}"
+				/>
+				-->
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:Fade
+		id="fadeIn"
+		alphaTo="1"
+		alphaFrom="0"
+	/>
+	<mx:Fade
+		id="fadeOut"
+		alphaTo="0"
+		alphaFrom="1"
+	/>
+	<mx:Style source="/assets/cumple15/style/style.css"/>
+	<beans:EventoContexto id="eventoContexto">
+		<beans:infoPersonal>
+			<mx:ArrayCollection>
+				<beans:InfoPersonal nombre="Nombre" valor="Florencia"/>
+				<beans:InfoPersonal nombre="Apellidos" valor="Gonzalez"/>
+				<beans:InfoPersonal nombre="Nacimiento" valor="21/Septiembre/1985"/>
+				<beans:InfoPersonal nombre="Lugar" valor="Lanús Oeste"/>
+				<beans:InfoPersonal nombre="Padres" valor="Raúl Gonzalez y Maria Inés Sanchez"/>
+				<beans:InfoPersonal nombre="Hobbies" valor="Me encanta cantar, salir con amigas a bailar y disfrutar de la noche."/>
+				<beans:InfoPersonal nombre="Actividades" valor="Cantar canciones pop, tocar la guitarra, estudiar."/>
+				<beans:InfoPersonal nombre="Mejores Amigos" valor="Maria Torres (Mechu), y Gonzalo Perez (Gonza)."/>
+			</mx:ArrayCollection>
+		</beans:infoPersonal>
+		<beans:categoriasFotos>
+			<mx:ArrayCollection>
+				<beans:CategoriaFoto
+					descripcion="Categoria Foto 1."
+					nombre="Entrada al Salón">
+					<beans:foto>
+						<beans:Foto>
+							<beans:foto>
+								<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic06.jpg"/>
+							</beans:foto>
+						</beans:Foto>
+					</beans:foto>
+					<beans:fotos>
+						<mx:ArrayCollection>
+							<beans:Foto nombre="Entrada Salon 1." descripcion="Entrada Salon Descripcion 1.">
+								<beans:foto>
+									<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic06.jpg"/>
+								</beans:foto>
+								<beans:comentarios>
+									<mx:ArrayCollection>
+										<beans:Comentario comentario="Comentario 1." usuario="LuliA"/>
+										<beans:Comentario comentario="Comentario 2." usuario="LuliB"/>
+										<beans:Comentario comentario="Comentario 3." usuario="LuliC"/>
+										<beans:Comentario comentario="Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1." usuario="LuliD"/>
+										<beans:Comentario comentario="Comentario 2." usuario="LuliE"/>
+										<beans:Comentario comentario="Comentario 3." usuario="LuliF"/>
+										<beans:Comentario comentario="Comentario 1.Comentario 1Comentario 1" usuario="LuliG"/>
+										<beans:Comentario comentario="Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2." usuario="LuliH"/>
+										<beans:Comentario comentario="Comentario 3.Comentario 3.Comentario 3.Comentario 3.Comentario 3." usuario="LuliI"/>
+									</mx:ArrayCollection>
+								</beans:comentarios>
+							</beans:Foto>
+							<beans:Foto nombre="Entrada Salon 2." descripcion="Entrada Salon Descripcion 2.">
+								<beans:foto>
+									<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic07.jpg"/>
+								</beans:foto>
+								<beans:comentarios>
+									<mx:ArrayCollection>
+										<beans:Comentario comentario="Comentario 4." usuario="Luli4"/>
+										<beans:Comentario comentario="Comentario 5." usuario="Luli5"/>
+										<beans:Comentario comentario="Comentario 6." usuario="Luli6"/>
+									</mx:ArrayCollection>
+								</beans:comentarios>						
+							</beans:Foto>
+							<beans:Foto nombre="Entrada Salon 3." descripcion="Entrada Salon Descripcion 3.">
+								<beans:foto>
+									<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic08.jpg"/>
+								</beans:foto>
+								<beans:comentarios>
+									<mx:ArrayCollection>
+										<beans:Comentario comentario="Comentario 7." usuario="Luli7"/>
+										<beans:Comentario comentario="Comentario 8." usuario="Luli8"/>
+										<beans:Comentario comentario="Comentario 9." usuario="Luli9"/>
+									</mx:ArrayCollection>
+								</beans:comentarios>
+							</beans:Foto>
+							<beans:Foto nombre="Entrada Salon 4." descripcion="Entrada Salon Descripcion 4.">
+								<beans:foto>
+									<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic09.jpg"/>
+								</beans:foto>
+								<beans:comentarios>
+									<mx:ArrayCollection>
+										<beans:Comentario comentario="Comentario 10." usuario="Luli10"/>
+										<beans:Comentario comentario="Comentario 11." usuario="Luli11"/>
+										<beans:Comentario comentario="Comentario 12." usuario="Luli12"/>
+									</mx:ArrayCollection>
+								</beans:comentarios>
+							</beans:Foto>
+						</mx:ArrayCollection>
+					</beans:fotos>
+				</beans:CategoriaFoto>
+			</mx:ArrayCollection>
+		</beans:categoriasFotos>
+		<beans:videos>
+			<mx:ArrayCollection>
+				<beans:XVideo
+					videoURL="http://{URL_BASE}/eventos/videos/videoEjemplo.flv"
+					descripcion="Descripción Video 1."
+					nombre="Nombre Video 1.">
+					<beans:comentarios>
+						<mx:ArrayCollection>
+							<beans:Comentario comentario="Comentario video 1." usuario="Gime1"/>
+							<beans:Comentario comentario="Comentario video 2." usuario="Gime2"/>
+							<beans:Comentario comentario="Comentario video 3." usuario="Gime3"/>
+						</mx:ArrayCollection>
+					</beans:comentarios>
+				</beans:XVideo>
+				<beans:XVideo
+					videoURL="http://{URL_BASE}/eventos/videos/videoEjemplo.flv"
+					descripcion="Descripción Video 2."
+					nombre="Nombre Video 2.">
+					<beans:comentarios>
+						<mx:ArrayCollection>
+							<beans:Comentario comentario="Comentario video 4." usuario="Gime4"/>
+							<beans:Comentario comentario="Comentario video 5." usuario="Gime5"/>
+							<beans:Comentario comentario="Comentario video 6." usuario="Gime6"/>
+						</mx:ArrayCollection>
+					</beans:comentarios>
+				</beans:XVideo>
+				<beans:XVideo
+					videoURL="http://{URL_BASE}/eventos/videos/videoEjemplo.flv"
+					descripcion="Descripción Video 4."
+					nombre="Nombre Video 4.">
+					<beans:comentarios>
+						<mx:ArrayCollection>
+							<beans:Comentario comentario="Comentario video 7." usuario="Gime7"/>
+							<beans:Comentario comentario="Comentario video 8." usuario="Gime8"/>
+							<beans:Comentario comentario="Comentario video 9." usuario="Gime9"/>
+						</mx:ArrayCollection>
+					</beans:comentarios>
+				</beans:XVideo>
+				<beans:XVideo
+					videoURL="http://{URL_BASE}/eventos/videos/videoEjemplo.flv"
+					descripcion="Descripción Video 5."
+					nombre="Nombre Video 5.">
+					<beans:comentarios>
+						<mx:ArrayCollection>
+							<beans:Comentario comentario="Comentario 2video 4." usuario="Gime34"/>
+							<beans:Comentario comentario="Comentario 2video 5." usuario="Gime35"/>
+							<beans:Comentario comentario="Comentario 2video 6." usuario="Gime36"/>
+							<beans:Comentario comentario="Comentario 2video 4." usuario="Gime34"/>
+							<beans:Comentario comentario="Comentario 2video 5." usuario="Gime35"/>
+							<beans:Comentario comentario="Comentario 2video 6." usuario="Gime36"/>
+							<beans:Comentario comentario="Comentario 2video 4." usuario="Gime34"/>
+							<beans:Comentario comentario="Comentario 2video 5." usuario="Gime35"/>
+							<beans:Comentario comentario="Comentario 2video 6." usuario="Gime36"/>
+						</mx:ArrayCollection>
+					</beans:comentarios>
+				</beans:XVideo>
+				<beans:XVideo
+					videoURL="http://{URL_BASE}/eventos/videos/videoEjemplo.flv"
+					descripcion="Descripción Video 6."
+					nombre="Nombre Video 6.">
+					<beans:comentarios>
+						<mx:ArrayCollection>
+							<beans:Comentario comentario="Comentario 4video 4." usuario="Gime44"/>
+							<beans:Comentario comentario="Comentario 5video 5." usuario="Gime45"/>
+							<beans:Comentario comentario="Comentario 5video 6." usuario="Gime46"/>
+							<beans:Comentario comentario="Comentario 4video 4." usuario="Gime44"/>
+							<beans:Comentario comentario="Comentario 5video 5." usuario="Gime45"/>
+							<beans:Comentario comentario="Comentario 5video 6." usuario="Gime46"/>
+							<beans:Comentario comentario="Comentario 4video 4." usuario="Gime44"/>
+							<beans:Comentario comentario="Comentario 5video 5." usuario="Gime45"/>
+							<beans:Comentario comentario="Comentario 5video 6." usuario="Gime46"/>
+						</mx:ArrayCollection>
+					</beans:comentarios>
+				</beans:XVideo>
+			</mx:ArrayCollection>
+		</beans:videos>
+		<beans:infoSalon>
+			<beans:InfoSalon
+				enlace="http://www.misalondeeventos.com.ar"
+				direccion="Av. Perito Moreno 999"
+				telefono="4999-9999"
+				descripcion=""
+				localidad="Capital Federal"
+				nombre="Eventos Me"
+				tipo="Salón">
+				<beans:fotos>
+					<mx:ArrayCollection>
+						<beans:Foto nombre="Salon 1." descripcion="Salon Descripcion 1.">
+							<beans:foto>
+								<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic06.jpg"/>
+							</beans:foto>
+							<beans:comentarios>
+								<mx:ArrayCollection>
+									<beans:Comentario comentario="Comentario 1." usuario="LuliA"/>
+									<beans:Comentario comentario="Comentario 2." usuario="LuliB"/>
+									<beans:Comentario comentario="Comentario 3." usuario="LuliC"/>
+									<beans:Comentario comentario="Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1.Comentario 1." usuario="LuliD"/>
+									<beans:Comentario comentario="Comentario 2." usuario="LuliE"/>
+									<beans:Comentario comentario="Comentario 3." usuario="LuliF"/>
+									<beans:Comentario comentario="Comentario 1.Comentario 1Comentario 1" usuario="LuliG"/>
+									<beans:Comentario comentario="Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2.Comentario 2." usuario="LuliH"/>
+									<beans:Comentario comentario="Comentario 3.Comentario 3.Comentario 3.Comentario 3.Comentario 3." usuario="LuliI"/>
+								</mx:ArrayCollection>
+							</beans:comentarios>
+						</beans:Foto>
+						<beans:Foto nombre="Salon 2." descripcion="Salon Descripcion 2.">
+							<beans:foto>
+								<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic07.jpg"/>
+							</beans:foto>
+							<beans:comentarios>
+								<mx:ArrayCollection>
+									<beans:Comentario comentario="Comentario 4." usuario="Luli4"/>
+									<beans:Comentario comentario="Comentario 5." usuario="Luli5"/>
+									<beans:Comentario comentario="Comentario 6." usuario="Luli6"/>
+								</mx:ArrayCollection>
+							</beans:comentarios>						
+						</beans:Foto>
+						<beans:Foto nombre="Salon 3." descripcion="Salon Descripcion 3.">
+							<beans:foto>
+								<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic08.jpg"/>
+							</beans:foto>
+							<beans:comentarios>
+								<mx:ArrayCollection>
+									<beans:Comentario comentario="Comentario 7." usuario="Luli7"/>
+									<beans:Comentario comentario="Comentario 8." usuario="Luli8"/>
+									<beans:Comentario comentario="Comentario 9." usuario="Luli9"/>
+								</mx:ArrayCollection>
+							</beans:comentarios>
+						</beans:Foto>
+						<beans:Foto nombre="Salon 4." descripcion="Salon Descripcion 4.">
+							<beans:foto>
+								<beans1:ImageAttachment url="http://{URL_BASE}/eventos/uploads/pic09.jpg"/>
+							</beans:foto>
+							<beans:comentarios>
+								<mx:ArrayCollection>
+									<beans:Comentario comentario="Comentario 10." usuario="Luli10"/>
+									<beans:Comentario comentario="Comentario 11." usuario="Luli11"/>
+									<beans:Comentario comentario="Comentario 12." usuario="Luli12"/>
+								</mx:ArrayCollection>
+							</beans:comentarios>
+						</beans:Foto>
+					</mx:ArrayCollection>
+				</beans:fotos>
+			</beans:InfoSalon>
+				
+		</beans:infoSalon>
+	</beans:EventoContexto>
+	<!--
+	<mx:Label
+		id="labelDownload"
+		text="{fileDownloadService.progress}"
+		click="{fileDownloadService.service();}"
+	/>
+	<download:FileDownloadService
+		id="fileDownloadService"
+	/>
+	<mx:Image
+		id="facebookConnectImage"
+		click="onFacebookConnect();"
+		useHandCursor="true" buttonMode="true"
+		source="@Embed(source='/assets/images/facebook.png')"
+	/>
+	-->
 </mx:Application>

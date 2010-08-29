@@ -1,0 +1,18 @@
+/* CSS file 
+backgroundGradientColors: #003399, #003399;
+*/
+Application {
+   background-color: #FFFFFF;   
+}
+
+.mensajeSector {
+   fontFamily: Arial Black;
+   fontSize: 12;
+   fontWeight: bold;
+}
+
+.blueLinkButton {
+	upSkin: 	Embed(source="/assets/controls/MenuBoton.swf",	symbol="LinkButton_upSkin");
+    overSkin: 	Embed(source="/assets/controls/MenuBoton.swf", 	symbol="LinkButton_overSkin");
+    downSkin: 	Embed(source="/assets/controls/MenuBoton.swf", 	symbol="LinkButton_downSkin");
+}

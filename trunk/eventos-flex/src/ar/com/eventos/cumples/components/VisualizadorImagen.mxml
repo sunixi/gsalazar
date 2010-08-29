@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*"
+	xmlns:mxml="org.bytearray.mxml.*"
+	currentState="inicial">
+	<mx:Metadata>
+		[Event(name="clickImage")]
+		[Event(name="mouseOverImage")]
+		[Event(name="mouseOutImage")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.odra.events.attachment.LoaderBufferEvent;
+			import ar.com.odra.attachments.loader.LoaderBuffer;
+			import ar.com.eventos.cumples.beans.Foto;
+			import mx.controls.Alert;
+			import ar.com.odra.events.DataCarrierEvent;
+			import mx.effects.Fade;
+			import mx.controls.Image;
+			
+		[Bindable]
+		private var foto:Foto;
+		[Bindable]
+		public var imagenInicial:Class;
+		[Bindable]
+		public var imagenTooltip:String;
+			
+		public function cambiarFoto(value:Foto):void {
+			this.cambiarEstadoACargando();
+			if(!value.fueBajada()){
+				var loaderFoto:LoaderBuffer = new LoaderBuffer();
+				loaderFoto.toLoad.addItem(value.foto);
+				loaderFoto.addEventListener(LoaderBufferEvent.PAGE_DOWNLOADED, function(e:LoaderBufferEvent):void {
+					mostrarFoto(value);
+				});
+				loaderFoto.addEventListener(LoaderBufferEvent.ERROR_PAGE_DOWNLOAD, function(e:LoaderBufferEvent):void {
+					cambiarEstadoANoEncontrado();
+				});
+				loaderFoto.loadPage();
+			} else {
+				mostrarFoto(value);
+			}
+		}
+		private function mostrarFoto(value:Foto):void {
+			foto = value;
+			this.cambiarEstadoAVisualizando();
+		}
+		
+		private function cambiarEstadoAInicial():void {
+			currentState = 'inicial';
+		}
+		private function cambiarEstadoAVisualizando():void {
+			currentState = 'visualizando';
+		}
+		private function cambiarEstadoACargando():void {
+			currentState = 'cargando';
+		}
+		private function cambiarEstadoANoEncontrado():void {
+			currentState = 'noEncontrado';
+		}
+		private function clickImage(e:Event):void {
+			dispatchEvent(new Event("clickImage"));
+		}
+		private function onMouseOver(e:Event):void {
+			dispatchEvent(new Event("mouseOverImage"));
+		}
+		private function onMouseOut(e:Event):void {
+			dispatchEvent(new Event("mouseOutImage"));
+		}
+		]]>
+	</mx:Script>
+	<mx:states>
+		<mx:State name="inicial">
+			<mx:AddChild>
+				<mx:Image
+					id="inicialImage"
+					source="{imagenInicial}"
+					width="100%" height="100%"
+					verticalAlign="middle" horizontalAlign="center"
+					scaleContent="true" maintainAspectRatio="true"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="cargando">
+			<mx:AddChild>
+				<mxml:GIFPlayerComponent
+					id="cargandoImage"
+					url="ajax-loader.gif"
+					width="30" height="30"
+					verticalCenter="0" horizontalCenter="0"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="visualizando">
+			<mx:AddChild>
+				<mx:Image
+					id="visualizandoImage"
+					source="{foto.foto.data}"
+					width="100%" height="100%"
+					verticalAlign="middle" horizontalAlign="center"
+					scaleContent="true" maintainAspectRatio="true"
+					useHandCursor="true" buttonMode="true"
+					click="clickImage(event);"
+					mouseOut="onMouseOut(event);" mouseOver="onMouseOver(event);"
+					toolTip="{imagenTooltip}"
+				/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="noEncontrado">
+			<mx:AddChild>
+				<mx:Image
+					id="noEncontradoImage"
+					width="100%" height="100%"
+					verticalAlign="middle" horizontalAlign="center"
+					scaleContent="true" maintainAspectRatio="true"
+					source="@Embed(source='/assets/cumple15/images/imagepreview1.png')"
+				/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:transitions>
+		<mx:Transition fromState="cargando" toState="*">
+			<mx:Parallel duration="300">
+				<mx:Fade alphaFrom="1" alphaTo="0" target="{cargandoImage}"/>
+			</mx:Parallel>
+		</mx:Transition>
+		<mx:Transition fromState="visualizando" toState="*">
+			<mx:Parallel duration="300">
+				<mx:Fade alphaFrom="1" alphaTo="0" target="{visualizandoImage}"/>
+			</mx:Parallel>
+		</mx:Transition>
+		<mx:Transition fromState="noEncontrado" toState="*">
+			<mx:Parallel duration="300">
+				<mx:Fade alphaFrom="1" alphaTo="0" target="{noEncontradoImage}"/>
+			</mx:Parallel>
+		</mx:Transition>
+
+		<mx:Transition fromState="*" toState="cargando">
+			<mx:Parallel duration="300">
+				<mx:Fade alphaFrom="0" alphaTo="1" target="{cargandoImage}"/>
+			</mx:Parallel>
+		</mx:Transition>
+		<mx:Transition fromState="*" toState="visualizando">
+			<mx:Parallel duration="300">
+				<mx:Fade alphaFrom="0" alphaTo="1" target="{visualizandoImage}"/>
+			</mx:Parallel>
+		</mx:Transition>
+		<mx:Transition fromState="*" toState="noEncontrado">
+			<mx:Parallel duration="300">
+				<mx:Fade alphaFrom="0" alphaTo="1" target="{noEncontradoImage}"/>
+			</mx:Parallel>
+		</mx:Transition>
+	</mx:transitions>
+</mx:Canvas>

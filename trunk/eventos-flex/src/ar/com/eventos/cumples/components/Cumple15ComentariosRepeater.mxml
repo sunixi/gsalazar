@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%">
+	<mx:Metadata>
+		[Event(name="clickComentar")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.IList;
+			import ar.com.eventos.cumples.beans.Comentario;
+			import mx.validators.ValidationResult;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			import ar.com.eventos.cumples.beans.Foto;
+		
+		[Bindable]
+		public var comentarios:IList;
+		[Bindable]
+		public var comentarioHeight:Number = 30;
+		[Bindable]
+		public var comentariosListHeight:Number = 250;
+
+		private function onClickComentar(e:Event):void {
+			dispatchEvent(new Event("clickComentar"));
+		}
+		private function comentarioHTML(value:Object):String {
+			var htmlText:String = '';
+			htmlText += value.usuario + ' escribió (' + dateFormatter.format(value.fecha) + '): ';
+			htmlText += value.comentario + '';
+			return htmlText;
+		}
+		]]>
+	</mx:Script>
+	<mx:DateFormatter
+		id="dateFormatter"
+		formatString="DD/MM/YYYY"
+	/>
+	<mx:VBox
+		id="topContainer"
+		left="5" right="5" 
+		top="5"
+		verticalGap="0"
+		paddingLeft="0" paddingRight="0"
+		paddingBottom="0" paddingTop="0"
+		height="{comentariosListHeight}" maxHeight="{comentariosListHeight}"
+		horizontalAlign="center" verticalAlign="top">
+		<mx:Repeater
+			id="comentariosRepeater"
+			width="100%" height="100%"
+			dataProvider="{comentarios}">
+			<mx:VBox
+				width="90%"
+				verticalGap="0"
+				paddingLeft="0" paddingRight="0"
+				paddingBottom="0" paddingTop="0">
+				<mx:Text
+					width="100%"
+					selectable="false"
+					htmlText="{comentarioHTML(comentariosRepeater.currentItem)}"
+					textAlign="left"
+				/>
+				<mx:HRule
+					width="95%"
+				/>
+			</mx:VBox>
+		</mx:Repeater>
+	</mx:VBox>
+	<mx:VBox
+		id="bottomContainer"
+		paddingLeft="0" paddingRight="0"
+		paddingBottom="0" paddingTop="0"
+		left="0" right="0"
+		height="{comentarioHeight}" bottom="0"
+		verticalGap="0"
+		horizontalAlign="center" verticalAlign="bottom">
+		<mx:HBox width="100%" height="100%"
+			verticalGap="0" horizontalGap="0"
+			paddingLeft="0" paddingRight="0"
+			paddingBottom="0" paddingTop="0"
+			verticalAlign="bottom" horizontalAlign="right">
+			<mx:Label
+				width="50%"
+				text="{comentarios.length} comentarios."
+				textAlign="left"
+				fontStyle="italic"
+			/>
+			<mx:LinkButton
+				width="50%"
+				label="Comentar"
+				click="onClickComentar(event);"
+				focusEnabled="false"
+			/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Canvas>

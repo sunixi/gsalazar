@@ -1,0 +1,173 @@
+/* CSS file */
+@font-face {
+    src: url("/assets/cumple15/fonts/Fonts.swf");
+    font-family: "HelveticaNeue LT 55 Roman";
+}
+
+@font-face {
+    src: url("/assets/cumple15/fonts/Fonts.swf");
+    font-family: "Verdana";
+    font-style: italic;
+}
+
+@font-face {
+    src: url("/assets/cumple15/fonts/Fonts.swf");
+    font-family: "Verdana";
+    font-weight: bold;
+}
+
+@font-face {
+    src: url("/assets/cumple15/fonts/Fonts.swf");
+    font-family: "Verdana";
+}
+
+@font-face {
+    src: url("/assets/cumple15/fonts/Fonts.swf");
+    font-family: "SF Automaton";
+}
+
+@font-face {
+    src: url("/assets/cumple15/fonts/Fonts.swf");
+    font-family: "JaneAusten";
+}
+
+Application {
+   background-color: #F6F6F6;   
+}
+
+VScrollBar {
+   cornerRadius: 0;
+   highlightAlphas: 0, 0;
+   fillAlphas: 0.6, 0.4, 0.66, 0.65;
+   fillColors: #cccccc, #cccccc, #eeeeee, #eeeeee;
+   trackColors: #94999b, #999999;
+   themeColor: #cccccc;
+   borderColor: #b7babc;
+   iconColor: #666666;
+   thumbOffset: 1;
+}
+
+.tituloHeader {
+    font-family: "JaneAusten";
+    font-size: 40;
+    color: #FFFFFF;
+}
+
+.blueLinkButton {
+	upSkin: 	Embed(source="/assets/controls/MenuBoton.swf",	symbol="LinkButton_upSkin");
+    overSkin: 	Embed(source="/assets/controls/MenuBoton.swf", 	symbol="LinkButton_overSkin");
+    downSkin: 	Embed(source="/assets/controls/MenuBoton.swf", 	symbol="LinkButton_downSkin");
+    font-family: "HelveticaNeue LT 55 Roman";
+    color: #FFFFFF;
+}
+
+
+/** Componente Cumple15. */
+.nextButtonImagenes {
+	upSkin: 	Embed(source="/assets/cumple15/controls/NextButtonImagenes.swf",	symbol="Button_upSkin");
+    overSkin: 	Embed(source="/assets/cumple15/controls/NextButtonImagenes.swf", 	symbol="Button_overSkin");
+    downSkin: 	Embed(source="/assets/cumple15/controls/NextButtonImagenes.swf", 	symbol="Button_downSkin");
+    disabledSkin: 	Embed(source="/assets/cumple15/controls/NextButtonImagenes.swf", 	symbol="Button_disabledSkin");
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
+.numeroImagen {
+	font-family: "SF Automaton";
+	font-size: 15;
+}
+
+.previousImagen {
+	upSkin: 	Embed(source="/assets/cumple15/controls/PreviousImagen.swf",	symbol="Button_upSkin");
+    overSkin: 	Embed(source="/assets/cumple15/controls/PreviousImagen.swf", 	symbol="Button_overSkin");
+    downSkin: 	Embed(source="/assets/cumple15/controls/PreviousImagen.swf", 	symbol="Button_downSkin");
+    disabledSkin: 	Embed(source="/assets/cumple15/controls/PreviousImagen.swf", 	symbol="Button_disabledSkin");
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+.nextImagen {
+	upSkin: 	Embed(source="/assets/cumple15/controls/NextImagen.swf",	symbol="Button_upSkin");
+    overSkin: 	Embed(source="/assets/cumple15/controls/NextImagen.swf", 	symbol="Button_overSkin");
+    downSkin: 	Embed(source="/assets/cumple15/controls/NextImagen.swf", 	symbol="Button_downSkin");
+    disabledSkin: 	Embed(source="/assets/cumple15/controls/NextImagen.swf", 	symbol="Button_disabledSkin");
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
+.previousButtonImagenes {
+	upSkin: 	Embed(source="/assets/cumple15/controls/PreviousButtonImagenes.swf",	symbol="Button_upSkin");
+    overSkin: 	Embed(source="/assets/cumple15/controls/PreviousButtonImagenes.swf", 	symbol="Button_overSkin");
+    downSkin: 	Embed(source="/assets/cumple15/controls/PreviousButtonImagenes.swf", 	symbol="Button_downSkin");
+    disabledSkin: 	Embed(source="/assets/cumple15/controls/PreviousButtonImagenes.swf", 	symbol="Button_disabledSkin");
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
+.descripcionImagen {
+	font-family: "HelveticaNeue LT 55 Roman";
+	font-sharpness: 1;
+	font-size: 12;
+	color: #ffffff;	
+}
+
+.formErrorStyleName {
+	font-family: "HelveticaNeue LT 55 Roman";
+	font-sharpness: 1;
+	font-size: 9;
+	color: #FFFFFF;	
+}
+
+.videoDescripcionTitulo{
+	font-family: "Verdana";
+	font-size: 12;
+	font-weight: bold;
+}
+.videoDescripcion{
+	font-family: "Verdana";
+	font-size: 10;
+	font-style:italic;
+}
+
+.seleccionaCategoriaFoto {
+	font-family: "Verdana";
+	font-weight: bold;
+	font-size: 12;
+	color: #2d2d2d;
+}
+
+.informacionPersonalTitulo {
+	font-family: "Verdana";
+	font-size: 22;
+	font-weight: bold;
+	color: #2d2d2d;
+}
+
+/** Empresa Desarrolladora. */
+
+.ODRASolucionesInformaticasTitulo {
+	font-family: "Verdana";
+	font-size: 20;
+	font-weight: bold;
+	color: #2d2d2d;
+}
+
+.ODRASolucionesInformaticasEnlaces {
+	font-family: "Verdana";
+	font-size: 14;
+	font-style: italic;
+}
+
+.ODRASolucionesInformaticasDescripcion {
+	font-family: "Verdana";
+	font-size: 13;
+	font-weight: bold;
+	color: #2d2d2d;
+}

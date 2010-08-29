@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%"
+	xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="clickVideo", type="ar.com.odra.events.DataCarrierEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.XVideo;
+			import ar.com.odra.events.DataCarrierEvent;
+			import mx.controls.Alert;
+			import mx.binding.utils.BindingUtils;
+
+			import mx.core.UIComponent;
+			import fl.video.*;
+			[Bindable]
+			public var skinURL:String;
+			[Bindable]
+			private var _video:XVideo;
+			[Bindable]
+			public var cargandoImageURL:String = 'ajax-loader.gif';
+			[Bindable]
+			public var videoAutoplay:Boolean = true;
+			[Bindable]
+			public var videoWidth:Number = 150;
+			[Bindable]
+			public var videoHeight:Number = 150;
+			[Bindable]
+			public var skinAutohide:Boolean = true;
+			[Bindable]
+			public var videoClickEnabled:Boolean = true;
+			[Bindable]
+			public var videoScaleMode:String = VideoScaleMode.MAINTAIN_ASPECT_RATIO;
+			[Bindable]
+			public var videoSkinBackgroundColor:uint = 0x666666;
+			[Bindable]
+			public var _playback:FLVPlayback;
+
+			public function get video():XVideo {
+				return _video;
+			}
+			public function set video(value:XVideo):void {
+				this.mostrarVideo(value);
+			}
+
+			private function bindingProperties(playback:FLVPlayback):void {
+			 	BindingUtils.bindProperty(playback, "width", videoContainer, "width");
+				BindingUtils.bindProperty(playback, "height", videoContainer, { name: "height", getter: function(host:UIComponent):int { return host["height"]} });
+				//BindingUtils.bindProperty(playback, "source", _video, "videoURL");
+				//playback.source = video.videoURL;
+				BindingUtils.bindProperty(playback, "skinBackgroundColor", this, "videoSkinBackgroundColor");
+				BindingUtils.bindProperty(playback, "skin", this, "skinURL");
+			 	playback.scaleMode = videoScaleMode;
+			 	playback.autoPlay = videoAutoplay;
+			 	playback.skinAutoHide = skinAutohide;
+			 	playback.source = _video.videoURL;
+			}
+			
+			public function pauseVideo():void {
+				if(_playback != null){
+					_playback.pause();
+				}
+			}
+			
+			private function stopAndRemoveVideo():void {
+				if(_playback != null){
+					var playback:FLVPlayback = FLVPlayback(videoContainer.getChildAt(0));
+					playback.stop();
+					//videoContainer.visible = false;
+					videoContainer.removeChild(playback);
+				}
+			}
+			
+			public function mostrarVideo(video:XVideo):void {
+				this.stopAndRemoveVideo();
+				_video = video;
+				this.createFLVPlaybackInstance();
+			 	videoContainer.visible = true;
+			}
+			
+			private function createFLVPlaybackInstance():FLVPlayback {
+				_playback = new FLVPlayback();
+				videoContainer.addChild(_playback);
+				this.bindingProperties(_playback);
+				return _playback;
+			}
+			
+			private function dispatchClickVideoEvent():void {
+				dispatchEvent(new DataCarrierEvent("clickVideo", _video));
+			}
+			
+			private function onVideoClick(event:Event):void {
+				if(videoClickEnabled){
+					this.dispatchClickVideoEvent();
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Fade
+		id="fadeIn"
+		alphaFrom="0"
+		alphaTo="1"
+	/>
+	<mx:Fade
+		id="fadeOut"
+		alphaFrom="1"
+		alphaTo="0"
+	/>
+	<mx:UIComponent
+		id="videoContainer"
+		width="100%" height="100%"
+		visible="false"
+		showEffect="{fadeIn}" hideEffect="{fadeOut}"
+		useHandCursor="{videoClickEnabled}" buttonMode="{videoClickEnabled}"
+		click="onVideoClick(event);"
+	/>
+<!--
+	<mx:states>
+		<mx:State name="loading">
+			<mx:AddChild relativeTo="{videoContainer}" position="lastChild">
+				<mxml:GIFPlayerComponent
+					id="cargandoImage"
+					url="{cargandoImageURL}"
+					width="30" height="30"
+					verticalCenter="0" horizontalCenter="0"
+				/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+-->
+
+</mx:Canvas>

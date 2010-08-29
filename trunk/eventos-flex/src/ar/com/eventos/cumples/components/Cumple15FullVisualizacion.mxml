@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	backgroundColor="black" backgroundAlpha="0.97"
+	borderColor="#6f6f6f" borderStyle="solid" borderThickness="4" 
+	width="100%" height="100%" xmlns:components="ar.com.eventos.cumples.components.*">
+	<mx:Metadata>
+		[Event(name="closePanel")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import ar.com.eventos.cumples.beans.CategoriaFoto;
+			import ar.com.eventos.cumples.beans.Foto;
+			import ar.com.eventos.components.Imagen;
+			import mx.effects.Fade;
+			import mx.events.EffectEvent;
+			import mx.effects.Move;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.collections.IList;
+			import caurina.transitions.Tweener;
+			
+		[Bindable]
+		private var _categoriaFoto:CategoriaFoto;
+		[Bindable]
+		private var _foto:Foto;
+		
+		[Bindable]
+		public function get categoriaFoto():CategoriaFoto {
+			return _categoriaFoto;
+		}
+		
+		public function set categoriaFoto(value:CategoriaFoto):void {
+			_categoriaFoto = value;
+			_foto = _categoriaFoto.primerFoto();
+			image.cambiarFoto(_foto);
+		}
+		private function onClickClose(event:Event):void {
+			dispatchEvent(new Event("closePanel"));
+		}
+		
+		private function onSiguienteFoto(e:Event):void {
+			_foto = _categoriaFoto.siguienteFoto(_foto);
+			image.cambiarFoto(_foto);
+		}
+		private function onAnteriorFoto(e:Event):void {
+			_foto = _categoriaFoto.anteriorFoto(_foto);
+			image.cambiarFoto(_foto);
+		}
+		]]>
+	</mx:Script>
+	<mx:Canvas
+		id="imageContainer"
+		width="850" height="595"
+		top="0" left="0"
+		borderColor="#6f6f6f" borderStyle="solid" borderThickness="4">
+		<components:VisualizadorImagen
+			id="image"
+			width="100%" height="100%"
+		/>
+	</mx:Canvas>
+	<mx:Canvas
+		width="25%" height="100%"
+		top="0" right="0"
+		backgroundColor="black" backgroundAlpha="0.5">
+		<mx:Text
+			width="95%" top="0"
+			text="Descripción:"
+			textAlign="left"
+			styleName="descripcionImagen"
+			color="#FFFFFF"
+		/>
+		<mx:Text
+			width="95%" height="90%"
+			top="17"
+			text="{_foto.descripcion}"
+			styleName="descripcionImagen"
+			color="#FFFFFF" 
+		/>
+	</mx:Canvas>
+	<mx:VBox
+		width="70" height="100"
+		top="0" left="{imageContainer.width}"
+		backgroundColor="red"
+		verticalGap="2" verticalAlign="top"
+		horizontalAlign="center">
+		<mx:Label
+			paddingBottom="0" paddingTop="0"
+			paddingLeft="0" paddingRight="0"
+			text="X"
+			color="white" fontSize="30" fontWeight="bold"
+			top="0"
+			width="30" textAlign="center"
+			useHandCursor="true" buttonMode="true" mouseChildren="false"
+			click="onClickClose(event);"
+		/>
+		<mx:HBox
+			width="100%"
+			horizontalGap="0">
+				<mx:Label
+					paddingBottom="0" paddingTop="0"
+					paddingLeft="0" paddingRight="0"
+					text="&lt;"
+					color="white" fontSize="30" fontWeight="bold"
+					click="onAnteriorFoto(event);"
+					textAlign="center"
+					width="30"
+					useHandCursor="true" buttonMode="true" mouseChildren="false"
+				/>
+				<mx:Label
+					paddingBottom="0" paddingTop="0"
+					paddingLeft="0" paddingRight="0"
+					text="&gt;"
+					color="white" fontSize="30" fontWeight="bold"
+					click="onSiguienteFoto(event);"
+					textAlign="center"
+					width="30"
+					useHandCursor="true" buttonMode="true" mouseChildren="false"
+				/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Canvas>

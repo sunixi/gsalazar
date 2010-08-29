@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%">
+	<mx:Metadata>
+		[Event(name="clickInicio")]
+		[Event(name="clickInfoPersonal")]
+		[Event(name="clickImagenesEvento")]
+		[Event(name="clickVideosEvento")]
+		[Event(name="clickInfoSalon")]
+		[Event(name="clickEmpresa")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+		
+			private function dispatchEventNamed(name:String):void {
+				dispatchEvent(new Event(name));
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Canvas
+		width="120" height="230"
+		horizontalCenter="0"
+		verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:Image
+			top="5"
+			source="@Embed(source='/assets/images/ultimasAgregadas/pic07.jpg')"
+			verticalCenter="0" horizontalCenter="0"
+		/>
+	</mx:Canvas>
+	<mx:VBox
+		width="100%"
+		bottom="0"
+		verticalGap="2" horizontalAlign="center">
+		<mx:LinkButton
+			label="inicio"
+			styleName="blueLinkButton"
+			click="dispatchEventNamed('clickInicio');"
+			focusEnabled="false"
+		/>
+		<mx:LinkButton
+			label="información personal"
+			styleName="blueLinkButton"
+			click="dispatchEventNamed('clickInfoPersonal');"
+			focusEnabled="false"
+		/>
+		<mx:LinkButton
+			label="imágenes del evento"
+			styleName="blueLinkButton"
+			click="dispatchEventNamed('clickImagenesEvento');"
+			focusEnabled="false"
+		/>
+		<mx:LinkButton
+			label="videos del evento"
+			styleName="blueLinkButton"
+			click="dispatchEventNamed('clickVideosEvento');"
+			focusEnabled="false"
+		/>
+		<mx:LinkButton
+			label="salón y fotográfo"
+			styleName="blueLinkButton"
+			click="dispatchEventNamed('clickInfoSalon');"
+			focusEnabled="false"
+		/>
+		<mx:LinkButton
+			label="empresa desarrolladora"
+			styleName="blueLinkButton"
+			click="dispatchEventNamed('clickEmpresa');"
+			focusEnabled="false"
+		/>
+	</mx:VBox>
+</mx:Canvas>

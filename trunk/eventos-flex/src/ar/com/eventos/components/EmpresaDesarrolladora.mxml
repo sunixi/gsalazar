@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			
+
+
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas
+		top="50"
+		left="50"
+		width="40%" height="100%"
+		borderColor="red" borderStyle="solid" borderThickness="1">
+		<mx:Image
+			source="@Embed(source='/assets/images/odraLogo.gif')"
+			horizontalCenter="0"
+			verticalCenter="-60"
+		/>
+		<mx:Label
+			text="ODRA Soluciones Informáticas"
+			styleName="ODRASolucionesInformaticasTitulo"
+			horizontalCenter="0"
+			verticalCenter="-20"
+		/>
+		<mx:Label
+			text="http://www.odrait.com.ar"
+			fontSize="11" fontStyle="italic"
+			useHandCursor="true" buttonMode="true" mouseChildren="false"
+			left="60"  verticalCenter="10"
+		/>
+		<mx:Label
+			text="http://blog.odra.com.ar"
+			fontSize="11" fontStyle="italic"
+			useHandCursor="true" buttonMode="true" mouseChildren="false"
+			left="60"  verticalCenter="30"
+		/>
+		<mx:Label
+			text="http://productos.odra.com.ar"
+			styleName="ODRASolucionesInformaticasEnlace"
+			useHandCursor="true" buttonMode="true" mouseChildren="false"
+			left="60" verticalCenter="50"
+		/>
+		<mx:Label
+			text="http://eventos.odra.com.ar"
+			styleName="ODRASolucionesInformaticasEnlace"
+			useHandCursor="true" buttonMode="true" mouseChildren="false"
+			left="60"  verticalCenter="70"
+		/>
+	</mx:Canvas>
+
+	<mx:Canvas
+		top="70"
+		right="50"
+		width="50%" height="100%"
+		borderColor="red" borderStyle="solid" borderThickness="1">		
+		<mx:Text
+			text="ODRA Soluciones Informáticas es una pequeña e innovadora empresa que ofrece servicios para desarrollos de sistemas y sitios web de alta calidad, y experiencia de usuario."
+			selectable="false"
+			styleName="ODRASolucionesInformaticasDescripcion"
+			width="80%" height="80%"
+			horizontalCenter="0"
+			verticalCenter="0"
+		/>
+	</mx:Canvas>	
+</mx:Canvas>

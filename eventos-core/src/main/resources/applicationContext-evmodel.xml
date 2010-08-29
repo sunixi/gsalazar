@@ -9,16 +9,17 @@
         <!--Localhost -->
         <property name="driverUrl" value="jdbc:mysql://localhost:3306/eventos"/>
         
-        <!-- Localhost 
-        <property name="delegateProperties" value="user=root,password=root"/>
+        <!-- Localhost        --> 
+        <property name="delegateProperties" value="user=root,password=42416467"/>
         <property name="user" value="root"/>
-        <property name="password" value="root"/>
-        -->
+        <property name="password" value="42416467"/>
 
-        <!-- ODRA Server -->
+
+        <!-- ODRA Server 
 		<property name="delegateProperties" value="user=dba,password=trAyU2eg"/>
         <property name="user" value="dba"/>
         <property name="password" value="trAyU2eg"/>
+-->
 
         <!--<property name="houseKeepingSleepTime" value="15000"/>--> 
         <!-- Este parametro es el sql que usa para testear. Tener cuidado con lo que se setea -->
